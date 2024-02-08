@@ -1,16 +1,9 @@
 ---
-name: Miscelanea template
-about: Generic use template if the problem is not recorded anywhere
+name: Plantilla genérica
+about: Plantilla de uso genérico si no se sabe a que problema se asocia
 title: 
 labels: 
 assignees: ''
 
 ---
-
-## Topic
-
-## Message
-
-## Offtopic
-
-< Add any more information required >
+## Mensaje

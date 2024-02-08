@@ -1,10 +1,10 @@
 ---
-name: Docs Template
-about: Generate a documentation for a certain topic
+name: Plantilla de Documentos
+about: Generar documentación sobre un apartado
 title: [Docs]: 
 labels: documentation
 assignees: ''
 
 ---
 
-## Purpose of the Document
+## Proposito del documento a generar
