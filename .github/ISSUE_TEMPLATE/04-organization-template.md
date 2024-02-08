@@ -1,16 +1,15 @@
 ---
-name: Coordination template
-about: Notify about something coordination has decided
+name: Plantilla de Coordinación
+about: Informar sobre decisiones de Coordinación
 title: [Info]: 
 labels: 
 assignees: ''
 
 ---
 
-## Senders
-< List of the coordinators who send it >
+<!--## Redactores
 
-## Groups affected
-< List of Groups affected >
+## Departamentos Afectados
+-->
 
-## Message
+## Mensaje

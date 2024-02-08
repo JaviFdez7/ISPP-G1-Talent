@@ -1,24 +1,21 @@
 ---
-name: Bug Template
-about: Report bugs on the behaviour of the application
+name: Plantilla de Bugs
+about: Informa de bugs en la aplicación
 title: [Bug]: 
 labels: 
 assignees: ''
 
 ---
 
-## Current Behavior
-< Tell us what happens instead of the expected behavior >
+## Comportamiento Actual
+<!-- Tell us what happens instead of the expected behavior -->
+Indica qué problemas están sucediendo
 
-## Expected Behavior
-< Tell us what should happen >
+## Comportamiento Esperado
+<!-- Tell us what should happen -->
+Qué debería hacer
 
-## Steps to Reproduce
-< Provide a link to a live example, or an unambiguous set of steps to >
 
-< reproduce this bug. Include code, steps or images to reproduce, if relevant >
-
-1. [Step1...]
-2. [Step2...]
-3. [Step3...]
-4. [Step4...]
+## Reproducción del Bug
+<!-- Provide a link to a live example, or an unambiguous set of steps to -->
+Indica aquí toda la información para reproducir el error, modulo, momento, sitio, condiciones, etc...

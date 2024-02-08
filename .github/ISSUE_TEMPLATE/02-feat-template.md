@@ -1,25 +1,18 @@
 ---
-name: Feat Template
-about: Ask for the implementation of a new feature
+name: Plantilla de Incremento
+about: Solicita la implementación de una nueva característica
 title: [Feat]: 
 labels: enhancement
 assignees: ''
 
 ---
 
-## Feature description
-< Description of the new feature>
+## Descripción del incremento
+<!-- Description of the new feature-->
 
-### Use cases
-< List of Use cases it affects >
+<!-- ### Casos de Uso referenciados
 
-1.
-2.
-3.
 
-## Requirements
-< List of Requirements to meet before doing it>
+## Requerimientos previos
 
-1.
-2.
-3.
+-->
