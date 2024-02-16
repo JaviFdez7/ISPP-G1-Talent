@@ -17,6 +17,7 @@
     },
     "homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
     "dependencies": {
-        "gql-paginator": "^2.2.0"
+        "gql-paginator": "^2.2.0",
+        "semantic-release": "^23.0.2"
     }
 }
