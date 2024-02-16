@@ -6,7 +6,10 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "repository": "https://github.com/JaviFdez7/ISPP-G1-Talent.git",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JaviFdez7/ISPP-G1-Talent.git"
+    },
     "author": "Javier Fernández Castillo, Rubén Casal Ferrero, Andrés Domínguez Ruiz, Alberto Domínguez-Adame Ruiz, Carlos Bermejo Soria, Daniel Gallardo Martos, Ismael Herrera Ramírez, Mario Izquierdo Lavado, Fernando José Mateos Gómez, Alejandro José Merino Palma, Francisco Jesús Montero Martínez, Rocío López Moyano, Manuel Otero Barbasán, Francisco David Vilaplana de Trías, Carlos Zarzuela Reina",
     "license": "ISC",
     "bugs": {
