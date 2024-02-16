@@ -1,5 +1,10 @@
 module.exports = {
-    branches: ['main', 'develop'],
-    repositoryUrl: 'https://github.com/JaviFdez7/ISPP-G1-Talent',
-  };
-  
+  branches: ['main', 'develop'],
+  plugins: [
+    '@semantic-release/commit-analyzer',
+    '@semantic-release/release-notes-generator',
+    '@semantic-release/changelog',
+    '@semantic-release/npm',
+    '@semantic-release/git',
+  ],
+};
