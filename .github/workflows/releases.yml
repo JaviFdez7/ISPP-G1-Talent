@@ -10,7 +10,6 @@
     ### Include test execution for future tests.
     release:
       runs-on: ubuntu-latest
-      needs: test
 
       steps:
         - name: Checkout repository
