@@ -2,7 +2,7 @@ name: Generate a new release following Semantic Versioning
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   ### Include test execution for future tests.
