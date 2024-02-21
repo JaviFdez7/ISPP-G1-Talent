@@ -1,6 +1,9 @@
 # ISPP-G1-Talent
+## Index
+1. [Quick start](https://github.com/JaviFdez7/ISPP-G1-Talent?tab=readme-ov-file#quick-start)
+2. [MongoDB installation](https://github.com/JaviFdez7/ISPP-G1-Talent?tab=readme-ov-file#mongodb-installation)
 ## Quick start
-Before you can start, make sure you have **MongoDB installed** and have started the port as specified in the MongoDB installation section.
+Before you can start, make sure you have **MongoDB installed** and have started the port as specified in the [MongoDB installation section](https://github.com/JaviFdez7/ISPP-G1-Talent?tab=readme-ov-file#mongodb-installation).
 
 1. Start the database port
 
@@ -15,23 +18,24 @@ Before you can start, make sure you have **MongoDB installed** and have started 
   - Open MongoDB Compass.
   - Enter the URI `mongodb://localhost:27017`.
   - Click on the "Connect" button.
-    
-2. Clone this repository
+
+2. Download and install Node.js: visit the official Node.js website at https://nodejs.org
+3. Clone this repository
 ```bash
 git clone https://github.com/JaviFdez7/ISPP-G1-Talent.git
 ```
 
-3. Install the dependencies (from the root directory)
+4. Install the dependencies (from the root directory)
 ```bash
 npm install
 ```
 
-4. Create .env file from .env.example file
+5. Create .env file from .env.example file
 ```
 GH_TOKEN=<YOUR-GH-TOKEN>
 ```
 
-5. Run the server
+6. Run the server
 ```bash
 npm start
 ```
