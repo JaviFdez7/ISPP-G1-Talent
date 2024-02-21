@@ -6,7 +6,8 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "release": "semantic-release",
-        "semantic-release": "npx semantic-release"
+        "semantic-release": "npx semantic-release",
+        "lint": "eslint ."
     },
     "repository": {
         "type": "git",
@@ -26,6 +27,14 @@
         "@semantic-release/git": "^10.0.1",
         "@semantic-release/npm": "^11.0.2",
         "@semantic-release/release-notes-generator": "^12.1.0",
-        "semantic-release": "^23.0.2"
+        "@typescript-eslint/eslint-plugin": "^6.21.0",
+        "eslint": "^8.56.0",
+        "eslint-config-standard-with-typescript": "^43.0.1",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-n": "^16.6.2",
+        "eslint-plugin-promise": "^6.1.1",
+        "eslint-plugin-react": "^7.33.2",
+        "semantic-release": "^23.0.2",
+        "typescript": "^5.3.3"
     }
 }
