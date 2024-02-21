@@ -8,22 +8,15 @@ jobs:
   ### Include test execution for future tests.
   release:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Use Node.js 20.8.1
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+      - uses: actions/setup-node@v3
         with:
           node-version: '20.8.1'
+      - run: npm ci
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Set up environment variables
-        run: |
-          echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Semantic Release
-        run: npx semantic-release

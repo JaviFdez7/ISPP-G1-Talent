@@ -4,7 +4,9 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "release": "semantic-release",
+        "semantic-release": "npx semantic-release"
     },
     "repository": {
         "type": "git",
@@ -17,7 +19,13 @@
     },
     "homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
     "dependencies": {
-        "gql-paginator": "^2.2.0",
+        "gql-paginator": "^2.2.0"
+    },
+    "devDependencies": {
+        "@semantic-release/changelog": "^6.0.3",
+        "@semantic-release/git": "^10.0.1",
+        "@semantic-release/npm": "^11.0.2",
+        "@semantic-release/release-notes-generator": "^12.1.0",
         "semantic-release": "^23.0.2"
     }
 }
