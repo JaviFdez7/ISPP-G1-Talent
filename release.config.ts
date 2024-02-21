@@ -1,5 +1,5 @@
 export default {
-  branches: ['main'],
+  branches: ['main', 'develop'],
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
