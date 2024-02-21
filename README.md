@@ -45,7 +45,17 @@ npm start
 
 ![image](https://github.com/JaviFdez7/ISPP-G1-Talent/assets/100673872/693b9f92-1f86-46d3-99ae-c8bdf13556cc)
 
-3. Download and install MongoDB Compass on your computer from the following link: [download link](https://www.mongodb.com/try/download/community)
+3. Download MongoDB Compass on your computer from the following link: [download link](https://www.mongodb.com/try/download/community)
+   
+4. During the MongoDB installation, uncheck the option to install MongoDB as a service.
+
+![image](https://github.com/JaviFdez7/ISPP-G1-Talent/assets/100673872/9f505d81-48c9-4b3a-b9db-bb9a8022338e)
+
+
+
+
+
+
 
 
 
