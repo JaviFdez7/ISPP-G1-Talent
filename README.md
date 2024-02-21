@@ -19,7 +19,7 @@ Before you can start, make sure you have **MongoDB installed** and have started 
   - Enter the URI `mongodb://localhost:27017`.
   - Click on the "Connect" button.
 
-2. Download and install Node.js: visit the official Node.js website at https://nodejs.org
+2. Download and install Node.js: visit the official Node.js website at https://nodejs.org (**NODE VERSION MUST BE** `20.11.1`)
 3. Clone this repository
 ```bash
 git clone https://github.com/JaviFdez7/ISPP-G1-Talent.git
