@@ -36,10 +36,31 @@ GH_TOKEN=<YOUR-GH-TOKEN>
 ```
 
 6. Run the server
+Terminal 1 (frontend)
 ```bash
-npm start
+npm run install-frontend
+npm run start-frontend
 ```
+Terminal 2 (backend)
+```bash
+npm run install-backend
+npm run start-backend
+```
+## Creating backend modules
+To create a module open a terminal it the root of the repoitory.
+Then use `create-backend-module MODULE_NAME VERSION`
+|||
+|-|-|
+|**warning**|MODULE_NAME must be written in snake-case|
+|**info**|VERSION is an optional argument (default is v1)|
 
+For example:
+```bash
+create-backend-module team-creator
+```
+```bash
+create-backend-module team-creator v2
+```
 ## MongoDB installation
 1. Navigate to the C drive directory on your computer and create a folder named 'data'.
 

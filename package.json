@@ -1,14 +1,17 @@
 {
-    "name": "ispp-g1-talent",
+    "name": "ispp-g1-it-talent",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "release": "semantic-release",
         "semantic-release": "npx semantic-release",
         "lint": "eslint \"**/*.ts\" ./*.ts",
-        "start": "ts-node-dev app.ts"
+        "install-backend": "cd api/v1 && npm install",
+        "start-backend": "cd api/v1 && npm start",
+        "create-backend-module": "cd api/v1 && node ../createModule.js",
+        "install-frontend": "cd app && npm install",
+        "start-frontend": "cd app && npm run dev"
     },
     "repository": {
         "type": "git",
@@ -25,6 +28,7 @@
         "dotenv": "^16.4.5",
         "express": "^4.18.2",
         "gql-paginator": "^2.2.0",
+        "inquirer": "^9.2.15",
         "mocha": "^10.3.0",
         "mongodb": "^6.3.0",
         "react": "^18.2.0"
@@ -34,12 +38,12 @@
         "@semantic-release/git": "^10.0.1",
         "@semantic-release/npm": "^11.0.2",
         "@semantic-release/release-notes-generator": "^12.1.0",
-        "@types/mongodb": "^4.0.7",
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "eslint": "^8.56.0",
         "eslint-config-standard-with-typescript": "^43.0.1",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-n": "^16.6.2",
+        "eslint-plugin-only-warn": "^1.1.0",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.33.2",
         "semantic-release": "^23.0.2",

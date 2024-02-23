@@ -1,0 +1,181 @@
+openapi: 3.0.0
+info:
+  title:  IT Talent API - Analysis Module
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /v1/analysis:
+    get:
+      tags:
+      - Analysis
+      summary: Get all analysis
+      description: Retrieves a list of all analysis entries.
+      responses:
+        "200":
+          description: A list of analysis entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/definitions/Analysis"
+    post:
+      tags:
+      - Analysis
+      summary: Create a new analysis entry
+      description: Creates a new analysis entry with the provided data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/AnalysisInput"
+      responses:
+        "201":
+          description: Analysis entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Analysis"
+  /v1/analysis/{id}:
+    get:
+      tags:
+      - Analysis
+      summary: Get an analysis entry by ID
+      description: Retrieves an analysis entry by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the analysis entry.
+      responses:
+        "200":
+          description: The analysis entry with the specified ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Analysis"
+    patch:
+      tags:
+      - Analysis
+      summary: Update an analysis entry
+      description: Updates an existing analysis entry with the provided data.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the analysis entry.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/definitions/AnalysisInput"
+      responses:
+        "200":
+          description: Analysis entry updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Analysis"
+    delete:
+      tags:
+      - Analysis
+      summary: Delete an analysis entry by ID
+      description: Deletes an analysis entry by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the analysis entry.
+      responses:
+        "204":
+          description: Analysis entry deleted successfully
+definitions:
+  Analysis:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: The unique identifier for the analysis entry.
+      date:
+        type: string
+        format: date
+        description: The date of the analysis.
+      userId:
+        type: string
+        format: uuid
+        description: The unique identifier of the user associated with the analysis.
+      numberOfIssues:
+        type: integer
+        description: The number of issues found in the analysis.
+      numberOfPRs:
+        type: integer
+        description: The number of pull requests associated with the analysis.
+      repositories:
+        type: array
+        description: List of repositories contributing to the analysis.
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the repository.
+            description:
+              type: string
+              description: The description of the repository.
+            url:
+              type: string
+              format: uri
+              description: The URL of the repository.
+  AnalysisInput:
+    type: object
+    required:
+      - date
+      - userId
+      - numberOfIssues
+      - numberOfPRs
+      - repositories
+    properties:
+      date:
+        type: string
+        format: date
+        description: The date of the analysis.
+      userId:
+        type: string
+        format: uuid
+        description: The unique identifier of the user associated with the analysis.
+      numberOfIssues:
+        type: integer
+        description: The number of issues found in the analysis.
+      numberOfPRs:
+        type: integer
+        description: The number of pull requests associated with the analysis.
+      repositories:
+        type: array
+        description: List of repositories contributing to the analysis.
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the repository.
+            description:
+              type: string
+              description: The description of the repository.
+            url:
+              type: string
+              format: uri
+              description: The URL of the repository.
