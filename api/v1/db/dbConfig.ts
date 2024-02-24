@@ -34,3 +34,4 @@ export async function connectToMongoDB () {
     await client.close()
   }
 }
+
