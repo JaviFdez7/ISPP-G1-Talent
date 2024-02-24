@@ -1,36 +1,36 @@
-import { MongoClient } from 'mongodb'
+import mongoose from 'mongoose';
+import { createUser } from '../modules/user/services/UserService'
+import analysisService from '../modules/analysis/services/AnalysisService'
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export async function connectToMongoDB () {
-  const url = 'mongodb://localhost:27017'
-  const dbName = 'talentdb'
+export async function connectToMongoDB() {
+    const mongoUrl = 'mongodb://localhost:27017';
+    const dbName = 'talentdb';
 
-  const client = new MongoClient(url)
+    try {
+        // Connect to MongoDB
+        await mongoose.connect(`${mongoUrl}/${dbName}`);
 
-  try {
-    await client.connect()
+        console.log('Successful connection to MongoDB');
 
-    console.log('Successful connection to MongoDB')
+        const db = mongoose.connection;
 
-    const db = client.db(dbName)
+        // Check if the database already exists
+        const collections = await db.db.collections();
+        const dbExists = collections.some((collection) => collection.collectionName === dbName);
 
-    const dbExists = await client
-      .db()
-      .admin()
-      .listDatabases({ nameOnly: true })
-      .then((dbs) => dbs.databases.map((db) => db.name).includes(dbName))
+        // If the database doesn't exist, create it
+        if (!dbExists) {
+            console.log(`Database ${dbName} created successfully`);
+        } else {
+            console.log(`The database ${dbName} already exists`);
+        }
 
-    if (!dbExists) {
-      await db.createCollection('user')
-      console.log(`Database ${dbName} created successfully`)
-    } else {
-      console.log(`The database ${dbName} already exists`)
+        createUser("JAVI")
+        analysisService.createAnalysis("joaquin123",20)
+
+        // The script for populating the database will go here.
+
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
     }
-
-    // The script for populating the database will go here.
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error)
-  } finally {
-    await client.close()
-  }
 }
