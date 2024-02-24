@@ -2,6 +2,11 @@
     "name": "ispp-g1-it-talent",
     "version": "1.0.0",
     "description": "",
+    "gcp-build": "",
+    "engines": {
+        "node": "20.11.1",
+        "npm": ">=8.3.0"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "release": "semantic-release",
@@ -11,7 +16,10 @@
         "start-backend": "cd api/v1 && npm start",
         "create-backend-module": "cd api/v1 && node ../createModule.js",
         "install-frontend": "cd app && npm install",
-        "start-frontend": "cd app && npm run dev"
+        "start-frontend": "cd app && npm run dev",
+	"run-backend": "npm run install-backend && npm run start-backend",
+	"run-frontend": "npm run install-frontend && npm run start-frontend",
+	"start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" -p \"[{name}]\" \"npm run run-backend\"  \"npm run run-frontend\""
     },
     "repository": {
         "type": "git",
@@ -25,6 +33,7 @@
     "homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
     "dependencies": {
         "@types/express": "^4.17.21",
+        "concurrently": "^8.2.2",
         "dotenv": "^16.4.5",
         "express": "^4.18.2",
         "gql-paginator": "^2.2.0",
