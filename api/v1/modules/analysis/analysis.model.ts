@@ -2,12 +2,12 @@ import { Schema, model, connect } from 'mongoose';
 
 // 1. Create an interface representing a document in MongoDB.
 interface Analysis {
-  name: string;
+  githubUsername: string;
 }
 
 // 2. Create a Schema corresponding to the document interface.
 const analysisSchema = new Schema<Analysis>({
-  name: { type: String, required: true },
+  githubUsername: { type: String, required: true },
 });
 
 // 3. Create a Model.
