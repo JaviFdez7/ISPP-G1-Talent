@@ -1,0 +1,12 @@
+  runtime: nodejs
+  env: flex
+
+  runtime_config:
+      operating_system: "ubuntu22"
+      runtime_version: "20"
+
+  build_env_variables:
+      GOOGLE_NODE_RUN_SCRIPTS: ''
+      GOOGLE_CLOUD_PROJECT: "italent-415216"
+      PORT: 5174
+      GAE_SERVICE: "ITTalent"
