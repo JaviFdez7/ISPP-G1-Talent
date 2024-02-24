@@ -8,7 +8,9 @@ import Navbar from "./Navbar";
 import { PlaceHolder } from "../pages/PlaceHolder.jsx";
 import Login from "../pages/auth/Login.jsx";
 import Register from "../pages/auth/Register.jsx";
+import AnalysisDashboard from "../pages/AnalysisDashboard.jsx";
 
+//TODO Implementar los placeholders de las rutas como componentes reales
 function App() {
   return (
     <div>
@@ -23,7 +25,7 @@ function App() {
             {/*RUTAS PRIVADAS */}
             {/*Analysis*/}
             <Route path="/analysis/analyze" element={<PlaceHolder pageName="analyze" />} />
-            <Route path="/analysis/:analysisId" element={<PlaceHolder pageName="candidate analysis" />} />
+            <Route path="/analysis/:analysisId" element={<AnalysisDashboard/>} />
             <Route path="/analysis/history/:representativeId" element={<PlaceHolder pageName="analysis list" />} />
             {/*Search*/}
             <Route path="/searches/search" element={<PlaceHolder pageName="search list" />} />
