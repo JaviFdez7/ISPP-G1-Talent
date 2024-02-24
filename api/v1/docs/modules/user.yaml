@@ -1,0 +1,107 @@
+swagger: '3.0.0'
+info:
+  title: IT Talent API - User Module
+  version: 1.0.0
+basePath: /v1
+schemes:
+  - http
+paths:
+  /user:
+    get:
+      tags:
+      - Users
+      summary: Get all users
+      description: Retrieves a list of all users.
+      responses:
+        '200':
+          description: A list of users
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+    post:
+      tags:
+      - Users
+      summary: Create a new user
+      description: Creates a new user with the provided data.
+      parameters:
+        - in: body
+          name: user
+          description: The user to create.
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: User created successfully
+          schema:
+            $ref: '#/definitions/User'
+  /user/{id}:
+    get:
+      tags:
+      - Users
+      summary: Get a user by ID
+      description: Retrieves a user by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the user to retrieve.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The user with the specified ID
+          schema:
+            $ref: '#/definitions/User'
+    patch:
+      tags:
+      - Users
+      summary: Update a user
+      description: Updates an existing user with the provided data.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the user to update.
+          required: true
+          type: string
+        - in: body
+          name: user
+          description: The updated user data.
+          required: true
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: User updated successfully
+          schema:
+            $ref: '#/definitions/User'
+    delete:
+      tags:
+      - Users
+      summary: Delete a user by ID
+      description: Deletes a user by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the user to delete.
+          required: true
+          type: string
+      responses:
+        '204':
+          description: User deleted successfully
+definitions:
+  User:
+    type: object
+    properties:
+      id:
+        type: string
+        format: uuid
+        description: The unique identifier for the user.
+      name:
+        type: string
+        description: The name of the user.
+      email:
+        type: string
+        format: email
+        description: The email address of the user.
+      # Add more properties as needed

@@ -12,7 +12,8 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "only-warn"
     ],
 
     "settings": {
@@ -21,5 +22,7 @@
         }
       },
     "rules": {
+        "semi":"off",
+        "@typescript-eslint/semi": "off"
     }
 }
