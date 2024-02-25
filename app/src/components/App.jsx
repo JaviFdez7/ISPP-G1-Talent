@@ -8,6 +8,8 @@ import Navbar from "./Navbar";
 import Login from "../pages/auth/Login.jsx";
 import Register from "../pages/auth/Register.jsx";
 
+import Profile from "../pages/Profile";
+
 function App() {
   return (
     <div>
@@ -21,6 +23,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             {/*RUTAS PRIVADAS */}
             {/*<Route path="/pricing" element={<Pricing />} />*/}
+            <Route index element={<Profile />} />
           </Routes>
         </Router>
       </AuthContextProvider>

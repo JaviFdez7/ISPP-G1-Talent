@@ -1,0 +1,31 @@
+:root {
+    --talent-grey: #393939;
+    --talent-black: #282828;
+    --talent-darker: #1f1f1f;
+    --talent-orange: #d4983d;
+}
+
+.input-container {
+    background-color: var(--talent-grey);
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    border-radius: 2px;
+}
+.input-container-name {
+    background-color: var(--talent-darker);
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.input-container-value {
+    background-color: var(--talent-black);
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 5px;
+}
+.input-container * h1 {
+    color: white;
+    font-size: large;
+}

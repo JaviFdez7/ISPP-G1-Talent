@@ -1,30 +1,91 @@
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../context/authContext";
+import { useState } from 'react';
+import arrowLeft from '../images/arrowLeft.png';
+import arrowRight from '../images/arrowRight.png';
+import logout from '../images/logout.png';
+import mail from '../images/mail.png';
+import profile from '../images/profile.jpg';
+import '../styles/navbar.css'
+import Profile from "../pages/Profile";
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useAuthContext();
+
+  const [expanded, setExpanded] = useState(false);
 
   let navigate = useNavigate();
 
+  function toogleSideNav() {
+    if (!expanded) {
+        document.getElementById("sidenav").style.left = "-0px";
+        document.getElementById("arrow-img").src = arrowLeft;
+        document.getElementById("sideNavButtonContainer").style.left = "355px";
+        setExpanded(true);
+    }
+    else {
+        document.getElementById("sidenav").style.left = "-400px";
+        document.getElementById("arrow-img").src = arrowRight;
+        document.getElementById("sideNavButtonContainer").style.left = "405px";
+        setExpanded(false);
+    }
+  }
+
   return (
-    <header className="text-white body-font bg-blue-800">
-      <div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
-        {/* Bloque TALENT */}
-        <div className="mb-4 md:mb-0">
-          <span className="mr-5 text-gray-500 cursor-not-allowed ">TALENT</span>
+    <div className="sidenav" id="sidenav">
+        <div className="highlight-sidenav">
+            <div className="inner-sidenav">
+                <div className="flex justify-center">
+                    <span className="logo">IT TALENT</span>
+                </div>
+                <hr/>
+                <br/>
+                <Link to="/Profile" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>Main</span>
+                </Link>
+                <Link to="/" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>Trends</span>
+                </Link>
+                <Link to="/" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>My analysis</span>
+                </Link>
+                <Link to="/" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>Subscription</span>
+                </Link>
+
+                <Link to="/" className="profile-container">
+                    <div className="profile-pic-container">
+                        <img src={profile} className="profile-pic"/>
+                    </div>
+                    <div className="profile-text">
+                        <h1>Name</h1>
+                        <h1>Surname</h1>
+                    </div>
+                </Link>
+                <Link to="/" className="mail">
+                    <img src={mail}/>
+                </Link>
+                <Link to="/" className="logout">
+                    <img src={logout}/>
+                    {/* TODO code of mail*/}
+                    <div className="mail-amount">
+                        <span>1</span>
+                    </div>
+                </Link>
+
+            </div>
         </div>
-        {/* Navegación con Inicio */}
-        <Link to="/" className="flex title-font font-medium items-center">
-          <span className="ml-3 text-xl">About us</span>
-        </Link>
-        <button className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
-          Configuración
-        </button>
-        <button className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
-          Informacion
-        </button>
-      </div>
-    </header>
+        <div className="sideNavButtonContainer" id="sideNavButtonContainer">
+            <img id="arrow-img" src={arrowRight} onClick={toogleSideNav} className="sideNavButton"/>
+        </div>
+    </div>
   );
 }
