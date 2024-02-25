@@ -27,8 +27,6 @@ import Navbar from "./Navbar";
 import Login from "../pages/auth/Login.jsx";
 import Register from "../pages/auth/Register.jsx";
 
-import Profile from "../pages/Profile";
-
 function App() {
   return (
     <div>

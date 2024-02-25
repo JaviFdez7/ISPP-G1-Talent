@@ -8,7 +8,7 @@ import logout from '../images/logout.png';
 import mail from '../images/mail.png';
 import profile from '../images/profile.jpg';
 import '../styles/navbar.css'
-import Profile from "../pages/Profile";
+import Profile from "../pages/candidate/CandidateDetail";
 
 export default function Navbar() {
 
