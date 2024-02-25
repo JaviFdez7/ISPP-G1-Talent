@@ -26,12 +26,13 @@ paths:
       - Analysis
       summary: Create a new analysis entry
       description: Creates a new analysis entry with the provided data.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/AnalysisInput"
+      parameters:
+        - in: body
+          name: analysis
+          description: The analysis to create.
+          required: true
+          schema:
+            $ref: '#/definitions/Analysis'
       responses:
         "201":
           description: Analysis entry created successfully
