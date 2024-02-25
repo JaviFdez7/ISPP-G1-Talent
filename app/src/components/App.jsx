@@ -1,16 +1,23 @@
-import { useState } from 'react'
-import reactLogo from '../assets/react.svg'
-import viteLogo from '/vite.svg'
-import '../styles/App.css'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import Home from "../pages/Home";
+//import Pricing from "../pages/Pricing";
+
+import Navbar from "./Navbar";
+
+import Profile from "../pages/Profile";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <div>
+        <Router>
+          <Navbar />
+          <Routes>
+            {/*RUTAS PUBLICAS */}
+            <Route index element={<Profile />} />
+          </Routes>
+        </Router>
+    </div>
+  );
 }
-
-export default App
+export default App;
