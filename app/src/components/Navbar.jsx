@@ -40,7 +40,7 @@ export default function Navbar() {
                 </div>
                 <hr/>
                 <br/>
-                <Link to="/Profile" className="link-container">
+                <Link to="/candidate/detail" className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Profile</span>
@@ -55,18 +55,23 @@ export default function Navbar() {
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>My analysis</span>
                 </Link>
-                <Link to="/" className="link-container">
+                <Link to="/candidate/subscription" className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Subscription</span>
                 </Link>
-                <Link to="/" className="link-container">
+                <Link to="/support" className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Information</span>
                 </Link>
+                <Link to="/settings" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>Settings</span>
+                </Link>
 
-                <Link to="/profile" className="profile-container">
+                <Link to="/candidate/detail" className="profile-container">
                     <div className="profile-pic-container">
                         <img src={profile} className="profile-pic"/>
                     </div>

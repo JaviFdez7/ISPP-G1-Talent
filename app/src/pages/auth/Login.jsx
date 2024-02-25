@@ -40,10 +40,16 @@ export default function Login() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-2xl h-100 p-8 m-4 bg-white rounded shadow-md flex flex-col justify-between">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen"
+      style={{ backgroundColor: "#454545" }}
+    >
+      <div
+        className="w-full max-w-2xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        style={{ backgroundColor: "#282828" }}
+      >
         <div>
-          <h2 className="text-3xl font-bold text-center mb-4">
+          <h2 className="text-3xl font-bold text-center mb-4 text-white">
             Log in as a registered candidate
           </h2>
           <form onSubmit={(e) => handleSubmit(e)}>
@@ -51,7 +57,7 @@ export default function Login() {
             <div className="mb-4">
               <label
                 htmlFor="Username"
-                className="block mb-2 text-lg font-bold text-gray-700"
+                className="block mb-2 text-lg font-bold text-white"
               >
                 Username
               </label>
@@ -71,7 +77,7 @@ export default function Login() {
             <div className="mb-4">
               <label
                 htmlFor="Password"
-                className="block mb-2 text-lg font-bold text-gray-700"
+                className="block mb-2 text-lg font-bold text-white"
               >
                 Password
               </label>
@@ -91,7 +97,7 @@ export default function Login() {
         </div>
         <div className="flex items-center justify-end h-full">
           <p
-            className="text-md text-gray-500 mb-1 mr-2 text-right "
+            className="text-md text-white mb-1 mr-2 text-right "
             style={{ marginRight: "0px" }}
           >
             Are you not registered as a
@@ -105,16 +111,16 @@ export default function Login() {
         <div className="flex justify-between items-center">
           <button
             type="submit"
-            className="w-auto px-6 py-3 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline text-3xl"
+            className="w-auto px-6 py-3  text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline text-3xl"
+            style={{ backgroundColor: "#D4983D" }}
           >
             Log in
           </button>
           <div className="flex flex-col items-center">
             <Link
-              className="w-auto px-6 py-3 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
+              className="w-auto px-6 py-3 text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
               to="/register"
-              style={{ marginRight: "00px" }}
-
+              style={{ marginRight: "00px", backgroundColor: "#393939" }}
             >
               Register
             </Link>
