@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { getAllUser, getUserById, createUser, updateUser, deleteUser } from '../modules/user/services/UserService'
+import { getAllUser, getUserById, createUser, updateUser, deleteUser, loginUser } from '../modules/user/services/UserService'
 import { CandidateSubscription } from '../modules/user/models/user'
 
 export async function connectToMongoDB() {
@@ -25,19 +25,24 @@ export async function connectToMongoDB() {
       console.log(`The database ${dbName} already exists`);
     }
 
-    let user = await createUser({ username: 'framonmar6', password: '12345', email: 'framonmar7@alum.us.es', fullName: 'Francisco Montero', githubUser: 'FjMonteroInformatica', githubToken: 'Token de prueba', candidateSubscription: CandidateSubscription.PRO }, 'Candidate')
+    // This commented code below tests the user service methods
 
-    const users = await getAllUser()
-    console.log('All users: ', users)
+    // let user = await createUser({ username: 'framonmar6', password: '12345', email: 'framonmar7@alum.us.es', fullName: 'Francisco Montero', githubUser: 'FjMonteroInformatica', githubToken: 'Token de prueba', candidateSubscription: CandidateSubscription.PRO }, 'Candidate')
 
-    const id = user._id
-    user = await getUserById(id)
-    console.log('User by id: ', user)
+    // const users = await getAllUser()
+    // console.log('All users: ', users)
 
-    user = await updateUser(id, { username: 'framonmar7', githubUser: 'FJMonteroInformatica' }, 'Candidate');
-    console.log('Updated user: ', user)
+    // const id = user._id
+    // user = await getUserById(id)
+    // console.log('User by id: ', user)
 
-    console.log(await deleteUser(id, 'Candidate'))
+    // user = await updateUser(id, { username: 'framonmar7', githubUser: 'FJMonteroInformatica' }, 'Candidate');
+    // console.log('Updated user: ', user)
+
+    // user = await loginUser({ username: 'framonmar7', password: '12345' }, 'Candidate')
+    // console.log('Logged in user: ', user)
+
+    // console.log(await deleteUser(id, 'Candidate'))
 
     // The script for populating the database will go here.
   } catch (error) {

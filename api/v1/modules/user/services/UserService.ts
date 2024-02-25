@@ -1,3 +1,6 @@
+import { type Types } from 'mongoose';
+import { encrypt, compare } from '../helpers/handleBcrypt';
+import { generateJWT, verifyJWT } from '../helpers/handleJWT';
 import { User, Representative, Candidate } from '../models/user';
 
 // Auxiliary function to obtain the appropriate model based on the role
@@ -12,7 +15,7 @@ const getModelForRole = (role: string) => {
   }
 };
 
-export const getAllUser = async () => {
+export const getAllUser: any = async () => {
   return await User.find({});
 };
 
@@ -23,6 +26,9 @@ export const getUserById: any = async (id: any) => {
 export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
+    const password: string = data.password;
+    const hash = await encrypt(password);
+    data.password = hash;
     const user = new Model(data);
     await user.save();
     return user;
@@ -52,12 +58,35 @@ export const deleteUser: any = async (id: any, role: string) => {
     console.error('Error deleting user', error)
     throw error;
   }
-
 };
+
+export const loginUser: any = async (data: any) => {
+  try {
+    const username: string = data.username;
+    const password: string = data.password;
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return 'User not found';
+    }
+
+    const checkPassword = await compare(password, user.password);
+    if (!checkPassword) {
+      return 'Invalid password';
+    }
+    const token = generateJWT(user.email);
+    const result = { token, user };
+    return result;
+  } catch (error) {
+    console.error('Error logging in:', error);
+    throw error;
+  }
+}
 export default {
   getAllUser,
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser
 };

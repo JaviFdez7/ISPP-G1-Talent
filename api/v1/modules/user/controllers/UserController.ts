@@ -45,6 +45,22 @@ export const updateUser: any = async (req: Request, res: Response) => {
   }
 };
 
+export const loginUser: any = async (req: Request, res: Response) => {
+  try {
+    const data = await UserService.loginUser(req.body);
+    if (data === 'User not found') {
+      res.status(404).send(data);
+    } else if (data === 'Invalid password') {
+      res.status(401).send(data);
+    } else {
+      res.status(200).send(data);
+    }
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 export const deleteUser: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
@@ -60,5 +76,6 @@ export default {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser
 };

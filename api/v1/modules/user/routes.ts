@@ -5,7 +5,8 @@ import {
   getUserById,
   createUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  loginUser
 } from './controllers/UserController';
 
 const router = express.Router();
@@ -13,7 +14,8 @@ const router = express.Router();
 // Define routes for the User module
 router.get('/', getAllUser);
 router.get('/:id', getUserById);
-router.post('/', createUser);
+router.post('/register', createUser);
+router.post('/login', loginUser);
 router.patch('/:id', updateUser);
 router.delete('/:id', deleteUser);
 
