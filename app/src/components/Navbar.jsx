@@ -43,7 +43,7 @@ export default function Navbar() {
                 <Link to="/Profile" className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
-                    <span>Main</span>
+                    <span>Profile</span>
                 </Link>
                 <Link to="/" className="link-container">
                     <span>ICON</span>
@@ -60,8 +60,13 @@ export default function Navbar() {
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Subscription</span>
                 </Link>
+                <Link to="/" className="link-container">
+                    <span>ICON</span>
+                    <p>&nbsp;&nbsp;&nbsp;</p>
+                    <span>Information</span>
+                </Link>
 
-                <Link to="/" className="profile-container">
+                <Link to="/profile" className="profile-container">
                     <div className="profile-pic-container">
                         <img src={profile} className="profile-pic"/>
                     </div>

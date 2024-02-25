@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Home(name, value) {
+export default function Input(name, value) {
     return (
       <div className="input-container">
           <div className="input-container-name">

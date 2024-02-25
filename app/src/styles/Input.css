@@ -11,12 +11,29 @@
     flex-direction: row;
     padding: 5px;
     border-radius: 2px;
+    margin-top: 10px;
+}
+.input-list-container {
+    background-color: var(--talent-grey);
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 2px;
+    margin-top: 10px;
 }
 .input-container-name {
     background-color: var(--talent-darker);
     padding: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
+    width: 35%;
+}
+.input-list-container-name {
+    background-color: var(--talent-darker);
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
 }
 .input-container-value {
     background-color: var(--talent-black);
@@ -24,8 +41,25 @@
     padding-top: 10px;
     padding-bottom: 10px;
     margin-left: 5px;
+    width: 65%;
+}
+.input-list-container-value {
+    background-color: var(--talent-black);
+    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.input-list-container-value > div > hr {
+    border-top: 1px solid var(--talent-grey);
 }
 .input-container * h1 {
+    color: white;
+    font-size: large;
+}
+.input-list-container * h1 {
     color: white;
     font-size: large;
 }

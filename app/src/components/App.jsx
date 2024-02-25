@@ -21,9 +21,9 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
             {/*RUTAS PRIVADAS */}
             {/*<Route path="/pricing" element={<Pricing />} />*/}
-            <Route index element={<Profile />} />
           </Routes>
         </Router>
       </AuthContextProvider>
