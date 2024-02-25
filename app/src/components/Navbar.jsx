@@ -18,12 +18,12 @@ export default function Navbar() {
         <Link to="/" className="flex title-font font-medium items-center">
           <span className="ml-3 text-xl">About us</span>
         </Link>
-        <button className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+        <Link to="/settings" className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
           Configuración
-        </button>
-        <button className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+        </Link>
+        <Link to="/support" className="ml-4 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
           Informacion
-        </button>
+        </Link>
       </div>
     </header>
   );
