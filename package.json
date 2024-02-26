@@ -16,10 +16,7 @@
         "start-backend": "cd api/v1 && npm start",
         "create-backend-module": "cd api/v1 && node ../createModule.js",
         "install-frontend": "cd app && npm install",
-        "start-frontend": "cd app && npm run dev",
-	"run-backend": "npm run install-backend && npm run start-backend",
-	"run-frontend": "npm run install-frontend && npm run start-frontend",
-	"start": "concurrently -n \"BACKEND,FRONTEND\" -c \"blue,magenta\" -p \"[{name}]\" \"npm run run-backend\"  \"npm run run-frontend\""
+        "start-frontend": "cd app && npm run dev"
     },
     "repository": {
         "type": "git",

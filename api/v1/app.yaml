@@ -1,4 +1,4 @@
-runtime: nodejs20
+runtime: nodejs
 env: flex
 service: backend
 
@@ -8,6 +8,3 @@ runtime_config:
 
 build_env_variables:
   GOOGLE_NODE_RUN_SCRIPTS: ''
-
-env_variables:
-  NODE_ENV: production

@@ -13,6 +13,7 @@ node_modules
 dist
 dist-ssr
 *.local
+api/v[0-9]/**/*.js
 
 # Editor directories and files
 .vscode/*
