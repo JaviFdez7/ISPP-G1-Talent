@@ -19,7 +19,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'This is'
   },
-  host: 'localhost:3000'
+  host: 'localhost:8080'
 };
 const options = { swaggerDefinition, apis: ['./docs/**/*.yaml'] };
 // initialize swagger-jsdoc
@@ -31,10 +31,10 @@ app.use(UserRouter);
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {
-    const PORT = process.env.PORT ?? 3000;
+    const PORT = process.env.PORT ?? 8080;
     app.listen(PORT, () => {
       console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`);
-      console.log('API documentation available at: http://localhost:3000/v1/docs 📚');
+      console.log(`API documentation available at: http://localhost:${PORT}/v1/docs 📚`);
       console.log('-'.repeat(50));
     });
   })
