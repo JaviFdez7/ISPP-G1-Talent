@@ -9,10 +9,11 @@
       "npm": ">=8.3.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8080",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run dev"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
