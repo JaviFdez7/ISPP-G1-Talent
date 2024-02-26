@@ -23,7 +23,7 @@ export interface Analysis {
 }
 // 2. Create a Schema corresponding to the document interface.
 const analysisSchema = new Schema<Analysis>({
-  githubUsername: { type: String, required: true,unique: true },
+  githubUsername: { type: String, required: true, unique: true },
   followers: { type: Number, required: true },
 
   contributions: {

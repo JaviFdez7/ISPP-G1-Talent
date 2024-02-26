@@ -128,7 +128,7 @@ export async function GetUserAnaliseInfo(githubUsername: string): Promise<Analys
 }
 
 function getTopLanguagesPullRequest(result: any): Array<[string, number]> {
-  const pullRequests = result.data.user.pullRequests.nodes;
+  const pullRequests = result?.data?.user?.pullRequests?.nodes;
   const languageCounts: Record<string, number> = {};
 
   for (let i = 0; i < pullRequests.length; i++) {
