@@ -9,14 +9,17 @@
       "npm": ">=8.3.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 8080",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm run dev"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "dotenv": "^16.4.5",
+    "gql-paginator": "^2.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
