@@ -1,4 +1,4 @@
-import { AnalysisModel,Analysis } from '../analysis.model';
+import { AnalysisModel,Analysis } from '../models/analysis.model';
 import { GetUserAnaliseInfo } from './GitHubService';
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {

@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 const { GQLPaginator } = require('gql-paginator');
-import { AnalysisModel,Analysis } from '../analysis.model';
+import { AnalysisModel,Analysis } from '../models/analysis.model';
 
 dotenv.config()
 
