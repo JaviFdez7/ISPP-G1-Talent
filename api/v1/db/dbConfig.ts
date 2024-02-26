@@ -26,7 +26,7 @@ export async function connectToMongoDB() {
         }
 
         createUser("JAVI")
-        createAnalysis("madhums")
+        //createAnalysis("madhums")
 
         // The script for populating the database will go here.
 

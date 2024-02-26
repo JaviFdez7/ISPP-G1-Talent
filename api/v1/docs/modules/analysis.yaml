@@ -28,11 +28,10 @@ paths:
       description: Creates a new analysis entry with the provided data.
       parameters:
         - in: body
-          name: username
+          name: analysis
           required: true
           schema:
-            type: string
-          description: The username that you are updating.
+            $ref: "#/definitions/SearchForAnalysisUser"
       responses:
         "201":
           description: Analysis entry created successfully
