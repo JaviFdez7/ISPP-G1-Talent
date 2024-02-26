@@ -24,9 +24,10 @@ export const getUserById: any = async (req: Request, res: Response) => {
   }
 };
 
-export const createUser: any = async (req: Request, res: Response) => {
+export const createCandidate: any = async (req: Request, res: Response) => {
   try {
-    const data = await UserService.createUser(req.body);
+    const role: string = 'Candidate';
+    const data = await UserService.createUser(req.body, role);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -34,16 +35,40 @@ export const createUser: any = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUser: any = async (req: Request, res: Response) => {
+export const createRepresentative: any = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    const data = await UserService.updateUser(id, req.body);
+    const role: string = 'Representative';
+    const data = await UserService.createUser(req.body, role);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
   }
 };
+
+export const updateCandidate: any = async (req: Request, res: Response) => {
+  try {
+    const role: string = 'Candidate';
+    const id = req.params.id;
+    const data = await UserService.updateUser(id, req.body, role);
+    res.status(200).send(data);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
+export const updateRepresentative: any = async (req: Request, res: Response) => {
+  try {
+    const role: string = 'Representative';
+    const id = req.params.id;
+    const data = await UserService.updateUser(id, req.body, role);
+    res.status(200).send(data);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+}
 
 export const loginUser: any = async (req: Request, res: Response) => {
   try {
@@ -74,8 +99,10 @@ export const deleteUser: any = async (req: Request, res: Response) => {
 export default {
   getAllUser,
   getUserById,
-  createUser,
-  updateUser,
+  createCandidate,
+  createRepresentative,
+  updateCandidate,
+  updateRepresentative,
   deleteUser,
   loginUser
 };

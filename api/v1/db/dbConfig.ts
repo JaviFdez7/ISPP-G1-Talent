@@ -36,10 +36,10 @@ export async function connectToMongoDB() {
     // user = await getUserById(id)
     // console.log('User by id: ', user)
 
-    // user = await updateUser(id, { username: 'framonmar7', githubUser: 'FJMonteroInformatica' }, 'Candidate');
+    // user = await updateUser(id, { username: 'framonmar7', password: '12346', githubUser: 'FJMonteroInformatica' }, 'Candidate');
     // console.log('Updated user: ', user)
 
-    // user = await loginUser({ username: 'framonmar7', password: '12345' }, 'Candidate')
+    // user = await loginUser({ username: 'framonmar7', password: '12346' }, 'Candidate')
     // console.log('Logged in user: ', user)
 
     // console.log(await deleteUser(id, 'Candidate'))

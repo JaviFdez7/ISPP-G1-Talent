@@ -41,6 +41,11 @@ export const createUser: any = async (data: any, role: string) => {
 export const updateUser: any = async (id: any, data: any, role: string) => {
   try {
     const Model = getModelForRole(role) as typeof User;
+    if (data.password) {
+      const password: string = data.password;
+      const hash = await encrypt(password);
+      data.password = hash;
+    }
     const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
     return updatedUser;
   } catch (error) {
