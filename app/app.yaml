@@ -1,0 +1,24 @@
+runtime: nodejs
+env: flex
+service: frontend
+
+runtime_config:
+  operating_system: "ubuntu22"
+  runtime_version: "20"
+
+env_variables:
+  NODE_ENV: production
+
+build_env_variables:
+  GOOGLE_NODE_RUN_SCRIPTS: ''
+
+
+handlers:
+  # Serve static files with url ending with a file extension
+  - url: /(.*\..+)$
+    static_files: build/\1
+    upload: build/.*\..+$
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
