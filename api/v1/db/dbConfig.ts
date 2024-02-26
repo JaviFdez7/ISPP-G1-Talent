@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { createUser } from '../modules/user/services/UserService'
+import { createAnalysis } from '../modules/analysis/services/AnalysisService'
 
 export async function connectToMongoDB() {
     const mongoUrl = 'mongodb://localhost:27017';
@@ -25,6 +26,7 @@ export async function connectToMongoDB() {
         }
 
         createUser("JAVI")
+        createAnalysis("madhums")
 
         // The script for populating the database will go here.
 
