@@ -16,6 +16,13 @@ export default function Navbar() {
 
   let navigate = useNavigate();
 
+  function move_hoverer(n) {
+    let t = 155;
+    t += n*68;
+    document.getElementById("navbar-hoverer").style.top = t+"px";
+
+  }
+
   function toogleSideNav() {
     if (!expanded) {
         document.getElementById("sidenav").style.left = "-0px";
@@ -33,39 +40,41 @@ export default function Navbar() {
 
   return (
     <div className="sidenav" id="sidenav">
-        <div className="highlight-sidenav">
             <div className="inner-sidenav">
-                <div className="flex justify-center">
+                <div className="flex justify-around">
+                    <span className="logo">|</span>
                     <span className="logo">IT TALENT</span>
+                    <span className="logo">|</span>
                 </div>
                 <hr/>
                 <br/>
-                <Link to="/candidate/detail" className="link-container">
+                <div className="navbar-hoverer" id="navbar-hoverer"></div>
+                <Link to="/candidate/detail" onMouseEnter={() => move_hoverer(0)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Profile</span>
                 </Link>
-                <Link to="/" className="link-container">
+                <Link to="/" onMouseEnter={() => move_hoverer(1)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Trends</span>
                 </Link>
-                <Link to="/" className="link-container">
+                <Link to="/" onMouseEnter={() => move_hoverer(2)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>My analysis</span>
                 </Link>
-                <Link to="/candidate/subscription" className="link-container">
+                <Link to="/candidate/subscription" onMouseEnter={() => move_hoverer(3)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Subscription</span>
                 </Link>
-                <Link to="/support" className="link-container">
+                <Link to="/support" onMouseEnter={() => move_hoverer(4)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Information</span>
                 </Link>
-                <Link to="/settings" className="link-container">
+                <Link to="/settings" onMouseEnter={() => move_hoverer(5)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Settings</span>
@@ -92,10 +101,10 @@ export default function Navbar() {
                 </Link>
 
             </div>
-        </div>
         <div className="sideNavButtonContainer" id="sideNavButtonContainer">
             <img id="arrow-img" src={arrowRight} onClick={toogleSideNav} className="sideNavButton"/>
         </div>
+        <div className="sidenav-highlight"></div>
     </div>
   );
 }
