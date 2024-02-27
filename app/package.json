@@ -9,7 +9,7 @@
       "npm": ">=8.3.0"
   },
   "scripts": {
-    "dev": "vite --port 8080",
+    "dev": "vite --port 7134",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",

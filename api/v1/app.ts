@@ -22,7 +22,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'This is'
   },
-  host: 'localhost:8080'
+  host: 'localhost:3000'
 };
 const options = { swaggerDefinition, apis: ['./docs/**/*.yaml'] };
 // initialize swagger-jsdoc
@@ -36,7 +36,7 @@ app.use(HistoryRouter)
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {
-    const PORT = process.env.PORT ?? 8080;
+    const PORT = process.env.PORT ?? 3000;
     app.listen(PORT, () => {
       console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`);
       console.log(`API documentation available at: http://localhost:${PORT}/v1/docs 📚`);
