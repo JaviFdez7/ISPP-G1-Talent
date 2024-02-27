@@ -2,7 +2,7 @@
 
 .logo {
     font-family: "Jost";
-    font-size: 65px;
+    font-size: 70px;
     color: white;
     margin-bottom: 15px;
     margin-top: 15px;
@@ -68,11 +68,19 @@
 
 .navbar-hoverer {
     width: 400px;
-    height: 70px;
+    height: 67px;
     background-color: var(--talent-highlight);
     position: absolute;
-    top: 155px;
+    top: 165px;
     transition: 0.5s;
+}
+
+.navbar-current {
+    width: 400px;
+    height: 67px;
+    background-color: #ffffff4b;
+    position: absolute;
+    top: 165px;
 }
 
 .profile-container {
@@ -82,7 +90,6 @@
     justify-content: space-between;
     bottom: 20px;
     left: 20px;
-    background-color: var(--talent-navbar-background);
     width: 30%;
 }
 
@@ -111,7 +118,6 @@
     position: absolute;
     bottom: 30px;
     right: 65px;
-    background-color: var(--talent-navbar-background);
     width: 20%;
 }
 
@@ -124,7 +130,6 @@
     position: absolute;
     bottom: 25px;
     right: 165px;
-    background-color: var(--talent-navbar-background);
     width: 20%;
 }
 

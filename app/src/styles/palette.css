@@ -5,8 +5,10 @@
     --talent-highlight: #d4983d;
     --talent-secondary: #393939;
 
-    --talent-navbar-background: rgba(0, 0, 0, 0.7);
     --talent-dark-background: #282828;
-    --talent-light-background: #2c2c2c;
-    --talent-highlight-background: #d3a560;
+    
+    --talent-highlight-background: #d4983dc5;
+    --talent-light-background: rgba(44, 44, 44, 0.85);
+
+    --talent-navbar-background: rgba(0, 0, 0, 0.85);
 }

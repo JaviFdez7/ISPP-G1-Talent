@@ -17,9 +17,16 @@ export default function Navbar() {
   let navigate = useNavigate();
 
   function move_hoverer(n) {
-    let t = 155;
+    let t = 165;
     t += n*68;
     document.getElementById("navbar-hoverer").style.top = t+"px";
+
+  }
+
+  function move_current(n) {
+    let t = 165;
+    t += n*68;
+    document.getElementById("navbar-current").style.top = t+"px";
 
   }
 
@@ -42,39 +49,38 @@ export default function Navbar() {
     <div className="sidenav" id="sidenav">
             <div className="inner-sidenav">
                 <div className="flex justify-around">
-                    <span className="logo">|</span>
                     <span className="logo">IT TALENT</span>
-                    <span className="logo">|</span>
                 </div>
                 <hr/>
                 <br/>
                 <div className="navbar-hoverer" id="navbar-hoverer"></div>
-                <Link to="/candidate/detail" onMouseEnter={() => move_hoverer(0)} className="link-container">
+                <div className="navbar-current" id="navbar-current"></div>
+                <Link to="/candidate/detail" onMouseEnter={() => move_hoverer(0)} onMouseDown={() => move_current(0)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Profile</span>
                 </Link>
-                <Link to="/" onMouseEnter={() => move_hoverer(1)} className="link-container">
+                <Link to="/" onMouseEnter={() => move_hoverer(1)} onMouseDown={() => move_current(1)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Trends</span>
                 </Link>
-                <Link to="/" onMouseEnter={() => move_hoverer(2)} className="link-container">
+                <Link to="/" onMouseEnter={() => move_hoverer(2)} onMouseDown={() => move_current(2)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>My analysis</span>
                 </Link>
-                <Link to="/candidate/subscription" onMouseEnter={() => move_hoverer(3)} className="link-container">
+                <Link to="/candidate/subscription" onMouseEnter={() => move_hoverer(3)} onMouseDown={() => move_current(3)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Subscription</span>
                 </Link>
-                <Link to="/support" onMouseEnter={() => move_hoverer(4)} className="link-container">
+                <Link to="/support" onMouseEnter={() => move_hoverer(4)} onMouseDown={() => move_current(4)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Information</span>
                 </Link>
-                <Link to="/settings" onMouseEnter={() => move_hoverer(5)} className="link-container">
+                <Link to="/settings" onMouseEnter={() => move_hoverer(5)} onMouseDown={() => move_current(5)} className="link-container">
                     <span>ICON</span>
                     <p>&nbsp;&nbsp;&nbsp;</p>
                     <span>Settings</span>
