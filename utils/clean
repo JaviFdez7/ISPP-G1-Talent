@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# Función para imprimir mensajes de error y salir
+log_error() {
+    printf "Error: %s\n" "$1" >&2
+    exit 1
+}
+
+recursive_js_cleanup() {
+    find . -type f -name '*.js' -delete &
+}
+
+# Guardar la ubicación actual
+current_dir=$(pwd)
+
+# Entrar en la carpeta 'app'
+cd app/ || log_error "Unable to change directory to 'app/'"
+
+# Borrar archivos y carpetas de build
+rm -rf node_modules
+rm -rf dist
+
+# Volver al directorio original
+cd "$current_dir" || log_error "Unable to change back to the original directory"
+
+# Entrar en la carpeta 'api'
+cd api/ || log_error "Unable to change directory to 'api/'"
+
+# Borrar archivos .js en carpetas v[0-9]+ y la carpeta node_modules
+for folder in v[0-9]*; do
+    cd "$folder" || continue
+    rm -rf node_modules
+    recursive_js_cleanup
+    cd ..
+done
+
