@@ -81,191 +81,284 @@ export default function Register() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 m-4 bg-white rounded shadow-md">
-        <h2 className="text-2xl font-bold text-center mb-4">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen"
+      style={{ backgroundColor: "#454545" }}
+    >
+      <div
+        className="w-full max-w-3xl py-24 p-8 m-4  rounded shadow-md"
+        style={{ backgroundColor: "#282828" }}
+      >
+        <h2
+          className="text-2xl font-bold text-center mb-4 text-white"
+          style={{ marginTop: "-70px" }}
+        >
           Fill the form to register as a new candidate
         </h2>
-        <form onSubmit={(e) => handleSubmit(e)}>
+        <form
+          onSubmit={(e) => handleSubmit(e)}
+          className="flex flex-wrap -mx-3"
+        >
           {/* llamada a la funcion que se encargara de hacer el login a la API*/}
-          <div className="mb-4">
-            <label
-              htmlFor="Firstname"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              First name
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Write your First name"
-              name="first_name" // nombre del atributo de la entidad del backend
-              value={first_name} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {/* validacion del campo del formulario */}
-            {errors.first_name && (
-              <p className="text-red-500 text-xs italic">{errors.first_name}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="Surname"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Surname
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Enter your last name"
-              name="last_name" // nombre del atributo de la entidad del backend
-              value={last_name} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {errors.last_name && (
-              <p className="text-red-500 text-xs italic">{errors.last_name}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="Username"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Enter your username"
-              name="username" // nombre del atributo de la entidad del backend
-              value={username} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {errors.username && (
-              <p className="text-red-500 text-xs italic">{errors.username}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="Password"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Enter your password"
-              name="password" // nombre del atributo de la entidad del backend
-              value={password} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {errors.password && (
-              <p className="text-red-500 text-xs italic">{errors.password}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="Password2"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Repeat password
-            </label>
-            <input
-              type="password"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Repeat your password"
-              name="password2" // nombre del atributo de la entidad del backend
-              value={password2} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {errors.password2 && (
-              <p className="text-red-500 text-xs italic">{errors.password2}</p>
-            )}
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="Email"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Write your email"
-              name="email" // nombre del atributo de la entidad del backend
-              value={email} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
-            {errors.email && (
-              <p className="text-red-500 text-xs italic">{errors.email}</p>
-            )}
-          </div>
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <div className="mb-4 flex">
+              <label
+                htmlFor="Firstname"
+                className="block mb-2 text-sm font-bold text-white ml-4 mr-5 self-center"
+                style={{ minWidth: "70px" }} // Establecer un ancho mínimo para la etiqueta
+              >
+                First name
+              </label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Write your First name"
+                name="first_name" // nombre del atributo de la entidad del backend
+                value={first_name} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+              {/* validacion del campo del formulario */}
+              {errors.first_name && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.first_name}
+                </p>
+              )}
+            </div>
+            <div className="mb-4 flex">
+              <label
+                htmlFor="Surname"
+                className="block mb-2 text-sm font-bold text-white ml-4 mr-8 self-center"
+              >
+                Surname
+              </label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Enter your last name"
+                name="last_name" // nombre del atributo de la entidad del backend
+                value={last_name} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+              {errors.last_name && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.last_name}
+                </p>
+              )}
+            </div>
+            <div className="mb-4 flex">
+              <label
+                htmlFor="Username"
+                className="block mb-2 text-sm font-bold text-white ml-4 mr-6 self-center"
+              >
+                Username
+              </label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Enter your username"
+                name="username" // nombre del atributo de la entidad del backend
+                value={username} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+              {errors.username && (
+                <p className="text-red-500 text-xs italic">{errors.username}</p>
+              )}
+            </div>
+            <div className="mb-4 flex">
+              <label
+                htmlFor="Password"
+                className="block mb-2 text-sm font-bold text-white ml-4 mr-7 self-center"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Enter your password"
+                name="password" // nombre del atributo de la entidad del backend
+                value={password} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+              {errors.password && (
+                <p className="text-red-500 text-xs italic">{errors.password}</p>
+              )}
+            </div>
+            <div className="mb-4 flex">
+              <label
+                htmlFor="Password2"
+                className="block mb-2 text-sm font-bold text-white ml-4 self-center"
+              >
+                Repeat Password
+              </label>
+              <input
+                type="password"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline self-center"
+                placeholder="Repeat your password"
+                name="password2" // nombre del atributo de la entidad del backend
+                value={password2} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
 
-          <div className="mb-4">
-            <label
-              htmlFor="Phonenumber"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Phone number
-            </label>
-            <input
-              type="tel" //tipo de dato para validar que sea un numero de telefono
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Write your phone number"
-              name="phone_number" // nombre del atributo de la entidad del backend
-              value={phone_number} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
+              {errors.password2 && (
+                <p className="text-red-500 text-xs italic">
+                  {errors.password2}
+                </p>
+              )}
+            </div>
           </div>
+          <div className="w-full md:w-1/2 px-3">
+            <div className="mb-5"></div>
 
-          <div className="mb-4">
-            <label
-              htmlFor="Githubusername"
-              className="block mb-2 text-sm font-bold text-gray-700"
-            >
-              Github username
-            </label>
-            <input
-              type="text"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Write your Github username"
-              name="github_username" // nombre del atributo de la entidad del backend
-              value={github_username} // valor del atributo de la entidad del backend
-              onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
-            />
+            <div className="mb-4">
+              <label
+                htmlFor="Email"
+                className="block mb-2 text-sm font-bold text-white"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Write your email"
+                name="email" // nombre del atributo de la entidad del backend
+                value={email} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+              {errors.email && (
+                <p className="text-red-500 text-xs italic">{errors.email}</p>
+              )}
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="Phonenumber"
+                className="block mb-2 text-sm font-bold text-white"
+              >
+                Phone number
+              </label>
+              <input
+                type="tel" //tipo de dato para validar que sea un numero de telefono
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Write your phone number"
+                name="phone_number" // nombre del atributo de la entidad del backend
+                value={phone_number} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="Githubusername"
+                className="block mb-2 text-sm font-bold text-white"
+              >
+                Github username
+              </label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                placeholder="Write your Github username"
+                name="github_username" // nombre del atributo de la entidad del backend
+                value={github_username} // valor del atributo de la entidad del backend
+                onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+              />
+            </div>
           </div>
           <div className="flex items-center justify-end h-full">
             <p
-              className="text-md text-gray-500 mb-1 mr-2 text-right "
+              className="text-md text-white mb-1 mr-2 text-right "
               style={{ marginRight: "0px" }}
             >
               Are you not registered as a
               <br
                 className="hidden lg:inline-block"
-                style={{ marginRight: "-10px" }}
+                style={{ marginRight: "-500px" }}
               />
-              candidate yet? Do it now
+              candidate yet? Log it now
+              <br
+                className="hidden lg:inline-block"
+                style={{ marginRight: "-500px" }}
+              />
             </p>
           </div>
-          <div className="flex space-x-4">
+          <div
+            className="flex space-x-24 mt-auto"
+            style={{ marginBottom: "-85px", marginTop: "20px" }}
+          >
+            <div className="flex items-center justify-end">
+              <p
+                className="text-md text-gray-500 mb-1 mr-2 text-right"
+                style={{ marginTop: "20px", marginBottom: "0px" }}
+              >
+                <label className="inline-flex items-center">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox text-blue-500"
+                  />
+                  <span className="ml-2">
+                    Do you accept the terms and
+                    <br
+                      className="hidden lg:inline-block"
+                      style={{ marginRight: "-10px" }}
+                    />
+                    conditions of use of the
+                    <br
+                      className="hidden lg:inline-block"
+                      style={{ marginRight: "-10px" }}
+                    />
+                    processing of your data?
+                    <br
+                      className="hidden lg:inline-block"
+                      style={{ marginRight: "-10px" }}
+                    />
+                    <a
+                      href="https://tu-enlace-externo.com"
+                      className="text-yellow-500 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Read the conditions in here
+                      <svg
+                        class="h-6 w-6 text-yellow-500 inline-block"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </span>
+                </label>
+              </p>
+            </div>
             <button
               type="submit"
-              className="w-auto px-2 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              className="w-auto px-2 py-2 text-white bg-yellow-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+              style={{ marginTop: "20px" }}
             >
               Register as a new
               <br
                 className="hidden lg:inline-block"
-                style={{ marginRight: "-10px" }}
+                style={{
+                  marginRight: "-10px",
+                  marginTop: "20px",
+                }}
               />
               candidate
             </button>
             <Link
-              className="w-auto px-6 py-3 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
+              className="w-auto px-4 py-4 text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
               to="/login"
-              style={{ marginRight: "00px" }}
+              style={{
+                marginRight: "-100px",
+                marginTop: "20px",
+                marginBottom: "20px",
+                backgroundColor: "#393939",
+              }}
             >
               Log in
             </Link>
