@@ -1,8 +1,4 @@
 :root {
-    --talent-grey: #393939;
-    --talent-darker: #282828;
-    --talent-darker: #1f1f1f;
-    --talent-orange: #d4983d;
     background-color: var(--talent-black);
     display: flex;
     flex-direction: column;

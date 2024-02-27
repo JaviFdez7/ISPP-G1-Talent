@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './components/App.jsx'
 import './fonts/Jost-VariableFont_wght.ttf'
 import './index.css'
+import './styles/palette.css'
 import './styles/Input.css'
 import './styles/Profile.css'
 
