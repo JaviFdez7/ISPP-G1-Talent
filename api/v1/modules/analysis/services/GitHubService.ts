@@ -92,8 +92,8 @@ export async function GetUserAnaliseInfo(githubUsername: string): Promise<Analys
           contributionCalendar {
             totalContributions
           }
-          totalRepositoriesWithContributedPullRequests
-          totalRepositoriesWithContributedCommits
+          totalPullRequestContributions
+          totalCommitContributions
         }
       }
     }`;
@@ -175,8 +175,8 @@ function processGitHubUserInfo (result: any, languagesSorted: Array<[string, num
     avatarUrl: user.avatarUrl,
     followers: user.followers.totalCount,
     contributions: {
-      totalCommits: user.contributionsCollection.totalRepositoriesWithContributedCommits,
-      totalPullRequests: user.contributionsCollection.totalRepositoriesWithContributedPullRequests,
+      totalCommits: user.contributionsCollection.totalCommitContributions,
+      totalPullRequests: user.contributionsCollection.totalPullRequestContributions,
     },
     topRepositories: topRepos.map((repo: any) => ({
       name: repo.name,
