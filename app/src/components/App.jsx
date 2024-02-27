@@ -20,12 +20,19 @@ import CandidateRepresentativeDetail from "../pages/candidate/CandidateRepresent
 import CandidateSubscription from "../pages/candidate/CandidateSubscription.jsx";
 import CandidateTrendsDetail from "../pages/candidate/CandidateTrendsDetail.jsx";
 
+//representatives
+import RepresentativeSubscription from "../pages/representative/RepresentativeSubscription.jsx";
+import RepresentativeDetail from "../pages/representative/RepresentativeDetail.jsx";
+import RepresentativeDetailEdit from "../pages/representative/RepresentativeDetailEdit.jsx";
+
+
 //components
 import Navbar from "./Navbar";
 
 //auth
 import Login from "../pages/auth/Login.jsx";
-import Register from "../pages/auth/Register.jsx";
+import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
+import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
 
 function App() {
   return (
@@ -39,8 +46,8 @@ function App() {
             <Route path="/support" element={<Support />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
+            <Route path="/register/candidate" element={<RegisterCandidate />} />
+            <Route path="/register/representative" element={<RegisterRepresentative />} />
             {/*RUTAS CANDIDATO */}
             <Route path="/candidate/detail" element={<CandidateDetail />} />
             <Route path="/candidate/detail/edit" element={<CandidateDetailEdit />} />
@@ -53,6 +60,10 @@ function App() {
             <Route path="/candidate/representative/detail" element={<CandidateRepresentativeDetail />} />
             <Route path="/candidate/subscription" element={<CandidateSubscription />} />
             <Route path="/candidate/trends/detail" element={<CandidateTrendsDetail />} />
+            {/*RUTAS REPRESENTANTE */}
+            <Route path="/representative/subscription" element={<RepresentativeSubscription />} />
+            <Route path="/representative/detail" element={<RepresentativeDetail />} />
+            <Route path="/representative/detail/edit" element={<RepresentativeDetailEdit />} />
           </Routes>
         </Router>
       </AuthContextProvider>

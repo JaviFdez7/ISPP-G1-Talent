@@ -29,7 +29,7 @@ export default function Home() {
             Log in
           </Link>
           <Link
-            to="/register"
+            to="/register/candidate"
             className=" text-white py-4 px-8 rounded text-lg"
             style={{ backgroundColor: "#393939" }}
           >
