@@ -1,0 +1,69 @@
+project:
+  name: 'ISPP-2024-L1-01'
+  owner: 'L1'
+  teamId: '01'
+  identities: {}
+  notifications:
+    email: 'javfercas3@alum.us.es'
+  members:
+    member1:
+      name: 'Manuel'
+      surname: 'Otero Barbasán'
+      githubUsername: 'motero2k'
+    member2:
+      name: 'Javi'
+      surname: 'Fernández Castillo'
+      githubUsername: 'JaviFdez7'
+    member3:
+      name: 'Daniel'
+      surname: 'Gallardo Martos'
+      githubUsername: 'dangalmar'
+    member4:
+      name: 'Ismael'
+      surname: 'Herrera Ramirez'
+      githubUsername: 'IsmaelHerrera2000'
+    member5:
+      name: 'Carlos'
+      surname: 'Bermejo Soria'
+      githubUsername: 'carlos-bermejo'
+    member6:
+      name: 'Rubén'
+      surname: 'Casal Ferrero'
+      githubUsername: 'RubenCasal'
+    member7:
+      name: 'Andrés'
+      surname: 'Domínguez Ruiz'
+      githubUsername: 'andresdominguezruiz'
+    member8:
+      name: 'Alberto'
+      surname: 'Domínguez-Adame Ruiz'
+      githubUsername: 'albdomrui20'
+    member9:
+      name: 'Mario'
+      surname: 'Izquierdo Lavado'
+      githubUsername: 'marizqlav'
+    member10:
+      name: 'Fernando José'
+      surname: 'Mateos Gómez'
+      githubUsername: 'Moffinguer'
+    member11:
+      name: 'Alejandro José'
+      surname: 'Merino Palma'
+      githubUsername: 'alemerpal'
+    member12:
+      name: 'Francisco Jesús'
+      surname: 'Montero Martínez'
+      githubUsername: 'FJMonteroInformatica'
+    member13:
+      name: 'Rocío'
+      surname: 'López Moyano'
+      githubUsername: 'RukisRo'
+    member14:
+      name: 'Francisco Davis'
+      surname: 'Vilaplana de Trías'
+      githubUsername: 'Francisco-David'
+    member15:
+      name: 'Carlos'
+      surname: 'Zarzuela Reina'
+      githubUsername: 'carzarrei'
+
