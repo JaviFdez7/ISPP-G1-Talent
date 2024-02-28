@@ -24,6 +24,7 @@
     },
     "homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.5.1",
         "@types/express": "^4.17.21",
         "@types/mongoose": "^5.11.97",
         "bcryptjs": "^2.4.3",
@@ -35,6 +36,7 @@
         "mocha": "^10.3.0",
         "mongodb": "^6.3.0",
         "mongoose": "^8.2.0",
+        "node-fetch": "^3.3.2",
         "react": "^18.2.0",
         "swagger-jsdoc": "^6.2.8",
         "ts-node": "^10.9.2"
