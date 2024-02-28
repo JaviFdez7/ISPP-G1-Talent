@@ -1,26 +1,10 @@
-runtime: nodejs
-env: flex
-service: frontend
-runtime_config:
-  operating_system: "ubuntu22"
-  runtime_version: "20"
-
-build_env_variables:
-  GOOGLE_NODE_RUN_SCRIPTS: ''
-
+runtime: nodejs18
 handlers:
-- url: /
-  static_files: dist/index.html
-  upload: dist/index.html
-  secure: always
-
-- url: /app(.*)
-  static_files: dist/index.html
-  upload: public/index.html
-
-- url: /vite.svg
-  static_files: dist/vite.svg
-  upload: dist/vite.svg
-
-- url: /assets
-  static_dir: dist/assets
+  # Serve static files with url ending with a file extension
+  - url: /(.*\..+)$
+    static_files: dist/\1
+    upload: dist/.*\..+$
+  # Catch all handler to index.html
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html

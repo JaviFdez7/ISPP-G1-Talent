@@ -5,8 +5,8 @@
   "type": "module",
   "gcp-build": "",
   "engines": {
-      "node": "20.11.1",
-      "npm": ">=8.3.0"
+    "node": "20.11.1",
+    "npm": ">=8.3.0"
   },
   "scripts": {
     "dev": "vite --port 7134",
@@ -18,10 +18,10 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@vitejs/plugin-react-swc": "^3.6.0",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "dotenv": "^16.4.5",
-    "gql-paginator": "^2.2.0",
     "react-router": "^6.22.1",
     "react-router-dom": "^6.22.1"
   },
