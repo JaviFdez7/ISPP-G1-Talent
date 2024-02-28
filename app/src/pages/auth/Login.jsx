@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import MainButton from "../../components/mainButton.jsx";
+import SecondaryButton from "../../components/secondaryButton.jsx";
+import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 
 export default function Login() {
   let navigate = useNavigate();
@@ -41,16 +44,25 @@ export default function Login() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen"
-      style={{ backgroundColor: "#454545" }}
+      className="h-screen flex flex-col justify-center bg-fixed home-container"
+      style={{
+        backgroundImage: `url(${mainBackgroundRegisterLogin})`,
+        backgroundSize: "cover",
+      }}
     >
       <div
-        className="w-full max-w-2xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
-        style={{ backgroundColor: "#282828" }}
+        className="w-full max-w-3xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          marginLeft: "auto",
+          marginRight: "auto",
+          borderColor: "#d4983d",
+          borderWidth: "1px",
+        }}
       >
         <div>
-          <h2 className="text-3xl font-bold text-center mb-4 text-white">
-            Log in as a registered candidate
+          <h2 className="text-6xl font-bold text-center mb-4 text-white">
+            Log in
           </h2>
           <form onSubmit={(e) => handleSubmit(e)}>
             {/* llamada a la funcion que se encargara de hacer el login a la API*/}
@@ -95,37 +107,20 @@ export default function Login() {
             </div>
           </form>
         </div>
-        <div className="flex items-center justify-end h-full">
-          <p
-            className="text-md text-white mb-1 mr-2 text-right "
-            style={{ marginRight: "0px" }}
-          >
-            Are you not registered as a
-            <br
-              className="hidden lg:inline-block"
-              style={{ marginRight: "-10px" }}
-            />
-            candidate yet? Do it now
+        <div className="flex items-center justify-center h-full">
+          <p className="text-md text-white mb-1 mr-2 text-center">
+            Don't have an account?{" "}
+            <Link
+              to="/register/candidate"
+              className="text-blue-500 hover:text-blue-700 mr-2"
+            >
+              Register now
+            </Link>
           </p>
         </div>
-        <div className="flex justify-between items-center">
-          <button
-            type="submit"
-            className="w-auto px-6 py-3  text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline text-3xl"
-            style={{ backgroundColor: "#D4983D" }}
-          >
-            Log in
-          </button>
-          <div className="flex flex-col items-center">
-            <Link
-              className="w-auto px-6 py-3 text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
-              to="/register"
-              style={{ marginRight: "00px", backgroundColor: "#393939" }}
-            >
-              Register
-            </Link>
-          </div>
-        </div>
+        <div className="flex justify-center items-center mt-4">
+          <button>{MainButton("Log in", "", "")}</button>
+        </div>{" "}
         {/* MOSTRAMOS LOS ERRORES DEL ERROR 401 DE CREDENCIALES INCORRECTAS */}
         {errors.detail && (
           <p className="text-red-500 text-base italic">{errors.detail}</p>

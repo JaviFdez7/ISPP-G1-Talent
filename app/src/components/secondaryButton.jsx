@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function MainButton(text, link, func) {
+export default function SecondaryButton(text, link, func) {
 
     let res = "";
     if (func === "") {
