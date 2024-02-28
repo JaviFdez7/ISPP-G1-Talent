@@ -1,7 +1,7 @@
 import { type Types } from 'mongoose';
 import { encrypt, compare } from '../helpers/handleBcrypt';
 import { generateJWT, verifyJWT } from '../helpers/handleJWT';
-import { User, Representative, Candidate } from '../models/user';
+import { User, Representative, Candidate, ProfessionalExperience } from '../models/user';
 
 // Auxiliary function to obtain the appropriate model based on the role
 const getModelForRole = (role: string) => {
@@ -87,11 +87,55 @@ export const loginUser: any = async (data: any) => {
     throw error;
   }
 }
+
+export const getProfessionalExperienceByUserId: any = async (userId: any) => {
+  try {
+    return await ProfessionalExperience.find({ userId: userId });
+  } catch (error) {
+    console.error('Error when obtaining professional experience:', error);
+    throw error;
+  }
+};
+
+export const createProfessionalExperience: any = async (data: any) => {
+  try {
+    const experience = new ProfessionalExperience(data);
+    await experience.save();
+    return experience;
+  } catch (error) {
+    console.error('Error inserting professional experience:', error);
+    throw error;
+  }
+};
+
+export const updateProfessionalExperience: any = async (id: any, data: any) => {
+  try {
+    const updatedExperience = await ProfessionalExperience.findByIdAndUpdate(id, data, { new: true });
+    return updatedExperience;
+  } catch (error) {
+    console.error('Error updating professional experience:', error);
+    throw error;
+  }
+};
+
+export const deleteProfessionalExperience: any = async (id: any) => {
+  try {
+    await ProfessionalExperience.findByIdAndDelete(id);
+    return 'Professional experience deleted successfully.';
+  } catch (error) {
+    console.error('Error deleting professional experience', error)
+    throw error;
+  }
+};
 export default {
   getAllUser,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
-  loginUser
+  loginUser,
+  getProfessionalExperienceByUserId,
+  createProfessionalExperience,
+  updateProfessionalExperience,
+  deleteProfessionalExperience
 };

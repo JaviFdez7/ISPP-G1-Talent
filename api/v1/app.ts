@@ -7,6 +7,8 @@ import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 
 const app = express();
+app.use(express.json());
+
 //  Routers -----------------------------------------------------
 //  Default
 app.get('/', (req: Request, res: Response) => {
