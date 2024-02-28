@@ -178,7 +178,7 @@ export const checkUpdateProfessionalExperience = async (id: string, token: strin
       return 'Unauthorized';
     }
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error('Error updating professional experience:', error);
     throw error;
   }
 };
