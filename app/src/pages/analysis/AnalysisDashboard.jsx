@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
-import DataTable from '../components/DataTable.jsx'
+import DataTable from '../../components/DataTable.jsx'
 
 
 export default function AnalysisDashboard() {
-    const textColor = '#ECECEC'
-    const textColor2 = '#D4983D'
-    const bgColor = "#282828"
+    const textColor = ' var(--talent-white-text)'
+    const textColor2 = 'var(--talent-highlight)'
+    const bgColor = 'var(--talent-secondary)'
 
 
     return (

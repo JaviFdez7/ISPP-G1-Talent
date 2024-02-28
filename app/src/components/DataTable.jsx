@@ -1,13 +1,13 @@
 import React from "react";
 
 export default function DataTable({ header, contentArray }) {
-    const textColor = '#ECECEC'
-    const tableBorderColor = '#393939'
-    const tableBackgroundColor = '#2B2D2F'
+    const textColor = 'white'
+    const tableBorderColor = 'var(--talent-darker)'
+    const tableBackgroundColor = 'var(--talent-secondary)'
     const tableHeaderColor = '#1F1F1F'
     const cellPadding = '8px';
     const cellWidth = '250px';
-    const borderWidth = '3px';
+    const borderWidth = '2px';
 
     return (
         <div className="mt-4">
