@@ -24,6 +24,7 @@ const swaggerDefinition = {
 const options = { swaggerDefinition, apis: ['./docs/**/*.yaml'] };
 // initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options);
+app.use(express.json());
 app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //  Modules Routes ----------------------------------------------
 app.use(AnalysisRouter);
