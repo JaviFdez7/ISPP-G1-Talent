@@ -1,14 +1,15 @@
-import jwt, { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
+import { User } from '../models/user';
 
-const JWT_TOKEN = process.env.JWT_SECRET || 'secret';
+const JWT_TOKEN: string = process.env.JWT_SECRET ?? 'jwt_secret';
 
-const generateJWT = (id: string) => {
-  const jwt = sign({ id }, JWT_TOKEN, { expiresIn: '2h' })
+const generateJWT = (id: string | undefined) => {
+  const jwt = sign({ sub: id }, JWT_TOKEN, { expiresIn: '1h' })
   return jwt;
 }
 
 const verifyJWT = (token: string) => {
-  return jwt.verify(token, JWT_TOKEN);
+  return verify(token, JWT_TOKEN);
 }
 
 export { generateJWT, verifyJWT };
