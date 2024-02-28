@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
+
+import FormTextInput from "../../components/FormTextInput";
+import MainButton from "../../components/mainButton";
+import SecondaryButton from "../../components/secondaryButton";
 
 export default function RegisterRepresentative() {
   //1) creamos el estado del formulario de registro
@@ -77,145 +82,112 @@ export default function RegisterRepresentative() {
 
   return (
     <div
-      className="flex flex-col items-center justify-center min-h-screen"
-      style={{ backgroundColor: "#454545" }}
+      className="h-screen flex flex-col justify-center bg-fixed home-container"
+      style={{
+        backgroundImage: `url(${mainBackgroundRegisterLogin})`,
+        backgroundSize: "cover",
+      }}
     >
       <div
-        className="w-full max-w-3xl py-24 p-8 m-4  rounded shadow-md"
-        style={{ backgroundColor: "#282828" }}
+        className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          marginLeft: "auto",
+          marginRight: "auto",
+          borderColor: "#d4983d",
+          borderWidth: "1px",
+        }}
       >
+        {/* eleccion de formulario de registro*/}
         <h2
           className="text-2xl font-bold text-center mb-4 text-white"
-          style={{ marginTop: "-70px" }}
+          style={{ marginTop: "-40px", marginBottom: "-10px" }}
         >
-          Fill the form to register as a new representative
+          Register as
         </h2>
+        <hr className="border-1 w-70 mb-4"
+          style={{ borderColor: '#d4983d' }} />
+        <div className="flex justify-center space-x-4 mb-4">
+          <Link to="/register/candidate" >
+            <h2
+              className="text-2xl text-white hover:text-gray-600 px-6 py-3"
+              style={{ marginTop: "-40px" }}
+            >
+              Candidate
+            </h2>
+          </Link>
+          <h2
+            className="text-2xl"
+            style={{ marginTop: "-40px", color: 'var(--talent-highlight)' }}
+          >
+            Representative
+          </h2>
+
+        </div>
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
         >
           {/* llamada a la funcion que se encargara de hacer el login a la API*/}
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <div className="mb-4 flex">
-              <label
-                htmlFor="Username"
-                className="block mb-2 text-sm font-bold text-white ml-8 mr-6 self-center"
-              >
-                Username
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Enter your username"
-                name="username" 
-                value={username}
-                onChange={(e) => onInputChange(e)}
-              />
-              {errors.username && (
-                <p className="text-red-500 text-xs italic">{errors.username}</p>
-              )}
-            </div>
-            <div className="mb-4 flex">
-              <label
-                htmlFor="Corporativeemail"
-                className="block mb-2 text-sm font-bold text-white ml-8 mr-6 self-center"
-              >
-                Corporative Email
-              </label>
-              <input
-                type="email"
-                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Write your corporative email"
-                name="corporative_email"
-                value={corporative_email}
-                onChange={(e) => onInputChange(e)}
-              />
-              {errors.corporative_email && (
-                <p className="text-red-500 text-xs italic">{errors.corporative_email}</p>
-              )}
-            </div>
-            <div className="mb-4 flex">
-              <label
-                htmlFor="companyname"
-                className="block mb-2 text-sm font-bold text-white ml-8 mr-6 self-center"
-              >
-                Company Name
-              </label>
-              <input
-                type="text"
-                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Enter your company name"
-                name="company_name" 
-                value={company_name} 
-                onChange={(e) => onInputChange(e)}
-              />
-              {errors.company_name && (
-                <p className="text-red-500 text-xs italic">{errors.company_name}</p>
-              )}
-            </div>
-            <div className="mb-4 flex">
-              <label
-                htmlFor="Password"
-                className="block mb-2 text-sm font-bold text-white ml-8 mr-7 self-center"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Enter your password"
-                name="password" 
-                value={password} 
-                onChange={(e) => onInputChange(e)}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs italic">{errors.password}</p>
-              )}
-            </div>
-            <div className="mb-4 flex">
-              <label
-                htmlFor="Password2"
-                className="block mb-2 text-sm font-bold text-white ml-8 self-center"
-              >
-                Repeat Password
-              </label>
-              <input
-                type="password"
-                className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline self-center"
-                placeholder="Repeat your password"
-                name="password2" 
-                value={password2} 
-                onChange={(e) => onInputChange(e)} 
-              />
-              {errors.password2 && (
-                <p className="text-red-500 text-xs italic">
-                  {errors.password2}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center justify-end h-full">
-            <p
-              className="text-md text-white mb-1 mr-2 text-right"
-              style={{ marginTop: "250px"}}
-            >
-              Are you not registered as a
-              <br
-                className="hidden lg:inline-block"
-                style={{ marginRight: "-100px" }}
-              />
-              representative already? Log it now
-              <br
-                className="hidden lg:inline-block"
-                style={{ marginRight: "-120px" }}
-              />
-            </p>
-          </div>
+            <FormTextInput
+              labelFor="Username"
+              labelText="Username"
+              placeholder="Enter your Username"
+              name="username"
+              value={username}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="Corporativeemail"
+              labelText="Corporative Email"
+              placeholder="Enter your Corporative Email"
+              name="corporative_email"
+              value={corporative_email}
+              onChange={(e) => onInputChange(e)}
+              type="email"
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="companyname"
+              labelText="Company Name"
+              placeholder="Enter your Company Name"
+              name="company_name"
+              value={company_name}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+              isMandatory
+            />
 
-          <div
-            className="flex space-x-24 mt-auto"
-            style={{ marginBottom: "-85px", marginTop: "-20px" }}
-          >
+
+
+          </div>
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <FormTextInput
+              labelFor="Password"
+              labelText="Password"
+              placeholder="Enter your Password"
+              name="password"
+              value={password}
+              onChange={(e) => onInputChange(e)}
+              type="password"
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="Password2"
+              labelText="Repeat Password"
+              placeholder="Enter your Password again"
+              name="password2"
+              value={password2}
+              onChange={(e) => onInputChange(e)}
+              type="password"
+              errors={errors}
+              isMandatory
+            />
             <div className="flex items-center justify-end">
               <p
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
@@ -267,34 +239,17 @@ export default function RegisterRepresentative() {
                 </label>
               </p>
             </div>
-            <button
-              type="submit"
-              className="w-auto px-2 py-2 text-white bg-yellow-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-              style={{ marginTop: "20px" }}
-            >
-              Register as a new
-              <br
-                className="hidden lg:inline-block"
-                style={{
-                  marginRight: "-10px",
-                  marginTop: "20px",
-                }}
-              />
-              representative
-            </button>
-            <Link
-              className="w-auto px-4 py-4 text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline text-center text-3xl"
-              to="/login"
-              style={{
-                marginRight: "-100px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#393939",
-              }}
-            >
-              Log in
-            </Link>
           </div>
+
+
+
+          <div
+            className="flex space-x-24 mt-10 m-auto"
+          >
+            {MainButton("Register", "", "")}
+            {SecondaryButton("Log in", "/login", "")}
+          </div>
+
         </form>
       </div>
     </div>
