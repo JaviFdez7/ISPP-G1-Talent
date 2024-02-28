@@ -1,0 +1,51 @@
+
+.button-container {
+    width: 90%;
+    height: 90%;
+    transition: 0.25s;
+}
+
+.button-container:hover {
+    width: 100%;
+    height: 100%;
+}
+
+.main-button-container {
+    width: 100%;
+    height: 90%;
+    background-color: var(--talent-highlight-background);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.secondary-button-container {
+    width: 100%;
+    height: 90%;
+    background-color: var(--talent-light-background);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-button-highlight {
+    width: 100%;
+    height: 10%;
+    background-color: var(--talent-highlight);
+}
+
+.secondary-button-highlight {
+    width: 100%;
+    height: 10%;
+    background-color: var(--talent-secondary);
+}
+
+h4 {
+    color: white;
+    font-size: 22px;
+}
+
+.button {
+    width: 115px;
+    height: 65px;
+}

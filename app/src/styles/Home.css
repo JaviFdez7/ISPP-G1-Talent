@@ -1,0 +1,21 @@
+
+.home-container * h1 {
+    font-size: 120px;
+    color: white;
+    font-family: "Jost";
+    padding: 40px;
+}
+.home-container * h2 {
+    font-size: 30px;
+    color: white;
+    padding: 40px;
+}
+.home-container * h2 > strong {
+    font-size: 32px;
+    color: var(--talent-highlight);
+    }
+.home-container * h3 {
+    font-size: 40px;
+    color: var(--talent-highlight);
+}
+

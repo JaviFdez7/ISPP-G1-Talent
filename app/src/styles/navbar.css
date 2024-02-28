@@ -1,15 +1,11 @@
 
-:root {
-    --talent-grey: #393939;
-    --talent-darker: #282828;
-    --talent-darker: #1f1f1f;
-    --talent-orange: #d4983d;
-}
 
 .logo {
     font-family: "Jost";
-    font-size: 60px;
+    font-size: 70px;
     color: white;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 .sidenav {
@@ -39,19 +35,17 @@
     left: 405px;
 }
 
-.highlight-sidenav {
+.sidenav-highlight {
     height: 100%;
-    width: 405px;
-    background-color: var(--talent-orange);
+    width: 5px;
+    background-color: var(--talent-highlight);
 
 }
 
 .inner-sidenav {
     height: 100%;
     width: 400px;
-    padding: 20px;
-    padding-right: 75px;
-    background-color: var(--talent-darker);
+    background-color: var(--talent-navbar-background);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -61,19 +55,32 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    background-color: var(--talent-darker);
     color: white;
     padding: 15px;
+    padding-left: 0px;
     transition: 0.35s;
-    width: 90%;
+    width: 80%;
     align-self: center;
-    font-size: x-large;
-    margin-top: 15px;
+    font-size: 22px;
+    margin-top: 5px;
+    z-index: 1;
 }
 
-.link-container:hover {
-    color: var(--talent-darker);
-    background-color: white;
+.navbar-hoverer {
+    width: 400px;
+    height: 67px;
+    background-color: var(--talent-highlight);
+    position: absolute;
+    top: 165px;
+    transition: 0.5s;
+}
+
+.navbar-current {
+    width: 400px;
+    height: 67px;
+    background-color: #ffffff4b;
+    position: absolute;
+    top: 165px;
 }
 
 .profile-container {
@@ -83,7 +90,6 @@
     justify-content: space-between;
     bottom: 20px;
     left: 20px;
-    background-color: var(--talent-darker);
     width: 30%;
 }
 
@@ -112,7 +118,6 @@
     position: absolute;
     bottom: 30px;
     right: 65px;
-    background-color: var(--talent-darker);
     width: 20%;
 }
 
@@ -125,7 +130,6 @@
     position: absolute;
     bottom: 25px;
     right: 165px;
-    background-color: var(--talent-darker);
     width: 20%;
 }
 
@@ -138,7 +142,7 @@
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    background-color: var(--talent-orange);
+    background-color: var(--talent-highlight);
     position: absolute;
     left: -50px;
     bottom: 0px;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Register() {
+export default function RegisterCandidate() {
   //1) creamos el estado del formulario de registro
   const [form, setForm] = useState({
     first_name: "",
@@ -10,6 +10,8 @@ export default function Register() {
     username: "",
     password: "",
     password2: "", //confirmacion de contraseña(atributo adicional que no viene en el backend)
+    phone_number: "",
+    github_username: "",
   });
 
   //para redireccionar al usuario
@@ -208,7 +210,6 @@ export default function Register() {
           </div>
           <div className="w-full md:w-1/2 px-3">
             <div className="mb-5"></div>
-
             <div className="mb-4">
               <label
                 htmlFor="Email"
@@ -228,7 +229,6 @@ export default function Register() {
                 <p className="text-red-500 text-xs italic">{errors.email}</p>
               )}
             </div>
-
             <div className="mb-4">
               <label
                 htmlFor="Phonenumber"
