@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function SecondaryButton(text, link, func) {
+export default function SecondaryButton(text, link, func="", w="115px", h="65px") {
 
     let res = "";
     if (func === "") {
@@ -25,7 +25,7 @@ export default function SecondaryButton(text, link, func) {
     }
 
     return(
-        <div className="flex justify-center items-center button">
+        <div className="flex justify-center items-center" style={{width: w, height: h}}>
             {res}
         </div>
     );
