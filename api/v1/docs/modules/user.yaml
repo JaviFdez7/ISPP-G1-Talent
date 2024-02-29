@@ -9,37 +9,22 @@ paths:
   /user:
     get:
       tags:
-      - Users
+      - Users Read
       summary: Get all users
       description: Retrieves a list of all users.
       responses:
         '200':
           description: A list of users
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/User'
-    post:
-      tags:
-      - Users
-      summary: Create a new user
-      description: Creates a new user with the provided data.
-      parameters:
-        - in: body
-          name: user
-          description: The user to create.
-          required: true
-          schema:
-            $ref: '#/definitions/User'
-      responses:
-        '201':
-          description: User created successfully
-          schema:
-            $ref: '#/definitions/User'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/User'
   /user/{id}:
     get:
       tags:
-      - Users
+      - Users Read
       summary: Get a user by ID
       description: Retrieves a user by its unique identifier.
       parameters:
@@ -53,31 +38,9 @@ paths:
           description: The user with the specified ID
           schema:
             $ref: '#/definitions/User'
-    patch:
-      tags:
-      - Users
-      summary: Update a user
-      description: Updates an existing user with the provided data.
-      parameters:
-        - in: path
-          name: id
-          description: The ID of the user to update.
-          required: true
-          type: string
-        - in: body
-          name: user
-          description: The updated user data.
-          required: true
-          schema:
-            $ref: '#/definitions/User'
-      responses:
-        '200':
-          description: User updated successfully
-          schema:
-            $ref: '#/definitions/User'
     delete:
       tags:
-      - Users
+      - Users Delete
       summary: Delete a user by ID
       description: Deletes a user by its unique identifier.
       parameters:
@@ -89,19 +52,156 @@ paths:
       responses:
         '204':
           description: User deleted successfully
+  /user/login:
+    post:
+      tags:
+        - 'Users Login'
+      summary: Log in as a user
+      description: Enter in the app as a existing user
+      parameters:
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            description: Its the token of authentication.
+        - name: login
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/LoginData'
+      responses:
+        "200":
+          description: Candidate created successfully
+          content:
+            application/json:
+              - name: authorization
+                schema:
+                  type: string
+                  description: Its the token of authentication.
+              - name: login
+                schema:
+                  $ref: '#/definitions/User'
+
+              
+
+  /user/candidate:
+    post:
+      tags: 
+        - Candidates Create
+      summary: Create a candidate
+      description: Create a new user as a candidate
+      parameters:
+        - name: candidate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CandidateData'
+      responses:
+        "201":
+          description: Candidate created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/CandidateData'
+      
+      
 definitions:
-  User:
+  CandidateData:
     type: object
+    required:
+      - username
+      - password
+      - email
+      - paymentMethods
+      - fullName
+      - githubUser
+      - candidateSubscription
     properties:
-      id:
-        type: string
-        format: uuid
-        description: The unique identifier for the user.
-      name:
+      username:
         type: string
         description: The name of the user.
+      password:
+        type: string
+        description: The password of the user.
       email:
         type: string
         format: email
-        description: The email address of the user.
-      # Add more properties as needed
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      fullName:
+        type: string
+        description: The full name of the user.
+      githubUser:
+        type: string
+        description: The github username of the user.
+      profilePicture:
+        type: string
+        description: The profile picture of the user.
+      candidateSubscription:
+        type: string
+        enum:
+          - 'Basic plan'
+          - 'Pro plan'
+        description: The subscription of the candidate.
+      CV:
+        type: string
+        description: The CV of the user.
+      residence:
+        type: string
+        description: The residence of the user.
+      lifestyle:
+        type: string
+        enum:
+          - 'On-site'
+          - 'Telematic'
+        description: The life style of the user of the user.
+      githubToken:
+        type: string
+        description: The github token of the user.
+      
+      
+  LoginData:
+    type: object
+    required:
+      - username
+      - password
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      password:
+        type: string
+        description: The password of the user.
+  User:
+    type: object
+    required:
+      - username
+      - password
+      - email
+      - phone
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      password:
+        type: string
+        description: The password of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+          
+
