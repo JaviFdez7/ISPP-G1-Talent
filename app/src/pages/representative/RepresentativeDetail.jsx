@@ -1,7 +1,6 @@
 import React from "react";
 
 import Input from "../../components/Input";
-import InputList from "../../components/InputList";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
 
@@ -49,20 +48,12 @@ export default function RepresentativeDetail() {
       <br></br>
       <div className="flex flex-row justify-center">
         <div className="flex flex-col w-5/12 p-20">
-          {InputList("Latest jobs", ["Fujitsu", "Ayesa", "..."])}
-          <br></br>
-          {InputList("Popular repositories", ["On your tutorials", "..."])}
         </div>
         <div className="flex flex-col w-5/12 p-20">
           {Input("Preferences", "Work from home")}
           <br></br>
           {Input("Github username", "martinnez123")}
           <br></br>
-          {InputList("Most popular tecnologies", [
-            "1. Java",
-            "2. Python",
-            "3. Other",
-          ])}
         </div>
       </div>
     </div>

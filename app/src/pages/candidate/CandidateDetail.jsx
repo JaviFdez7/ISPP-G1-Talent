@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Input from "../../components/Input";
-import InputList from "../../components/InputList";
 import profile from "../../images/profile.jpg";
-import mainBackground from "../../images/main-background.jpg";
+import mainBackground from "../../images/main-background2.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "../../components/DataTable.jsx";
@@ -43,7 +42,7 @@ export default function CandidateDetail() {
   }
   return (
     <div
-      className="flex flex-col"
+      className="flex flex-col bg-fixed"
       style={{
         backgroundImage: `url(${mainBackground})`,
         backgroundSize: "cover",
@@ -62,7 +61,7 @@ export default function CandidateDetail() {
         </div>
         <div
           className="flex flex-col"
-          style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
+          style={{ width: "50%", padding: "5rem", marginRight: "8rem"}}
         >
           <div className="profile-name-text">
             <h2>
@@ -75,75 +74,16 @@ export default function CandidateDetail() {
               display: "flex",
               flexDirection: "column",
               padding: "0.5rem",
-              fontSize: "2rem",
+              fontSize: "26px",
               color: "white",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <div>Username {user.username}</div>
-              <input
-                type="text"
-                value="   Martinaza"
-                //{user.username}
-                style={{
-                  marginLeft: "2rem",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  borderColor: "#d4983d",
-                  borderWidth: "1px",
-                }}
-              />
+            <div className="flex flex-col w-full">
+              {Input("Username", "Martinaza ", true)} {/* user.username */}
+              {Input("Email", "martinita@gmail.com ", true)} {/* user.email */}
+              {Input("Phone", "123456789 ", true)} {/* user.phone */}
             </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <div>Email {user.email}</div>
-              <input
-                type="text"
-                value="   martinita@gmail.com"
-                //{user.email}
-                style={{
-                  marginLeft: "2rem",
-
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  borderColor: "#d4983d",
-                  borderWidth: "1px",
-                }}
-              />
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "1rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <div>Phone number {user.phone}</div>
-              <input
-                type="text"
-                value="   123456789"
-                //{user.phone}
-                style={{
-                  marginLeft: "1rem",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  borderColor: "#d4983d",
-                  borderWidth: "1px",
-                }}
-              />
-            </div>
-            <div style={{ color: textColor2 }}>
+            <div className="text-white mt-8">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 style={{ color: textColor2 }}
@@ -164,6 +104,9 @@ export default function CandidateDetail() {
           <DataTable
             header={"Latest Jobs"}
             contentArray={["TODO", "TODO", "..."]}
+            editable={true}
+            addLink=""
+            editLink=""
           />
           <br></br>
           <DataTable
@@ -174,32 +117,17 @@ export default function CandidateDetail() {
         <div className="flex flex-col w-5/12 p-20">
           <DataTable header={"Preferences"} contentArray={["Work from home"]} />
           <br></br>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: "2rem",
-              marginBottom: "1rem",
-              color: "white",
-            }}
+          <div className="w-full"
           >
-            <div>Github username {candidate.githubUser}</div>
-            <input
-              type="text"
-              value="   martinnez123"
-              //{candidate.githubUser}
-              style={{
-                marginLeft: "2rem",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                borderColor: "#d4983d",
-                borderWidth: "1px",
-              }}
-            />
+            {Input("Github username", "martinnez123", false, true)} {/* candidate.githubUser */}
           </div>
           <br></br>
           <DataTable
             header={"Most popular tecnologies"}
             contentArray={["1. Java", "2. Python", "3. Other"]}
+            editable={true}
+            addLink=""
+            editLink=""
           />
         </div>
       </div>
@@ -219,6 +147,9 @@ export default function CandidateDetail() {
             "Ayesa - Main team manager on web app development",
             "...",
           ]}
+          editable={true}
+          addLink=""
+          editLink=""
         />
       </div>
       <br></br>

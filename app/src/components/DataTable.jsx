@@ -1,29 +1,56 @@
 import React from "react";
+import MainButton from "./mainButton";
+import { Link } from "react-router-dom";
 
-export default function DataTable({ header, contentArray }) {
-    const textColor = '#ECECEC'
-    const tableBorderColor = '#393939'
-    const tableBackgroundColor = '#2B2D2F'
-    const tableHeaderColor = '#1F1F1F'
-    const cellPadding = '8px';
-    const cellWidth = '250px';
-    const borderWidth = '3px';
+export default function DataTable({ header, contentArray, editable=false, addLink, editLink }) {
+    const cellHeight = '70px';
+
+
+    let head = "";
+    if (header === "") {
+        head = "";
+    } else {
+        head = (
+            <thead>
+                <tr>
+                    <th className="datatable-header" style={{ height: cellHeight}}>
+                        <div className="datatable-header-text">{header}</div>
+                    </th>
+                </tr>
+            </thead>
+        );
+    }
+
+    let button = "";
+    if (editable) {
+        button = (
+                <div className="flex flex-row justify-center">
+                    {MainButton("Add", addLink, "", "50%")}
+                </div>
+            );
+    }
 
     return (
-        <div className="mt-4">
+        <div className="mt-4 datatable-container">
             <table className="w-full ">
-                <thead>
-                    <tr>
-                        <th className="py-2" style={{ color: textColor, borderWidth, borderColor: tableBorderColor, backgroundColor: tableHeaderColor, padding: cellPadding,  width: cellWidth }}>{header}</th>
-                    </tr>
-                </thead>
-                <tbody>
+                {head}
+                <tbody className="datatable-body">
                     {contentArray.map((item, index) => (
                         <tr key={index}>
-                            <td style={{ color: textColor, borderWidth, borderColor: tableBorderColor, backgroundColor: tableBackgroundColor, padding: cellPadding,  width: cellWidth }}>{item}</td>
+                            <td className="datatable-cell" style={{height: cellHeight}}>
+                                <br></br>
+                                <div style={{paddingBottom: "10px", paddingLeft: "20px"}}>
+                                    {item}
+                                    <Link to={editLink+"/"+index} className="edit-button">
+                                        Edit
+                                    </Link>
+                                </div>
+                                <hr className="w-full"></hr>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
+                {button}
             </table>
         </div>
     );

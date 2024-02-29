@@ -34,7 +34,7 @@ export default function Navbar() {
     if (!expanded) {
         document.getElementById("sidenav").style.left = "-0px";
         document.getElementById("arrow-img").src = arrowLeft;
-        document.getElementById("sideNavButtonContainer").style.left = "355px";
+        document.getElementById("sideNavButtonContainer").style.left = "405px";
         setExpanded(true);
     }
     else {
