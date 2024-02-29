@@ -57,7 +57,7 @@ export const loginUser: any = async (data: any) => {
   }
 }
 
-export const getProfessionalExperienceByUserId: any = async (userId: any) => {
+export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
   try {
     return await ProfessionalExperience.find({ userId: userId });
   } catch (error) {
@@ -103,7 +103,7 @@ export default {
   updateUser,
   deleteUser,
   loginUser,
-  getProfessionalExperienceByUserId,
+  getProfessionalExperiencesByUserId,
   createProfessionalExperience,
   updateProfessionalExperience,
   deleteProfessionalExperience
