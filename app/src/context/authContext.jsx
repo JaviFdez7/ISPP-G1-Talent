@@ -16,21 +16,19 @@ export function AuthContextProvider({ children }) {
 
   const [role, setRole] = useState(
     localStorage.getItem("role") ?? {
-      isCandidato: false,
+      isCandidate: false,
+      isRepresentative: false,
     }
   );
-  const { isCandidato } = role;
+  const { isCandidate } = role;
+  const { isRepresentative } = role;
 
-  const login = useCallback(function (
-    token_access,
-    token_refresh,
-    role
-  ) {
+  const login = useCallback(function (token_access, token_refresh, role) {
     localStorage.setItem("access_token", token_access);
     localStorage.setItem("refresh_token", token_refresh);
     localStorage.setItem("role", role);
     setIsAuthenticated(true);
-    setRole(role); 
+    setRole(role);
   }, []);
 
   const logout = useCallback(function () {
@@ -38,7 +36,7 @@ export function AuthContextProvider({ children }) {
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("role");
     setIsAuthenticated(false);
-    setRole({ isCandidato: false });
+    setRole({ isCandidate: false, isRepresentative: false });
   }, []);
 
   const value = useMemo(
@@ -46,9 +44,10 @@ export function AuthContextProvider({ children }) {
       isAuthenticated,
       login,
       logout,
-      isCandidato, 
+      isCandidate,
+      isRepresentative,
     }),
-    [isAuthenticated, login, logout, isCandidato]
+    [isAuthenticated, login, logout, isCandidate, isRepresentative]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

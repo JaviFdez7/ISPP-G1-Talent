@@ -25,7 +25,6 @@ import RepresentativeSubscription from "../pages/representative/RepresentativeSu
 import RepresentativeDetail from "../pages/representative/RepresentativeDetail.jsx";
 import RepresentativeDetailEdit from "../pages/representative/RepresentativeDetailEdit.jsx";
 
-
 //components
 import Navbar from "./Navbar";
 import { PlaceHolder } from "../pages/PlaceHolder.jsx";
@@ -34,7 +33,6 @@ import { PlaceHolder } from "../pages/PlaceHolder.jsx";
 import Login from "../pages/auth/Login.jsx";
 import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
 import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
-import Register from "../pages/auth/Register.jsx";
 import AnalysisDashboard from "../pages/AnalysisDashboard.jsx";
 import AnalysisAnalizer from "../pages/AnalysisAnalizer.jsx";
 
@@ -52,37 +50,96 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register/candidate" element={<RegisterCandidate />} />
-            <Route path="/register/representative" element={<RegisterRepresentative />} />
-            <Route path="/register" element={<Register />} />
+            <Route
+              path="/register/representative"
+              element={<RegisterRepresentative />}
+            />
             {/*RUTAS PRIVADAS */}
             {/*Analysis*/}
             <Route path="/analysis/analyze" element={<AnalysisAnalizer />} />
-            <Route path="/analysis/:analysisId" element={<AnalysisDashboard/>} />
-            <Route path="/analysis/history/:representativeId" element={<PlaceHolder pageName="analysis list" />} />
+            <Route
+              path="/analysis/:analysisId"
+              element={<AnalysisDashboard />}
+            />
+            <Route
+              path="/analysis/history/:representativeId"
+              element={<PlaceHolder pageName="analysis list" />}
+            />
             {/*Search*/}
-            <Route path="/searches/search" element={<PlaceHolder pageName="search list" />} />
-            <Route path="/searches/:searchId" element={<PlaceHolder pageName="search list" />} />
-            <Route path="/searches/history/:representativeId" element={<PlaceHolder pageName="search list" />} />
+            <Route
+              path="/searches/search"
+              element={<PlaceHolder pageName="search list" />}
+            />
+            <Route
+              path="/searches/:searchId"
+              element={<PlaceHolder pageName="search list" />}
+            />
+            <Route
+              path="/searches/history/:representativeId"
+              element={<PlaceHolder pageName="search list" />}
+            />
             {/*Subscription*/}
-            <Route path="/pricing" element={<PlaceHolder pageName="subscription" />} />
+            <Route
+              path="/pricing"
+              element={<PlaceHolder pageName="subscription" />}
+            />
             {/*<Route path="/pricing" element={<Pricing />} />*/}
 
             {/*RUTAS CANDIDATO */}
             <Route path="/candidate/detail" element={<CandidateDetail />} />
-            <Route path="/candidate/detail/edit" element={<CandidateDetailEdit />} />
-            <Route path="/candidate/analysis/detail" element={<CandidateAnalysisDetail />} />
-            <Route path="/candidate/developer/info/detail" element={<CandidateDeveloperInfoDetail />} />
-            <Route path="/candidate/developer/info/detail/edit" element={<CandidateDeveloperInfoDetailEdit />} />
-            <Route path="/candidate/laboral/detail" element={<CandidateLaboralDetail />} />
-            <Route path="/candidate/laboral/detail/edit" element={<CandidateLaboralDetailEdit />} />
-            <Route path="/candidate/notification/detail" element={<CandidateNotificationDetail />} />
-            <Route path="/candidate/representative/detail" element={<CandidateRepresentativeDetail />} />
-            <Route path="/candidate/subscription" element={<CandidateSubscription />} />
-            <Route path="/candidate/trends/detail" element={<CandidateTrendsDetail />} />
+            <Route
+              path="/candidate/detail/edit"
+              element={<CandidateDetailEdit />}
+            />
+            <Route
+              path="/candidate/analysis/detail"
+              element={<CandidateAnalysisDetail />}
+            />
+            <Route
+              path="/candidate/developer/info/detail"
+              element={<CandidateDeveloperInfoDetail />}
+            />
+            <Route
+              path="/candidate/developer/info/detail/edit"
+              element={<CandidateDeveloperInfoDetailEdit />}
+            />
+            <Route
+              path="/candidate/laboral/detail"
+              element={<CandidateLaboralDetail />}
+            />
+            <Route
+              path="/candidate/laboral/detail/edit"
+              element={<CandidateLaboralDetailEdit />}
+            />
+            <Route
+              path="/candidate/notification/detail"
+              element={<CandidateNotificationDetail />}
+            />
+            <Route
+              path="/candidate/representative/detail"
+              element={<CandidateRepresentativeDetail />}
+            />
+            <Route
+              path="/candidate/subscription"
+              element={<CandidateSubscription />}
+            />
+            <Route
+              path="/candidate/trends/detail"
+              element={<CandidateTrendsDetail />}
+            />
             {/*RUTAS REPRESENTANTE */}
-            <Route path="/representative/subscription" element={<RepresentativeSubscription />} />
-            <Route path="/representative/detail" element={<RepresentativeDetail />} />
-            <Route path="/representative/detail/edit" element={<RepresentativeDetailEdit />} />
+            <Route
+              path="/representative/subscription"
+              element={<RepresentativeSubscription />}
+            />
+            <Route
+              path="/representative/detail"
+              element={<RepresentativeDetail />}
+            />
+            <Route
+              path="/representative/detail/edit"
+              element={<RepresentativeDetailEdit />}
+            />
           </Routes>
         </Router>
       </AuthContextProvider>
