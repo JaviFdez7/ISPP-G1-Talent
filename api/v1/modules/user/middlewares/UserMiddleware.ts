@@ -52,8 +52,8 @@ export const checkCreateCandidate = async (data: any) => {
     }
 
     // Comprobar si el candidato ya existe
-    const existingUsername = await Candidate.findOne({ username: data.username });
-    const existingEmail = await Candidate.findOne({ email: data.email });
+    const existingUsername = await User.findOne({ username: data.username });
+    const existingEmail = await User.findOne({ email: data.email });
     const existingGithubUser = await Candidate.findOne({ githubUser: data.githubUser });
     if (existingUsername) {
       return 'Username already exists';
@@ -117,8 +117,8 @@ export const checkCreateRepresentative = async (data: any) => {
     }
 
     // Comprobar si el representante ya existe
-    const existingUsername = await Representative.findOne({ username: data.username });
-    const existingEmail = await Representative.findOne({ email: data.email });
+    const existingUsername = await User.findOne({ username: data.username });
+    const existingEmail = await User.findOne({ email: data.email });
     if (existingUsername) {
       return 'Username already exists';
     }

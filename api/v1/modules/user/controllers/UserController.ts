@@ -154,7 +154,7 @@ export const deleteUser: any = async (req: Request, res: Response) => {
   }
 };
 
-export const getProfessionalExperienceByUserId: any = async (req: Request, res: Response) => {
+export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
     const token = req.headers.authorization ?? '';
@@ -164,7 +164,7 @@ export const getProfessionalExperienceByUserId: any = async (req: Request, res: 
     }else if(check==='No token provided' || check==='Unauthorized'){
       res.status(401).send(check);
     }else{
-      const data = await UserService.getProfessionalExperienceByUserId(userId);
+      const data = await UserService.getProfessionalExperiencesByUserId(userId);
       res.status(200).send(data);
     }
   } catch (error: any) {
@@ -239,7 +239,7 @@ export default {
   updateRepresentative,
   deleteUser,
   loginUser,
-  getProfessionalExperienceByUserId,
+  getProfessionalExperiencesByUserId,
   createProfessionalExperience,
   updateProfessionalExperience,
   deleteProfessionalExperience

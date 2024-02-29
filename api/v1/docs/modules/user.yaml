@@ -97,15 +97,300 @@ paths:
           schema:
             $ref: '#/definitions/CandidateData'
       responses:
-        "201":
+        "200":
           description: Candidate created successfully
           content:
             application/json:
               schema:
                 $ref: '#/definitions/CandidateData'
-      
-      
+  /user/candidate/{id}:
+    patch:
+      tags:
+        - Candidate Update
+      summary: Update a candidate
+      description: Update the profile of candidate
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the user entry.
+        - name: candidate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/CandidateData'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+      responses:
+        "200":
+          description: Candidate update successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/CandidateData'
+
+  /user/representative:
+    post:
+      tags:
+        - 'Representative Update'
+      summary: Create a representative
+      description: Create a new user as a representative
+      parameters:
+        - name: representative
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RepresentativeData'
+      responses:
+        "200":
+          description: Representative created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/RepresentativeData'  
+  /user/representative/{id}:
+    patch:
+      tags:
+        - Representative Update
+      summary: Update a representative
+      description: Update the profile of representative
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the user entry.
+        - name: representative
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RepresentativeData'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+      responses:
+        "200":
+          description: Representative update successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/RepresentativeData'    
+  /user/{id}/experiences:
+    get:
+      tags:
+      - Professional Experience Read
+      summary: Get all professional experiences of user
+      description: Retrieves a list of professional experiences by the id of user.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the user entry.
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+      responses:
+        '200':
+          description: A list of professional experiences of user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/definitions/ProfessionalExperience'
+  /user/experience:
+    post:
+      tags:
+        - Professional Experience Create
+      summary: Create a professional experience
+      description: Create a new professional experience for a candidate
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ProfessionalExperience'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+      responses:
+        "200":
+          description: Professional experience created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProfessionalExperience'
+  
+  /user/experience/{id}:
+    patch:
+      tags:
+        - Professional Experience Update
+      summary: Update a professional experience
+      description: Update a new professional experience for a candidate
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ProfessionalExperience'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the professional experience entry.
+      responses:
+        "200":
+          description: Professional experience created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProfessionalExperience' 
+    delete:
+      tags:
+        - Professional Experience Delete
+      summary: Delete a professional experience
+      description: Delete a new professional experience for a candidate
+      parameters:
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the professional experience entry.
+      responses:
+        "204":
+          description: Professional experience delete successfully
 definitions:
+
+  ProfessionalExperience:
+    type: object
+    required:
+      - startDate
+      - companyName
+      - professionalArea
+      - userId
+    properties:
+      startDate:
+        type: date
+        required: true
+        description: The start date of the experience
+      endDate:
+        type: date
+        description: The end date of the experience
+      companyName:
+        type: string
+        required: true
+        description: The company of the experience
+      professionalArea:
+        type: string
+        required: true
+        enum:
+          - 'Web application'
+          - 'Mobile application'
+          - 'Frontend'
+          - 'DevOps'
+          - 'Backend'
+          - 'Operating systems'
+          - 'Data science'
+          - 'Artificial intelligence'
+          - 'Security'
+          - 'Other'
+        description: The professional area of the experience
+      lifestyle:
+        type: string
+        enum:
+          - 'On-site'
+          - 'Telematic'
+        description: The life style of the user of the user.
+      location:
+        type: string
+        description: The location of the experience
+      userId:
+        type: string
+        format: uuid
+        required: true
+        description: The userId of the experience
+
+  RepresentativeData:
+    type: object
+    required:
+      - username
+      - password
+      - email
+      - paymentMethods
+      - companyName
+      - companySubscription
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      password:
+        type: string
+        description: The password of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      companyName:
+        type: string
+        description: The company name of the representative.
+      companySubscription:
+        type: string
+        enum:
+          - 'Basic plan'
+          - 'Pro plan'
+          - 'Custom plan'
+        description: The subscription of the company.
+      projectSocietyName:
+        type: string
+        description: The project society name of teh representative.
+
+
   CandidateData:
     type: object
     required:
