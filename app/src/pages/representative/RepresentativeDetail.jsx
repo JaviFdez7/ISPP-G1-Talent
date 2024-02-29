@@ -1,7 +1,6 @@
 import React from "react";
 
 import Input from "../../components/Input";
-import InputList from "../../components/InputList";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
 import LatestHistory from "../../components/LatestHistory";

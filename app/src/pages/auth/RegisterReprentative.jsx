@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
+import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";

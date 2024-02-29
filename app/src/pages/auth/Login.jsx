@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
-import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
+import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 
 import { useAuthContext } from "../../context/authContext";
 

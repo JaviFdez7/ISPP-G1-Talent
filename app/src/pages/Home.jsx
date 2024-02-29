@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import mainBackground from "../images/main-background.jpg";
 import Typewriter from "../components/typewriter.jsx";
 import MainButton from "../components/mainButton.jsx";
@@ -7,11 +6,11 @@ import SecondaryButton from "../components/secondaryButton.jsx";
 
 export default function Home() {
   return (
-    <section
-      className="h-screen flex flex-col justify-center bg-fixed home-container"
-      style={{ backgroundImage: `url(${mainBackground})`, backgroundSize: "cover" }}
+    <div
+      className="flex flex-col justify-start bg-fixed home-container"
+      style={{ backgroundImage: `url(${mainBackground})`, backgroundSize: "cover"}}
     >
-      <div className="container mx-auto flex flex-col items-center text-center">
+      <div className="container mx-auto flex flex-col items-center text-center mt-20">
         <h1>
           <span className="blinker">| </span>
           <Typewriter text="Welcome to IT TALENT" delay={100} />
@@ -28,6 +27,6 @@ export default function Home() {
           {SecondaryButton("Log in", "/login", "")}
         </div>
       </div>
-    </section>
+    </div>
   );
 }
