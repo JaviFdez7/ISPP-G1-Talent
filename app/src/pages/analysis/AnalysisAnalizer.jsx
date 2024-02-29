@@ -5,6 +5,7 @@ import SecondaryButton from "../../components/secondaryButton.jsx";
 import Input from "../../components/Input"
 import InputList from "../../components/InputList"
 import '../../styles/palette.css';
+import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 
 export default function Analyzer() {
     const textColor =  'var(--talent-white-text)'
@@ -48,15 +49,25 @@ export default function Analyzer() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen" style={{backgroundColor: backgroundColor}}>
-      <div className="w-full max-w-5xl h-500 p-8 m-4 rounded shadow-md flex flex-col justify-between " 
-            style={{backgroundColor: boxColor, borderColor: borderColor, borderWidth:'1px'}}>
+    <div className="h-screen flex flex-col justify-center bg-fixed home-container"
+    style={{
+      backgroundImage: `url(${mainBackgroundRegisterLogin})`,
+      backgroundSize: "cover",
+    }}>
+      <div className="w-full max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between"
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          marginLeft: "100",
+          marginRight: "100",
+          borderColor: borderColor,
+          borderWidth: "1px",
+        }}>
         <div>
-          <h2 style={{ color: textColor, textAlign: 'center', fontSize: '2rem' }}>
+          <h2  className="text-3xl font-bold text-center mb-4 text-white">
             Enter the required data from the candidate you want to analyze and wait to get your results!
           </h2>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <div className="mb-4 flex items-center mt-10">
+            <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
                 <label
                     htmlFor="Name"
                     style={{ color: textColor, fontSize: '1.5rem', marginRight: '5rem', whiteSpace: 'nowrap' }} // Ajusta el valor aquí
@@ -77,7 +88,7 @@ export default function Analyzer() {
                 )}
                 </div>
 
-                <div className="mb-4 flex items-center mt-10">
+                <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
                 <label
                     htmlFor="GithubUser"
                     style={{ color:  textColor, fontSize: '1.5rem', marginRight: '1rem' , whiteSpace: 'nowrap' }}
@@ -98,7 +109,7 @@ export default function Analyzer() {
                 )}
                 </div>
 
-                <div className="mb-4 flex items-center mt-10">
+                <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
                 <label
                     htmlFor="GithubToken"
                     style={{ color: textColor, fontSize: '1.5rem', marginRight: '1.1rem' , whiteSpace: 'nowrap' }}
@@ -122,7 +133,7 @@ export default function Analyzer() {
                  Remember that the analyzed data will remain stored in the website. Be catious who you are analyzing and ensure you obtain their permission beforehand.
           </h2>
         </div>
-        <div className="flex ml-60 gap-60 mt-12">
+        <div className="flex ml-80 gap-60 mb-8">
           {MainButton("Analyze", "", "")}
           {SecondaryButton("Cancel", "", "")}
         

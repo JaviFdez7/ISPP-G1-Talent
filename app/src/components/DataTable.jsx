@@ -7,7 +7,7 @@ export default function DataTable({ header, contentArray }) {
     const tableHeaderColor = '#1F1F1F'
     const cellPadding = '8px';
     const cellWidth = '250px';
-    const borderWidth = '2px';
+    const borderWidth = '3px';
 
     return (
         <div className="mt-4">
