@@ -1,0 +1,84 @@
+swagger: "3.0.0"
+info:
+  version: 1.0.0
+  title: IT Talent API - History Module
+paths:
+  /history:
+    get:
+      summary: Obtener historial
+      description: Obtiene el historial completo
+      responses:
+        200:
+          description: Éxito
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/HistoryItem"
+    post:
+      summary: Crear entrada en el historial
+      description: Crea una nueva entrada en el historial
+      parameters:
+        - name: body
+          in: body
+          description: Objeto de entrada en el historial
+          required: true
+          schema:
+            $ref: "#/definitions/HistoryItem"
+      responses:
+        201:
+          description: Creado
+    /{id}:
+      get:
+        summary: Obtener entrada del historial por ID
+        description: Obtiene una entrada específica del historial por su ID
+        parameters:
+          - name: id
+            in: path
+            description: ID de la entrada del historial
+            required: true
+            type: string
+        responses:
+          200:
+            description: Éxito
+            schema:
+              $ref: "#/definitions/HistoryItem"
+      put:
+        summary: Actualizar entrada del historial
+        description: Actualiza una entrada específica del historial
+        parameters:
+          - name: id
+            in: path
+            description: ID de la entrada del historial
+            required: true
+            type: string
+          - name: body
+            in: body
+            description: Objeto de entrada en el historial
+            required: true
+            schema:
+              $ref: "#/definitions/HistoryItem"
+        responses:
+          200:
+            description: Éxito
+      delete:
+        summary: Eliminar entrada del historial
+        description: Elimina una entrada específica del historial
+        parameters:
+          - name: id
+            in: path
+            description: ID de la entrada del historial
+            required: true
+            type: string
+        responses:
+          204:
+            description: Sin contenido
+definitions:
+  HistoryItem:
+    type: object
+    properties:
+      id:
+        type: string
+      timestamp:
+        type: string
+      description:
+        type: string

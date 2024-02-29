@@ -32,6 +32,7 @@ app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //  Modules Routes ----------------------------------------------
 app.use(AnalysisRouter);
 app.use(UserRouter);
+app.use(HistoryRouter)
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {
