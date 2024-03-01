@@ -2,7 +2,7 @@ import { History } from '../models/history';
 // Default service functions
 export const getHistoryFromUser: any = async (userId: string) => {
   try {
-    const history = await History.find({}).where('userId').equals(userId).sort({ date: 1 });
+    const history = await History.find({userId: userId }).sort({ date: 1 });
     return history;
   } catch (error) {
     console.error('Error getting history:', error);
@@ -24,6 +24,7 @@ export const createHistory: any = async (data: any) => {
   try {
     const history = new History(data);
     history.date = new Date();
+    history.favorite = false;
     await history.save()
     return history;
   } catch (error) {

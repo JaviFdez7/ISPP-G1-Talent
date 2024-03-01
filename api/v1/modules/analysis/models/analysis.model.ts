@@ -21,6 +21,7 @@ export interface Analysis {
     forks: number;
   }>;
 }
+
 // 2. Create a Schema corresponding to the document interface.
 const analysisSchema = new Schema<Analysis>({
   githubUsername: { type: String, required: true, unique: true },
