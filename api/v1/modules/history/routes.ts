@@ -13,10 +13,10 @@ import { checkDeleteHistory } from './validators/HistoryMiddleware';
 const router = express.Router();
 
 // Define routes for the History module
-router.get('/', getHistoryFromUser);
+router.get('/', getHistoryFromUser);//X
 router.get('/favorites', getFavoritesFromUser);
-router.post('/', createHistory);
-router.patch('/:id', markAsFavorite);
+router.post('/', createHistory);//X
+router.patch('/:id/favorite', markAsFavorite);
 router.patch('/:id', updateHistory);
 router.delete('/:id', checkDeleteHistory, deleteHistory);
 

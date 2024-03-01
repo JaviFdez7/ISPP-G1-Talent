@@ -3,6 +3,6 @@ import History from './routes';
 
 const router = express.Router();
 
-router.use('/v1/history', History);
+router.use('/history', History);
 
 export default router;

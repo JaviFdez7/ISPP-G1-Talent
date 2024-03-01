@@ -5,80 +5,124 @@ info:
 paths:
   /history:
     get:
-      summary: Obtener historial
-      description: Obtiene el historial completo
+      tags:
+        - Read All
+      summary: Get history from user
+      description: Get the complete history of a representative
       responses:
         200:
-          description: Éxito
+          description: ºSuccess
           schema:
             type: array
             items:
               $ref: "#/definitions/HistoryItem"
     post:
-      summary: Crear entrada en el historial
-      description: Crea una nueva entrada en el historial
+      tags:
+        - Create
+      summary: Create history entry
+      description: Create a new entry in the history of a representative
       parameters:
         - name: body
           in: body
-          description: Objeto de entrada en el historial
+          description: History entry object
           required: true
           schema:
             $ref: "#/definitions/HistoryItem"
       responses:
         201:
-          description: Creado
-    /{id}:
+          description: Created
+  /history/{id}:
       get:
-        summary: Obtener entrada del historial por ID
-        description: Obtiene una entrada específica del historial por su ID
+        tags:
+          - Read
+        summary: Get history entry by ID
+        description: Get a specific history entry by its ID
         parameters:
           - name: id
             in: path
-            description: ID de la entrada del historial
+            description: ID of the history entry
             required: true
             type: string
         responses:
           200:
-            description: Éxito
+            description: Success
             schema:
               $ref: "#/definitions/HistoryItem"
-      put:
-        summary: Actualizar entrada del historial
-        description: Actualiza una entrada específica del historial
+      patch:
+        tags:
+          - Update
+        summary: Update history entry
+        description: Update a specific history entry
         parameters:
           - name: id
             in: path
-            description: ID de la entrada del historial
+            description: ID of the history entry
             required: true
             type: string
           - name: body
             in: body
-            description: Objeto de entrada en el historial
+            description: History entry object
             required: true
             schema:
               $ref: "#/definitions/HistoryItem"
         responses:
           200:
-            description: Éxito
+            description: Success
       delete:
-        summary: Eliminar entrada del historial
-        description: Elimina una entrada específica del historial
+        tags:
+          - Delete
+        summary: Delete history entry
+        description: Delete a specific history entry
         parameters:
           - name: id
             in: path
-            description: ID de la entrada del historial
+            description: ID of the history entry
             required: true
             type: string
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
         responses:
           204:
-            description: Sin contenido
+            description: No content
+  /history/favorites:
+    patch:
+        tags:
+          - Update
+        summary: Update 
+        description: Update a specific history entry
+        parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: body
+            in: body
+            description: History entry object
+            required: true
+            schema:
+              $ref: "#/definitions/HistoryItem"
+        responses:
+          200:
+            description: Success
 definitions:
   HistoryItem:
     type: object
     properties:
       id:
         type: string
-      timestamp:
-        type: string
-      description:
-        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the history item.
+      date:
+        type: date
+        required: true
+        description: The acquisition date the history item.
+      favorite:
+        type: boolean
+        required: true
+        description: The state of the history item
