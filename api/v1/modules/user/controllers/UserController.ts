@@ -56,8 +56,8 @@ export const createRepresentative: any = async (req: Request, res: Response) => 
     const check = await UserMiddleware.checkCreateRepresentative(req.body);
     if (check === 'Missing required fields') {
       res.status(400).send(check);
-    } else if (check === 'Username already exists' || check === 'User with that email already exists') {
-      res.status(409).send(check);
+    } else if (check?.existingUsername === 'Username already exists' || check?.existingEmail === 'User with that email already exists') {
+      res.status(409).json(check);//llamar como json
     } else {
       const role: string = 'Representative';
       const data = await UserService.createUser(req.body, role);

@@ -4,36 +4,36 @@ import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
 import LatestHistory from "../../components/LatestHistory";
+import MainButton from "../../components/mainButton";
 
 export default function RepresentativeDetail() {
-
   function getAnalysisHistory() {
     //TODO fetch real de historiales
     const analysisHistory1 = {
       id: 1,
       date: new Date("2024-02-28"),
-      name: "Analysis 1"
+      name: "Analysis 1",
     };
-  
+
     const analysisHistory2 = {
       id: 2,
       date: new Date("2024-02-25"),
-      name: "Analysis 2"
+      name: "Analysis 2",
     };
-  
+
     const analysisHistory3 = {
       id: 3,
       date: new Date("2024-02-27"),
-      name: "Analysis 3"
+      name: "Analysis 3",
     };
 
     const analysisList = [analysisHistory1, analysisHistory2, analysisHistory3];
     analysisList.sort((a, b) => b.date - a.date);
-  
-    return analysisList.map(history => ({
+
+    return analysisList.map((history) => ({
       id: history.id,
       date: history.date.toString(),
-      name: history.name
+      name: history.name,
     }));
   }
 
@@ -42,16 +42,16 @@ export default function RepresentativeDetail() {
     const searchHistory1 = {
       id: 1,
       date: new Date("2024-02-28"),
-      name: "Search 1"
+      name: "Search 1",
     };
-    
+
     const searchList = [searchHistory1];
     searchList.sort((a, b) => b.date - a.date);
-  
-    return searchList.map(history => ({
+
+    return searchList.map((history) => ({
       id: history.id,
       date: history.date.toString(),
-      name: history.name
+      name: history.name,
     }));
   }
 
@@ -85,6 +85,13 @@ export default function RepresentativeDetail() {
             {Input("Corporative Email", "fujitora2@gmail.com")}
             {Input("Address", "False Street")}
           </div>
+          <div
+            className="flex flex-col"
+            style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
+          >
+              {MainButton("Update", "", "")}
+              {MainButton("Delete", "", "")}
+          </div>
         </div>
       </div>
       <br></br>
@@ -94,8 +101,18 @@ export default function RepresentativeDetail() {
       <br></br>
       <br></br>
       <div className="flex flex-row justify-center">
-        <LatestHistory header="Latest Analysis" data={getAnalysisHistory()} type="analysis" representativeId="1"/>
-        <LatestHistory header="Latest Search" data={getSearchHistory()} type="searches" representativeId="1"/>
+        <LatestHistory
+          header="Latest Analysis"
+          data={getAnalysisHistory()}
+          type="analysis"
+          representativeId="1"
+        />
+        <LatestHistory
+          header="Latest Search"
+          data={getSearchHistory()}
+          type="searches"
+          representativeId="1"
+        />
       </div>
     </div>
   );

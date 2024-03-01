@@ -14,8 +14,8 @@ export default function Login() {
   const [form, setForm] = useState({
     username: "",
     password: "",
+    
   });
-
   const [errors, setErrors] = useState({});
 
   const { username, password } = form;
@@ -30,7 +30,7 @@ export default function Login() {
 
   //6)crear la funcion que se encargara de llamar al endpoint de login
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault();    
     const response = await fetch("http://localhost:3000/api/v1/user/login", {
       method: "POST",
       headers: {
