@@ -1,0 +1,32 @@
+
+.datatable-container {
+    backdrop-filter: blur(8px);
+}
+.datatable-body {
+    background-color: var(--talent-dark-background);
+}
+.datatable-header {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    background-color: var(--talent-light-background);
+    border-top: 10px solid var(--talent-secondary);
+}
+.datatable-header-text {
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.datatable-container * th {
+    color: white;   
+}
+.datatable-container * td {
+    color: white;
+}
+
+.edit-button {
+    background-color: var(--talent-secondary);
+    position: fixed;
+    right: 5%;
+}

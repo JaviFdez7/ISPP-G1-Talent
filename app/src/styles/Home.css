@@ -1,6 +1,13 @@
 
+.home-container {
+    @media (max-width : 770px) {
+        height: fit-content;
+    }
+    height: 100vh;
+}
+
 .home-container * h1 {
-    font-size: 120px;
+    font-size: 100px;
     color: white;
     font-family: "Jost";
     padding: 40px;

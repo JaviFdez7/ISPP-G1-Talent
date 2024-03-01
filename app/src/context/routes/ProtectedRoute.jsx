@@ -3,9 +3,9 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useAuthContext } from "../authContext";
 
 export default function ProtectedRoute() {
-    const { isAuthenticated, /*isCaptain, isSupervisor */ } = useAuthContext();
+    const { isAuthenticated, isCandidate, isRepresentative } = useAuthContext();
 
-    if (!isAuthenticated && localStorage.getItem("role") !== "candidato"
+    if (!isAuthenticated  /*localStorage.getItem("role") !== "captain"*/
         ) {
         return <Navigate to={"/"} />;
       }
