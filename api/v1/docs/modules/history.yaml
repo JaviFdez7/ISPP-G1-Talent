@@ -6,7 +6,7 @@ paths:
   /history:
     get:
       tags:
-        - Read
+        - Histories Read
       summary: Get history from user
       description: Get the complete history of a representative
       parameters:
@@ -25,7 +25,7 @@ paths:
               $ref: "#/definitions/HistoryItem"
     post:
       tags:
-        - Create
+        - Histories Create
       summary: Create history entry
       description: Create a new entry in the history of a representative
       parameters:
@@ -41,25 +41,9 @@ paths:
           schema:
             $ref: "#/definitions/HistoryItem"
   /history/{id}:
-      get:
-        tags:
-          - Read
-        summary: Get history entry by ID
-        description: Get a specific history entry by its ID
-        parameters:
-          - name: id
-            in: path
-            description: ID of the history entry
-            required: true
-            type: string
-        responses:
-          200:
-            description: Success
-            schema:
-              $ref: "#/definitions/HistoryItem"
       patch:
         tags:
-          - Update
+          - Histories Update
         summary: Update history entry
         description: Update a specific history entry
         parameters:
@@ -79,7 +63,7 @@ paths:
             description: Success
       delete:
         tags:
-          - Delete
+          - Histories Delete
         summary: Delete history entry
         description: Delete a specific history entry
         parameters:
@@ -100,7 +84,7 @@ paths:
   /history/{id}/favorite:
     patch:
       tags:
-          - Update
+          - Histories Update
       summary: Update the state of the history
       description: Update the state of the history
       parameters:
@@ -117,9 +101,16 @@ paths:
   /history/favorites:
     get:
         tags:
-          - Read
+          - Histories Read
         summary: List all the favorite history of the user 
-        description: List all the favorite history of the user 
+        description: List all the favorite history of the user
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
         responses:
           200:
             description: Success
@@ -129,9 +120,16 @@ paths:
   /history/not_favorites:
     get:
         tags:
-          - Read
+          - Histories Read
         summary: List all the not favorite history of the user 
         description: List all the not favorite history of the user 
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
         responses:
           200:
             description: Success
