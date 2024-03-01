@@ -40,7 +40,7 @@ export default function AnalysisDashboard() {
                              Top recent Repositories
                              
                         </h6>
-                        <div className="flex flex-row  items-berween ml-16 mb-10  ">
+                        <div className="flex flex-row  items-berween ml-16 mb-10 mx-5  ">
                             <DataTable header={'Name'} contentArray={['TODO','TODO']} />
                             <DataTable header={'URL'} contentArray={['TODO.COM', 'TODO.COM']} />
                             <DataTable header={'Stars'} contentArray={['5', '3']} />
