@@ -31,6 +31,8 @@ paths:
       responses:
         201:
           description: Created
+          schema:
+            $ref: "#/definitions/HistoryItem"
   /history/{id}:
       get:
         tags:
@@ -88,27 +90,41 @@ paths:
         responses:
           204:
             description: No content
-  /history/favorites:
+  /history/{id}/favorite:
     patch:
-        tags:
+      tags:
           - Update
-        summary: Update 
-        description: Update a specific history entry
+        summary: Update the state of the history
+        description: Update the state of the history
         parameters:
           - name: id
             in: path
             description: ID of the history entry
             required: true
             type: string
-          - name: body
-            in: body
-            description: History entry object
-            required: true
-            schema:
-              $ref: "#/definitions/HistoryItem"
         responses:
           200:
             description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
+  /history/{favorite}:
+    get:
+        tags:
+          - Read
+        summary: List all the history of the user by the favorite state selected
+        description: List all the history of the user by the favorite state selected
+        parameters:
+          - name: favorite
+            in: path
+            schema:
+              type: boolean
+              required: true
+              description: Its the state.
+        responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
 definitions:
   HistoryItem:
     type: object
