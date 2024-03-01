@@ -6,9 +6,16 @@ paths:
   /history:
     get:
       tags:
-        - Read All
+        - Read
       summary: Get history from user
       description: Get the complete history of a representative
+      parameters:
+      - name: authorization
+        in: header
+        schema:
+          type: string
+          required: true
+          description: Its the token of authentication.
       responses:
         200:
           description: ºSuccess
@@ -94,32 +101,37 @@ paths:
     patch:
       tags:
           - Update
-        summary: Update the state of the history
-        description: Update the state of the history
-        parameters:
+      summary: Update the state of the history
+      description: Update the state of the history
+      parameters:
           - name: id
             in: path
             description: ID of the history entry
             required: true
             type: string
+      responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
+  /history/favorites:
+    get:
+        tags:
+          - Read
+        summary: List all the favorite history of the user 
+        description: List all the favorite history of the user 
         responses:
           200:
             description: Success
             schema:
               $ref: "#/definitions/HistoryItem"
-  /history/{favorite}:
+
+  /history/not_favorites:
     get:
         tags:
           - Read
-        summary: List all the history of the user by the favorite state selected
-        description: List all the history of the user by the favorite state selected
-        parameters:
-          - name: favorite
-            in: path
-            schema:
-              type: boolean
-              required: true
-              description: Its the state.
+        summary: List all the not favorite history of the user 
+        description: List all the not favorite history of the user 
         responses:
           200:
             description: Success
@@ -129,16 +141,21 @@ definitions:
   HistoryItem:
     type: object
     properties:
-      id:
-        type: string
-        format: uuiid
-        required: true
-        description: The unique identifier for the history item.
       date:
-        type: date
+        type: string
         required: true
         description: The acquisition date the history item.
       favorite:
         type: boolean
         required: true
         description: The state of the history item
+      userId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the user.
+      analysisId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the analysis.

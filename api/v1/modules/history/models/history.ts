@@ -7,7 +7,7 @@ const historySchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 
   // Id of the analysys
-  analisysId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
 
   // Date of the request
   date: { type: Date, required: true },
