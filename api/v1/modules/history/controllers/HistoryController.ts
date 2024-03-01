@@ -15,10 +15,9 @@ export const getHistoryFromUser: any = async (req: Request, res: Response) => {
     res.status(500).send(error.message);
   }
 };
-export const getHistoryFromUserByFavoriteState: any = async (req: Request, res: Response) => {
+export const getNotFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {
-    const state=req.params.favorite;
-    const data = await HistoryService.getHistoryFromUserByFavoriteState(state);
+    const data = await HistoryService.getNotFavoritesFromUser();
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -82,7 +81,7 @@ export const deleteHistory: any = async (req: Request, res: Response) => {
 };
 export default {
   getHistoryFromUser,
-  getHistoryFromUserByFavoriteState,
+  getNotFavoritesFromUser,
   createHistory,
   updateHistory,
   deleteHistory,

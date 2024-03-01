@@ -10,9 +10,9 @@ export const getHistoryFromUser: any = async (userId: string) => {
   }
 };
 
-export const getHistoryFromUserByFavoriteState: any = async (userId: string,state: Boolean) => {
+export const getNotFavoritesFromUser: any = async (userId: string) => {
   try {
-    const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(state);
+    const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(false);
     return history;
   } catch (error) {
     console.error('Error getting history:', error);
@@ -80,7 +80,7 @@ export const deleteHistory: any = async (id: any) => {
 export default {
   getHistoryFromUser,
   getFavoritesFromUser,
-  getHistoryFromUserByFavoriteState,
+  getNotFavoritesFromUser,
   createHistory,
   toggleFavorite,
   updateHistory,
