@@ -95,6 +95,8 @@ export default function RegisterRepresentative() {
           marginLeft: "auto",
           marginRight: "auto",
           borderColor: "#d4983d",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+          backdropFilter: "blur(8px)",
           borderWidth: "1px",
         }}
       >
@@ -244,10 +246,26 @@ export default function RegisterRepresentative() {
 
 
           <div
-            className="flex space-x-24 mt-10 m-auto"
+            className="flex-row space-x-24 m-auto"
           >
-            {MainButton("Register", "", "")}
-            {SecondaryButton("Log in", "/login", "")}
+            <div
+              className="flex items-center justify-center h-full"
+              style={{ marginTop: "2rem" }}
+            >
+              <p className="text-md text-white mb-1 mr-2 text-center">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-blue-500 hover:text-blue-700"
+                  style={{ marginRight: "2rem" }}
+                >
+                  Log in now
+                </Link>
+              </p>
+            </div>
+            <div className="mt-4">
+              {MainButton("Register", "", "")}
+            </div>
           </div>
 
         </form>

@@ -3,8 +3,58 @@ import React from "react";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
+import LatestHistory from "../../components/LatestHistory";
 
 export default function RepresentativeDetail() {
+
+  function getAnalysisHistory() {
+    //TODO fetch real de historiales
+    const analysisHistory1 = {
+      id: 1,
+      date: new Date("2024-02-28"),
+      name: "Analysis 1"
+    };
+  
+    const analysisHistory2 = {
+      id: 2,
+      date: new Date("2024-02-25"),
+      name: "Analysis 2"
+    };
+  
+    const analysisHistory3 = {
+      id: 3,
+      date: new Date("2024-02-27"),
+      name: "Analysis 3"
+    };
+
+    const analysisList = [analysisHistory1, analysisHistory2, analysisHistory3];
+    analysisList.sort((a, b) => b.date - a.date);
+  
+    return analysisList.map(history => ({
+      id: history.id,
+      date: history.date.toString(),
+      name: history.name
+    }));
+  }
+
+  function getSearchHistory() {
+    //TODO fetch real de historiales
+    const searchHistory1 = {
+      id: 1,
+      date: new Date("2024-02-28"),
+      name: "Search 1"
+    };
+    
+    const searchList = [searchHistory1];
+    searchList.sort((a, b) => b.date - a.date);
+  
+    return searchList.map(history => ({
+      id: history.id,
+      date: history.date.toString(),
+      name: history.name
+    }));
+  }
+
   return (
     <div
       className="flex flex-col"
@@ -21,11 +71,8 @@ export default function RepresentativeDetail() {
           <img
             src={profile}
             className="rounded-full border border-gray-300 mb-4"
-            style={{ width: "15vw", height: "30vh" }}
+            style={{ width: "25vw", height: "50vh" }}
           />
-          <button className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            Change Photo
-          </button>
         </div>
         <div
           className="flex flex-col"
@@ -41,20 +88,14 @@ export default function RepresentativeDetail() {
         </div>
       </div>
       <br></br>
-      <h3 className="profile-title">Developer info</h3>
+      <h3 className="profile-title">Latest Actions</h3>
       <hr className="w-5/12 self-center"></hr>
       <br></br>
       <br></br>
       <br></br>
       <div className="flex flex-row justify-center">
-        <div className="flex flex-col w-5/12 p-20">
-        </div>
-        <div className="flex flex-col w-5/12 p-20">
-          {Input("Preferences", "Work from home")}
-          <br></br>
-          {Input("Github username", "martinnez123")}
-          <br></br>
-        </div>
+        <LatestHistory header="Latest Analysis" data={getAnalysisHistory()} type="analysis" representativeId="1"/>
+        <LatestHistory header="Latest Search" data={getSearchHistory()} type="searches" representativeId="1"/>
       </div>
     </div>
   );
