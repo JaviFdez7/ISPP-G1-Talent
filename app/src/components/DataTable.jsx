@@ -3,7 +3,7 @@ import MainButton from "./mainButton";
 import { Link } from "react-router-dom";
 
 export default function DataTable({ header, contentArray, editable=false, addLink, editLink }) {
-    const cellHeight = '70px';
+    const cellHeight = '100px';
     const minCellWidth = '142px';
 
 
@@ -38,9 +38,9 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                 <tbody className="datatable-body ">
                     {contentArray.map((item, index) => (
                         <tr key={index}>
-                            <td className="datatable-cell  " style={{height: cellHeight}}>
+                            <td className="datatable-cell " style={{height: cellHeight}}>
                                 <br></br>
-                                <div style={{paddingBottom: "10px", paddingLeft: "0px"}}>
+                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "0px"}}>
                                     {item}
                                     {editable && (
                                     <Link to={editLink + "/" + index} className="edit-button">

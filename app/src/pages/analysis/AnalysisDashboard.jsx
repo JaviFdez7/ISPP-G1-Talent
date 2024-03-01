@@ -38,14 +38,14 @@ export default function AnalysisDashboard() {
             .then(data => {
                 const newArray = data
                 setDataArray(newArray);
-                console.log(newArray.githubUsername);
             })
             .catch(error => {
                 // Manejar el error si ocurre
             });
     }, [analysisId]);
 
-    const languages = dataArray.topLanguages ? dataArray.topLanguages.map(item => item.language) : [];
+    const languages = dataArray.globalTopLanguages ? dataArray.globalTopLanguages.map(item => item) : [];
+    const tecnologies = dataArray.globalTechnologies ? dataArray.globalTechnologies.map(item => item) : [];
 
 
 
@@ -74,7 +74,6 @@ export default function AnalysisDashboard() {
                         marginRight: "100",
                         borderColor: borderColor,
                         borderWidth: "1px",
-                        maxHeight: "80vh",
                         }}>
                         <h6  className="text-3xl font-bold text-center text-white mt-5 mb-5  ">
                              GitHub Statistics
@@ -82,15 +81,22 @@ export default function AnalysisDashboard() {
                         </h6>
                         <div className="flex flex-row  items-center ml-16 mb-10  ">
                             <DataTable header={'Follorwers'} contentArray={[dataArray.followers]} />
-                            <DataTable header={'Commits'} contentArray=
-                                {dataArray && dataArray.contributions ? [dataArray.contributions.totalCommits] : []} />
+                            <DataTable header={'Commits'} contentArray={
+                                dataArray && dataArray.contributions ? [dataArray.contributions.totalCommits] : []
+                                } />
                             <DataTable header={'Pull Requests'} 
-                                contentArray={dataArray && dataArray.contributions ? [dataArray.contributions.totalPullRequests] : []} />
+                                contentArray={dataArray && dataArray.contributions ? [dataArray.contributions.totalPullRequests] : []
+                                } />
                         </div>
-                        <div className="flex flex-row  items-center  mx-auto  mb-5 ml-18  ">
-                            <DataTable header={'Commit Contributions'} contentArray={['5.000']} />
-                            
-                            <DataTable header={'Pull Requests Contributions'} contentArray={['49']} />
+                        <div className="flex flex-row  items-center   mx-auto  mb-10 ml-18  ">
+                            <DataTable header={'Repositories Contributes with Commits'} contentArray={
+                                dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithCommits ] : []
+                            } />
+                        </div>
+                        <div className="flex flex-row  items-center  mx-auto  mb-10 ml-18  ">
+                            <DataTable header={'Repositories Contributes with Pull Requests'} contentArray={
+                                dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithPullRequests ] : []
+                            } />
                         </div>
                         <Link to={`/analysis/${analysisId}/repositories`} className="text-white">
                             <h6 className="text-2xl text-center text-white mb-10">
@@ -98,6 +104,7 @@ export default function AnalysisDashboard() {
                             </h6>
                         </Link>
                     </div>
+                    
 
                     <div className="w-full max-w-6xl  h-100 p-1  rounded shadow-md flex flex-col justify-between mt-10 mb-10 ml-10 mr-10"
                         style={{
@@ -110,11 +117,10 @@ export default function AnalysisDashboard() {
                         <h6  className="text-3xl font-bold text-center  text-white  mt-5 mb-5">
                              Experience
                         </h6>
-                        <div className="flex flex-row items-between  ml-16 ">
+                        <div className="flex flex-row items-between  ml-16 mb-10 ">
                             <DataTable header={'Top 5 Used Languages'} contentArray={languages} />
                             <div className="mr-20 "> </div> 
-                            <DataTable header={'Used Tecnologies'} contentArray={['TODO','TODO','TODO',
-                        'TODO','TODO','TODO','TODO','TODO','TODO','TODO','TODO','TODO']} />
+                            <DataTable header={'Used Tecnologies'} contentArray={tecnologies} />
                         </div>
                         <div className="mb-10 "> </div> 
                         

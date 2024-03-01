@@ -59,14 +59,18 @@ export default function AnalysisDashboard() {
                         borderWidth: "1px",
                         maxHeight: "80vh",
                         }}>
-                        <h6  className="text-3xl font-bold text-center text-white -5 mb-5  ">
+                        <h6  className="text-3xl font-bold text-center text-white -5 mb-5  " >
                             Analysis Listing
                              
                         </h6>
                         
                         {dataArray.map((item, index) => (
                             <div key={index} style={{ padding: '0 90px' }}>
-                                <Link style={{ borderTop: '1px solid orange', display: 'block' }} to={`/analysis/${item}`} className="text-white">
+                                <Link 
+                                    style={{ borderTop: index !== 0 ? '1px solid orange' : 'none', display: 'block' }} 
+                                    to={`/analysis/${item}`} 
+                                    className="text-white"
+                                >
                                     <h6 className="text-2xl text-center text-white mb-5 mt-5">
                                         {item}
                                     </h6>

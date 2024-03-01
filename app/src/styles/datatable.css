@@ -1,9 +1,13 @@
 
 .datatable-container {
+
     backdrop-filter: blur(8px);
 }
+
 .datatable-body {
     background-color: var(--talent-dark-background);
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: auto;
 }
 .datatable-header {
     display: flex;

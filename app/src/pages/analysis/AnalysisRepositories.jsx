@@ -4,6 +4,8 @@ import MainButton from "../../components/mainButton.jsx";
 import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 
 export default function AnalysisDashboard() {
@@ -13,6 +15,40 @@ export default function AnalysisDashboard() {
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
 
+
+    const [dataArray, setDataArray] = useState([]);
+
+    const apiURL = "http://localhost:3000";
+
+    async function fetchDataFromEndpoint(analysisEndPoint) {
+        try {
+            const response = await axios.get(apiURL + analysisEndPoint);
+            return response.data;
+        } catch (error) {
+            console.error("Error al llamar al endpoint:", error);
+            throw error;
+        }
+    }
+
+    useEffect(() => {
+        fetchDataFromEndpoint("/analysis/github/"+analysisId)
+            .then(data => {
+                const newArray = data
+                setDataArray(newArray);
+            })
+            .catch(error => {
+                // Manejar el error si ocurre
+            });
+    }, [analysisId]);
+
+    const names = dataArray.topRepositories ? dataArray.topRepositories.map(item => item.name) : [];
+    const urls = dataArray.topRepositories ? dataArray.topRepositories.map(item => item.url) : [];
+    const stars = dataArray.topRepositories ? dataArray.topRepositories.map(item => item.stars) : [];
+    const forks = dataArray.topRepositories ? dataArray.topRepositories.map(item => item.forks) : [];
+    const languages = dataArray.topRepositories 
+     ? dataArray.topRepositories.map(item => item.languages.join(', ')) : [];
+    const technologies = dataArray.topRepositories 
+     ? dataArray.topRepositories.map(item => item.technologies.join(', ')) : [];
 
     return (
         <section className="text-white body-font h-screen flex items-center justify-center"
@@ -33,19 +69,19 @@ export default function AnalysisDashboard() {
                         marginRight: "100",
                         borderColor: borderColor,
                         borderWidth: "1px",
-                        maxHeight: "80vh",
+               
                         }}>
                         <h6  className="text-3xl font-bold text-center text-white mt-5 mb-5  ">
                              Top recent Repositories
                              
                         </h6>
-                        <div className="flex flex-row  items-berween ml-16 mb-10 mx-5  ">
-                            <DataTable header={'Name'} contentArray={['TODO','TODO']} />
-                            <DataTable header={'URL'} contentArray={['TODO.COM', 'TODO.COM']} />
-                            <DataTable header={'Stars'} contentArray={['5', '3']} />
-                            <DataTable header={'Forks'} contentArray={['6','9']} />
-                            <DataTable header={'Top 3 languajes'} contentArray={['TODO,TODO,TODO', 'TODO,TODO,TODO']} />
-                            <DataTable header={'Technologies'} contentArray={['TODO,TODO,TODO,TODO', 'TODO,TODO,TODO,TODO, TODO, TODO']} />
+                        <div className="flex flex-row items-berween ml-5 mb-10 mx-5  ">
+                            <DataTable header={'Name'} contentArray={names} />
+                            <DataTable header={'Stars'} contentArray={stars} />
+                            <DataTable header={'Forks'} contentArray={forks} />
+                            <DataTable header={'URL'} contentArray={urls} />
+                            <DataTable header={'Languajes'} contentArray={languages} />
+                            <DataTable header={'Technologies'} contentArray={technologies} />
                         </div>
                         
                     </div>
