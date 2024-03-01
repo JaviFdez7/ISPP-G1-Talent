@@ -16,6 +16,7 @@ export default function RegisterCandidate() {
     password2: "",
     phone_number: "",
     github_username: "",
+    candidateSubscription: "Basic plan",
   });
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -33,6 +34,7 @@ export default function RegisterCandidate() {
     password2,
     phone_number,
     github_username,
+    candidateSubscription,
   } = form;
 
   //4)creamos la funcion que se encargara de actualizar el estado del formulario
@@ -70,7 +72,6 @@ export default function RegisterCandidate() {
     }
 
     try {
-      console.log(import.meta.env.VITE_BACKEND_URL);
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/candidate",
         {
@@ -80,23 +81,18 @@ export default function RegisterCandidate() {
           githubUser: form.github_username,
         }
       );
-      console.log(response);
       if (response.status === 400) {
         const data = response.data;
         setErrors(data);
         return;
       }
-
       setIsCheckboxChecked(false);
       navigate("/candidate/detail");
-      console.log("Registro exitoso. Redirigiendo a /candidate/detail");
     } catch (error) {
-        if (error.response.status === 409) {
-          setErrors(error.response.data);
-          return;
-        }
-
-      // Maneja el error según sea necesario
+      if (error.response.status === 409) {
+        setErrors(error.response.data);
+        return;
+      }
     }
   }
 
@@ -119,8 +115,14 @@ export default function RegisterCandidate() {
     ) {
       errors.email = "The email field must be from Gmail, Outlook or Hotmail";
     }
-    if (form.password !== form.password2) {
+    if (!form.password) {
+      errors.password = "The password field is required";
+    } else if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
+    }
+
+    if (!form.password2) {
+      errors.password2 = "The repeat password field is required";
     }
     if (!form.github_username) {
       errors.github_username = "The github_username field is required";
@@ -175,12 +177,20 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
+        {errors.existingUsername && (
+          <p className="text-red-500">{errors.existingUsername}</p>
+        )}
+        {errors.existingEmail && (
+          <p className="text-red-500">{errors.existingEmail}</p>
+        )}
+        {errors.existingGithubUser && (
+          <p className="text-red-500">{errors.existingGithubUser}</p>
+        )}
 
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
         >
-          {/* llamada a la funcion que se encargara de hacer el login a la API*/}
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormTextInput
               labelFor="Firstname"
@@ -192,6 +202,7 @@ export default function RegisterCandidate() {
               errors={errors}
               isMandatory
             />
+
             <FormTextInput
               labelFor="Surname"
               labelText="Surname"

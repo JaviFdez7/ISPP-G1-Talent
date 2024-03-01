@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import axios from "axios";
 
 import { useAuthContext } from "../../context/authContext";
 
@@ -10,11 +11,9 @@ export default function Login() {
 
   let navigate = useNavigate();
 
-  //2) creamos el estado para el formulario
   const [form, setForm] = useState({
     username: "",
     password: "",
-    
   });
   const [errors, setErrors] = useState({});
 
@@ -25,39 +24,52 @@ export default function Login() {
       ...form,
       [e.target.name]: e.target.value,
     });
-    setErrors({});
+    setErrors({ ...errors, [e.target.name]: undefined });
   }
 
   //6)crear la funcion que se encargara de llamar al endpoint de login
   async function handleSubmit(e) {
-    e.preventDefault();    
-    const response = await fetch("http://localhost:3000/api/v1/user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
-
-    const data = await response.json();
-    switch (response.status) {
-      case 200:
-        login(data.access, data.refresh);
-        if (data.userType === "candidate") {
-          navigate("/candidate/detail");
-        } else if (data.userType === "representative") {
-          navigate("/representative/detail");
-        }
-        break;
-      case 401:
-        setErrors(data);
-        break;
-      case 400:
-        setErrors(data);
-        break;
-      default:
-        break;
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
     }
+
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/user/login",
+        {
+          ...form,
+        }
+      );
+      const data = response.data;
+      login(data.access, data.refresh, data.role);
+      console.log(data);
+      if (data.user.role === "Candidate") {
+        console.log(data.user.role + " role");
+        navigate("/candidate/detail");
+      } else if (data.user.role === "Representative") {
+        navigate("/representative/detail");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setErrors(error.response.data);
+        return;
+      }
+      console.error(error);
+    }
+  }
+  function validateForm() {
+    let errors = {};
+
+    if (!form.username) {
+      errors.username = "The username field is required";
+    }
+    if (!form.password) {
+      errors.password = "The password field is required";
+    }
+    return errors;
   }
 
   return (
@@ -129,9 +141,8 @@ export default function Login() {
                   placeholder="Write your username"
                   name="username" // nombre del atributo de la entidad del backend
                   value={username} // valor del atributo de la entidad del backend
-                  onChange={(e) => onInputChange(e)} // llamada a la funcion que se encargara de actualizar el estado de la entidad
+                  onChange={(e) => onInputChange(e)}
                 />
-                {/* validacion del campo del formulario */}
                 {errors.username && (
                   <p className="text-red-500 text-xs italic">
                     {errors.username}
@@ -168,7 +179,6 @@ export default function Login() {
                   value={password}
                   onChange={(e) => onInputChange(e)}
                 />
-                {/* validacion del campo del formulario */}
                 {errors.password && (
                   <p className="text-red-500 text-xs italic">
                     {errors.password}
@@ -178,6 +188,11 @@ export default function Login() {
             </div>
           </form>
         </div>
+        {errors.checkPassword && (
+          <p className="text-red-500">{errors.checkPassword}</p>
+        )}
+        {errors.userLog && <p className="text-red-500">{errors.userLog}</p>}
+
         <div
           className="flex items-center justify-center h-full"
           style={{ marginTop: "2rem" }}
@@ -197,12 +212,8 @@ export default function Login() {
           className="flex justify-center items-center"
           style={{ marginTop: "1rem" }}
         >
-          <button>{MainButton("Log in", "", "")}</button>
-        </div>{" "}
-        {/* MOSTRAMOS LOS ERRORES DEL ERROR 401 DE CREDENCIALES INCORRECTAS */}
-        {errors.detail && (
-          <p className="text-red-500 text-base italic">{errors.detail}</p>
-        )}
+          <button>{MainButton("Log in", "/", handleSubmit)}</button>
+        </div>
       </div>
     </div>
   );

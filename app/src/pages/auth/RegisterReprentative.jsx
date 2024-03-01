@@ -48,20 +48,15 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    // Verifica si el checkbox está marcado
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
     }
-
     const validationErrors = validateForm();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/representative",
@@ -165,6 +160,13 @@ export default function RegisterRepresentative() {
             Representative
           </h2>
         </div>
+        {errors.existingUsername && (
+          <p className="text-red-500">{errors.existingUsername}</p>
+        )}
+        {errors.existingEmail && (
+          <p className="text-red-500">{errors.existingEmail}</p>
+        )}
+
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
@@ -180,12 +182,6 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
-            {errors.existingUsername && (
-              <p className="text-red-500">{errors.existingUsername}</p>
-            )}
-            {errors.existingEmail && (
-              <p className="text-red-500">{errors.existingEmail}</p>
-            )}
 
             <FormTextInput
               labelFor="Corporativeemail"
