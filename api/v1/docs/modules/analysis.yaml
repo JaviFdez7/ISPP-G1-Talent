@@ -24,14 +24,14 @@ paths:
     post:
       tags:
       - Analysis
-      summary: Create a new analysis entry
-      description: Creates a new analysis entry with the provided data.
+      summary: Create or update an analysis entry
+      description: Creates or update an analysis entry with the provided data.
       parameters:
         - in: body
           name: analysis
           required: true
           schema:
-            $ref: "#/definitions/SearchForAnalysisUser"
+            $ref: "#/definitions/CreationAnalysisUser"
       responses:
         "201":
           description: Analysis entry created successfully
@@ -80,25 +80,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/definitions/Analysis"
-    patch:
-      tags:
-      - Analysis
-      summary: Update an analysis entry by the username
-      description: Updates an existing analysis entry with the provided data.
-      parameters:
-        - in: path
-          name: username
-          required: true
-          schema:
-            type: string
-          description: The username that you are updating.
-      responses:
-        "200":
-          description: Analysis entry updated successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/Analysis"
+   
     delete:
       patch:
       tags:
@@ -124,6 +106,17 @@ definitions:
       username:
         type: string
         description: The username that you are searching for.
+  CreationAnalysisUser:
+    type: object
+    required:
+      - username
+    properties:
+      username:
+        type: string
+        description: The GitHub username for which the analysis is being created.
+      apikey:
+        type: string
+        description: Optional API key for authentication.
   Analysis:
     type: object
     required:
@@ -169,7 +162,7 @@ definitions:
               description: The total number of uses
       topRepositories:
         type: array
-        description: The top repositories of the github user.
+        description: The top recent repositories of the github user.
         items:
           type: object
           properties:
@@ -186,3 +179,13 @@ definitions:
             forks:
               type: integer
               description: The number of forks of the repository
+            languages:
+              type: array
+              items:
+                type: string
+              description: The list of programming languages used in the repository.
+            technologies:
+              type: array
+              items:
+                type: string
+              description: The list of technologies used in the repository.
