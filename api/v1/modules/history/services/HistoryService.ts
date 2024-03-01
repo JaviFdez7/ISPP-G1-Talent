@@ -10,7 +10,7 @@ export const getHistoryFromUser: any = async (userId: string) => {
   }
 };
 
-export const getNotFavoritesFromUser: any = async (userId: string) => {
+export const getNotFavoritesFromUser: any = async (userId: any) => {
   try {
     const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(false);
     return history;
@@ -21,7 +21,7 @@ export const getNotFavoritesFromUser: any = async (userId: string) => {
 }
 
 
-export const getFavoritesFromUser: any = async (userId: string) => {
+export const getFavoritesFromUser: any = async (userId: any) => {
   try {
     const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(true);
     return history;

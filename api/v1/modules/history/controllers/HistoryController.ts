@@ -17,7 +17,10 @@ export const getHistoryFromUser: any = async (req: Request, res: Response) => {
 };
 export const getNotFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {
-    const data = await HistoryService.getNotFavoritesFromUser();
+    const token = req.headers.authorization ?? '';
+    const decodedToken = verifyJWT(token);
+    const userId = decodedToken.sub;
+    const data = await HistoryService.getNotFavoritesFromUser(userId);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -29,7 +32,10 @@ export const getNotFavoritesFromUser: any = async (req: Request, res: Response) 
 
 export const getFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {
-    const data = await HistoryService.getFavoritesFromUser();
+    const token = req.headers.authorization ?? '';
+    const decodedToken = verifyJWT(token);
+    const userId = decodedToken.sub;
+    const data = await HistoryService.getFavoritesFromUser(userId);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
