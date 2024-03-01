@@ -40,10 +40,11 @@ export const getAnalysisByGitHubUsername: any = async (req: Request, res: Respon
 
 export const createAnalysis: any = async (req: Request, res: Response) => {
   try {
-   
+ 
   const githubUsername = req.body.username;
-
-    const data = await AnalysisService.createAnalysis(githubUsername);
+  const user_apikey = req.body.apikey;
+ 
+    const data = await AnalysisService.createAnalysis(githubUsername,user_apikey);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -51,16 +52,7 @@ export const createAnalysis: any = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAnalysis: any = async (req: Request, res: Response) => {
-  try {
-    const githubUsername = req.params.username;
-    const data = await AnalysisService.updateAnalysisByGitHubUsername(githubUsername);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-};
+
 
 export const deleteAnalysis: any = async (req: Request, res: Response) => {
   try {
@@ -77,6 +69,5 @@ export default {
   getAnalysisById,
   getAnalysisByGitHubUsername,
   createAnalysis,
-  updateAnalysis,
   deleteAnalysis
 };
