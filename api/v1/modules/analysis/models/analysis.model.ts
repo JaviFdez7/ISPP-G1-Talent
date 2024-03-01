@@ -1,50 +1,58 @@
 import { Schema, model, connect } from 'mongoose';
-
+import { Document } from 'mongoose';
 // 1. Create an interface representing a document in MongoDB.
-export interface Analysis {
+export interface RepositoryInfo {
+  name: string;
+  url: string;
+  stars: number;
+  forks: number;
+  languages: string[]; 
+  technologies: string[]; 
+}
+
+
+
+export interface AnalysisDocument {
   githubUsername: string;
+  avatarUrl: string;
   followers: number;
-  avatarUrl: URL,
   contributions: {
     totalCommits: number;
     totalPullRequests: number;
+    totalRepositoriesContributedWithCommits: number;
+    totalRepositoriesContributedWithPullRequests: number;
   };
-  topLanguages: Array<{
-    language: string;
-    count: number;
-  }>;
-  technologies: string[];
-  topRepositories: Array<{
-    name: string;
-    url: string;
-    stars: number;
-    forks: number;
-  }>;
+  globalTopLanguages: string[]; 
+  globalTechnologies: string[]; 
+  topRepositories: RepositoryInfo[]; 
 }
-// 2. Create a Schema corresponding to the document interface.
-const analysisSchema = new Schema<Analysis>({
-  githubUsername: { type: String, required: true, unique: true },
-  followers: { type: Number, required: true },
 
+const repositoryInfoSchema = new Schema<RepositoryInfo>({
+  name: { type: String, required: true },
+  url: { type: String, required: true },
+  stars: { type: Number, required: true },
+  forks: { type: Number, required: true },
+  languages:  [{ type: String }],
+  technologies: [{ type: String }],
+});
+
+const analysisSchema = new Schema<AnalysisDocument>({
+  githubUsername: { type: String, required: true },
+  avatarUrl: { type: String, required: true },
+  followers: { type: Number, required: true },
   contributions: {
     totalCommits: { type: Number, required: true },
     totalPullRequests: { type: Number, required: true },
+    totalRepositoriesContributedWithCommits: { type: Number, required: true },
+    totalRepositoriesContributedWithPullRequests: { type: Number, required: true },
   },
-  topLanguages: [{
-    language: { type: String, required: true },
-    count: { type: Number, required: true },
-  }],
-  technologies: [{ type: String }],
-  topRepositories: [{
-    name: { type: String, required: true },
-    url: { type: String, required: true },
-    stars: { type: Number, required: true },
-    forks: { type: Number, required: true },
-  }],
-});
+  globalTopLanguages: [{ type: String }],
+  globalTechnologies: [{ type: String }],
+  topRepositories: [repositoryInfoSchema],
+}, { timestamps: true });
 
 // 3. Create a Model.
-const AnalysisModel = model<Analysis>('Analysis', analysisSchema);
+export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema);
 
 run().catch(err => console.log(err));
 
@@ -76,4 +84,4 @@ async function run() {
   console.log("Running database");
 }
 
-export { AnalysisModel, run };
+
