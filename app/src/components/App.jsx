@@ -36,6 +36,7 @@ import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
 import AnalysisDashboard from "../pages/analysis/AnalysisDashboard.jsx";
 import AnalysisAnalizer from "../pages/analysis/AnalysisAnalizer.jsx";
 import AnalysisRepositories from "../pages/analysis/AnalysisRepositories.jsx";
+import AnalysisList from "../pages/analysis/AnalysisList.jsx";
 
 
 //TODO Implementar los placeholders de las rutas como componentes reales
@@ -66,6 +67,10 @@ function App() {
             <Route
               path="/analysis/:analysisId/repositories"
               element={<AnalysisRepositories />}
+            />
+            <Route
+              path="/analysis/list"
+              element={<AnalysisList/>}
             />
             <Route
               path="/analysis/history/:representativeId"

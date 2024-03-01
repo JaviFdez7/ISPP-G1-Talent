@@ -1,11 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+
 import MainButton from "../../components/mainButton.jsx";
 import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import { useParams } from 'react-router-dom';
 
 
 export default function AnalysisDashboard() {
@@ -13,6 +11,7 @@ export default function AnalysisDashboard() {
     const textColor2 = 'var(--talent-highlight)'
     const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
+    const { analysisId } = useParams();
 
 
     return (
@@ -24,7 +23,7 @@ export default function AnalysisDashboard() {
             <div className="container mx-auto flex flex-col items-center text-center "  style={{ height: '100vh', overflowY: 'scroll' }}>
                 <div className="flex justify-center  w-full">   
                     <div className="flex mt-10  ">
-                        {MainButton("Go back", "/analysis/:analisysId", "")}
+                        {MainButton("Go back", `/analysis/${analysisId}`, "")}
             
                     </div>
                     <div className="w-full max-w-6xl  p-1  rounded shadow-md flex flex-col mt-10 mb-10 ml-10"

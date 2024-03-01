@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
 import SecondaryButton from "../../components/secondaryButton.jsx";
-import Input from "../../components/Input"
 import '../../styles/palette.css';
 import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 

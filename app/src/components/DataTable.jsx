@@ -33,12 +33,12 @@ export default function DataTable({ header, contentArray, editable=false, addLin
 
     return (
         <div className="mt-2 datatable-container">
-            <table className="w-full ">
+            <table className="w-full  ">
                 {head}
-                <tbody className="datatable-body">
+                <tbody className="datatable-body ">
                     {contentArray.map((item, index) => (
                         <tr key={index}>
-                            <td className="datatable-cell" style={{height: cellHeight}}>
+                            <td className="datatable-cell  " style={{height: cellHeight}}>
                                 <br></br>
                                 <div style={{paddingBottom: "10px", paddingLeft: "0px"}}>
                                     {item}
@@ -48,7 +48,7 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                                     </Link>
                                      )}
                                 </div>
-                                <hr className="w-full"></hr>
+                                <hr className="w-full "></hr>
                             </td>
                         </tr>
                     ))}
