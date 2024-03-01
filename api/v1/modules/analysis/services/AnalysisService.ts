@@ -1,4 +1,5 @@
-import { AnalysisModel,Analysis } from '../models/analysis.model';
+import type { AnalysisDocument, RepositoryInfo }  from '../models/analysis.model';
+import  {AnalysisModel} from '../models/analysis.model';
 import { GetUserAnaliseInfo } from './GitHubService';
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
@@ -6,120 +7,110 @@ export const getAllAnalysis = async (): Promise<any[]> => {
     const analyses = await AnalysisModel.find().exec();
     return analyses;
   } catch (error) {
-    throw new Error(`Error al obtener todos los análisis: ${error}`);
+    throw new Error(`Error when getting all analyses: ${error}`);
   }
 };
 
 export const getAnalysisById: any = async (id: any) => {
   if (!id) {
-    throw new Error('No se proporcionó un ID válido.');
+    throw new Error('A valid ID was not provided');
   }
 
   try {
     const analysis = await AnalysisModel.findById(id);
     if (!analysis) {
-      throw new Error(`No se encontró el análisis con el ID: ${id}`);
+      throw new Error(`Analysis with the ID: ${id} was not found`);
     }
     return analysis;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`Error al obtener el análisis por ID: ${error.message}`);
+      throw new Error(`Error when getting the analysis by ID: ${error.message}`);
     } else {
-      throw new Error('Error desconocido al obtener el análisis por ID.');
+      throw new Error('Unknown error when getting the analysis by ID.');
     }
   }
 };
 export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
   if (!githubUsername) {
-    throw new Error('No se proporcionó un nombre de usuario de GitHub válido.');
+    throw new Error('A valid GitHub username was not provided.');
   }
 
   try {
     const analysis = await AnalysisModel.findOne({ githubUsername: githubUsername }); 
     if (!analysis) {
-      throw new Error(`No se encontró el análisis para el usuario de GitHub: ${githubUsername}`);
+      throw new Error(`Analysis for the GitHub user: ${githubUsername} was not found`);
     }
 
     return analysis;
   } catch (error) {
-    throw new Error(`Error al obtener el análisis por nombre de usuario de GitHub: ${error instanceof Error ? error.message : error}`);
+    throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
-export const createAnalysis: any = async (githubUsername: string) => {
+export const createAnalysis: any = async (githubUsername: string,user_apikey?: string) => {
+  if (!githubUsername) {
+    throw new Error('A valid GitHub username was not provided.');
+  }
   try {
-    
-  const userInfo: Analysis = await GetUserAnaliseInfo(githubUsername);
-  console.log(userInfo)
-    const userAnalysis = new AnalysisModel({
-      githubUsername: userInfo.githubUsername, 
-      followers: userInfo.followers, 
-      contributions: {
-    
-        totalCommits: userInfo.contributions.totalCommits,
-        totalPullRequests: userInfo.contributions.totalPullRequests,
-      },
-      topRepositories: userInfo.topRepositories,
-      topLanguages: userInfo.topLanguages,
-      technologies: userInfo.technologies,
-    });
+    const analysis = await AnalysisModel.findOne({ githubUsername: githubUsername }); 
+    const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername,user_apikey);
+    if (!analysis) {
+
+  
+      const userAnalysis = new AnalysisModel({
+        githubUsername: userInfo.githubUsername,
+        avatarUrl: userInfo.avatarUrl,
+        followers: userInfo.followers,
+        contributions: userInfo.contributions,
+        globalTopLanguages: userInfo.globalTopLanguages,
+        globalTechnologies: userInfo.globalTechnologies,
+        topRepositories: userInfo.topRepositories.map(repo => ({
+          name: repo.name,
+          url: repo.url,
+          stars: repo.stars,
+          forks: repo.forks,
+          languages: repo.languages,
+          technologies: repo.technologies,
+        })),
+      });
 
     const savedRecord = await userAnalysis.save();
+  
 
  
     return savedRecord;
+  }else{
+
+    const filter = { githubUsername: githubUsername };
+
+    const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true  });
+    return updatedDocument;
+  }
   } catch (error) {
     console.error('Error saving analysis:', error);
-    throw error; // Propagar el error para manejarlo más arriba si es necesario
+    throw error; 
   }
 };
 
-export const updateAnalysisByGitHubUsername: any = async (githubUsername: string) => {
-  if (!githubUsername) {
-    throw new Error('No se proporcionó un nombre de usuario de GitHub válido.');
-  }
 
-  try {
-    const analysis = await AnalysisModel.findOne({ githubUsername: githubUsername }); 
-    if (!analysis) {
-      throw new Error(`No se encontró el análisis para el usuario de GitHub: ${githubUsername}`);
-    }
-    else{
-      const userInfo: Analysis = await GetUserAnaliseInfo(githubUsername);
-
-      const filter = { githubUsername: githubUsername };
-
-      const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true  });
-      return updatedDocument;
-      
-    }
-    return analysis;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error al obtener el análisis por ID: ${error.message}`);
-    } else {
-      throw new Error('Error desconocido al obtener el análisis por ID.');
-    }
-  }
-};
 
 export const deleteAnalysis: any = async (githubUsername: string) => {
   if (!githubUsername) {
-    throw new Error('No se proporcionó un nombre de usuario de GitHub válido.');
+    throw new Error('A valid GitHub username was not provided.');
   }
 
   try {
     const deletedAnalysis = await AnalysisModel.findOneAndDelete({ githubUsername: githubUsername });
 
     if (!deletedAnalysis) {
-      throw new Error(`No se encontró ningún análisis para el usuario de GitHub: ${githubUsername}`);
+      throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`);
     }
 
     return deletedAnalysis;
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(`Error al eliminar el análisis por nombre de usuario: ${error.message}`);
+      throw new Error(`Error when deleting the analysis by username: ${error.message}`);
     } else {
-      throw new Error('Error desconocido al eliminar el análisis por nombre de usuario.');
+      throw new Error('Unknown error when deleting the analysis by username.');
     }
   }
 };
@@ -128,7 +119,7 @@ async function main() {
   try {
     // Prueba getAllAnalysis
     console.log('Obteniendo todos los análisis...');
-    const allAnalysis = await getAnalysisByGitHubUsername('JaviFdez7');
+    const allAnalysis = await createAnalysis("JaviFdez7");
     console.log(allAnalysis)
   }catch (error) {
     console.error('Error durante las pruebas:', error);
@@ -141,6 +132,5 @@ export default {
   getAnalysisById,
   getAnalysisByGitHubUsername,
   createAnalysis,
-  updateAnalysisByGitHubUsername,
   deleteAnalysis
 };

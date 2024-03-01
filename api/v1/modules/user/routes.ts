@@ -9,7 +9,7 @@ import {
   updateRepresentative,
   deleteUser,
   loginUser,
-  getProfessionalExperienceByUserId,
+  getProfessionalExperiencesByUserId,
   createProfessionalExperience,
   updateProfessionalExperience,
   deleteProfessionalExperience
@@ -18,17 +18,19 @@ import {
 const router = express.Router();
 
 // Define routes for the User module
-router.get('/', getAllUser);
-router.get('/:id', getUserById);
-router.get('/:id/experiences', getProfessionalExperienceByUserId);
-router.post('/candidate', createCandidate);
-router.post('/representative', createRepresentative);
-router.post('/login', loginUser);
-router.post('/experience', createProfessionalExperience);
-router.patch('/candidate/:id', updateCandidate);
-router.patch('/representative/:id', updateRepresentative);
-router.patch('/experience/:id', updateProfessionalExperience);
-router.delete('/:id', deleteUser);
-router.delete('/experience/:id', deleteProfessionalExperience);
+//TODO: método Logout, método getAllProfessionalExpByUserId
+//Revisar rutas de experience(experiences o experience)
+router.get('/', getAllUser);//X
+router.get('/:id', getUserById);//X
+router.get('/:id/experiences', getProfessionalExperiencesByUserId);//X
+router.post('/candidate', createCandidate);//X
+router.post('/representative', createRepresentative);//X
+router.post('/login', loginUser);//X
+router.post('/experience', createProfessionalExperience);//X
+router.patch('/candidate/:id', updateCandidate);//X
+router.patch('/representative/:id', updateRepresentative);//X
+router.patch('/experience/:id', updateProfessionalExperience);//X
+router.delete('/:id', deleteUser);//X
+router.delete('/experience/:id', deleteProfessionalExperience);//X
 
 export default router;
