@@ -2,6 +2,7 @@
 import express from 'express';
 import {
   getHistoryFromUser,
+  getHistoryFromUserByFavoriteState,
   getFavoritesFromUser,
   createHistory,
   markAsFavorite,
@@ -14,10 +15,10 @@ const router = express.Router();
 
 // Define routes for the History module
 router.get('/', getHistoryFromUser);//X
-router.get('/favorites', getFavoritesFromUser);
+router.get('/:favorite', getHistoryFromUserByFavoriteState);//X
 router.post('/', createHistory);//X
 router.patch('/:id/favorite', markAsFavorite);
-router.patch('/:id', updateHistory);
-router.delete('/:id', checkDeleteHistory, deleteHistory);
+router.patch('/:id', updateHistory);//X
+router.delete('/:id', checkDeleteHistory, deleteHistory);//X
 
 export default router;

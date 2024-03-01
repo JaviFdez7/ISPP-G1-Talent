@@ -10,6 +10,17 @@ export const getHistoryFromUser: any = async (userId: string) => {
   }
 };
 
+export const getHistoryFromUserByFavoriteState: any = async (userId: string,state: Boolean) => {
+  try {
+    const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(state);
+    return history;
+  } catch (error) {
+    console.error('Error getting history:', error);
+    throw error;
+  }
+}
+
+
 export const getFavoritesFromUser: any = async (userId: string) => {
   try {
     const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(true);
@@ -69,6 +80,7 @@ export const deleteHistory: any = async (id: any) => {
 export default {
   getHistoryFromUser,
   getFavoritesFromUser,
+  getHistoryFromUserByFavoriteState,
   createHistory,
   toggleFavorite,
   updateHistory,
