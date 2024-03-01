@@ -1,82 +1,121 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import axios from "axios";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
-import SecondaryButton from "../../components/secondaryButton";
 
 export default function RegisterRepresentative() {
-  //1) creamos el estado del formulario de registro
   const [form, setForm] = useState({
     username: "",
     corporative_email: "",
     company_name: "",
+    companySubscription: "Basic plan",
     password: "",
-    password2: "", //confirmacion de contraseña(atributo adicional que no viene en el backend)
+    password2: "",
   });
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
-  //para redireccionar al usuario
-  let navegate = useNavigate();
+  let navigate = useNavigate();
 
-  //2) declaramos estado de los errores para validar los campos del formulario
   const [errors, setErrors] = useState({});
 
-  //3) creamos las instancias de los atributos de los campos del formulario
-  const { username, corporative_email, company_name, password, password2 } =
-    form;
+  const {
+    username,
+    corporative_email,
+    company_name,
+    companySubscription,
+    password,
+    password2,
+  } = form;
 
-  //4)creamos la funcion que se encargara de actualizar el estado del formulario
   function onInputChange(e) {
-    //onInputChange == handleChange
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-    setErrors({});
+    if (e.target.name === "termsCheckbox") {
+      setIsCheckboxChecked(e.target.checked);
+      setErrors({ ...errors, termsCheckbox: undefined });
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+      setErrors({ ...errors, [e.target.name]: undefined });
+    }
   }
+  const handleCheckboxChange = (e) => {
+    setIsCheckboxChecked(e.target.checked);
+  };
 
-  //5) creamos la funcion que se encargara de enviar los datos del formulario
   async function handleSubmit(e) {
-    //onFormSubmit == handleSubmit
     e.preventDefault();
-  }
 
-  //7) crear la funcion auxiliar que se encargara de validar las validaciones extra que no se valida en el backend
+    // Verifica si el checkbox está marcado
+    if (!isCheckboxChecked) {
+      setErrors({ termsCheckbox: "You must accept the terms and conditions" });
+      return;
+    }
+
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/user/representative",
+        {
+          ...form,
+          email: form.corporative_email,
+          companyName: form.company_name,
+        }
+      );
+
+      setIsCheckboxChecked(false);
+      navigate("/");
+      console.log("Registro exitoso. Redirigiendo a /representative/detail");
+    } catch (error) {
+      if (error.response.status === 409) {
+        console.log(error.response.data);
+        setErrors(error.response.data);
+        return;
+      }
+
+      // Maneja el error según sea necesario
+    }
+  }
   function validateForm() {
     let errors = {};
-    //RN-1: username campo obligatorio
+
     if (!form.username) {
-      errors.first_name = "The username field is required";
-      //RN-2: username mas de 3 caracteres
+      errors.username = "The username field is required";
     } else if (form.username.length <= 3) {
       errors.username = "The username field must be more than 3 characters";
     }
-    //RN-3: msima RN q la RN 1 pero pal last_name
+
     if (!form.company_name) {
-      errors.company_name = "The last name field is required";
-      //RN-4: misma RN q la RN 2 pero pal last_name
+      errors.company_name = "The company_name field is required";
     } else if (form.company_name.length <= 1) {
       errors.company_name =
-        "The company_name field must have more than 1 characters";
+        "The company name field must have more than 1 character";
     }
-    //RN-5: email validando q sea de gmail, outlook y hotmail sabiedno q esta es la fun en python:
-    //r'^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$
+
     if (!form.corporative_email) {
-      errors.corporative_email = "The corporative_email field is required";
+      errors.corporative_email = "The corporative email field is required";
     } else if (
       !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(
         form.corporative_email
       )
     ) {
-      errors.email =
-        "The corporative_email field must be from Gmail, Outlook or Hotmail";
+      errors.corporative_email =
+        "The corporative_email field must be from Gmail, Outlook, or Hotmail";
     }
-    //RN-6) password = password2//validar q las contraseñas sean iguales
+
     if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
     }
-    //Faltarían validar mas campos
+
     return errors;
   }
 
@@ -107,10 +146,9 @@ export default function RegisterRepresentative() {
         >
           Register as
         </h2>
-        <hr className="border-1 w-70 mb-4"
-          style={{ borderColor: '#d4983d' }} />
+        <hr className="border-1 w-70 mb-4" style={{ borderColor: "#d4983d" }} />
         <div className="flex justify-center space-x-4 mb-4">
-          <Link to="/register/candidate" >
+          <Link to="/register/candidate">
             <h2
               className="text-2xl text-white hover:text-gray-600 px-6 py-3"
               style={{ marginTop: "-40px" }}
@@ -120,17 +158,15 @@ export default function RegisterRepresentative() {
           </Link>
           <h2
             className="text-2xl"
-            style={{ marginTop: "-40px", color: 'var(--talent-highlight)' }}
+            style={{ marginTop: "-40px", color: "var(--talent-highlight)" }}
           >
             Representative
           </h2>
-
         </div>
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
         >
-          {/* llamada a la funcion que se encargara de hacer el login a la API*/}
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormTextInput
               labelFor="Username"
@@ -142,6 +178,13 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
+            {errors.existingUsername && (
+              <p className="text-red-500">{errors.existingUsername}</p>
+            )}
+            {errors.existingEmail && (
+              <p className="text-red-500">{errors.existingEmail}</p>
+            )}
+
             <FormTextInput
               labelFor="Corporativeemail"
               labelText="Corporative Email"
@@ -163,9 +206,6 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
-
-
-
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormTextInput
@@ -191,7 +231,7 @@ export default function RegisterRepresentative() {
               isMandatory
             />
             <div className="flex items-center justify-end">
-              <p
+              <div
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
                 style={{ marginTop: "20px", marginBottom: "0px" }}
               >
@@ -199,6 +239,7 @@ export default function RegisterRepresentative() {
                   <input
                     type="checkbox"
                     className="form-checkbox text-blue-500"
+                    onChange={handleCheckboxChange}
                   />
                   <span className="ml-2">
                     Do you accept the terms and
@@ -224,30 +265,29 @@ export default function RegisterRepresentative() {
                     >
                       Read the conditions in here
                       <svg
-                        class="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6 text-yellow-500 inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                         />
                       </svg>
                     </a>
                   </span>
                 </label>
-              </p>
+                {errors.termsCheckbox && (
+                  <p className="text-red-500">{errors.termsCheckbox}</p>
+                )}
+              </div>
             </div>
           </div>
 
-
-
-          <div
-            className="flex-row space-x-24 m-auto"
-          >
+          <div className="flex-row space-x-24 m-auto">
             <div
               className="flex items-center justify-center h-full"
               style={{ marginTop: "2rem" }}
@@ -264,10 +304,9 @@ export default function RegisterRepresentative() {
               </p>
             </div>
             <div className="mt-4">
-              {MainButton("Register", "", "")}
+              {MainButton("Register", "/", handleSubmit)}
             </div>
           </div>
-
         </form>
       </div>
     </div>

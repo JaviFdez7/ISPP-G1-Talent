@@ -120,10 +120,12 @@ export const checkCreateRepresentative = async (data: any) => {
     const existingUsername = await User.findOne({ username: data.username });
     const existingEmail = await User.findOne({ email: data.email });
     if (existingUsername) {
-      return 'Username already exists';
+      //return poner como un Json
+      return { existingUsername: 'Username already exists'}
     }
     if (existingEmail) {
-      return 'User with that email already exists';
+      return { existingEmail: 'User with that email already exists'}
+
     }
 
     // Encriptar la contraseña
