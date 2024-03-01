@@ -7,27 +7,23 @@ import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterCandidate() {
-  //1) creamos el estado del formulario de registro
   const [form, setForm] = useState({
     first_name: "",
     surname: "",
     email: "",
     username: "",
     password: "",
-    password2: "", //confirmacion de contraseña(atributo adicional que no viene en el backend)
+    password2: "",
     phone_number: "",
     github_username: "",
   });
 
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 
-  //para redireccionar al usuario
   let navigate = useNavigate();
 
-  //2) declaramos estado de los errores para validar los campos del formulario
   const [errors, setErrors] = useState({});
 
-  //3) creamos las instancias de los atributos de los campos del formulario
   const {
     first_name,
     surname,
@@ -49,7 +45,7 @@ export default function RegisterCandidate() {
         ...form,
         [e.target.name]: e.target.value,
       });
-      setErrors({});
+      setErrors({ ...errors, [e.target.name]: undefined });
     }
   }
   const handleCheckboxChange = (e) => {
@@ -84,6 +80,7 @@ export default function RegisterCandidate() {
           githubUser: form.github_username,
         }
       );
+      console.log(response);
       if (response.status === 400) {
         const data = response.data;
         setErrors(data);
@@ -91,34 +88,30 @@ export default function RegisterCandidate() {
       }
 
       setIsCheckboxChecked(false);
-
-      navigate("/");
+      navigate("/candidate/detail");
       console.log("Registro exitoso. Redirigiendo a /candidate/detail");
     } catch (error) {
-      console.error("An error occurred:", error);
+        if (error.response.status === 409) {
+          setErrors(error.response.data);
+          return;
+        }
+
       // Maneja el error según sea necesario
     }
   }
 
-  //7) crear la funcion auxiliar que se encargara de validar las validaciones extra que no se valida en el backend
   function validateForm() {
     let errors = {};
-    //RN-1: first_name campo obligatorio
     if (!form.first_name) {
       errors.first_name = "The name field is required";
-      //RN-2: first_name mas de 3 caracteres
     } else if (form.first_name.length <= 3) {
       errors.first_name = "The name field must be more than 3 characters";
     }
-    //RN-3: msima RN q la RN 1 pero para surname
     if (!form.surname) {
       errors.surname = "The surname field is required";
-      //RN-4: misma RN q la RN 2 pero pal surname
     } else if (form.surname.length <= 3) {
       errors.surname = "The last name field must have more than 3 characters";
     }
-    //RN-5: email validando q sea de gmail, outlook y hotmail sabiedno q esta es la fun en python:
-    //r'^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$
     if (!form.email) {
       errors.email = "The email field is required";
     } else if (
@@ -126,22 +119,15 @@ export default function RegisterCandidate() {
     ) {
       errors.email = "The email field must be from Gmail, Outlook or Hotmail";
     }
-    //RN-6) password = password2//validar q las contraseñas sean iguales
     if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
     }
     if (!form.github_username) {
       errors.github_username = "The github_username field is required";
     }
-    if (!form.github_username) {
-      errors.github_username = "The github_username field is required";
+    if (!form.username) {
+      errors.username = "The username field is required";
     }
-    if (!form.github_username) {
-      errors.github_username = "The github_username field is required";
-    }
-
-
-    //Faltarían validar mas campos
     return errors;
   }
 

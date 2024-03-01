@@ -73,16 +73,12 @@ export default function RegisterRepresentative() {
       );
 
       setIsCheckboxChecked(false);
-      navigate("/");
-      console.log("Registro exitoso. Redirigiendo a /representative/detail");
+      navigate("/representative/detail");
     } catch (error) {
       if (error.response.status === 409) {
-        console.log(error.response.data);
         setErrors(error.response.data);
         return;
       }
-
-      // Maneja el error según sea necesario
     }
   }
   function validateForm() {
@@ -109,11 +105,17 @@ export default function RegisterRepresentative() {
       )
     ) {
       errors.corporative_email =
-        "The corporative_email field must be from Gmail, Outlook, or Hotmail";
+        "The corporative email field must be from Gmail, Outlook, or Hotmail";
     }
 
-    if (form.password !== form.password2) {
+    if (!form.password) {
+      errors.password = "The password field is required";
+    } else if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
+    }
+
+    if (!form.password2) {
+      errors.password2 = "The repeat password field is required";
     }
 
     return errors;
