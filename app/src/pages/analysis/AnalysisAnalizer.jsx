@@ -3,12 +3,11 @@ import { Link } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
 import SecondaryButton from "../../components/secondaryButton.jsx";
 import Input from "../../components/Input"
-import InputList from "../../components/InputList"
 import '../../styles/palette.css';
 import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 
 export default function Analyzer() {
-    const textColor =  'var(--talent-white-text)'
+    const textColor =  'white'
     const backgroundColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
     const boxColor ='var(--talent-dark-background)'
@@ -67,27 +66,6 @@ export default function Analyzer() {
             Enter the required data from the candidate you want to analyze and wait to get your results!
           </h2>
           <form onSubmit={(e) => handleSubmit(e)}>
-            <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
-                <label
-                    htmlFor="Name"
-                    style={{ color: textColor, fontSize: '1.5rem', marginRight: '5rem', whiteSpace: 'nowrap' }} // Ajusta el valor aquí
-                    >
-                    Name
-                    <span style={{ color:asteriskColor }}> *</span>
-            </label>
-                <input
-                    type="text"
-                    className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    placeholder="Enter candidate name"
-                    name="name"
-                    value={name}
-                    onChange={(e) => onInputChange(e)}
-                />
-                {errors.name && (
-                    <p className="text-red-500 text-xs italic">{errors.name}</p>
-                )}
-                </div>
-
                 <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
                 <label
                     htmlFor="GithubUser"

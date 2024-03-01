@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function DataTable({ header, contentArray, editable=false, addLink, editLink }) {
     const cellHeight = '70px';
+    const minCellWidth = '142px';
 
 
     let head = "";
@@ -13,8 +14,8 @@ export default function DataTable({ header, contentArray, editable=false, addLin
         head = (
             <thead>
                 <tr>
-                    <th className="datatable-header" style={{ height: cellHeight}}>
-                        <div className="datatable-header-text">{header}</div>
+                    <th className="datatable-header" style={{ height: cellHeight, minWidth: minCellWidth}}>
+                        <div className="datatable-header-text mr-3 ml-3">{header}</div>
                     </th>
                 </tr>
             </thead>
@@ -31,7 +32,7 @@ export default function DataTable({ header, contentArray, editable=false, addLin
     }
 
     return (
-        <div className="mt-4 datatable-container">
+        <div className="mt-2 datatable-container">
             <table className="w-full ">
                 {head}
                 <tbody className="datatable-body">
@@ -39,11 +40,13 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                         <tr key={index}>
                             <td className="datatable-cell" style={{height: cellHeight}}>
                                 <br></br>
-                                <div style={{paddingBottom: "10px", paddingLeft: "20px"}}>
+                                <div style={{paddingBottom: "10px", paddingLeft: "0px"}}>
                                     {item}
-                                    <Link to={editLink+"/"+index} className="edit-button">
+                                    {editable && (
+                                    <Link to={editLink + "/" + index} className="edit-button">
                                         Edit
                                     </Link>
+                                     )}
                                 </div>
                                 <hr className="w-full"></hr>
                             </td>
