@@ -91,7 +91,7 @@ export default function Analyzer() {
         const data = await response.json();
 
 
-        navigate('/analysis/list');
+        navigate('/analysis/' + form.githubUser);
       }catch (error) {
         setLoadingMessage('Unable to connect to the server. Please try again later.');
       }
@@ -170,7 +170,7 @@ export default function Analyzer() {
             <div className="flex ml-40 gap-60 mb-8">
               {MainButton("Analyze", "", handleSubmit)}
               {SecondaryButton("Cancel", "/", "")}
-              {SecondaryButton("Analysis list", "/analysis/list", "")}
+              {SecondaryButton("Analyses list", "/analysis/list", "")}
             </div>
           </form>
         </div>
