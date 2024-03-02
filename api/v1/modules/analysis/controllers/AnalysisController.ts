@@ -5,7 +5,6 @@ import AnalysisService from '../services/AnalysisService';
 // Default controller functions
 export const getAllAnalysis: any = async (req: Request, res: Response) => {
   try {
-   
     const data = await AnalysisService.getAllAnalysis();
     res.status(200).send(data);
   } catch (error: any) {

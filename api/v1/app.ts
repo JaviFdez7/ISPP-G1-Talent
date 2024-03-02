@@ -5,6 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
+import HistoryRouter from './modules/history';
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //  Modules Routes ----------------------------------------------
 app.use(AnalysisRouter);
 app.use(UserRouter);
+app.use(HistoryRouter)
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {
