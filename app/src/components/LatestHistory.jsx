@@ -23,7 +23,7 @@ const LatestHistory = ({ header, data, type = "analysis", representativeId }) =>
                         <tr key={index} >
                             <td style={styles.row}>{item.name || " - "}</td>
                             <td style={styles.row}>{formatDateTime(item.date)}</td>
-                            <td style={styles.row}>{item.id ? <Link to={`/searches/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
+                            <td style={styles.row}>{item.id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
                         </tr>
                     ))}
                 </tbody>

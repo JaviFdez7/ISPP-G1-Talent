@@ -5,7 +5,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
-import cors from "cors";
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());

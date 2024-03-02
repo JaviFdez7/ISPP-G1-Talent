@@ -33,7 +33,7 @@ export function AuthContextProvider({ children }) {
   const [role, setRole] = useState(getInitialRole);
   const { isCandidate, isRepresentative } = role;
 
-  const login = useCallback(function (token_access, token_refresh, userType) {
+  const login = useCallback(function (token_access, token_refresh, userType, userId) {
     const role = {
       isCandidate: userType === "Candidate",
       isRepresentative: userType === "Representative",
@@ -42,6 +42,7 @@ export function AuthContextProvider({ children }) {
     localStorage.setItem("access_token", token_access);
     localStorage.setItem("refresh_token", token_refresh);
     localStorage.setItem("role", JSON.stringify(role));
+    localStorage.setItem("userId", userId);
     setIsAuthenticated(true);
     setRole(role);
   }, []);
