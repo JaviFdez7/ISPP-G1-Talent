@@ -33,8 +33,11 @@ import { PlaceHolder } from "../pages/PlaceHolder.jsx";
 import Login from "../pages/auth/Login.jsx";
 import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
 import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
-import AnalysisDashboard from "../pages/AnalysisDashboard.jsx";
-import AnalysisAnalizer from "../pages/AnalysisAnalizer.jsx";
+import AnalysisDashboard from "../pages/analysis/AnalysisDashboard.jsx";
+import AnalysisAnalizer from "../pages/analysis/AnalysisAnalizer.jsx";
+import AnalysisRepositories from "../pages/analysis/AnalysisRepositories.jsx";
+import AnalysisList from "../pages/analysis/AnalysisList.jsx";
+
 
 //TODO Implementar los placeholders de las rutas como componentes reales
 function App() {
@@ -60,6 +63,14 @@ function App() {
             <Route
               path="/analysis/:analysisId"
               element={<AnalysisDashboard />}
+            />
+            <Route
+              path="/analysis/:analysisId/repositories"
+              element={<AnalysisRepositories />}
+            />
+            <Route
+              path="/analysis/list"
+              element={<AnalysisList/>}
             />
             <Route
               path="/analysis/history/:representativeId"

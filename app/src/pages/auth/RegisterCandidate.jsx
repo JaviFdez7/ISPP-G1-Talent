@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import axios from "axios";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
-import SecondaryButton from "../../components/secondaryButton";
 
 export default function RegisterCandidate() {
   //1) creamos el estado del formulario de registro
   const [form, setForm] = useState({
     first_name: "",
-    last_name: "",
+    surname: "",
     email: "",
     username: "",
     password: "",
@@ -19,8 +19,10 @@ export default function RegisterCandidate() {
     github_username: "",
   });
 
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
   //para redireccionar al usuario
-  let navegate = useNavigate();
+  let navigate = useNavigate();
 
   //2) declaramos estado de los errores para validar los campos del formulario
   const [errors, setErrors] = useState({});
@@ -28,7 +30,7 @@ export default function RegisterCandidate() {
   //3) creamos las instancias de los atributos de los campos del formulario
   const {
     first_name,
-    last_name,
+    surname,
     email,
     username,
     password,
@@ -39,18 +41,63 @@ export default function RegisterCandidate() {
 
   //4)creamos la funcion que se encargara de actualizar el estado del formulario
   function onInputChange(e) {
-    //onInputChange == handleChange
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-    setErrors({});
+    if (e.target.name === "termsCheckbox") {
+      setIsCheckboxChecked(e.target.checked);
+      setErrors({ ...errors, termsCheckbox: undefined });
+    } else {
+      setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+      });
+      setErrors({});
+    }
   }
+  const handleCheckboxChange = (e) => {
+    setIsCheckboxChecked(e.target.checked);
+  };
 
   //5) creamos la funcion que se encargara de enviar los datos del formulario
   async function handleSubmit(e) {
     //onFormSubmit == handleSubmit
     e.preventDefault();
+
+    if (!isCheckboxChecked) {
+      setErrors({ termsCheckbox: "You must accept the terms and conditions" });
+      return;
+    }
+
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    try {
+      console.log(import.meta.env.VITE_BACKEND_URL);
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/user/candidate",
+        {
+          ...form,
+          fullName: form.first_name + " " + form.surname,
+          phone: form.phone_number,
+          githubUser: form.github_username,
+        }
+      );
+      if (response.status === 400) {
+        const data = response.data;
+        setErrors(data);
+        return;
+      }
+
+      setIsCheckboxChecked(false);
+
+      navigate("/");
+      console.log("Registro exitoso. Redirigiendo a /candidate/detail");
+    } catch (error) {
+      console.error("An error occurred:", error);
+      // Maneja el error según sea necesario
+    }
   }
 
   //7) crear la funcion auxiliar que se encargara de validar las validaciones extra que no se valida en el backend
@@ -63,12 +110,12 @@ export default function RegisterCandidate() {
     } else if (form.first_name.length <= 3) {
       errors.first_name = "The name field must be more than 3 characters";
     }
-    //RN-3: msima RN q la RN 1 pero pal last_name
-    if (!form.last_name) {
-      errors.last_name = "The last name field is required";
-      //RN-4: misma RN q la RN 2 pero pal last_name
-    } else if (form.last_name.length <= 3) {
-      errors.last_name = "The last name field must have more than 3 characters";
+    //RN-3: msima RN q la RN 1 pero para surname
+    if (!form.surname) {
+      errors.surname = "The surname field is required";
+      //RN-4: misma RN q la RN 2 pero pal surname
+    } else if (form.surname.length <= 3) {
+      errors.surname = "The last name field must have more than 3 characters";
     }
     //RN-5: email validando q sea de gmail, outlook y hotmail sabiedno q esta es la fun en python:
     //r'^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$
@@ -83,6 +130,17 @@ export default function RegisterCandidate() {
     if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
     }
+    if (!form.github_username) {
+      errors.github_username = "The github_username field is required";
+    }
+    if (!form.github_username) {
+      errors.github_username = "The github_username field is required";
+    }
+    if (!form.github_username) {
+      errors.github_username = "The github_username field is required";
+    }
+
+
     //Faltarían validar mas campos
     return errors;
   }
@@ -102,6 +160,8 @@ export default function RegisterCandidate() {
           marginLeft: "auto",
           marginRight: "auto",
           borderColor: "#d4983d",
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+          backdropFilter: "blur(8px)",
           borderWidth: "1px",
         }}
       >
@@ -112,16 +172,15 @@ export default function RegisterCandidate() {
         >
           Register as
         </h2>
-        <hr className="border-1 w-70 mb-4"
-          style={{ borderColor: '#d4983d' }} />
+        <hr className="border-1 w-70 mb-4" style={{ borderColor: "#d4983d" }} />
         <div className="flex justify-center space-x-4 mb-4">
           <h2
             className="text-2xl"
-            style={{ marginTop: "-40px", color: 'var(--talent-highlight)' }}
+            style={{ marginTop: "-40px", color: "var(--talent-highlight)" }}
           >
             Candidate
           </h2>
-          <Link to="/register/representative" >
+          <Link to="/register/representative">
             <h2
               className="text-2xl text-white hover:text-gray-600 px-6 py-3"
               style={{ marginTop: "-40px" }}
@@ -151,8 +210,8 @@ export default function RegisterCandidate() {
               labelFor="Surname"
               labelText="Surname"
               placeholder="Enter your Surname"
-              name="last_name"
-              value={last_name}
+              name="surname"
+              value={surname}
               onChange={(e) => onInputChange(e)}
               errors={errors}
               isMandatory
@@ -223,7 +282,7 @@ export default function RegisterCandidate() {
             />
 
             <div className="flex items-center justify-end">
-              <p
+              <div
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
                 style={{ marginTop: "20px", marginBottom: "0px" }}
               >
@@ -231,6 +290,7 @@ export default function RegisterCandidate() {
                   <input
                     type="checkbox"
                     className="form-checkbox text-blue-500"
+                    onChange={handleCheckboxChange}
                   />
                   <span className="ml-2">
                     Do you accept the terms and
@@ -256,30 +316,47 @@ export default function RegisterCandidate() {
                     >
                       Read the conditions in here
                       <svg
-                        class="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6 text-yellow-500 inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
                       >
                         <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                         />
                       </svg>
                     </a>
                   </span>
                 </label>
-              </p>
+                {errors.termsCheckbox && (
+                  <p className="text-red-500">{errors.termsCheckbox}</p>
+                )}
+              </div>
             </div>
           </div>
 
-          <div
-            className="flex space-x-24 mt-5 m-auto"
-          >
-            {MainButton("Register", "", "")}
-            {SecondaryButton("Log in", "/login", "")}
+          <div className="flex-row space-x-24 m-auto">
+            <div
+              className="flex items-center justify-center h-full"
+              style={{ marginTop: "2rem" }}
+            >
+              <p className="text-md text-white mb-1 mr-2 text-center">
+                Already have an account?{" "}
+                <Link
+                  to="/login"
+                  className="text-blue-500 hover:text-blue-700"
+                  style={{ marginRight: "2rem" }}
+                >
+                  Log in now
+                </Link>
+              </p>
+            </div>
+            <div className="mt-4">
+              {MainButton("Register", "/", handleSubmit)}
+            </div>
           </div>
         </form>
       </div>
