@@ -68,6 +68,10 @@ export default function Analyzer() {
           });
           setLoadingMessage('');
           return;
+        }else if(userResponse.status == 500){
+          setErrors({
+            githubUser: '--->This user does not exist in Github',
+          });
         }
 
         const response = await fetch(ruta+ '/analysis', {
