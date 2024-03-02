@@ -76,7 +76,7 @@ export default function Navbar() {
           <span>Trends</span>
         </Link>
         <Link
-          to="/"
+          to="/analysis/analyze"
           onMouseEnter={() => move_hoverer(2)}
           onMouseDown={() => move_current(2)}
           className="link-container"
