@@ -22,7 +22,7 @@ export default function AnalysisDashboard() {
 
     const [dataArray, setDataArray] = useState([]);
 
-    const apiURL = "http://localhost:3000";
+    const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {

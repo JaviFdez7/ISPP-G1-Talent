@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from 'react';
 import MainButton from "../../components/mainButton.jsx";
 import SecondaryButton from "../../components/secondaryButton.jsx";
 import '../../styles/palette.css';
@@ -13,6 +13,19 @@ export default function Analyzer() {
     const boxColor ='var(--talent-dark-background)'
     const asteriskColor = 'var(--talent-highlight-background)'
     const navigate = useNavigate();
+
+    const ruta = import.meta.env.VITE_BACKEND_URL;
+
+    const [loading, setLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState('');
+
+    useEffect(() => {
+        if (loading) {
+            setLoadingMessage('Loading...');
+        } else {
+            setLoadingMessage('');
+        }
+    }, [loading]);
 
 
 
@@ -43,8 +56,10 @@ export default function Analyzer() {
           return;
       }
 
+      setLoading(true);
+
       // Check if the username exists
-      const userResponse = await fetch(`http://localhost:3000/analysis/github/${form.githubUser}`);
+      const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
       console.log(userResponse);
       if (userResponse.ok) {
         setErrors({
@@ -53,7 +68,7 @@ export default function Analyzer() {
         return;
       }
 
-      const response = await fetch('http://localhost:3000/analysis', {
+      const response = await fetch(ruta+ '/analysis', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -64,16 +79,16 @@ export default function Analyzer() {
         }),
       });
 
+      setLoading(false);
+
       if (!response.ok) {
-          // Handle error
           console.error('An error occurred:', await response.text());
           return;
       }
 
       const data = await response.json();
 
-      // Do something with the data
-      console.log(data);
+
       navigate('/analysis/list');
 
     }
@@ -97,6 +112,11 @@ export default function Analyzer() {
           <h2  className="text-3xl font-bold text-center mb-4 text-white">
             Enter the required data from the candidate you want to analyze and wait to get your results!
           </h2>
+          {loadingMessage && (
+            <div className="text-center text-white">
+              {loadingMessage}
+            </div>
+          )}
           <form onSubmit={ handleSubmit}>
                 <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
                 <label
@@ -143,11 +163,11 @@ export default function Analyzer() {
                  Remember that the analyzed data will remain stored in the website. Be catious who you are analyzing and ensure you obtain their permission beforehand.
             </h2>
 
-            <div className="flex ml-80 gap-60 mb-8">
+            <div className="flex ml-40 gap-60 mb-8">
               {MainButton("Analyze", "", handleSubmit)}
               {SecondaryButton("Cancel", "/", "")}
+              {SecondaryButton("Analysis list", "/analysis/list", "")}
             </div>
-
           </form>
         </div>
       </div>
