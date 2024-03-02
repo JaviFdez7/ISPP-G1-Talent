@@ -144,7 +144,7 @@ export const checkLoginUser = async (token: string, data: any) => {
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
     if (!user) {
-      return 'User not found';
+      return { user: 'User not found' };
     }
     // Comprobar si la contraseña es correcta
     const checkPassword = await compare(data.password, user.password);

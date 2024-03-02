@@ -56,6 +56,9 @@ export default function Login() {
       if (error.response && error.response.status === 401) {
         setErrors(error.response.data);
         return;
+      } else if (error.response && error.response.status === 404) {
+        setErrors(error.response.data);
+        return;
       }
       console.error(error);
     }
@@ -192,6 +195,7 @@ export default function Login() {
           <p className="text-red-500">{errors.checkPassword}</p>
         )}
         {errors.userLog && <p className="text-red-500">{errors.userLog}</p>}
+        {errors.user && <p className="text-red-500">{errors.user}</p>}
 
         <div
           className="flex items-center justify-center h-full"

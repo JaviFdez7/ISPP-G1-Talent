@@ -119,12 +119,12 @@ export const loginUser: any = async (req: Request, res: Response) => {
     console.log("Holaa");
     const token = req.headers.authorization ?? '';
     const check = await UserMiddleware.checkLoginUser(token, req.body);
-    if (check === 'User not found') {
-      res.status(404).send(check);
+    if (check?.user === 'User not found') {
+      res.status(404).json(check);
     } else if (check?.checkPassword === 'Invalid password') {
-      res.status(401).send(check);
+      res.status(401).json(check);
     } else if (check?.userLog === 'User already logged in') {
-      res.status(401).send(check);
+      res.status(401).json(check);
     } else {
       const data = await UserService.loginUser(req.body);
       //data tiene token y user
