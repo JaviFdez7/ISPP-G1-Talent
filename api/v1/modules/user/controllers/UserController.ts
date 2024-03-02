@@ -38,8 +38,9 @@ export const createCandidate: any = async (req: Request, res: Response) => {
     const check = await UserMiddleware.checkCreateCandidate(req.body);
     if (check === 'Missing required fields') {
       res.status(400).send(check);
-    } else if (check === 'Username already exists' || check === 'User with that email already exists' || check === 'User with that GitHub username already exists') {
-      res.status(409).send(check);
+
+    } else if (check?.existingUsername === 'Username already exists' || check?.existingEmail === 'User with that email already exists' || check?.existingGithubUser === 'User with that GitHub username already exists') {
+      res.status(409).json(check);
     } else {
       const role: string = 'Candidate';
       const data = await UserService.createUser(req.body, role);
@@ -118,12 +119,12 @@ export const loginUser: any = async (req: Request, res: Response) => {
     console.log("Holaa");
     const token = req.headers.authorization ?? '';
     const check = await UserMiddleware.checkLoginUser(token, req.body);
-    if (check === 'User not found') {
-      res.status(404).send(check);
-    } else if (check === 'Invalid password') {
-      res.status(401).send(check);
-    } else if (check === 'User already logged in') {
-      res.status(401).send(check);
+    if (check?.user === 'User not found') {
+      res.status(404).json(check);
+    } else if (check?.checkPassword === 'Invalid password') {
+      res.status(401).json(check);
+    } else if (check?.userLog === 'User already logged in') {
+      res.status(401).json(check);
     } else {
       const data = await UserService.loginUser(req.body);
       //data tiene token y user

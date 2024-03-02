@@ -48,20 +48,15 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
-    // Verifica si el checkbox está marcado
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
     }
-
     const validationErrors = validateForm();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
-
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/representative",
@@ -73,16 +68,12 @@ export default function RegisterRepresentative() {
       );
 
       setIsCheckboxChecked(false);
-      navigate("/");
-      console.log("Registro exitoso. Redirigiendo a /representative/detail");
+      navigate("/representative/detail");
     } catch (error) {
       if (error.response.status === 409) {
-        console.log(error.response.data);
         setErrors(error.response.data);
         return;
       }
-
-      // Maneja el error según sea necesario
     }
   }
   function validateForm() {
@@ -109,11 +100,17 @@ export default function RegisterRepresentative() {
       )
     ) {
       errors.corporative_email =
-        "The corporative_email field must be from Gmail, Outlook, or Hotmail";
+        "The corporative email field must be from Gmail, Outlook, or Hotmail";
     }
 
-    if (form.password !== form.password2) {
+    if (!form.password) {
+      errors.password = "The password field is required";
+    } else if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
+    }
+
+    if (!form.password2) {
+      errors.password2 = "The repeat password field is required";
     }
 
     return errors;
@@ -163,6 +160,13 @@ export default function RegisterRepresentative() {
             Representative
           </h2>
         </div>
+        {errors.existingUsername && (
+          <p className="text-red-500">{errors.existingUsername}</p>
+        )}
+        {errors.existingEmail && (
+          <p className="text-red-500">{errors.existingEmail}</p>
+        )}
+
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
@@ -178,12 +182,6 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
-            {errors.existingUsername && (
-              <p className="text-red-500">{errors.existingUsername}</p>
-            )}
-            {errors.existingEmail && (
-              <p className="text-red-500">{errors.existingEmail}</p>
-            )}
 
             <FormTextInput
               labelFor="Corporativeemail"
