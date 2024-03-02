@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import MainButton from "../../components/mainButton.jsx";
 
 
 export default function AnalysisDashboard() {
@@ -60,10 +61,14 @@ export default function AnalysisDashboard() {
             <div className="container mx-auto flex flex-col items-center text-center "  style={{ height: '100vh', overflowY: 'scroll' }}>
                 <div className="flex justify-between  w-full">
                     {/* CANDIDATE column */}
+                    
                     <div className="flex flex-col  items-center w-1/3 mx-2 ml-20 mt-40">
                         <h2 style={{ color: textColor }}>    <FontAwesomeIcon icon={faStar} style={{ color: textColor2 }}/>  Add to favorites</h2>
-                        <img src="ruta-de-la-imagen.jpg" alt="Imagen" className="rounded-full border border-gray-300 w-24 h-24 mb-4 mt-4" />
+                        <img src={dataArray.avatarUrl} alt="Imagen" className="rounded-full border border-gray-300 w-24 h-24 mb-4 mt-4" />
                             <h2 style={{ color: textColor, fontSize: '1.5rem' }}>{dataArray.githubUsername}</h2>
+                    </div>
+                    <div className="fixed bottom-0 left-0 mb-4 ml-32">
+                        {MainButton("Go back", `/analysis/list`, "")}
                     </div>
                     
 

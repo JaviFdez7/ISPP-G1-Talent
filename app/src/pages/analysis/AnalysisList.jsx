@@ -57,7 +57,7 @@ export default function AnalysisDashboard() {
                         marginRight: "100",
                         borderColor: borderColor,
                         borderWidth: "1px",
-                        maxHeight: "80vh",
+
                         }}>
                         <h6  className="text-3xl font-bold text-center text-white -5 mb-5  " >
                             Analysis Listing
