@@ -15,7 +15,8 @@ export default function AnalysisDashboard() {
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
 
-
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [dataArray, setDataArray] = useState([]);
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
@@ -23,8 +24,11 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
+            setError(false);
             return response.data;
         } catch (error) {
+            setError(false);
+            setErrorMessage('Unable to connect to the server. Please try again later.');
             console.error("Error al llamar al endpoint:", error);
             throw error;
         }
@@ -75,14 +79,22 @@ export default function AnalysisDashboard() {
                              Top recent Repositories
                              
                         </h6>
-                        <div className="flex flex-row items-berween ml-5 mb-10 mx-5  ">
-                            <DataTable header={'Name'} contentArray={names} />
-                            <DataTable header={'Stars'} contentArray={stars} />
-                            <DataTable header={'Forks'} contentArray={forks} />
-                            <DataTable header={'URL'} contentArray={urls} />
-                            <DataTable header={'Languajes'} contentArray={languages} />
-                            <DataTable header={'Technologies'} contentArray={technologies} />
-                        </div>
+                        {errorMessage ? (
+                            <div className="text-center text-white">
+                                {errorMessage}
+                            </div>
+                        ) : (
+                            <>
+                            <div className="flex flex-row items-berween ml-5 mb-10 mx-5  ">
+                                <DataTable header={'Name'} contentArray={names} />
+                                <DataTable header={'Stars'} contentArray={stars} />
+                                <DataTable header={'Forks'} contentArray={forks} />
+                                <DataTable header={'URL'} contentArray={urls} />
+                                <DataTable header={'Languajes'} contentArray={languages} />
+                                <DataTable header={'Technologies'} contentArray={technologies} />
+                            </div>
+                            </>
+                        )}
                         
                     </div>
                     

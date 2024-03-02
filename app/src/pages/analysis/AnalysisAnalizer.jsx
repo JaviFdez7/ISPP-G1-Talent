@@ -57,40 +57,44 @@ export default function Analyzer() {
       }
 
       setLoading(true);
-
-      // Check if the username exists
-      const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
-      console.log(userResponse);
-      if (userResponse.ok) {
-        setErrors({
-          githubUser: '--->Analysis already exists for this user',
-        });
-        return;
-      }
-
-      const response = await fetch(ruta+ '/analysis', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: form.githubUser,
-          apikey: form.githubToken,
-        }),
-      });
-
-      setLoading(false);
-
-      if (!response.ok) {
-          console.error('An error occurred:', await response.text());
+      
+      try {
+        // Check if the username exists
+        const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
+        console.log(userResponse);
+        if (userResponse.ok) {
+          setErrors({
+            githubUser: '--->Analysis already exists for this user',
+          });
+          setLoadingMessage('');
           return;
+        }
+
+        const response = await fetch(ruta+ '/analysis', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: form.githubUser,
+            apikey: form.githubToken,
+          }),
+        });
+
+        setLoading(false);
+
+        if (!response.ok) {
+            console.error('An error occurred:', await response.text());
+            return;
+        }
+
+        const data = await response.json();
+
+
+        navigate('/analysis/list');
+      }catch (error) {
+        setLoadingMessage('Unable to connect to the server. Please try again later.');
       }
-
-      const data = await response.json();
-
-
-      navigate('/analysis/list');
-
     }
 
   return (

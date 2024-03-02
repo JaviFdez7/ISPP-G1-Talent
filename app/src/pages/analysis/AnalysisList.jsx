@@ -15,14 +15,20 @@ export default function AnalysisDashboard() {
     const borderColor = 'var(--talent-highlight)'
 
     const [dataArray, setDataArray] = useState([]);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
+        setError(true);
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
+            setError(false);
             return response.data;
         } catch (error) {
+            setError(false);
+            setErrorMessage('Unable to connect to the server. Please try again later.');
             console.error("Error al llamar al endpoint:", error);
             throw error;
         }
@@ -63,6 +69,11 @@ export default function AnalysisDashboard() {
                             Analysis Listing
                              
                         </h6>
+                        {errorMessage && (
+                        <div className="text-center text-white">
+                            {errorMessage}
+                        </div>
+                        )}
                         
                         {dataArray.map((item, index) => (
                             <div key={index} style={{ padding: '0 90px' }}>

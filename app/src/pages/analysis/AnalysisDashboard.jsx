@@ -17,8 +17,9 @@ export default function AnalysisDashboard() {
     const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
-    
 
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [dataArray, setDataArray] = useState([]);
 
@@ -27,8 +28,11 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
+            setError(false);
             return response.data;
         } catch (error) {
+            setError(false);
+            setErrorMessage('Unable to connect to the server. Please try again later.');
             console.error("Error al llamar al endpoint:", error);
             throw error;
         }
@@ -84,30 +88,38 @@ export default function AnalysisDashboard() {
                              GitHub Statistics
                              
                         </h6>
-                        <div className="flex flex-row  items-center ml-16 mb-10  ">
-                            <DataTable header={'Follorwers'} contentArray={[dataArray.followers]} />
-                            <DataTable header={'Commits'} contentArray={
-                                dataArray && dataArray.contributions ? [dataArray.contributions.totalCommits] : []
-                                } />
-                            <DataTable header={'Pull Requests'} 
-                                contentArray={dataArray && dataArray.contributions ? [dataArray.contributions.totalPullRequests] : []
-                                } />
-                        </div>
-                        <div className="flex flex-row  items-center   mx-auto  mb-10 ml-18  ">
-                            <DataTable header={'Repositories Contributes with Commits'} contentArray={
-                                dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithCommits ] : []
-                            } />
-                        </div>
-                        <div className="flex flex-row  items-center  mx-auto  mb-10 ml-18  ">
-                            <DataTable header={'Repositories Contributes with Pull Requests'} contentArray={
-                                dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithPullRequests ] : []
-                            } />
-                        </div>
-                        <Link to={`/analysis/${analysisId}/repositories`} className="text-white">
-                            <h6 className="text-2xl text-center text-white mb-10">
-                                Top recent repositories <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" />
-                            </h6>
-                        </Link>
+                        {errorMessage ? (
+                            <div className="text-center text-white">
+                                {errorMessage}
+                            </div>
+                        ) : (
+                            <>
+                                <div className="flex flex-row  items-center ml-16 mb-10  ">
+                                    <DataTable header={'Follorwers'} contentArray={[dataArray.followers]} />
+                                    <DataTable header={'Commits'} contentArray={
+                                        dataArray && dataArray.contributions ? [dataArray.contributions.totalCommits] : []
+                                        } />
+                                    <DataTable header={'Pull Requests'} 
+                                        contentArray={dataArray && dataArray.contributions ? [dataArray.contributions.totalPullRequests] : []
+                                        } />
+                                </div>
+                                <div className="flex flex-row  items-center   mx-auto  mb-10 ml-18  ">
+                                    <DataTable header={'Repositories Contributes with Commits'} contentArray={
+                                        dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithCommits ] : []
+                                    } />
+                                </div>
+                                <div className="flex flex-row  items-center  mx-auto  mb-10 ml-18  ">
+                                    <DataTable header={'Repositories Contributes with Pull Requests'} contentArray={
+                                        dataArray && dataArray.contributions ? [dataArray.contributions.totalRepositoriesContributedWithPullRequests ] : []
+                                    } />
+                                </div>
+                                <Link to={`/analysis/${analysisId}/repositories`} className="text-white">
+                                    <h6 className="text-2xl text-center text-white mb-10">
+                                        Top recent repositories <FontAwesomeIcon icon={faExternalLinkAlt} className="ml-2" />
+                                    </h6>
+                                </Link>
+                            </>
+                        )}
                     </div>
                     
 
@@ -122,12 +134,20 @@ export default function AnalysisDashboard() {
                         <h6  className="text-3xl font-bold text-center  text-white  mt-5 mb-5">
                              Experience
                         </h6>
-                        <div className="flex flex-row items-between  ml-16 mb-10 ">
-                            <DataTable header={'Top 5 Used Languages'} contentArray={languages} />
-                            <div className="mr-20 "> </div> 
-                            <DataTable header={'Used Tecnologies'} contentArray={tecnologies} />
-                        </div>
-                        <div className="mb-10 "> </div> 
+                        {errorMessage ? (
+                            <div className="text-center text-white">
+                                {errorMessage}
+                            </div>
+                        ) : (
+                        <>
+                            <div className="flex flex-row items-between  ml-16 mb-10 ">
+                                <DataTable header={'Top 5 Used Languages'} contentArray={languages} />
+                                <div className="mr-20 "> </div> 
+                                <DataTable header={'Used Tecnologies'} contentArray={tecnologies} />
+                            </div>
+                            <div className="mb-10 "> </div> 
+                        </>
+                        )}
                         
                     
                     </div>
