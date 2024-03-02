@@ -6,13 +6,15 @@ import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
 import LatestHistory from "../../components/LatestHistory";
 import MainButton from "../../components/mainButton";
+import SecondaryButton from "../../components/secondaryButton";
 import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
 
 
 export default function RepresentativeDetail() {
-  const { isAuthenticated, isRepresentative } = useAuthContext();
+  const { isAuthenticated, isRepresentative, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
+  let navigate = useNavigate();
 
 
   React.useEffect(() => {
@@ -31,6 +33,12 @@ export default function RepresentativeDetail() {
     };
     fetchUserData();
   }, [isAuthenticated]);
+
+
+  function handleLogout() {
+    logout();
+    navigate("/login");
+  }
 
   function getAnalysisHistory() {
     //TODO fetch real de historiales
@@ -115,7 +123,7 @@ export default function RepresentativeDetail() {
             style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
           >
             {MainButton("Update", "", "")}
-            {MainButton("Delete", "", "")}
+            {SecondaryButton("Logout", "/login", handleLogout)}
           </div>
         </div>
       </div>

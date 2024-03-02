@@ -51,6 +51,7 @@ export function AuthContextProvider({ children }) {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.removeItem("role");
+    localStorage.removeItem("userId");
     setIsAuthenticated(false);
     setRole({ isCandidate: false, isRepresentative: false });
   }, []);

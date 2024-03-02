@@ -6,40 +6,40 @@ import mainBackground from "../../images/main-background2.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "../../components/DataTable.jsx";
+import axios from "axios"
+import { useAuthContext } from "../../context/authContext";
+import MainButton from "../../components/mainButton";
+import SecondaryButton from "../../components/secondaryButton";
 
 export default function CandidateDetail() {
+  const { isAuthenticated, isCandidate, logout } = useAuthContext();
   const textColor2 = "#D4983D";
-
   const [candidate, setCandidate] = useState([]);
-
   const [user, setUser] = useState([]);
+  let navigate = useNavigate();
 
-  let navegate = useNavigate();
-  //2) pillamos la id de la tarea
-  const { id } = useParams();
+  React.useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (isAuthenticated) {
+          const currentUserId = localStorage.getItem("userId");
+          console.log("id: " + currentUserId);
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+          const user = response.data.find(user => user._id === currentUserId);
+          setCandidate(user);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [isAuthenticated]);
 
-  //3) hacemos peticion a la API para obtener la tarea
-  async function getCandidateById() {
-    const response = await fetch(`http://localhost:3000/api/v1/user/${id}/`, {
-      method: "GET",
-    });
-    const data = await response.json();
-    setUser(data);
-    setCandidate(data);
+  function handleLogout() {
+    logout();
+    navigate("/login");
   }
 
-  //4)llamamos a la funcion en el useEfect
-  useEffect(() => {
-    getCandidateById();
-  }, [id]);
-
-  //implementacion del metodo DELETE de la API REST para borrar una tarea
-  async function deleteCandidate() {
-    await fetch(`http://localhost:3000/api/v1/user/experience/${id}/`, {
-      method: "DELETE",
-    });
-    navegate("/");
-  }
   return (
     <div
       className="flex flex-col bg-fixed"
@@ -61,12 +61,11 @@ export default function CandidateDetail() {
         </div>
         <div
           className="flex flex-col"
-          style={{ width: "50%", padding: "5rem", marginRight: "8rem"}}
+          style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
         >
           <div className="profile-name-text">
             <h2>
-              Laura Martinez Ruiz
-              {candidate.fullName}
+              {candidate && candidate.fullName ? candidate.fullName : " - "}
             </h2>
           </div>
           <div
@@ -79,16 +78,24 @@ export default function CandidateDetail() {
             }}
           >
             <div className="flex flex-col w-full">
-              {Input("Username", "Martinaza ", true)} {/* user.username */}
-              {Input("Email", "martinita@gmail.com ", true)} {/* user.email */}
-              {Input("Phone", "123456789 ", true)} {/* user.phone */}
+              {Input("Username", candidate ? candidate.username : " - ", true)} {/* user.username */}
+              {Input("Email", candidate ? candidate.email : " - ", true)} {/* user.email */}
+              {Input("Phone", candidate ? candidate.phone : " - ", true)} {/* user.phone */}
             </div>
+
             <div className="text-white mt-8">
               <FontAwesomeIcon
                 icon={faMapMarkerAlt}
                 style={{ color: textColor2 }}
               />
-              {candidate.residence} Seville, Spain
+              {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
+            </div>
+            <div
+              className="flex flex-col"
+              style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
+            >
+              {MainButton("Update", "", "")}
+              {SecondaryButton("Logout", "/login", handleLogout)}
             </div>
           </div>
         </div>
