@@ -38,8 +38,9 @@ export const createCandidate: any = async (req: Request, res: Response) => {
     const check = await UserMiddleware.checkCreateCandidate(req.body);
     if (check === 'Missing required fields') {
       res.status(400).send(check);
-    } else if (check === 'Username already exists' || check === 'User with that email already exists' || check === 'User with that GitHub username already exists') {
-      res.status(409).send(check);
+
+    } else if (check?.existingUsername === 'Username already exists' || check?.existingEmail === 'User with that email already exists' || check?.existingGithubUser === 'User with that GitHub username already exists') {
+      res.status(409).json(check);
     } else {
       const role: string = 'Candidate';
       const data = await UserService.createUser(req.body, role);
@@ -56,8 +57,8 @@ export const createRepresentative: any = async (req: Request, res: Response) => 
     const check = await UserMiddleware.checkCreateRepresentative(req.body);
     if (check === 'Missing required fields') {
       res.status(400).send(check);
-    } else if (check === 'Username already exists' || check === 'User with that email already exists') {
-      res.status(409).send(check);
+    } else if (check?.existingUsername === 'Username already exists' || check?.existingEmail === 'User with that email already exists') {
+      res.status(409).json(check);//llamar como json
     } else {
       const role: string = 'Representative';
       const data = await UserService.createUser(req.body, role);
@@ -117,14 +118,15 @@ export const loginUser: any = async (req: Request, res: Response) => {
   try {
     const token = req.headers.authorization ?? '';
     const check = await UserMiddleware.checkLoginUser(token, req.body);
-    if (check === 'User not found') {
-      res.status(404).send(check);
-    } else if (check === 'Invalid password') {
-      res.status(401).send(check);
-    } else if (check === 'User already logged in') {
-      res.status(401).send(check);
+    if (check?.user === 'User not found') {
+      res.status(404).json(check);
+    } else if (check?.checkPassword === 'Invalid password') {
+      res.status(401).json(check);
+    } else if (check?.userLog === 'User already logged in') {
+      res.status(401).json(check);
     } else {
       const data = await UserService.loginUser(req.body);
+      //data tiene token y user
       res.status(200).send(data);
     }
   } catch (error: any) {
@@ -152,11 +154,19 @@ export const deleteUser: any = async (req: Request, res: Response) => {
   }
 };
 
-export const getProfessionalExperienceByUserId: any = async (req: Request, res: Response) => {
+export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
-    const data = await UserService.getProfessionalExperienceByUserId(userId);
-    res.status(200).send(data);
+    const token = req.headers.authorization ?? '';
+    const check = await UserMiddleware.checkGetProfessionalExperienceByUserId(userId,token);
+    if(check==='Profesional Experience not found'){
+      res.status(404).send(check);
+    }else if(check==='No token provided' || check==='Unauthorized'){
+      res.status(401).send(check);
+    }else{
+      const data = await UserService.getProfessionalExperiencesByUserId(userId);
+      res.status(200).send(data);
+    }
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
@@ -165,8 +175,16 @@ export const getProfessionalExperienceByUserId: any = async (req: Request, res: 
 
 export const createProfessionalExperience: any = async (req: Request, res: Response) => {
   try {
-    const data = await UserService.createProfessionalExperience(req.body);
-    res.status(200).send(data);
+    const token = req.headers.authorization ?? '';
+    const check= await UserMiddleware.checkCreateProfessionalExperience(req.body,token)
+    if(check==='Invalid candidate' || check==='Missing required fields' || check==='No data to update'){
+      res.status(400).send(check);
+    }else if (check === 'Unauthorized' || check === 'No token provided') {
+      res.status(401).send(check);
+    }else{
+      const data = await UserService.createProfessionalExperience(req.body);
+      res.status(200).send(data);
+    }
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
@@ -176,8 +194,18 @@ export const createProfessionalExperience: any = async (req: Request, res: Respo
 export const updateProfessionalExperience: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await UserService.updateProfessionalExperience(id, req.body);
-    res.status(200).send(data);
+    const token = req.headers.authorization ?? '';
+    const check = await UserMiddleware.checkUpdateProfessionalExperience(id, token,req.body);
+    if (check === 'Professional experience not found') {
+      res.status(404).send(check);
+    }else if (check === 'No data to update' || check==='Missing required fields') {
+      res.status(400).send(check);
+    } else if (check === 'Unauthorized' || check === 'No token provided') {
+      res.status(401).send(check);
+    } else {
+      const data = await UserService.updateProfessionalExperience(id, req.body);
+      res.status(200).send(data);
+    }
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
@@ -187,8 +215,16 @@ export const updateProfessionalExperience: any = async (req: Request, res: Respo
 export const deleteProfessionalExperience: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await UserService.deleteProfessionalExperience(id);
-    res.status(200).send(data);
+    const token = req.headers.authorization ?? '';
+    const check = await UserMiddleware.checkDeleteProfessionalExperience(id, token);
+    if (check === 'Professional experience not found') {
+      res.status(404).send(check);
+    } else if (check === 'Unauthorized' || check === 'No token provided') {
+      res.status(401).send(check);
+    } else {
+      const data = await UserService.deleteProfessionalExperience(id);
+      res.status(200).send(data);
+    }
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
@@ -203,7 +239,7 @@ export default {
   updateRepresentative,
   deleteUser,
   loginUser,
-  getProfessionalExperienceByUserId,
+  getProfessionalExperiencesByUserId,
   createProfessionalExperience,
   updateProfessionalExperience,
   deleteProfessionalExperience

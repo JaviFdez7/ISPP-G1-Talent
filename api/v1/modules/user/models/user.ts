@@ -45,6 +45,7 @@ const representativeSchema = new Schema({
   companyName: { type: String, required: true },
   companySubscription: {
     type: String,
+    required: true,
     enum: Object.values(CompanySubscription)
   },
   projectSocietyName: String

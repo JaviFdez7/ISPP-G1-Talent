@@ -5,7 +5,6 @@ import {
   getAnalysisById,
   getAnalysisByGitHubUsername,
   createAnalysis,
-  updateAnalysis,
   deleteAnalysis
 } from './controllers/AnalysisController';
 
@@ -16,7 +15,6 @@ router.get('/', getAllAnalysis);
 router.get('/:id', getAnalysisById);
 router.get('/github/:username', getAnalysisByGitHubUsername);
 router.post('/', createAnalysis);
-router.patch('/github/:username', updateAnalysis);
 router.delete('/github/:username', deleteAnalysis);
 
 export default router;
