@@ -1,0 +1,31 @@
+#!/bin/sh
+
+if [ ! -d ".git" ]; then
+    printf "[%s]> .git|This script must be run at the root of a Git repository.\n" "$(date)" >&2
+    exit 1
+fi
+
+current_dir=$(pwd)
+
+echo "FRONTEND[$(date)]> Cleaning Frontend folder on $current_dir/app"
+cd app/ || { printf "FRONTEND[%s]> cd app|Unable to change directory to 'app/'\n" "$(date)" >&2; exit 1; }
+
+rm -rf node_modules
+rm -rf dist
+echo "FRONTEND[$(date)]> Cleaning Frontend folder on $current_dir/app Success"
+
+cd "$current_dir" || { printf "FRONTEND[%s]> cd \"$current_dir\"|Unable to change back to the original directory\n" "$(date)" >&2; exit 1; }
+
+echo "BACKEND[$(date)]> Cleaning Backend versions on $current_dir/api"
+cd api/ || { printf "BACKEND[%s]> cd api/|Unable to change directory to 'api/'\n" "$(date)" >&2; exit 1; }
+
+for folder in v[0-9]*; do
+    cd "$folder" || continue
+    echo "BACKEND[$(date)]> Version $folder cleaning"
+    rm -rf node_modules
+    find . -type f -name '*.js' -delete
+    echo "BACKEND[$(date)]> Version $folder cleaning Success"
+    cd ..
+done
+
+exit 0

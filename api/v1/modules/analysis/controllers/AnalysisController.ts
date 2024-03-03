@@ -24,9 +24,12 @@ export const getAnalysisById: any = async (req: Request, res: Response) => {
   }
 };
 
-export const createAnalysis: any = async (req: Request, res: Response) => {
+export const getAnalysisByGitHubUsername: any = async (req: Request, res: Response) => {
   try {
-    const data = await AnalysisService.createAnalysis(req.body);
+
+    const githubUsername = (req.params.username).toString();
+
+    const data = await AnalysisService.getAnalysisByGitHubUsername(githubUsername);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -34,21 +37,26 @@ export const createAnalysis: any = async (req: Request, res: Response) => {
   }
 };
 
-export const updateAnalysis: any = async (req: Request, res: Response) => {
+export const createAnalysis: any = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    const data = await AnalysisService.updateAnalysis(id, req.body);
+ 
+  const githubUsername = req.body.username;
+  const user_apikey = req.body.apikey;
+ 
+    const data = await AnalysisService.createAnalysis(githubUsername,user_apikey);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
     res.status(500).send(error.message);
   }
 };
+
+
 
 export const deleteAnalysis: any = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id;
-    const data = await AnalysisService.deleteAnalysis(id);
+    const githubUsername = req.params.username;
+    const data = await AnalysisService.deleteAnalysis(githubUsername);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -58,7 +66,7 @@ export const deleteAnalysis: any = async (req: Request, res: Response) => {
 export default {
   getAllAnalysis,
   getAnalysisById,
+  getAnalysisByGitHubUsername,
   createAnalysis,
-  updateAnalysis,
   deleteAnalysis
 };

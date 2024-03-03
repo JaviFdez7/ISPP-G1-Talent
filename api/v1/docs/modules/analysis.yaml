@@ -6,10 +6,10 @@ servers:
   - url: http://localhost:3000
     description: Local development server
 paths:
-  /v1/analysis:
+  /analysis:
     get:
       tags:
-      - Analysis
+      - Analysis Read
       summary: Get all analysis
       description: Retrieves a list of all analysis entries.
       responses:
@@ -23,16 +23,15 @@ paths:
                   $ref: "#/definitions/Analysis"
     post:
       tags:
-      - Analysis
-      summary: Create a new analysis entry
-      description: Creates a new analysis entry with the provided data.
+      - Analysis Create
+      summary: Create or update an analysis entry
+      description: Creates or update an analysis entry with the provided data.
       parameters:
         - in: body
           name: analysis
-          description: The analysis to create.
           required: true
           schema:
-            $ref: '#/definitions/Analysis'
+            $ref: "#/definitions/CreationAnalysisUser"
       responses:
         "201":
           description: Analysis entry created successfully
@@ -40,10 +39,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/definitions/Analysis"
-  /v1/analysis/{id}:
+  /analysis/{id}:
     get:
       tags:
-      - Analysis
+      - Analysis Read
       summary: Get an analysis entry by ID
       description: Retrieves an analysis entry by its unique identifier.
       parameters:
@@ -61,122 +60,132 @@ paths:
             application/json:
               schema:
                 $ref: "#/definitions/Analysis"
-    patch:
+  /analysis/github/{username}:
+    get:
       tags:
-      - Analysis
-      summary: Update an analysis entry
-      description: Updates an existing analysis entry with the provided data.
+      - Analysis Read
+      summary: Get an analysis entry by ID
+      description: Retrieves an analysis entry by its unique identifier.
       parameters:
         - in: path
-          name: id
+          name: username
           required: true
           schema:
             type: string
-            format: uuid
-          description: The unique identifier for the analysis entry.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/AnalysisInput"
+          description: The username of the analysis you are looking for.
       responses:
         "200":
-          description: Analysis entry updated successfully
+          description: The analysis entry with the specified ID
           content:
             application/json:
               schema:
                 $ref: "#/definitions/Analysis"
+   
     delete:
+      patch:
       tags:
-      - Analysis
-      summary: Delete an analysis entry by ID
-      description: Deletes an analysis entry by its unique identifier.
+      - Analysis Delete
+      summary: Delete an analysis entry by the username
+      description: Delete an existing analysis entry with the provided data.
       parameters:
         - in: path
-          name: id
+          name: username
           required: true
           schema:
             type: string
-            format: uuid
-          description: The unique identifier for the analysis entry.
+          description: The username that you are updating.
       responses:
         "204":
           description: Analysis entry deleted successfully
 definitions:
-  Analysis:
-    type: object
-    properties:
-      id:
-        type: string
-        format: uuid
-        description: The unique identifier for the analysis entry.
-      date:
-        type: string
-        format: date
-        description: The date of the analysis.
-      userId:
-        type: string
-        format: uuid
-        description: The unique identifier of the user associated with the analysis.
-      numberOfIssues:
-        type: integer
-        description: The number of issues found in the analysis.
-      numberOfPRs:
-        type: integer
-        description: The number of pull requests associated with the analysis.
-      repositories:
-        type: array
-        description: List of repositories contributing to the analysis.
-        items:
-          type: object
-          properties:
-            name:
-              type: string
-              description: The name of the repository.
-            description:
-              type: string
-              description: The description of the repository.
-            url:
-              type: string
-              format: uri
-              description: The URL of the repository.
-  AnalysisInput:
+  SearchForAnalysisUser:
     type: object
     required:
-      - date
-      - userId
-      - numberOfIssues
-      - numberOfPRs
-      - repositories
+      - username
     properties:
-      date:
+      username:
         type: string
-        format: date
-        description: The date of the analysis.
-      userId:
+        description: The username that you are searching for.
+  CreationAnalysisUser:
+    type: object
+    required:
+      - username
+    properties:
+      username:
         type: string
-        format: uuid
-        description: The unique identifier of the user associated with the analysis.
-      numberOfIssues:
+        description: The GitHub username for which the analysis is being created.
+      apikey:
+        type: string
+        description: Optional API key for authentication.
+  Analysis:
+    type: object
+    required:
+      - githubUsername
+      - followers
+      - avatarUrl
+      - contributions
+      - topLanguages
+      - technologies
+      - topRepositories
+    properties:
+      githubUsername:
+        type: string
+        description: The github username of the analysis.
+      followers:
         type: integer
-        description: The number of issues found in the analysis.
-      numberOfPRs:
-        type: integer
-        description: The number of pull requests associated with the analysis.
-      repositories:
+        description: The number of followers of this github user
+      url:
+        type: string
+        format: uri
+        description: The URL of the avatar of the github account.
+      contributions:
+        type: object
+        description: The contributions of the github user
+        properties:
+          totalCommits:
+            type: integer
+            description: The actual total number of commits
+          totalPullRequests:
+            type: integer
+            description: The actual total number of pull requests
+      topLanguages:
         type: array
-        description: List of repositories contributing to the analysis.
+        description: The top languages more used by this github user.
+        items:
+          type: object
+          properties:
+            language:
+              type: string
+              description: The name of the language
+            count:
+              type: integer
+              description: The total number of uses
+      topRepositories:
+        type: array
+        description: The top recent repositories of the github user.
         items:
           type: object
           properties:
             name:
               type: string
               description: The name of the repository.
-            description:
-              type: string
-              description: The description of the repository.
             url:
               type: string
               format: uri
               description: The URL of the repository.
+            stars:
+              type: integer
+              description: The number of stars of the repository
+            forks:
+              type: integer
+              description: The number of forks of the repository
+            languages:
+              type: array
+              items:
+                type: string
+              description: The list of programming languages used in the repository.
+            technologies:
+              type: array
+              items:
+                type: string
+              description: The list of technologies used in the repository.
