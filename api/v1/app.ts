@@ -5,8 +5,11 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
+import cors from 'cors';
 
 const app = express();
+app.use(express.json());
+app.use(cors());
 //  Routers -----------------------------------------------------
 //  Default
 app.get('/', (req: Request, res: Response) => {
@@ -24,6 +27,7 @@ const swaggerDefinition = {
 const options = { swaggerDefinition, apis: ['./docs/**/*.yaml'] };
 // initialize swagger-jsdoc
 const swaggerSpec = swaggerJSDoc(options);
+app.use(express.json());
 app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 //  Modules Routes ----------------------------------------------
 app.use(AnalysisRouter);

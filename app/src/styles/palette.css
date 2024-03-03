@@ -1,12 +1,15 @@
 :root {
-    --talent-black: #282828;
+    --talent-black: #171717;
     --talent-darker: #000000;
     
     --talent-highlight: #d4983d;
     --talent-secondary: #393939;
 
-    --talent-navbar-background: rgba(0, 0, 0, 0.7);
     --talent-dark-background: #282828;
-    --talent-light-background: #2c2c2c;
-    --talent-highlight-background: #d3a560;
+    
+    --talent-highlight-background: #d4983dc5;
+    --talent-light-background: rgba(63, 63, 63, 0.65);
+    --talent-dark-background: rgba(33, 33, 33, 0.65);
+
+    --talent-navbar-background: rgba(0, 0, 0, 0.85);
 }

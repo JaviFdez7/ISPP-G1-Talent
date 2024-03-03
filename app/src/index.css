@@ -6,3 +6,19 @@
     font-family: 'Jost';
     src: local('Jost-VariableFont_wght'), url(./fonts/Jost-VariableFont_wght.ttf) format('truetype');
 }
+
+.blinker {
+    animation: blink-animation 1s infinite;
+}
+
+@keyframes blink-animation {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
