@@ -1,0 +1,59 @@
+#!/bin/bash
+
+if ! command -v gcloud &>/dev/null; then
+	echo "[$(date)]> Command 'gcloud' not found. You must install the Google Cloud SDK to execute commands through the CLI"
+	exit 1
+fi
+
+start_dir=$(pwd)
+
+deploy_frontend() {
+    cd app || { echo "FRONTEND[$(date)]> cd app|Could not access the 'app' directory"; cd "$start_dir"; exit 1; }
+    echo "FRONTEND[$(date)]> cd app| Enters into app folder"
+
+    npm install || { echo "FRONTEND[$(date)]> npm install|Failed to execute npm install in the 'app' directory";  cd "$start_dir"; exit 1; }
+    echo "FRONTEND[$(date)]> npm install|Installed packages"
+
+    npm run build || { echo "FRONTEND[$(date)]> npm run build|Failed to execute npm run build in the 'app' directory"; cd "$start_dir"; exit 1; }
+    echo "FRONTEND[$(date)]> npm run build|Successfull build"
+
+    gcloud app deploy --quiet || { echo "FRONTEND[$(date)]> gcloud app deploy --quiet|Failed to execute gcloud app deploy --quiet"; cd "$start_dir"; exit 1; }
+    echo "FRONTEND[$(date)]> gcloud app deploy --quiet|Successfull deploy"
+
+    cd "$start_dir" 
+    return 0
+}
+
+deploy_backend() {
+    local dir="${1:-v1}"  
+
+    if [ ! -d "api/$dir" ]; then
+	    echo "BACKEND[$(date)]> cd api/$dir|The directory $dir does not exist in api/"
+	    exit 1
+    fi
+
+    cd "api/$dir" || { echo "BACKEND[$(date)]> cd api/$dir|Could not access the directory api/$dir"; cd "$start_dir"; exit 1; }
+    echo "BACKEND[$(date)]> cd api/$dir|Enters into api/$dir folder"
+
+    npm install || { echo "BACKEND[$(date)]> npm install|Failed to execute npm install in the directory api/$dir"; cd "$start_dir"; exit 1; }
+    echo "BACKEND[$(date)]> npm run install|Installed packages"
+
+    npm run build || { echo "BACKEND[$(date)]> npm run build|Failed to execute npm run build in the directory api/$dir"; cd "$start_dir"; exit 1; }
+    echo "BACKEND[$(date)]> npm run build|Successfull build"
+
+    gcloud app deploy --quiet || { echo "BACKEND[$(date)]> gcloud app deploy --quiet|Failed to execute gcloud app deploy --quiet"; cd "$start_dir"; exit 1; }
+    echo "BACKEND[$(date)]> gcloud app deploy --quiet|Successfull deploy"
+
+    cd "$start_dir" 
+    return 0
+}
+
+deploy_frontend 
+deploy_backend "${1:-v1}" 
+cd "$start_dir"
+
+utils/clean
+cd "$start_dir"
+
+exit 0
+

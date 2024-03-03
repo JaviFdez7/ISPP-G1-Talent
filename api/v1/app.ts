@@ -6,10 +6,11 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
+import cors from 'cors';
 
 const app = express();
 app.use(express.json());
-
+app.use(cors());
 //  Routers -----------------------------------------------------
 //  Default
 app.get('/', (req: Request, res: Response) => {
@@ -39,7 +40,7 @@ connectToMongoDB()
     const PORT = process.env.PORT ?? 3000;
     app.listen(PORT, () => {
       console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`);
-      console.log('API documentation available at: http://localhost:3000/v1/docs 📚');
+      console.log(`API documentation available at: http://localhost:${PORT}/v1/docs 📚`);
       console.log('-'.repeat(50));
     });
   })

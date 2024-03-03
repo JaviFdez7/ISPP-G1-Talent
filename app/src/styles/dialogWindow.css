@@ -1,0 +1,18 @@
+
+.dialog-window-container {
+    background-color: var(--talent-dark-background);
+    backdrop-filter: blur(8px);
+}
+.dialog-window-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--talent-highlight-background);
+    border-top: 5px solid var(--talent-highlight);
+}
+
+.dialog-window-container * h5 {
+    color: white;
+    font-size: 80px;
+    font-family: "Jost";
+}

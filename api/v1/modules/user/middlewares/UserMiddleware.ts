@@ -56,13 +56,15 @@ export const checkCreateCandidate = async (data: any) => {
     const existingEmail = await User.findOne({ email: data.email });
     const existingGithubUser = await Candidate.findOne({ githubUser: data.githubUser });
     if (existingUsername) {
-      return 'Username already exists';
+      return { existingUsername: 'Username already exists'}
+
     }
     if (existingEmail) {
-      return 'User with that email already exists';
+      return { existingEmail: 'User with that email already exists'}
+
     }
     if (existingGithubUser) {
-      return 'User with that GitHub username already exists';
+      return { existingGithubUser: 'User with that GitHub username already exists'}
     }
 
     // Encriptar la contraseña
@@ -120,10 +122,11 @@ export const checkCreateRepresentative = async (data: any) => {
     const existingUsername = await User.findOne({ username: data.username });
     const existingEmail = await User.findOne({ email: data.email });
     if (existingUsername) {
-      return 'Username already exists';
+      return { existingUsername: 'Username already exists'}
     }
     if (existingEmail) {
-      return 'User with that email already exists';
+      return { existingEmail: 'User with that email already exists'}
+
     }
 
     // Encriptar la contraseña
@@ -141,15 +144,16 @@ export const checkLoginUser = async (token: string, data: any) => {
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
     if (!user) {
-      return 'User not found';
+      return { user: 'User not found' };
     }
     // Comprobar si la contraseña es correcta
     const checkPassword = await compare(data.password, user.password);
     if (!checkPassword) {
-      return 'Invalid password';
+      
+      return { checkPassword: 'Invalid password' };
     }
     if (token.length > 0) {
-      return 'User already logged in';
+      return {userLog:'User already logged in'};
     }
   } catch (error) {
     console.error('Error logging in:', error);
