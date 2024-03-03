@@ -116,7 +116,6 @@ export const updateRepresentative: any = async (req: Request, res: Response) => 
 
 export const loginUser: any = async (req: Request, res: Response) => {
   try {
-    console.log("Holaa");
     const token = req.headers.authorization ?? '';
     const check = await UserMiddleware.checkLoginUser(token, req.body);
     if (check?.user === 'User not found') {
