@@ -68,11 +68,7 @@ export default function Analyzer() {
           });
           setLoadingMessage('');
           return;
-        }else if(userResponse.status == 500){
-          setErrors({
-            githubUser: '--->This user does not exist in Github',
-          });
-        }
+        } 
 
         const response = await fetch(ruta+ '/analysis', {
           method: 'POST',
@@ -86,7 +82,11 @@ export default function Analyzer() {
         });
 
         setLoading(false);
-
+        if(response.status == 500){
+          setErrors({
+            githubUser: '--->This user does not exist in Github',
+          });
+        }
         if (!response.ok) {
             console.error('An error occurred:', await response.text());
             return;
