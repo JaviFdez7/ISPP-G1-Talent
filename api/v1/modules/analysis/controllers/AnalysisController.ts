@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express';
 import AnalysisService from '../services/AnalysisService';
+import dotenv from 'dotenv'
 
 // Default controller functions
 export const getAllAnalysis: any = async (req: Request, res: Response) => {
@@ -41,9 +42,27 @@ export const getAnalysisByGitHubUsername: any = async (req: Request, res: Respon
 export const createAnalysis: any = async (req: Request, res: Response) => {
   try {
  
-  const githubUsername = req.body.username;
-  const user_apikey = req.body.apikey;
- 
+    const githubUsername = req.body.username;
+    let user_apikey = req.body.apikey;
+    user_apikey = user_apikey || process.env.GH_TOKEN;
+   
+    try {
+      const response = await fetch(`https://api.github.com/users/${githubUsername}`, {
+        headers: {
+          Authorization: `token ${user_apikey}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Invalid API key or username does not exist.');
+      }
+
+      const userData = await response.json();
+      console.log("User exists and API key is valid. User login:", userData.login);
+    } catch (authError: any) {
+      console.error("Error:", authError.message);
+      return res.status(401).send(authError.message);
+    }
     const data = await AnalysisService.createAnalysis(githubUsername,user_apikey);
     res.status(200).send(data);
   } catch (error: any) {

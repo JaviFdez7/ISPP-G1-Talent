@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 const { GQLPaginator } = require('gql-paginator');
 
 
-const GITHUB_APIKEY = process.env.GH_TOKEN
+
 const languageMap: Record<string, string> = {
   js: 'JavaScript',
   py: 'Python',
@@ -139,7 +139,7 @@ const relevantTechnologies = [
   "rxjs", "axios", "fetch-api", "socket.io",
 ];
 
-export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string): Promise<AnalysisDocument> {
+export async function GetUserAnaliseInfo(githubUsername: string,apikey: string): Promise<AnalysisDocument> {
 
   const queryUserInfo = `query {
     user(login: "${githubUsername}") {
@@ -203,11 +203,11 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
       }
     `;
   try {
-    const effectiveApiKey = apikey || GITHUB_APIKEY;
+
     
    
-    const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
-    const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
+    const languagesResult = await GQLPaginator(languagesQuery, apikey, 'github-v1.0.0');
+    const result: any = await GQLPaginator(queryUserInfo, apikey, 'github-v1.0.0');
 
     const languagesUsed = getTopLanguagesPullRequest(languagesResult);
     

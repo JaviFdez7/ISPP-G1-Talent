@@ -46,7 +46,7 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
     throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
-export const createAnalysis: any = async (githubUsername: string,user_apikey?: string) => {
+export const createAnalysis: any = async (githubUsername: string,user_apikey: string) => {
   if (!githubUsername) {
     throw new Error('A valid GitHub username was not provided.');
   }
