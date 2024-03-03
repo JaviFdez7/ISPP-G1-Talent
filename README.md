@@ -1,4 +1,5 @@
 # ISPP-G1-Talent
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ddabd7eea7814741858d005f2ffe988a)](https://app.codacy.com/gh/JaviFdez7/ISPP-G1-Talent/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade) [![Bluejay Dashboard](https://img.shields.io/badge/Bluejay-Dashboard_01-blue.svg)](http://dashboard.bluejay.governify.io/dashboard/script/dashboardLoader.js?dashboardURL=https://reporter.bluejay.governify.io/api/v4/dashboards/tpa-ISPP-2024-GH-JaviFdez7_ISPP-G1-Talent/main)
 ## Index
 1. [Quick start](https://github.com/JaviFdez7/ISPP-G1-Talent?tab=readme-ov-file#quick-start)
 2. [MongoDB installation](https://github.com/JaviFdez7/ISPP-G1-Talent?tab=readme-ov-file#mongodb-installation)
