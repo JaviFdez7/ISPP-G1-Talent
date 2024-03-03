@@ -3,8 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "start": "ts-node app.ts",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "ts-node app.ts || node app.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+	"build": "npx tsc"
     },
     "repository": {
         "type": "git",
@@ -33,13 +34,17 @@
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.0",
         "ts-node": "^10.9.2",
-        "yamljs": "^0.3.0"
+        "yamljs": "^0.3.0",
+	    "dotenv": "^16.4.5"
     },
     "devDependencies": {
         "@types/bcryptjs": "^2.4.6",
         "@types/jsonwebtoken": "^9.0.5",
         "@types/swagger-jsdoc": "^6.0.4",
         "@types/swagger-ui-express": "^4.1.6",
-        "@types/yamljs": "^0.2.34"
+        "@types/yamljs": "^0.2.34",
+	"ts-node": "^10.9.2",
+        "ts-node-dev": "^2.0.0",
+        "typescript": "^5.3.3"
     }
 }

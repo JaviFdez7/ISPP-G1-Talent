@@ -38,7 +38,7 @@ connectToMongoDB()
     const PORT = process.env.PORT ?? 3000;
     app.listen(PORT, () => {
       console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`);
-      console.log('API documentation available at: http://localhost:3000/v1/docs 📚');
+      console.log(`API documentation available at: http://localhost:${PORT}/v1/docs 📚`);
       console.log('-'.repeat(50));
     });
   })
