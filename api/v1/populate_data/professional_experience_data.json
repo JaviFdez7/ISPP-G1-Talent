@@ -1,0 +1,29 @@
+[
+    {
+      "startDate": "2021-01-01T00:00:00.000Z",
+      "endDate": "2023-01-01T00:00:00.000Z",
+      "companyName": "Innovative Startup",
+      "professionalArea": "Web application",
+      "lifestyle": "Telematic",
+      "location": "New York",
+      "userId": "630f1f8bcf30e2d9c6a7d8b2"
+    },
+    {
+      "startDate": "2020-05-01T00:00:00.000Z",
+      "companyName": "Tech Revolution Inc",
+      "professionalArea": "Mobile application",
+      "lifestyle": "On-site",
+      "location": "San Francisco",
+      "userId": "630f1f8bcf30e2d9c6a7d8b4"
+    },
+    {
+      "startDate": "2019-08-01T00:00:00.000Z",
+      "endDate": "2022-12-31T00:00:00.000Z",
+      "companyName": "Global Tech Solutions",
+      "professionalArea": "Data science",
+      "lifestyle": "Telematic",
+      "location": "Seattle",
+      "userId": "630f1f8bcf30e2d9c6a7d8b5"
+    }
+  ]
+  

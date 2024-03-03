@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
+import {populate} from './populateDB'
 
 const app = express();
 app.use(express.json());
@@ -35,7 +36,16 @@ app.use(UserRouter);
 app.use(HistoryRouter)
 // Server -------------------------------------------------------
 connectToMongoDB()
-  .then(() => {
+  .then(async () => { // Asegúrate de marcar esta función como `async`
+    console.log('Connected to MongoDB.');
+
+    // Llamada a la función populate
+    await populate().then(() => {
+      console.log('Database has been populated successfully.');
+    }).catch((err) => {
+      console.error('Error populating the database:', err);
+    });
+
     const PORT = process.env.PORT ?? 3000;
     app.listen(PORT, () => {
       console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`);
@@ -44,6 +54,5 @@ connectToMongoDB()
     });
   })
   .catch((err: any) => {
-    console.log('Error connecting to MongoDB');
-    console.log(err);
+    console.error('Error connecting to MongoDB:', err);
   });

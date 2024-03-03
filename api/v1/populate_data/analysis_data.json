@@ -1,0 +1,75 @@
+[
+    {
+      "_id": "640f1f8bcf30e2d9c6a7d8b6",
+      "githubUsername": "johndoe",
+      "avatarUrl": "http://example.com/pic.jpg",
+      "followers": 120,
+      "contributions": {
+        "totalCommits": 350,
+        "totalPullRequests": 40,
+        "totalRepositoriesContributedWithCommits": 8,
+        "totalRepositoriesContributedWithPullRequests": 4
+      },
+      "globalTopLanguages": ["JavaScript", "Ruby"],
+      "globalTechnologies": ["React", "Rails"],
+      "topRepositories": [
+        {
+          "name": "Innovative Project",
+          "url": "http://github.com/johndoe/innovativeproject",
+          "stars": 150,
+          "forks": 35,
+          "languages": ["JavaScript", "Ruby"],
+          "technologies": ["React", "Rails"]
+        }
+      ]
+    },
+    {
+      "_id": "640f1f8bcf30e2d9c6a7d8b7",
+      "githubUsername": "lgzarturo",
+      "avatarUrl": "http://example.com/jane.jpg",
+      "followers": 200,
+      "contributions": {
+        "totalCommits": 400,
+        "totalPullRequests": 50,
+        "totalRepositoriesContributedWithCommits": 10,
+        "totalRepositoriesContributedWithPullRequests": 5
+      },
+      "globalTopLanguages": ["TypeScript", "Python"],
+      "globalTechnologies": ["Angular", "Django"],
+      "topRepositories": [
+        {
+          "name": "Tech Revolution",
+          "url": "http://github.com/lgzarturo/techrevolution",
+          "stars": 175,
+          "forks": 42,
+          "languages": ["TypeScript", "Python"],
+          "technologies": ["Angular", "Django"]
+        }
+      ]
+    },
+    {
+      "_id": "640f1f8bcf30e2d9c6a7d8b8",
+      "githubUsername": "alexcjohnson",
+      "avatarUrl": "http://example.com/alex.jpg",
+      "followers": 300,
+      "contributions": {
+        "totalCommits": 500,
+        "totalPullRequests": 60,
+        "totalRepositoriesContributedWithCommits": 12,
+        "totalRepositoriesContributedWithPullRequests": 6
+      },
+      "globalTopLanguages": ["C#", "JavaScript"],
+      "globalTechnologies": [".NET", "Node.js"],
+      "topRepositories": [
+        {
+          "name": "Future Tech",
+          "url": "http://github.com/alexcjohnson/futuretech",
+          "stars": 220,
+          "forks": 58,
+          "languages": ["C#", "JavaScript"],
+          "technologies": [".NET", "Node.js"]
+        }
+      ]
+    }
+  ]
+  

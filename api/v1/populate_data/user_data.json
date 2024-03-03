@@ -1,0 +1,78 @@
+[
+    {
+      "_id": "630f1f8bcf30e2d9c6a7d8b1",
+      "username": "representative1",
+      "password": "pass1234",
+      "email": "rep1@example.com",
+      "phone": "123-456-7890",
+      "paymentMethods": ["Credit Card"],
+      "role": "Representative",
+      "companyName": "Tech Innovations Inc",
+      "companySubscription": "Pro plan",
+      "projectSocietyName": "Tech Society"
+    },
+    {
+      "_id": "630f1f8bcf30e2d9c6a7d8b2",
+      "username": "candidate1",
+      "password": "password123",
+      "email": "candidate1@example.com",
+      "phone": "987-654-3210",
+      "paymentMethods": ["PayPal", "Credit Card"],
+      "role": "Candidate",
+      "fullName": "John Doe",
+      "githubUser": "johndoe",
+      "profilePicture": "http://example.com/pic.jpg",
+      "candidateSubscription": "Pro plan",
+      "CV": "http://example.com/cv.pdf",
+      "residence": "New York",
+      "lifestyle": "Telematic",
+      "githubToken": "ghp_ABC123XYZ"
+    },
+    {
+      "_id": "630f1f8bcf30e2d9c6a7d8b3",
+      "username": "representative2",
+      "password": "securepass",
+      "email": "rep2@techcorp.com",
+      "phone": "321-654-0987",
+      "paymentMethods": ["Credit Card"],
+      "role": "Representative",
+      "companyName": "Global Tech Solutions",
+      "companySubscription": "Basic plan",
+      "projectSocietyName": "Innovate Together"
+    },
+    {
+      "_id": "630f1f8bcf30e2d9c6a7d8b4",
+      "username": "candidate2",
+      "password": "mypassword",
+      "email": "candidate2@devmail.com",
+      "phone": "456-123-7890",
+      "paymentMethods": ["Bank Transfer"],
+      "role": "Candidate",
+      "fullName": "Ignacio Durán",
+      "githubUser": "lgzarturo",
+      "profilePicture": "http://example.com/jane.jpg",
+      "candidateSubscription": "Basic plan",
+      "CV": "http://example.com/jane_cv.pdf",
+      "residence": "San Francisco",
+      "lifestyle": "On-site",
+      "githubToken": "ghp_DEF456LMN"
+    },
+    {
+      "_id": "630f1f8bcf30e2d9c6a7d8b5",
+      "username": "candidate3",
+      "password": "pass4567",
+      "email": "candidate3@codemail.com",
+      "phone": "123-789-4560",
+      "paymentMethods": ["Cryptocurrency", "Credit Card"],
+      "role": "Candidate",
+      "fullName": "Alex Johnson",
+      "githubUser": "alexcjohnson",
+      "profilePicture": "http://example.com/alex.jpg",
+      "candidateSubscription": "Pro plan",
+      "CV": "http://example.com/alex_cv.pdf",
+      "residence": "Seattle",
+      "lifestyle": "Telematic",
+      "githubToken": "ghp_GHI789OPQ"
+    }
+  ]
+  

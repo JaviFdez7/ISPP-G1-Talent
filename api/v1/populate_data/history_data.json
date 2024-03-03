@@ -1,0 +1,22 @@
+[
+    {
+      "userId": "630f1f8bcf30e2d9c6a7d8b2",
+      "analysisId": "640f1f8bcf30e2d9c6a7d8b6",
+      "date": "2023-03-15T09:00:00.000Z",
+      "favorite": true
+    },
+    {
+      "userId": "630f1f8bcf30e2d9c6a7d8b4",
+      "analysisId": "640f1f8bcf30e2d9c6a7d8b7",
+      "date": "2023-03-16T10:00:00.000Z",
+      "favorite": false
+    },
+    {
+      "userId": "630f1f8bcf30e2d9c6a7d8b5",
+      "analysisId": "640f1f8bcf30e2d9c6a7d8b8",
+      "date": "2023-03-17T11:00:00.000Z",
+      "favorite": true
+    }
+    
+  ]
+  
