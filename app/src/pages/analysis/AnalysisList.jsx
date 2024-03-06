@@ -52,6 +52,9 @@ export default function AnalysisDashboard() {
           backgroundImage: `url(${mainBackgroundRegisterLogin})`,
           backgroundSize: "cover",
         }}>
+            <div className="flex ml-10 gap-60 mt-16" style={{position: 'fixed', top: '0', left: '0'}}    >
+              {MainButton("Go back", "/analysis/analyze", "")}
+            </div>
             <div className="container mx-auto flex flex-col items-center text-center "  style={{ height: '100vh', overflowY: 'scroll' }}>
                 <div className="flex justify-between  w-full">
                     
