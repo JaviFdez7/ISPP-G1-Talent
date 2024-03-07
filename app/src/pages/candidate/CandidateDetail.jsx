@@ -12,10 +12,9 @@ import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 
 export default function CandidateDetail() {
-  const { isAuthenticated, isCandidate, logout } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const textColor2 = "#D4983D";
   const [candidate, setCandidate] = useState([]);
-  const [user, setUser] = useState([]);
   let navigate = useNavigate();
 
   React.useEffect(() => {

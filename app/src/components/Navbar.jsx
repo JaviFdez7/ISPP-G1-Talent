@@ -136,7 +136,7 @@ export default function Navbar() {
         </Link>
 
         {isAuthenticated ? (
-          userData.role == "Representative" ? (
+          userData && userData.role == "Representative" ? (
             // Mostrar contenido para representante
             <div>
               <Link to="/representative/detail" className="profile-container">
@@ -168,7 +168,7 @@ export default function Navbar() {
                 <img src={mail} />
               </Link>
               <button onClick={handleLogout} className="logout">
-                <img src={logout} />
+                <img src={logoutIcon} />
                 {/* TODO code of mail*/}
                 <div className="mail-amount">
                   <span>1</span>

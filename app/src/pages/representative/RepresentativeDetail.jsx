@@ -12,7 +12,7 @@ import { useAuthContext } from "../../context/authContext";
 
 
 export default function RepresentativeDetail() {
-  const { isAuthenticated, isRepresentative, logout } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
   let navigate = useNavigate();
 
