@@ -123,10 +123,10 @@ export default function RegisterRepresentative() {
 
     if (!form.password2) {
       errors.password2 = "The repeat password field is required";
-    } 
+    }
 
-    if (!/^\d+$/.test(form.phone_number)) {
-      errors.phone_number = "A phone number can only contain digits between 0 and 9";
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number = "A phone number must consist of 9 digits exclusively";
     }
 
     if (form.projectSocietyName && (form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)) {

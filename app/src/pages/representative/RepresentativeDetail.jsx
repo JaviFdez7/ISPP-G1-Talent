@@ -115,6 +115,7 @@ export default function RepresentativeDetail() {
             {Input("Company name", userData ? userData.companyName : " - ")}
             {Input("Phone number", userData ? userData.phone : " - ")}
             {Input("Corporative Email", userData ? userData.email : " - ")}
+            {Input("Project Society Name", userData ? userData.projectSocietyName : " - ")}
           </div>
           <div
             className="flex flex-col"

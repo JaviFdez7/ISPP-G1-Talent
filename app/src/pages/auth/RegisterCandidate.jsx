@@ -141,8 +141,8 @@ export default function RegisterCandidate() {
     if (!form.username) {
       errors.username = "The username field is required";
     }
-    if (!/^\d+$/.test(form.phone_number)) {
-      errors.phone_number = "A phone number can only contain digits between 0 and 9";
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number = "A phone number must consist of 9 digits exclusively";
     }
     return errors;
   }
