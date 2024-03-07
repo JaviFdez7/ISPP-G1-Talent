@@ -17,12 +17,11 @@ export default function RepresentativeDetail() {
   let navigate = useNavigate();
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          console.log("id: " + currentUserId);
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
           const user = response.data.find(user => user._id === currentUserId);
           setUserData(user);
@@ -37,7 +36,7 @@ export default function RepresentativeDetail() {
 
   function handleLogout() {
     logout();
-    navigate("/login");
+    navigate("/");
   }
 
   function getAnalysisHistory() {
@@ -116,7 +115,6 @@ export default function RepresentativeDetail() {
             {Input("Company name", userData ? userData.companyName : " - ")}
             {Input("Phone number", userData ? userData.phone : " - ")}
             {Input("Corporative Email", userData ? userData.email : " - ")}
-            {Input("Address", userData ? userData.address : " - ")}
           </div>
           <div
             className="flex flex-col"
