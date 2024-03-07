@@ -45,7 +45,6 @@ export default function Login() {
       );
       const data = response.data;
       login(data.access, data.refresh, data.role, data.user._id);
-      console.log(data);
       if (data.user.role === "Candidate") {
         console.log(data.user.role + " role");
         navigate("/candidate/detail");

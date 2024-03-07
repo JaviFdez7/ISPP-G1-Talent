@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 
@@ -7,6 +8,7 @@ import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterCandidate() {
+  const { login } = useAuthContext();
   const [form, setForm] = useState({
     first_name: "",
     surname: "",
@@ -86,7 +88,16 @@ export default function RegisterCandidate() {
         setErrors(data);
         return;
       }
+      const userDataFetch = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/user/login",
+        {
+          ...form,
+        }
+      );
       setIsCheckboxChecked(false);
+      const data = userDataFetch.data;
+      login(data.access, data.refresh, data.role, data.user._id);
+      console.log(data);
       navigate("/candidate/detail");
     } catch (error) {
       if (error.response.status === 409) {
@@ -129,6 +140,9 @@ export default function RegisterCandidate() {
     }
     if (!form.username) {
       errors.username = "The username field is required";
+    }
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number = "A phone number must consist of 9 digits exclusively";
     }
     return errors;
   }

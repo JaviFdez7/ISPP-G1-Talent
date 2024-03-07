@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import arrowLeft from "../images/arrowLeft.png";
 import arrowRight from "../images/arrowRight.png";
-import logout from "../images/logout.png";
+import logoutIcon from "../images/logout.png";
 import mail from "../images/mail.png";
 import profile from "../images/profile.jpg";
 import "../styles/navbar.css";
 import Profile from "../pages/candidate/CandidateDetail";
 import { useAuthContext } from "../context/authContext.jsx";
+import axios from "axios"
 
 export default function Navbar() {
   const [expanded, setExpanded] = useState(false);
+  const [userData, setUserData] = useState(null);
   const { isAuthenticated, logout } = useAuthContext();
 
   let navigate = useNavigate();
-  const Logout = () => {//funcion para cerrar sesion y redirigir a la pagina de inicio 
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (isAuthenticated) {
+          const currentUserId = localStorage.getItem("userId");
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+          const user = response.data.find(user => user._id === currentUserId);
+          setUserData(user);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [isAuthenticated]);
+  
+  function handleLogout() {
     logout();
-  };
+    navigate("/");
+  }
 
   function move_hoverer(n) {
     let t = 165;
@@ -116,25 +135,52 @@ export default function Navbar() {
           <span>Settings</span>
         </Link>
 
-        <Link to="/candidate/detail" className="profile-container">
-          <div className="profile-pic-container">
-            <img src={profile} className="profile-pic" />
-          </div>
-          <div className="profile-text">
-            <h1>Name</h1>
-            <h1>Surname</h1>
-          </div>
-        </Link>
-        <Link to="/" className="mail">
-          <img src={mail} />
-        </Link>
-        <Link to="/" className="logout">
-          <img src={logout} />
-          {/* TODO code of mail*/}
-          <div className="mail-amount">
-            <span>1</span>
-          </div>
-        </Link>
+        {isAuthenticated ? (
+          userData && userData.role == "Representative" ? (
+            // Mostrar contenido para representante
+            <div>
+              <Link to="/representative/detail" className="profile-container">
+                <div className="profile-pic-container">
+                  <img src={profile} className="profile-pic" />
+                </div>
+                <div className="profile-text">
+                  <h1>{userData ? userData.username : " - "}</h1>
+                  <h1 className="text-gray-500">{userData ? userData.companyName : " - "}</h1>
+                </div>
+              </Link>
+              <button onClick={handleLogout} className="logout">
+                <img src={logoutIcon} />
+                {/* TODO code of petitions left*/}
+              </button>
+            </div>
+          ) : (
+            // Mostrar contenido para usuario autenticado pero no representante
+            <div>
+              <Link to="/candidate/detail" className="profile-container">
+                <div className="profile-pic-container">
+                  <img src={profile} className="profile-pic" />
+                </div>
+                <div className="profile-text">
+                  <h1>{userData ? userData.fullName : " - "}</h1>
+                </div>
+              </Link>
+              <Link to="/" className="mail">
+                <img src={mail} />
+              </Link>
+              <button onClick={handleLogout} className="logout">
+                <img src={logoutIcon} />
+                {/* TODO code of mail*/}
+                <div className="mail-amount">
+                  <span>1</span>
+                </div>
+              </button>
+            </div>
+          )
+        ) : null}
+
+
+
+
       </div>
       <div className="sideNavButtonContainer" id="sideNavButtonContainer">
         <img

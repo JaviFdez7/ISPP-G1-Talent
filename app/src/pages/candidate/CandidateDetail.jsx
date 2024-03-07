@@ -12,10 +12,9 @@ import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 
 export default function CandidateDetail() {
-  const { isAuthenticated, isCandidate, logout } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const textColor2 = "#D4983D";
   const [candidate, setCandidate] = useState([]);
-  const [user, setUser] = useState([]);
   let navigate = useNavigate();
 
   React.useEffect(() => {
@@ -23,7 +22,6 @@ export default function CandidateDetail() {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          console.log("id: " + currentUserId);
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
           const user = response.data.find(user => user._id === currentUserId);
           setCandidate(user);
@@ -37,7 +35,7 @@ export default function CandidateDetail() {
 
   function handleLogout() {
     logout();
-    navigate("/login");
+    navigate("/");
   }
 
   return (
