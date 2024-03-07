@@ -45,13 +45,13 @@ export default function Home() {
         </h2>
         <h3><strong>Join us now!</strong></h3>
 
-        <div className="flex gap-24 mt-12">
+        <div>
           {isAuthenticated ? (
             <h2>
               Welcome {userName}!
             </h2>
           ) : (
-            <div>
+            <div className="flex gap-24 mt-12">
               {MainButton("Register", "/register/candidate", "")}
               {SecondaryButton("Log in", "/login", "")}
             </div>

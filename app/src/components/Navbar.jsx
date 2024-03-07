@@ -8,7 +8,8 @@ import profile from "../images/profile.jpg";
 import "../styles/navbar.css";
 import Profile from "../pages/candidate/CandidateDetail";
 import { useAuthContext } from "../context/authContext.jsx";
-import axios from "axios"
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function Navbar() {
   const [expanded, setExpanded] = useState(false);
@@ -22,8 +23,10 @@ export default function Navbar() {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-          const user = response.data.find(user => user._id === currentUserId);
+          const response = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/user`
+          );
+          const user = response.data.find((user) => user._id === currentUserId);
           setUserData(user);
         }
       } catch (error) {
@@ -32,11 +35,37 @@ export default function Navbar() {
     };
     fetchUserData();
   }, [isAuthenticated]);
-  
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+
+  const Logout = () => {
+    Swal.fire({
+      title: "Are you sure you want to log out?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+      confirmButtonColor: "var(--talent-highlight)",
+      denyButtonColor: "var(--talent-black)",
+      background: "var(--talent-secondary)",
+      color: "white",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/");
+        Swal.fire({
+          title: "Closed session",
+          icon: "success",
+          background: "var(--talent-secondary)",
+          color: "white",
+          confirmButtonColor: "var(--talent-highlight)",
+        });
+      } else if (result.isDenied) {
+        if (userData && userData.role === "Representative") {
+          navigate("/representative/detail");
+        } else if (userData && userData.role === "Candidate") {
+          navigate("/candidate/detail");
+        }
+      }
+    });
+  };
 
   function move_hoverer(n) {
     let t = 165;
@@ -68,72 +97,114 @@ export default function Navbar() {
     <div className="sidenav" id="sidenav">
       <div className="inner-sidenav">
         <div className="flex justify-around">
-          <span className="logo">IT TALENT</span>
+          <Link to="/">
+            <span className="logo">IT TALENT</span>
+          </Link>
         </div>
         <hr />
         <br />
         <div className="navbar-hoverer" id="navbar-hoverer"></div>
         <div className="navbar-current" id="navbar-current"></div>
-        <Link
-          to="/candidate/detail"
-          onMouseEnter={() => move_hoverer(0)}
-          onMouseDown={() => move_current(0)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>Profile</span>
-        </Link>
-        <Link
-          to="/"
-          onMouseEnter={() => move_hoverer(1)}
-          onMouseDown={() => move_current(1)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>Trends</span>
-        </Link>
-        <Link
-          to="/analysis/analyze"
-          onMouseEnter={() => move_hoverer(2)}
-          onMouseDown={() => move_current(2)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>My analysis</span>
-        </Link>
-        <Link
-          to="/candidate/subscription"
-          onMouseEnter={() => move_hoverer(3)}
-          onMouseDown={() => move_current(3)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>Subscription</span>
-        </Link>
-        <Link
-          to="/support"
-          onMouseEnter={() => move_hoverer(4)}
-          onMouseDown={() => move_current(4)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>Information</span>
-        </Link>
-        <Link
-          to="/settings"
-          onMouseEnter={() => move_hoverer(5)}
-          onMouseDown={() => move_current(5)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>Settings</span>
-        </Link>
+        {isAuthenticated && (
+          <>
+            <Link
+              to={
+                userData && userData.role === "Representative"
+                  ? "/representative/detail"
+                  : "/candidate/detail"
+              }
+              onMouseEnter={() => move_hoverer(0)}
+              onMouseDown={() => move_current(0)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Profile</span>
+            </Link>
+            <Link
+              to="/"
+              onMouseEnter={() => move_hoverer(1)}
+              onMouseDown={() => move_current(1)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Trends</span>
+            </Link>
+            <Link
+              to="/analysis/analyze"
+              onMouseEnter={() => move_hoverer(2)}
+              onMouseDown={() => move_current(2)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>My analysis</span>
+            </Link>
+            <Link
+              to={
+                userData && userData.role === "Representative"
+                  ? "/representative/subscription"
+                  : "/candidate/subscription"
+              }
+              onMouseEnter={() => move_hoverer(3)}
+              onMouseDown={() => move_current(3)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Subscription</span>
+            </Link>
+          </>
+        )}
+
+        {isAuthenticated ? (
+          <>
+            <Link
+              to="/support"
+              onMouseEnter={() => move_hoverer(4)}
+              onMouseDown={() => move_current(4)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Information</span>
+            </Link>
+            <Link
+              to="/settings"
+              onMouseEnter={() => move_hoverer(5)}
+              onMouseDown={() => move_current(5)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Settings</span>
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              to="/support"
+              onMouseEnter={() => move_hoverer(0)}
+              onMouseDown={() => move_current(0)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Information</span>
+            </Link>
+            <Link
+              to="/settings"
+              onMouseEnter={() => move_hoverer(1)}
+              onMouseDown={() => move_current(1)}
+              className="link-container"
+            >
+              <span>ICON</span>
+              <p>&nbsp;&nbsp;&nbsp;</p>
+              <span>Settings</span>
+            </Link>
+          </>
+        )}
 
         {isAuthenticated ? (
           userData && userData.role == "Representative" ? (
@@ -145,10 +216,12 @@ export default function Navbar() {
                 </div>
                 <div className="profile-text">
                   <h1>{userData ? userData.username : " - "}</h1>
-                  <h1 className="text-gray-500">{userData ? userData.companyName : " - "}</h1>
+                  <h1 className="text-gray-500">
+                    {userData ? userData.companyName : " - "}
+                  </h1>
                 </div>
               </Link>
-              <button onClick={handleLogout} className="logout">
+              <button onClick={Logout} className="logout">
                 <img src={logoutIcon} />
                 {/* TODO code of petitions left*/}
               </button>
@@ -167,7 +240,7 @@ export default function Navbar() {
               <Link to="/" className="mail">
                 <img src={mail} />
               </Link>
-              <button onClick={handleLogout} className="logout">
+              <button onClick={Logout} className="logout">
                 <img src={logoutIcon} />
                 {/* TODO code of mail*/}
                 <div className="mail-amount">
@@ -177,10 +250,6 @@ export default function Navbar() {
             </div>
           )
         ) : null}
-
-
-
-
       </div>
       <div className="sideNavButtonContainer" id="sideNavButtonContainer">
         <img

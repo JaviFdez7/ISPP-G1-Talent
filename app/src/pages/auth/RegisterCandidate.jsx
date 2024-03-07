@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
@@ -83,11 +84,6 @@ export default function RegisterCandidate() {
           githubUser: form.github_username,
         }
       );
-      if (response.status === 400) {
-        const data = response.data;
-        setErrors(data);
-        return;
-      }
       const userDataFetch = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login",
         {
@@ -96,11 +92,45 @@ export default function RegisterCandidate() {
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data;
-      login(data.access, data.refresh, data.role, data.user._id);
-      console.log(data);
-      navigate("/candidate/detail");
+      Swal.fire({
+        title: "Are you sure you want to register as a candidate?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: "No",
+        confirmButtonColor: "var(--talent-highlight)",
+        denyButtonColor: "var(--talent-black)",
+        background: "var(--talent-secondary)",
+        color: "white",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          switch (response.status) {
+            case 200:
+              login(data.access, data.refresh, data.role, data.user._id);
+              console.log(data.user.role + " role");
+              navigate("/candidate/detail");
+              Swal.fire({
+                title: "Successfully register!",
+                icon: "success",
+                background: "var(--talent-secondary)",
+                color: "white",
+                confirmButtonColor: "var(--talent-highlight)",
+              });
+              break;
+            case 400:
+              setErrors(error.response.data);
+              break;
+            case 409:
+              setErrors(error.response.data);
+              break;
+            default:
+              break;
+          }
+        } else if (result.isDenied) {
+          navigate("/register/candidate");
+        }
+      });
     } catch (error) {
-      if (error.response.status === 409) {
+      if (error.response && error.response.status === 409) {
         setErrors(error.response.data);
         return;
       }
@@ -142,7 +172,8 @@ export default function RegisterCandidate() {
       errors.username = "The username field is required";
     }
     if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-      errors.phone_number = "A phone number must consist of 9 digits exclusively";
+      errors.phone_number =
+        "A phone number must consist of 9 digits exclusively";
     }
     return errors;
   }
