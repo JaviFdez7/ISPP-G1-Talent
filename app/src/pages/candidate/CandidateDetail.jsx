@@ -79,7 +79,9 @@ export default function CandidateDetail() {
           >
             <div className="flex flex-col w-full">
               {Input("Username", candidate ? candidate.username : " - ", true)} {/* user.username */}
+              <br></br>
               {Input("Email", candidate ? candidate.email : " - ", true)} {/* user.email */}
+              <br></br>
               {Input("Phone", candidate ? candidate.phone : " - ", true)} {/* user.phone */}
             </div>
 
