@@ -40,7 +40,7 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                         <tr key={index}>
                             <td className="datatable-cell " style={{height: cellHeight}}>
                                 <br></br>
-                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "0px"}}>
+                                <div style={{wordBreak: 'break-word', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px"}}>
                                     {item}
                                     {editable && (
                                     <Link to={editLink + "/" + index} className="edit-button">
