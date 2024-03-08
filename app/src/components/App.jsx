@@ -70,7 +70,7 @@ function App() {
              />
 
             <Route path="/analysis/:analysisId"element={
-              <ProtectedRoute roles={['Representative', 'Candidate']} >
+              <ProtectedRoute roles={['Representative']} >
                 <AnalysisDashboard />
               </ProtectedRoute>}
             />
