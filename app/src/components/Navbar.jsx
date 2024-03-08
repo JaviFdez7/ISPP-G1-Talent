@@ -123,8 +123,8 @@ export default function Navbar() {
             {isAuthenticated && userData && userData.role === "Representative" && (
               <Link
                 to="/analysis/analyze"
-                onMouseEnter={() => move_hoverer(2)}
-                onMouseDown={() => move_current(2)}
+                onMouseEnter={() => move_hoverer(1)}
+                onMouseDown={() => move_current(1)}
                 className="link-container"
               >
                 <span>ICON</span>
@@ -134,8 +134,8 @@ export default function Navbar() {
             )}
             <Link
               to={subscription}
-              onMouseEnter={() => move_hoverer(3)}
-              onMouseDown={() => move_current(3)}
+              onMouseEnter={() => move_hoverer(2)}
+              onMouseDown={() => move_current(2)}
               className="link-container"
             >
               <span>ICON</span>
