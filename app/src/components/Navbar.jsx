@@ -108,23 +108,9 @@ export default function Navbar() {
         {isAuthenticated && (
           <>
             <Link
-              to={
-                userData && userData.role === "Representative"
-                  ? "/representative/detail"
-                  : "/candidate/detail"
-              }
+              to="/"
               onMouseEnter={() => move_hoverer(0)}
               onMouseDown={() => move_current(0)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Profile</span>
-            </Link>
-            <Link
-              to="/"
-              onMouseEnter={() => move_hoverer(1)}
-              onMouseDown={() => move_current(1)}
               className="link-container"
             >
               <span>ICON</span>
@@ -133,8 +119,8 @@ export default function Navbar() {
             </Link>
             <Link
               to="/analysis/analyze"
-              onMouseEnter={() => move_hoverer(2)}
-              onMouseDown={() => move_current(2)}
+              onMouseEnter={() => move_hoverer(1)}
+              onMouseDown={() => move_current(1)}
               className="link-container"
             >
               <span>ICON</span>
@@ -147,8 +133,8 @@ export default function Navbar() {
                   ? "/representative/subscription"
                   : "/candidate/subscription"
               }
-              onMouseEnter={() => move_hoverer(3)}
-              onMouseDown={() => move_current(3)}
+              onMouseEnter={() => move_hoverer(2)}
+              onMouseDown={() => move_current(2)}
               className="link-container"
             >
               <span>ICON</span>
@@ -162,8 +148,8 @@ export default function Navbar() {
           <>
             <Link
               to="/support"
-              onMouseEnter={() => move_hoverer(4)}
-              onMouseDown={() => move_current(4)}
+              onMouseEnter={() => move_hoverer(3)}
+              onMouseDown={() => move_current(3)}
               className="link-container"
             >
               <span>ICON</span>
@@ -172,8 +158,8 @@ export default function Navbar() {
             </Link>
             <Link
               to="/settings"
-              onMouseEnter={() => move_hoverer(5)}
-              onMouseDown={() => move_current(5)}
+              onMouseEnter={() => move_hoverer(4)}
+              onMouseDown={() => move_current(4)}
               className="link-container"
             >
               <span>ICON</span>
