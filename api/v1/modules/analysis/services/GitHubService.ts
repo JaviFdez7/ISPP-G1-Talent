@@ -148,7 +148,7 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
       followers {
         totalCount
       }
-      repositories(first: 10, orderBy: {field: CREATED_AT, direction: DESC}) {
+      repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
         totalCount
         nodes {
           name
@@ -261,41 +261,46 @@ function getTopLanguagesPullRequest(result: any): LanguagePercentage[] {
 
   return topLanguages;
 }
-function processGitHubUserInfo (result: any, languagesSorted:LanguagePercentage[]) {
+function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[]): AnalysisDocument {
   const user = result.data.user;
   const globalTechnologies = new Set<string>();
+  let topRepositories: RepositoryInfo[] = [];
 
- 
-
-  const topRepositories: RepositoryInfo[] = user.repositories.nodes.map((repo: any) => {
-    const repoTechnologies = new Set<string>();
+  // Preprocesar y recoger tecnologías de los 100 repositorios
+  user.repositories.nodes.forEach((repo: any, index: number) => {
     if (repo.object && repo.object.text) {
       const packageJson = JSON.parse(repo.object.text);
-      // Filtrar y añadir solo las tecnologías relevantes a repoTechnologies y globalTechnologies
+      // Añadir tecnologías al conjunto global
       [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.devDependencies || {})]
-        .filter(dep =>{ return relevantTechnologies.includes(dep.split('/')[1] || dep) && 
-        (!dep.startsWith('@') );
-    })
-        .forEach(dep => {
-          globalTechnologies.add(dep);
-          repoTechnologies.add(dep);
-        });
+        .filter(dep => relevantTechnologies.includes(dep.split('/')[1] || dep) && !dep.startsWith('@'))
+        .forEach(dep => globalTechnologies.add(dep));
     }
 
-    const repoLanguages = repo.languages.edges.map((edge: any) => edge.node.name);
+    // Para los 10 primeros repositorios, recoger también la información detallada
+    if (index < 10) {
+      const repoTechnologies = new Set<string>();
+      if (repo.object && repo.object.text) {
+        const packageJson = JSON.parse(repo.object.text);
+        // Filtrar y añadir solo las tecnologías relevantes a repoTechnologies
+        [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.devDependencies || {})]
+          .filter(dep => relevantTechnologies.includes(dep.split('/')[1] || dep) && !dep.startsWith('@'))
+          .forEach(dep => repoTechnologies.add(dep));
+      }
 
-    return {
-      name: repo.name,
-      url: repo.url,
-      stars: repo.stargazers.totalCount,
-      forks: repo.forks.totalCount,
-      languages: Array.from(repoLanguages),
-      technologies: Array.from(repoTechnologies),
-    };
+      const repoLanguages = repo.languages.edges.map((edge: any) => edge.node.name);
+
+      topRepositories.push({
+        name: repo.name,
+        url: repo.url,
+        stars: repo.stargazers.totalCount,
+        forks: repo.forks.totalCount,
+        languages: Array.from(repoLanguages),
+        technologies: Array.from(repoTechnologies),
+      });
+    }
   });
 
-  
-
+  // Construir y devolver el objeto de análisis
   const analysis: AnalysisDocument = {
     githubUsername: user.login,
     avatarUrl: user.avatarUrl,
@@ -304,10 +309,10 @@ function processGitHubUserInfo (result: any, languagesSorted:LanguagePercentage[
       totalCommits: user.contributionsCollection.totalCommitContributions,
       totalPullRequests: user.contributionsCollection.totalPullRequestContributions,
       totalRepositoriesContributedWithCommits: user.contributionsCollection.totalRepositoriesWithContributedCommits,
-      totalRepositoriesContributedWithPullRequests: user.contributionsCollection.totalRepositoriesWithContributedPullRequests 
+      totalRepositoriesContributedWithPullRequests: user.contributionsCollection.totalRepositoriesWithContributedPullRequests
     },
-    globalTopLanguages: Array.from(languagesSorted),
-    globalTechnologies: Array.from(globalTechnologies).filter(tech => !tech.startsWith('@')),
+    globalTopLanguages: languagesSorted,
+    globalTechnologies: Array.from(globalTechnologies),
     topRepositories,
   };
 
