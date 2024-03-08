@@ -92,6 +92,9 @@ export default function Navbar() {
       setExpanded(false);
     }
   }
+  
+  const subscription = isAuthenticated ? ( userData && userData.role == "Representative" ? "/representative/subscription" : "/candidate/subscription") : "/login";
+  
 
   return (
     <div className="sidenav" id="sidenav">
@@ -117,24 +120,22 @@ export default function Navbar() {
               <p>&nbsp;&nbsp;&nbsp;</p>
               <span>Trends</span>
             </Link>
+            {isAuthenticated && userData && userData.role === "Representative" && (
+              <Link
+                to="/analysis/analyze"
+                onMouseEnter={() => move_hoverer(2)}
+                onMouseDown={() => move_current(2)}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>My analysis</span>
+              </Link>
+            )}
             <Link
-              to="/analysis/analyze"
-              onMouseEnter={() => move_hoverer(1)}
-              onMouseDown={() => move_current(1)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>My analysis</span>
-            </Link>
-            <Link
-              to={
-                userData && userData.role === "Representative"
-                  ? "/representative/subscription"
-                  : "/candidate/subscription"
-              }
-              onMouseEnter={() => move_hoverer(2)}
-              onMouseDown={() => move_current(2)}
+              to={subscription}
+              onMouseEnter={() => move_hoverer(3)}
+              onMouseDown={() => move_current(3)}
               className="link-container"
             >
               <span>ICON</span>
@@ -191,7 +192,6 @@ export default function Navbar() {
             </Link>
           </>
         )}
-
         {isAuthenticated ? (
           userData && userData.role == "Representative" ? (
             // Mostrar contenido para representante
