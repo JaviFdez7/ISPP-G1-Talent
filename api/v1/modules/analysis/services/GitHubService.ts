@@ -1,4 +1,4 @@
-import type { AnalysisDocument, RepositoryInfo }  from '../models/analysis.model';
+import type { AnalysisDocument, RepositoryInfo,LanguagePercentage }  from '../models/analysis.model';
 import dotenv from 'dotenv'
 const { GQLPaginator } = require('gql-paginator');
 
@@ -220,10 +220,11 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
   }
 }
 
-function getTopLanguagesPullRequest(result: any): string[] {
+function getTopLanguagesPullRequest(result: any): LanguagePercentage[] {
   const pullRequests = result?.data?.user?.pullRequests?.nodes;
   const languageCounts: Record<string, number> = {};
 
+  // Contar la cantidad de archivos por lenguaje de programación
   for (let i = 0; i < pullRequests.length; i++) {
     const seenLanguagesInPR = new Set<string>();
     const files = pullRequests[i].files.nodes;
@@ -231,30 +232,40 @@ function getTopLanguagesPullRequest(result: any): string[] {
     for (let j = 0; j < files.length; j++) {
       const file = files[j].path;
       const extension = file.split('.').pop()?.toLowerCase();
-      const language = languageMap[extension];
+      const language = languageMap[extension]; // Asegúrate de que languageMap esté definido
 
       if (language && !seenLanguagesInPR.has(language)) {
         seenLanguagesInPR.add(language);
-        if (languageCounts[language]) {
-          languageCounts[language] += 1;
-        } else {
-          languageCounts[language] = 1;
-        }
+        languageCounts[language] = (languageCounts[language] || 0) + 1;
       }
     }
   }
-  const sortedLanguages = Object.entries(languageCounts)
-    .sort((a, b) => b[1] - a[1])
-    .map(([language]) => language);
-    
-  return sortedLanguages;
-}
 
-function processGitHubUserInfo (result: any, languagesSorted: string[]) {
+  const totalFiles = Object.values(languageCounts).reduce((sum, count) => sum + count, 0);
+  let languagesPercentage = Object.entries(languageCounts).map(([language, count]) => ({
+    language,
+    percentage: parseFloat(((count / totalFiles) * 100).toFixed(2)),
+  }));
+
+
+  languagesPercentage.sort((a, b) => b.percentage - a.percentage);
+  const topLanguages = languagesPercentage.slice(0, 5);
+  const otherPercentage =  parseFloat(languagesPercentage.slice(5).reduce((sum, item) => sum + item.percentage, 0).toFixed(2));
+
+  if (otherPercentage > 0) {
+    topLanguages.push({
+      language: 'Other',
+      percentage: otherPercentage,
+    });
+  }
+
+  return topLanguages;
+}
+function processGitHubUserInfo (result: any, languagesSorted:LanguagePercentage[]) {
   const user = result.data.user;
   const globalTechnologies = new Set<string>();
 
-  const globalTopLanguages = languagesSorted.slice(0, 5);
+ 
 
   const topRepositories: RepositoryInfo[] = user.repositories.nodes.map((repo: any) => {
     const repoTechnologies = new Set<string>();
@@ -295,7 +306,7 @@ function processGitHubUserInfo (result: any, languagesSorted: string[]) {
       totalRepositoriesContributedWithCommits: user.contributionsCollection.totalRepositoriesWithContributedCommits,
       totalRepositoriesContributedWithPullRequests: user.contributionsCollection.totalRepositoriesWithContributedPullRequests 
     },
-    globalTopLanguages: Array.from(globalTopLanguages),
+    globalTopLanguages: Array.from(languagesSorted),
     globalTechnologies: Array.from(globalTechnologies).filter(tech => !tech.startsWith('@')),
     topRepositories,
   };

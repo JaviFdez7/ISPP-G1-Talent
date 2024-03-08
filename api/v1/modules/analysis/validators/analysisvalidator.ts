@@ -1,6 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv'
 
+
+export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
+  const username: string | undefined = req.params.username;
+
+  if (!username) {
+    res.status(400).send('Username is required.');
+    return;
+  }
+
+  next();
+};
+
 export const validateGitHubUserAndApiKey = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const githubUsername: string = req.body.username;
   let user_apikey: string | undefined = req.body.apikey;

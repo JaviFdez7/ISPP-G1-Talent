@@ -9,7 +9,10 @@ export interface RepositoryInfo {
   languages: string[]; 
   technologies: string[]; 
 }
-
+export interface LanguagePercentage {
+  language: string;
+  percentage: number;
+}
 
 
 export interface AnalysisDocument {
@@ -22,7 +25,7 @@ export interface AnalysisDocument {
     totalRepositoriesContributedWithCommits: number;
     totalRepositoriesContributedWithPullRequests: number;
   };
-  globalTopLanguages: string[]; 
+  globalTopLanguages: LanguagePercentage[]; 
   globalTechnologies: string[]; 
   topRepositories: RepositoryInfo[]; 
 }
@@ -46,7 +49,10 @@ const analysisSchema = new Schema<AnalysisDocument>({
     totalRepositoriesContributedWithCommits: { type: Number, required: true },
     totalRepositoriesContributedWithPullRequests: { type: Number, required: true },
   },
-  globalTopLanguages: [{ type: String }],
+    globalTopLanguages: [{
+  language: { type: String, required: true },
+  percentage: { type: Number, required: true }
+}],
   globalTechnologies: [{ type: String }],
   topRepositories: [repositoryInfoSchema],
 }, { timestamps: true });
