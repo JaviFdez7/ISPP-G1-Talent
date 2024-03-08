@@ -28,6 +28,7 @@ import RepresentativeDetailEdit from "../pages/representative/RepresentativeDeta
 //components
 import Navbar from "./Navbar";
 import { PlaceHolder } from "../pages/PlaceHolder.jsx";
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 //auth
 import Login from "../pages/auth/Login.jsx";
@@ -35,8 +36,8 @@ import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
 import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
 import AnalysisDashboard from "../pages/analysis/AnalysisDashboard.jsx";
 import AnalysisAnalizer from "../pages/analysis/AnalysisAnalizer.jsx";
-import AnalysisRepositories from "../pages/analysis/AnalysisRepositories.jsx";
 import AnalysisList from "../pages/analysis/AnalysisList.jsx";
+
 
 
 //TODO Implementar los placeholders de las rutas como componentes reales
@@ -59,97 +60,174 @@ function App() {
             />
             {/*RUTAS PRIVADAS */}
             {/*Analysis*/}
-            <Route path="/analysis/analyze" element={<AnalysisAnalizer />} />
+
             <Route
-              path="/analysis/:analysisId"
-              element={<AnalysisDashboard />}
+             path="/analysis/analyze" 
+             element={
+              <ProtectedRoute roles={['Representative']} >
+                <AnalysisAnalizer />
+              </ProtectedRoute>}
+             />
+
+            <Route path="/analysis/:analysisId"element={
+              <ProtectedRoute roles={['Representative']} >
+                <AnalysisDashboard />
+              </ProtectedRoute>}
             />
-            <Route
-              path="/analysis/:analysisId/repositories"
-              element={<AnalysisRepositories />}
+          
+            <Route path="/analysis/list" element={
+              <ProtectedRoute roles={['Representative']} >
+                <AnalysisList/>
+              </ProtectedRoute>}
             />
-            <Route
-              path="/analysis/list"
-              element={<AnalysisList/>}
+
+            <Route path="/analysis/history/:representativeId" element={
+              <ProtectedRoute roles={['Representative']} >
+                <PlaceHolder pageName="analysis list" />
+              </ProtectedRoute>}
             />
-            <Route
-              path="/analysis/history/:representativeId"
-              element={<PlaceHolder pageName="analysis list" />}
-            />
+
             {/*Search*/}
-            <Route
-              path="/searches/search"
-              element={<PlaceHolder pageName="search list" />}
+
+            <Route path="/searches/search" element={
+              <ProtectedRoute roles={['Representative']} >
+                <PlaceHolder pageName="search list" />
+              </ProtectedRoute>}
             />
-            <Route
+           <Route
               path="/searches/:searchId"
-              element={<PlaceHolder pageName="search list" />}
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <PlaceHolder pageName="search list" />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/searches/history/:representativeId"
-              element={<PlaceHolder pageName="search list" />}
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <PlaceHolder pageName="search list" />
+                </ProtectedRoute>
+              }
             />
+            
             {/*Subscription*/}
             <Route
               path="/pricing"
-              element={<PlaceHolder pageName="subscription" />}
+              element={
+              <PlaceHolder pageName="subscription" />}
             />
             {/*<Route path="/pricing" element={<Pricing />} />*/}
 
             {/*RUTAS CANDIDATO */}
-            <Route path="/candidate/detail" element={<CandidateDetail />} />
+            <Route path="/candidate/detail" element={
+              <ProtectedRoute roles={['Candidate']} >
+                <CandidateDetail />
+              </ProtectedRoute>} 
+            />
             <Route
               path="/candidate/detail/edit"
-              element={<CandidateDetailEdit />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateDetailEdit />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/analysis/detail"
-              element={<CandidateAnalysisDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateAnalysisDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/developer/info/detail"
-              element={<CandidateDeveloperInfoDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateDeveloperInfoDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/developer/info/detail/edit"
-              element={<CandidateDeveloperInfoDetailEdit />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateDeveloperInfoDetailEdit />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/laboral/detail"
-              element={<CandidateLaboralDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateLaboralDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/laboral/detail/edit"
-              element={<CandidateLaboralDetailEdit />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateLaboralDetailEdit />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/notification/detail"
-              element={<CandidateNotificationDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateNotificationDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/representative/detail"
-              element={<CandidateRepresentativeDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateRepresentativeDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/subscription"
-              element={<CandidateSubscription />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateSubscription />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/candidate/trends/detail"
-              element={<CandidateTrendsDetail />}
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateTrendsDetail />
+                </ProtectedRoute>
+              }
             />
             {/*RUTAS REPRESENTANTE */}
             <Route
               path="/representative/subscription"
-              element={<RepresentativeSubscription />}
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <RepresentativeSubscription />
+                </ProtectedRoute>}
             />
             <Route
               path="/representative/detail"
-              element={<RepresentativeDetail />}
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <RepresentativeDetail />
+                </ProtectedRoute>
+              }
             />
             <Route
               path="/representative/detail/edit"
-              element={<RepresentativeDetailEdit />}
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <RepresentativeDetailEdit />
+                </ProtectedRoute>
+              }
             />
           </Routes>
         </Router>

@@ -63,6 +63,10 @@ export default function Navbar() {
       setExpanded(false);
     }
   }
+  
+  const perfil = isAuthenticated ? ( userData && userData.role == "Representative" ? "/representative/detail" : "/candidate/detail") : "/login";
+  const subscription = isAuthenticated ? ( userData && userData.role == "Representative" ? "/representative/subscription" : "/candidate/subscription") : "/login";
+  
 
   return (
     <div className="sidenav" id="sidenav">
@@ -75,7 +79,7 @@ export default function Navbar() {
         <div className="navbar-hoverer" id="navbar-hoverer"></div>
         <div className="navbar-current" id="navbar-current"></div>
         <Link
-          to="/candidate/detail"
+          to={perfil}
           onMouseEnter={() => move_hoverer(0)}
           onMouseDown={() => move_current(0)}
           className="link-container"
@@ -94,18 +98,20 @@ export default function Navbar() {
           <p>&nbsp;&nbsp;&nbsp;</p>
           <span>Trends</span>
         </Link>
+        {isAuthenticated && userData && userData.role === "Representative" && (
+          <Link
+            to="/analysis/analyze"
+            onMouseEnter={() => move_hoverer(2)}
+            onMouseDown={() => move_current(2)}
+            className="link-container"
+          >
+            <span>ICON</span>
+            <p>&nbsp;&nbsp;&nbsp;</p>
+            <span>My analysis</span>
+          </Link>
+        )}
         <Link
-          to="/analysis/analyze"
-          onMouseEnter={() => move_hoverer(2)}
-          onMouseDown={() => move_current(2)}
-          className="link-container"
-        >
-          <span>ICON</span>
-          <p>&nbsp;&nbsp;&nbsp;</p>
-          <span>My analysis</span>
-        </Link>
-        <Link
-          to="/candidate/subscription"
+          to={subscription}
           onMouseEnter={() => move_hoverer(3)}
           onMouseDown={() => move_current(3)}
           className="link-container"
