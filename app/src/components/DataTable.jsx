@@ -38,10 +38,15 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                 <tbody className="datatable-body ">
                     {contentArray.map((item, index) => (
                         <tr key={index}>
-                            <td className="datatable-cell " style={{height: cellHeight}}>
+                            <td className="datatable-cell" style={{height: cellHeight}}>
                                 <br></br>
-                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "0px"}}>
+                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
                                     {item}
+                                </div>
+                                <hr className="w-full "></hr>
+                            </td>
+                            <td className="datatable-cell" style={{height: cellHeight}}>
+                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
                                     {editable && (
                                     <Link to={editLink + "/" + index} className="edit-button">
                                         Edit
