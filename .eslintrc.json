@@ -29,6 +29,12 @@
 	"no-unmodified-loop-condition": "off",
 	"no-unused-private-class-members": "off",
 	"no-self-compare": "warn",
+	"no-use-before-define": ["error", {
+		"functions": true,
+		"classes": true,
+		"variables": true,
+		"allowNamedExports": false
+	}],
 	"no-unreachable-loop":"error",
 	"no-template-curly-in-string": "error",
 	"no-new-native-nonconstructor": "error",
