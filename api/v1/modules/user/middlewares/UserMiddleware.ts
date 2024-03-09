@@ -1,54 +1,78 @@
-import { Jwt, JwtPayload } from 'jsonwebtoken';
 import { encrypt, compare } from '../helpers/handleBcrypt';
 import { generateJWT, verifyJWT } from '../helpers/handleJWT';
 import { Candidate, ProfessionalExperience, Representative, User } from '../models/user';
+import e, { type Request, type Response, type NextFunction } from 'express';
 
-export const checkGetUserById = async (id: string, token: string) => {
-  const user = await User.findById(id);
-  if (!user) {
-    return 'User not found';
-  }
+export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
+    const user = await User.findById(id);
+    if (!user) {
+      const message = 'User not found';
+      res.status(404).send(message);
+      return message;
+    }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
-    if (decodedToken.sub !== id) {
-      return 'Unauthorized';
+    if (decodedToken.sub !== user._id.toString()) {
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
-    console.error('Error getting user:', error);
+    console.error('Error deleting user', error)
     throw error;
   }
 }
 
-export const checkGetProfessionalExperienceByUserId = async (id: string, token: string) => {
-  const experience = await ProfessionalExperience.findOne({userId:id});
-  if (!experience) {
-    return 'Profesional Experience not found';
-  }
+export const checkGetProfessionalExperienceByUserId: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const experience = await ProfessionalExperience.findOne({userId:id});
+    const token = req.headers.authorization ?? '';
+    const user = await User.findById(id);
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
-    if (decodedToken.sub !== id) {
-      return 'Unauthorized';
+    if (decodedToken.sub !== id.toString()) {
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else if (!user) {
+      const message = 'User not found';
+      res.status(404).send(message);
+      return message;
+    } else if (!experience) {
+      const message = 'Professional Experience not found';
+      res.status(404).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
-    console.error('Error getting professional experience:', error);
+    console.error('Error deleting user', error)
     throw error;
   }
 }
 
-// Comprobar si faltan campos requeridos en el candidato
-// Comprobar si el candidato ya existe
-// Encriptar la contraseña
-export const checkCreateCandidate = async (data: any) => {
+export const checkCreateCandidate: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const data = req.body
     // Comprobar si faltan campos requeridos en el candidato
     if (!data.username || !data.email || !data.fullName || !data.password || !data.githubUser || !data.candidateSubscription) {
-      return'Missing required fields';
+      const message = 'Missing required fields';
+      res.status(400).send(message);
+      return message;
     }
 
     // Comprobar si el candidato ya existe
@@ -56,49 +80,66 @@ export const checkCreateCandidate = async (data: any) => {
     const existingEmail = await User.findOne({ email: data.email });
     const existingGithubUser = await Candidate.findOne({ githubUser: data.githubUser });
     if (existingUsername) {
-      return { existingUsername: 'Username already exists'}
-
+      const message = 'Username already exists';
+      res.status(400).send(message);
+      return { existingUsername: message}
     }
     if (existingEmail) {
-      return { existingEmail: 'User with that email already exists'}
-
+      const message = 'User with that email already exists';
+      res.status(400).send(message);
+      return { existingEmail: message }
     }
     if (existingGithubUser) {
-      return { existingGithubUser: 'User with that GitHub username already exists'}
+      const message = 'User with that GitHub username already exists';
+      res.status(400).send(message);
+      return { existingGithubUser: message }
+    } else {
+      // Encriptar la contraseña
+      data.password = await encrypt(data.password);
+      next();
     }
-
-    // Encriptar la contraseña
-    data.password = await encrypt(data.password);
   } catch (error) {
     console.error('Error inserting user:', error);
     throw error;
   }
-};
+}
 
 //Comprobar que los campos obligatorios esten
 //Comprobar que el userId pertenece a un candidato que exista en db
-export const checkCreateProfessionalExperience = async (data: any,token:string) =>{
+export const checkCreateProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
-    if(!data){
-      return 'No data to update';
+    const data = req.body;
+    const token = req.headers.authorization ?? '';
+    if(!data) {
+      const message = 'No data to insert';
+      res.status(400).send(message);
+      return message;
     }
     // Comprobar si faltan campos requeridos en el representante
     if (!data.startDate  || !data.companyName || !data.userId || !data.professionalArea ) {
-      return 'Missing required fields';
+      const message = 'Missing required fields';
+      res.status(400).send(message);
+      return message;
     }
     // Comprobar si el candidato existe
     const existingCandidate = await Candidate.findById({ id: data.userId });
     if (!existingCandidate) {
-      return 'Invalid candidate';
+      const message = 'Invalid candidate';
+      res.status(400).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
-    console.log(decodedToken);
     if (decodedToken.sub !== data.userId) {
-      return 'Unauthorized';
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
     console.error('Error inserting professional experience:', error);
@@ -106,31 +147,36 @@ export const checkCreateProfessionalExperience = async (data: any,token:string) 
   }
 };
 
-
-
 // Comprobar si faltan campos requeridos en el representante
 // Comprobar si el representante ya existe
 // Encriptar la contraseña
-export const checkCreateRepresentative = async (data: any) => {
+export const checkCreateRepresentative: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const data = req.body;
     // Comprobar si faltan campos requeridos en el representante
     if (!data.username || !data.password || !data.email || !data.companyName ) {
-      return 'Missing required fields';
+      const message = 'Missing required fields';
+      res.status(400).send(message);
+      return message;
     }
 
     // Comprobar si el representante ya existe
     const existingUsername = await User.findOne({ username: data.username });
     const existingEmail = await User.findOne({ email: data.email });
     if (existingUsername) {
-      return { existingUsername: 'Username already exists'}
+      const message = 'Username already exists';
+      res.status(400).send(message);
+      return { existingUsername: message}
     }
     if (existingEmail) {
-      return { existingEmail: 'User with that email already exists'}
-
+      const message = 'User with that email already exists';
+      res.status(400).send(message);
+      return { existingEmail: message}
+    } else {
+      // Encriptar la contraseña
+      data.password = await encrypt(data.password);
+      next();
     }
-
-    // Encriptar la contraseña
-    data.password = await encrypt(data.password);
   } catch (error) {
     console.error('Error inserting user:', error);
     throw error;
@@ -139,21 +185,30 @@ export const checkCreateRepresentative = async (data: any) => {
 
 // Comprobar si el usuario existe
 // Comprobar si la contraseña es correcta
-export const checkLoginUser = async (token: string, data: any) => {
+export const checkLoginUser: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const data = req.body;
+    const token = req.headers.authorization ?? '';
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
     if (!user) {
+      const message = 'User not found';
+      res.status(404).send(message);
       return { user: 'User not found' };
     }
     // Comprobar si la contraseña es correcta
     const checkPassword = await compare(data.password, user.password);
     if (!checkPassword) {
-      
-      return { checkPassword: 'Invalid password' };
+      const message = 'Invalid password';
+      res.status(401).send(message);
+      return { checkPassword: message };
     }
     if (token.length > 0) {
-      return {userLog:'User already logged in'};
+      const message = 'User already logged in';
+      res.status(400).send(message);
+      return { userLog: message };
+    } else {
+      next();
     }
   } catch (error) {
     console.error('Error logging in:', error);
@@ -161,26 +216,38 @@ export const checkLoginUser = async (token: string, data: any) => {
   }
 };
 // TODO: Check user's session token
-export const checkUpdateCandidate = async (id: string, token: string, data: any) => {
+export const checkUpdateCandidate: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const data = req.body;
+    const token = req.headers.authorization ?? '';
+    const id = req.params.id.toString();
     const user = await Candidate.findById(id);
     if (!user) {
-      return 'User not found';
+      const message = 'User not found';
+      res.status(404).send(message);
+      return message;
     }
     if (!data) {
-      return 'No data to update';
+      const message = 'No data to update';
+      res.status(400).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
-    console.log(decodedToken);
     if (decodedToken.sub !== id) {
-      return 'Unauthorized';
-    }
-    // Encriptar la contraseña
-    if (data.password) {
-      data.password = await encrypt(data.password);
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      // Encriptar la contraseña
+      if (data.password) {
+        data.password = await encrypt(data.password);
+      }
+      next();
     }
   } catch (error) {
     console.error('Error updating user:', error);
@@ -191,25 +258,39 @@ export const checkUpdateCandidate = async (id: string, token: string, data: any)
 //Comprobar que existe la experiencia a actualizar
 //Comprobar token correcto
 //Comprobar que se envia información con campos requeridos
-export const checkUpdateProfessionalExperience = async (id: string, token: string, data: any) => {
+export const checkUpdateProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
+    const data = req.body;
     const experience = await ProfessionalExperience.findById(id);
     if (!experience) {
-      return 'Professional experience not found';
+      const message = 'Professional experience not found';
+      res.status(404).send(message);
+      return message;
     }
     if (!data) {
-      return 'No data to update';
+      const message = 'No data to update';
+      res.status(400).send(message);
+      return message;
     } // Comprobar si faltan campos requeridos en el representante
     else if (!data.startDate  || !data.companyName || !data.userId || !data.professionalArea ) {
-      return 'Missing required fields';
+      const message = 'Missing required fields';
+      res.status(400).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
-    console.log(decodedToken);
     if (decodedToken.sub !== id) {
-      return 'Unauthorized';
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
     console.error('Error updating professional experience:', error);
@@ -221,25 +302,38 @@ export const checkUpdateProfessionalExperience = async (id: string, token: strin
 // Comprobar si hay datos para actualizar
 // Comprobar si el token es correcto
 // Encriptar la contraseña si se ha actualizado
-export const checkUpdateRepresentative = async (id: string, token: string, data: any) => {
+export const checkUpdateRepresentative: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
+    const data = req.body;
     const user = await Representative.findById(id);
     if (!user) {
-      return 'User not found';
+      const message = 'User not found';
+      res.status(404).send(message);
+      return message;
     }
     if (!data) {
-      return 'No data to update';
+      const message = 'No data to update';
+      res.status(400).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
-      return 'Unauthorized';
-    }
-    // Encriptar la contraseña si se ha actualizado
-    if (data.password) {
-      data.password = await encrypt(data.password);
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      // Encriptar la contraseña si se ha actualizado
+      if (data.password) {
+        data.password = await encrypt(data.password);
+      }
+      next();
     }
   } catch (error) {
     console.error('Error updating user:', error);
@@ -249,18 +343,28 @@ export const checkUpdateRepresentative = async (id: string, token: string, data:
 
 // Comprobar si el usuario existe
 // Comprobar si el token es correcto
-export const checkDeleteUser = async (id: string, token: string) => {
+export const checkDeleteUser: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
     const user = await User.findById(id);
     if (!user) {
-      return 'User not found';
+      const message = 'User not found';
+      res.status(404).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token); 
     if (decodedToken.sub !== id) {
-      return 'Unauthorized';
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
     console.error('Error deleting user', error)
@@ -270,25 +374,34 @@ export const checkDeleteUser = async (id: string, token: string) => {
 
 // Comprobar si la experiencia existe
 // Comprobar si el token es correcto
-export const checkDeleteProfessionalExperience = async (id: string, token: string) => {
+export const checkDeleteProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
     const experience = await ProfessionalExperience.findById(id);
     if (!experience) {
-      return 'Professional experience not found';
+      const message = 'Professional experience not found';
+      res.status(404).send(message);
+      return message;
     }
     if (token.length === 0) {
-      return 'No token provided';
+      const message = 'No token provided';
+      res.status(401).send(message);
+      return message;
     }
     const decodedToken = verifyJWT(token); 
-    if (decodedToken.sub !== id) {
-      return 'Unauthorized';
+    if (decodedToken.sub !== experience.userId.toString()) {
+      const message = 'Unauthorized';
+      res.status(401).send(message);
+      return message;
+    } else {
+      next();
     }
   } catch (error) {
     console.error('Error deleting professional experience', error)
     throw error;
   }
 }
-
 
 export default {
   checkGetUserById,
