@@ -3,11 +3,12 @@ import { Document } from 'mongoose';
 // 1. Create an interface representing a document in MongoDB.
 export interface RepositoryInfo {
   name: string;
-  url: string;
-  stars: number;
-  forks: number;
-  languages: string[]; 
-  technologies: string[]; 
+  description: string,
+  url: string,
+  stars: number,
+  forks: number,
+  languages: string[],
+  technologies: string[], 
 }
 export interface LanguagePercentage {
   language: string;
@@ -32,6 +33,8 @@ export interface AnalysisDocument {
 
 const repositoryInfoSchema = new Schema<RepositoryInfo>({
   name: { type: String, required: true },
+  description: {type: String},
+
   url: { type: String, required: true },
   stars: { type: Number, required: true },
   forks: { type: Number, required: true },
@@ -43,6 +46,7 @@ const analysisSchema = new Schema<AnalysisDocument>({
   githubUsername: { type: String, required: true },
   avatarUrl: { type: String, required: true },
   followers: { type: Number, required: true },
+
   contributions: {
     totalCommits: { type: Number, required: true },
     totalPullRequests: { type: Number, required: true },

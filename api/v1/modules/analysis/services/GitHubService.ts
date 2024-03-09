@@ -1,3 +1,4 @@
+import { IntegerType } from 'mongodb';
 import type { AnalysisDocument, RepositoryInfo,LanguagePercentage }  from '../models/analysis.model';
 import dotenv from 'dotenv'
 const { GQLPaginator } = require('gql-paginator');
@@ -140,7 +141,6 @@ const relevantTechnologies = [
 ];
 
 export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string): Promise<AnalysisDocument> {
-
   const queryUserInfo = `query {
     user(login: "${githubUsername}") {
       login
@@ -152,6 +152,7 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
         totalCount
         nodes {
           name
+          description
           url
           stargazers {
             totalCount
@@ -202,12 +203,15 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
         }
       }
     `;
+
+
   try {
     const effectiveApiKey = apikey || GITHUB_APIKEY;
     
    
     const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
     const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
+  
 
     const languagesUsed = getTopLanguagesPullRequest(languagesResult);
     
@@ -288,9 +292,12 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
       }
 
       const repoLanguages = repo.languages.edges.map((edge: any) => edge.node.name);
+      
+     
 
       topRepositories.push({
         name: repo.name,
+        description: repo.description,
         url: repo.url,
         stars: repo.stargazers.totalCount,
         forks: repo.forks.totalCount,
