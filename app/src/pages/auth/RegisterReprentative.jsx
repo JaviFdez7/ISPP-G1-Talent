@@ -4,7 +4,6 @@ import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import Swal from "sweetalert2";
-
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
@@ -19,11 +18,8 @@ export default function RegisterRepresentative() {
     password2: "",
   });
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-
   let navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
-
   const {
     username,
     corporative_email,

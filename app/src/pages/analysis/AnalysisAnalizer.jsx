@@ -13,9 +13,7 @@ export default function Analyzer() {
     const boxColor ='var(--talent-dark-background)'
     const asteriskColor = 'var(--talent-highlight-background)'
     const navigate = useNavigate();
-
     const ruta = import.meta.env.VITE_BACKEND_URL;
-
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
 
@@ -60,9 +58,7 @@ export default function Analyzer() {
       setLoading(true);
       
       try {
-        // Check if the username exists
         const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
-        console.log(userResponse);
         if (userResponse.ok) {
           navigate('/analysis/' + form.githubUser);
           setLoadingMessage('');

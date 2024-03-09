@@ -4,7 +4,6 @@ import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import Swal from "sweetalert2";
-
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
@@ -21,13 +20,9 @@ export default function RegisterCandidate() {
     github_username: "",
     candidateSubscription: "Basic plan",
   });
-
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-
   let navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
-
   const {
     first_name,
     surname,
@@ -40,7 +35,6 @@ export default function RegisterCandidate() {
     candidateSubscription,
   } = form;
 
-  //4)creamos la funcion que se encargara de actualizar el estado del formulario
   function onInputChange(e) {
     if (e.target.name === "termsCheckbox") {
       setIsCheckboxChecked(e.target.checked);
@@ -57,9 +51,8 @@ export default function RegisterCandidate() {
     setIsCheckboxChecked(e.target.checked);
   };
 
-  //5) creamos la funcion que se encargara de enviar los datos del formulario
+  
   async function handleSubmit(e) {
-    //onFormSubmit == handleSubmit
     e.preventDefault();
 
     if (!isCheckboxChecked) {
@@ -106,7 +99,6 @@ export default function RegisterCandidate() {
           switch (response.status) {
             case 200:
               login(data.access, data.refresh, data.role, data.user._id);
-              console.log(data.user.role + " role");
               navigate("/candidate/detail");
               Swal.fire({
                 title: "Successfully register!",

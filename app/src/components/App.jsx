@@ -28,7 +28,7 @@ import RepresentativeDetailEdit from "../pages/representative/RepresentativeDeta
 //components
 import Navbar from "./Navbar";
 import { PlaceHolder } from "../pages/PlaceHolder.jsx";
-import ProtectedRoute from "./ProtectedRoute.jsx";
+import ProtectedRoute from "../context/routes/ProtectedRoute.jsx";
 
 //auth
 import Login from "../pages/auth/Login.jsx";
