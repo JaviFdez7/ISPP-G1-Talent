@@ -28,6 +28,7 @@
 	"no-promise-executor-return": "off",
 	"no-unmodified-loop-condition": "off",
 	"no-self-compare": "warn",
+	"no-unreachable-loop":"error",
 	"no-template-curly-in-string": "error",
 	"no-new-native-nonconstructor": "error",
 	"no-duplicate-imports": ["error", { "includeExports": true }],
