@@ -25,6 +25,7 @@
         "semi":"off",
         "@typescript-eslint/semi": "off",
 	"no-constructor-return": "off",
+	"no-promise-executor-return": "off",
 	"no-new-native-nonconstructor": "error",
 	"no-duplicate-imports": ["error", { "includeExports": true }],
 	"no-constant-binary-expression": "error",
