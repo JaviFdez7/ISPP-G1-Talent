@@ -23,6 +23,11 @@
       },
     "rules": {
         "semi":"off",
-        "@typescript-eslint/semi": "off"
+        "@typescript-eslint/semi": "off",
+	"array-callback-return": ["error", {
+		"allowImplicit": false,
+		"checkForEach": true,
+		"allowVoid": true
+	}]
     }
 }
