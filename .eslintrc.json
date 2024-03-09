@@ -29,6 +29,7 @@
 	"no-unmodified-loop-condition": "off",
 	"no-unused-private-class-members": "off",
 	"no-self-compare": "warn",
+	"require-atomic-updates": "error",
 	"no-use-before-define": ["error", {
 		"functions": true,
 		"classes": true,
