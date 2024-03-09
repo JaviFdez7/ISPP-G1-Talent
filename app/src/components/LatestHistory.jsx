@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"
 import MainButton from "./mainButton";
 
-const LatestHistory = ({ header, data, type = "analysis", representativeId }) => {
+const LatestHistory = ({ header, data, type = "analysis" }) => {
     const paddedData = data.concat(Array.from({ length: 3 - data.length }, () => ({})));
 
     const formatDateTime = (date) => {
@@ -29,7 +29,7 @@ const LatestHistory = ({ header, data, type = "analysis", representativeId }) =>
                 </tbody>
             </table>
             <div style={styles.buttonContainer}>
-                {MainButton("See all", `/${type}/history/${representativeId}`, "")}
+                {MainButton("See all", `/${type}/list`, "")}
             </div>
         </div>
     );

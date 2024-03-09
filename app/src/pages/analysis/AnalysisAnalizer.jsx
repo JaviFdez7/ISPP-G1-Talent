@@ -52,7 +52,7 @@ export default function Analyzer() {
       if ( !form.githubUser) {
           setErrors({
             githubUser: form.githubUser ? '' : 
-              <span style={{color: 'orange', fontSize: '15px'}}>--->Github User is required</span>,
+              <span style={{color: 'orange', fontSize: '15px'}}>{"--->"}Github User is required</span>,
           });
           return;
       }
@@ -83,7 +83,7 @@ export default function Analyzer() {
         setLoading(false);
         if(response.status == 500){
           setErrors({
-            githubUser: <span style={{color: 'orange', fontSize: '15px'}}>--->This user does not exist in Github</span>,
+            githubUser: <span style={{color: 'orange', fontSize: '15px'}}>{"--->"}This user does not exist in Github</span>,
           });
         }
         if (!response.ok) {

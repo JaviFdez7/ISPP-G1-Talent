@@ -162,13 +162,11 @@ export default function RepresentativeDetail() {
           header="Latest Analysis"
           data={getAnalysisHistory()}
           type="analysis"
-          representativeId="1"
         />
         <LatestHistory
           header="Latest Search"
           data={getSearchHistory()}
           type="searches"
-          representativeId="1"
         />
       </div>
     </div>
