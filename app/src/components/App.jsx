@@ -33,7 +33,7 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 //auth
 import Login from "../pages/auth/Login.jsx";
 import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
-import RegisterRepresentative from "../pages/auth/RegisterReprentative.jsx";
+import RegisterRepresentative from "../pages/auth/RegisterRepresentative.jsx";
 import AnalysisDashboard from "../pages/analysis/AnalysisDashboard.jsx";
 import AnalysisAnalizer from "../pages/analysis/AnalysisAnalizer.jsx";
 import AnalysisList from "../pages/analysis/AnalysisList.jsx";

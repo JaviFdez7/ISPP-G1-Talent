@@ -95,39 +95,42 @@ export default function RegisterCandidate() {
       }
     }
   }
+  function getRequiredFieldMessage(fieldName) {
+    return `The ${fieldName} field is required`;
+  }
 
   function validateForm() {
     let errors = {};
     if (!form.first_name) {
-      errors.first_name = "The name field is required";
+      errors.first_name = getRequiredFieldMessage('name');
     } else if (form.first_name.length <= 3) {
       errors.first_name = "The name field must be more than 3 characters";
     }
     if (!form.surname) {
-      errors.surname = "The surname field is required";
+      errors.surname = getRequiredFieldMessage('surname');
     } else if (form.surname.length <= 3) {
-      errors.surname = "The last name field must have more than 3 characters";
+      errors.surname = "The surname field must have more than 3 characters";
     }
     if (!form.email) {
-      errors.email = "The email field is required";
+      errors.email = getRequiredFieldMessage('email');
     } else if (
       !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
     ) {
       errors.email = "The email field must be from Gmail, Outlook or Hotmail";
     }
     if (!form.password) {
-      errors.password = "The password field is required";
+      errors.password = getRequiredFieldMessage('password');
     } else if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
     }
     if (!form.password2) {
-      errors.password2 = "The repeat password field is required";
+      errors.password2 = getRequiredFieldMessage('repeat password');
     }
     if (!form.github_username) {
-      errors.github_username = "The github_username field is required";
+      errors.github_username = getRequiredFieldMessage('github username');
     }
     if (!form.username) {
-      errors.username = "The username field is required";
+      errors.username = getRequiredFieldMessage('username');
     }
     if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
       errors.phone_number =
