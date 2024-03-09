@@ -32,6 +32,8 @@
 	"no-self-compare": "warn",
 	"accessor-pairs": "warn",
 	"default-case": "error",
+	"default-case-last": "error",
+	"default-param-last": "error",
 	"curly": ["error", "multi-or-nest"],
 	"complexity": ["error", { "max": 4 }],
 	"camelcase": "error",
