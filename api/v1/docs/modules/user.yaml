@@ -55,7 +55,7 @@ paths:
   /user/login:
     post:
       tags:
-        - 'Users Login'
+        - 'Users Create'
       summary: Log in as a user
       description: Enter in the app as a existing user
       parameters:
@@ -87,7 +87,7 @@ paths:
   /user/candidate:
     post:
       tags: 
-        - Candidates Create
+        - Users Create
       summary: Create a candidate
       description: Create a new user as a candidate
       parameters:
@@ -106,7 +106,7 @@ paths:
   /user/candidate/{id}:
     patch:
       tags:
-        - Candidate Update
+        - Users Update
       summary: Update a candidate
       description: Update the profile of candidate
       parameters:
@@ -139,7 +139,7 @@ paths:
   /user/representative:
     post:
       tags:
-        - 'Representative Update'
+        - 'Users Update'
       summary: Create a representative
       description: Create a new user as a representative
       parameters:
@@ -158,7 +158,7 @@ paths:
   /user/representative/{id}:
     patch:
       tags:
-        - Representative Update
+        - Users Update
       summary: Update a representative
       description: Update the profile of representative
       parameters:
@@ -190,7 +190,7 @@ paths:
   /user/{id}/experiences:
     get:
       tags:
-      - Professional Experience Read
+      - Users Read
       summary: Get all professional experiences of user
       description: Retrieves a list of professional experiences by the id of user.
       parameters:
@@ -219,7 +219,7 @@ paths:
   /user/experience:
     post:
       tags:
-        - Professional Experience Create
+        - Users Create
       summary: Create a professional experience
       description: Create a new professional experience for a candidate
       parameters:
@@ -245,7 +245,7 @@ paths:
   /user/experience/{id}:
     patch:
       tags:
-        - Professional Experience Update
+        - Users Update
       summary: Update a professional experience
       description: Update a new professional experience for a candidate
       parameters:
@@ -276,7 +276,7 @@ paths:
                 $ref: '#/definitions/ProfessionalExperience' 
     delete:
       tags:
-        - Professional Experience Delete
+        - Users Delete
       summary: Delete a professional experience
       description: Delete a new professional experience for a candidate
       parameters:

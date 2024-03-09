@@ -13,6 +13,8 @@ node_modules
 dist
 dist-ssr
 *.local
+api/v[0-9]/**/*.js
+*/**/.gcloudignore
 
 # Editor directories and files
 .vscode/*

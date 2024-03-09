@@ -1,0 +1,202 @@
+swagger: "3.0.0"
+info:
+  version: 1.0.0
+  title: IT Talent API - History Module
+paths:
+  /user/{userId}/history:
+    get:
+      tags:
+        - Histories Read
+      summary: Get history from user
+      description: Get the complete history of a representative
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        schema:
+          type: string
+          required: true
+          description: Its the token of authentication.
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/HistoryItem"
+    post:
+      tags:
+        - Histories Create
+      summary: Create history entry
+      description: Create a new entry in the history of a representative
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: History entry object
+          required: true
+          schema:
+            $ref: "#/definitions/NewHistoryItem"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/HistoryItem"
+  /user/{userId}/history/{id}:
+      patch:
+        tags:
+          - Histories Update
+        summary: Update history entry
+        description: Update a specific history entry
+        parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+          - name: body
+            in: body
+            description: History entry object
+            required: true
+            schema:
+              $ref: "#/definitions/HistoryItem"
+        responses:
+          200:
+            description: Success
+      delete:
+        tags:
+          - Histories Delete
+        summary: Delete history entry
+        description: Delete a specific history entry
+        parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+        responses:
+          200:
+            description: Success
+  /user/{userId}/history/{id}/favorite:
+    patch:
+      tags:
+          - Histories Update
+      summary: Update the state of the history
+      description: Update the state of the history
+      parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+      responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
+  /user/{userId}/favorites:
+    get:
+        tags:
+          - Histories Read
+        summary: List all the favorite history of the user 
+        description: List all the favorite history of the user
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+        responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
+
+  /user/{userId}/not_favorites:
+    get:
+        tags:
+          - Histories Read
+        summary: List all the not favorite history of the user 
+        description: List all the not favorite history of the user 
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+        responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/HistoryItem"
+definitions:
+  HistoryItem:
+    type: object
+    properties:
+      date:
+        type: string
+        required: true
+        description: The acquisition date the history item.
+      favorite:
+        type: boolean
+        required: true
+        description: The state of the history item
+      userId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the user.
+      analysisId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the analysis.
+  NewHistoryItem:
+    type: object
+    properties:
+      analysisId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the analysis.
