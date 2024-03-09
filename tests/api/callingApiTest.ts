@@ -23,4 +23,4 @@ describe(`Call the API to add a new analysis - ${githubUsername} : `, () => {
       done(err); // Si hay un error, lo pasa a Mocha
     });
     });
-});
+}).timeout(10000);

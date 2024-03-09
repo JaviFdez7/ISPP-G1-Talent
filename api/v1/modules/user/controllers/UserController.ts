@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
-import e, { type Request, type Response } from 'express';
+import { type Request, type Response } from 'express';
 import UserService from '../services/UserService';
 import UserMiddleware from '../middlewares/UserMiddleware';
 
