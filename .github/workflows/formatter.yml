@@ -24,8 +24,8 @@ jobs:
 
       - name: Format and fix warnings on modified or added files
         run: |
-          for file in $(git diff --diff-filter=d --name-only ${{ github.base_ref }} ${{ github.head_ref }} | grep -E '\.(json|ts|css|js)$'); do
-            prettier --write $file && eslint --fix --quiet $file
+          for file in $(git diff --diff-filter=d --name-only ${{ github.base_ref }} ${{ github.head_ref }} | grep -E '\.(json|ts|css|js|jsx)$'); do
+            npx prettier --write $file && npx eslint --fix --quiet $file
           done
 
       - name: Git config
