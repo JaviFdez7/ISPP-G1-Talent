@@ -31,6 +31,7 @@
 	"capitalized-comments": "off",
 	"no-self-compare": "warn",
 	"accessor-pairs": "warn",
+	"curly": ["error", "multi-or-nest"],
 	"complexity": ["error", { "max": 4 }],
 	"camelcase": "error",
 	"block-scoped-var": "error",
