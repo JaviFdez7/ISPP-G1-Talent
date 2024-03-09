@@ -30,6 +30,8 @@
 	"no-unused-private-class-members": "off",
 	"no-self-compare": "warn",
 	"accessor-pairs": "warn",
+	"camelcase": "error",
+	"block-scoped-var": "error",
 	"arrow-body-style": ["error", "as-needed"],
 	"require-atomic-updates": "error",
 	"no-use-before-define": ["error", {
