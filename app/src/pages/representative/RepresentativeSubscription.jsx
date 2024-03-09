@@ -1,16 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import mainBackground from "../../images/main-background2.jpg";
 
 export default function RepresentativeSubscription() {
   const suscriptions = [
     {
       name: "Basic",
       price: "29.99€",
-      description: [
-        "25 searches",
-        "3 members per search",
-        "Basic filters",
-      ],
+      description: ["25 searches", "3 members per search", "Basic filters"],
     },
     {
       name: "Advanced",
@@ -26,21 +23,19 @@ export default function RepresentativeSubscription() {
     {
       name: "Personal",
       price: "Custom",
-      description: [
-        "Custom",
-        "Custom",
-        "Custom",
-        "Custom",
-        "Custom",
-      ],
+      description: ["Custom", "Custom", "Custom", "Custom", "Custom"],
     },
   ];
   return (
-    <section
-      className=" body-font overflow-hidden"
-      style={{ backgroundColor: "#454545" }}
+    <div
+      className="flex flex-col items-center justify-center bg-fixed h-screen w-screen"
+      style={{
+        backgroundImage: `url(${mainBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <div className="container px-5 py-24 mx-auto">
+      <div className="container px-16 py-24 mx-auto">
         <div className="flex flex-wrap -m-4">
           {suscriptions.map((suscription, index) => (
             <div className="p-4 xl:w-1/3 md:w-1/2 w-full">
@@ -100,6 +95,6 @@ export default function RepresentativeSubscription() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

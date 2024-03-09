@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import mainBackground from "../../images/main-background2.jpg";
 
 export default function CandidateSubscription() {
   const suscriptions = [
@@ -25,12 +26,16 @@ export default function CandidateSubscription() {
     },
   ];
   return (
-    <section
-      className=" body-font overflow-hidden"
-      style={{ backgroundColor: "#454545" }}
+    <div
+      className="flex flex-col items-center justify-center bg-fixed h-screen w-screen"
+      style={{
+        backgroundImage: `url(${mainBackground})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       <div className="container px-5 py-24 mx-auto">
-        <div className="flex flex-wrap -m-4">
+        <div className="flex flex-wrap -m-4 justify-center">
           {suscriptions.map((suscription, index) => (
             <div className="p-4 xl:w-1/3 md:w-1/2 w-full">
               <div className="h-full p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
@@ -89,6 +94,6 @@ export default function CandidateSubscription() {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 }

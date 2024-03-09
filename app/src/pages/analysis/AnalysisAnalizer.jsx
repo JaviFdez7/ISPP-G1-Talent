@@ -60,9 +60,7 @@ export default function Analyzer() {
       setLoading(true);
       
       try {
-        // Check if the username exists
         const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
-        console.log(userResponse);
         if (userResponse.ok) {
           navigate('/analysis/' + form.githubUser);
           setLoadingMessage('');

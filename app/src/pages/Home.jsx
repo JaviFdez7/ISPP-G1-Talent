@@ -15,7 +15,6 @@ export default function Home() {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          console.log("id: " + currentUserId);
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
           const user = response.data.find(user => user._id === currentUserId);
           setUserName(user.username);

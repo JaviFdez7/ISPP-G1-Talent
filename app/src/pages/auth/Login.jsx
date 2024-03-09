@@ -3,21 +3,17 @@ import { Link, useNavigate } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
-
 import { useAuthContext } from "../../context/authContext";
 
 export default function Login() {
   const { login } = useAuthContext();
-
-  let navigate = useNavigate();
-
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
-
   const { username, password } = form;
+  let navigate = useNavigate();
 
   function onInputChange(e) {
     setForm({
@@ -27,7 +23,6 @@ export default function Login() {
     setErrors({ ...errors, [e.target.name]: undefined });
   }
 
-  //6)crear la funcion que se encargara de llamar al endpoint de login
   async function handleSubmit(e) {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -35,7 +30,6 @@ export default function Login() {
       setErrors(validationErrors);
       return;
     }
-
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login",
@@ -46,7 +40,6 @@ export default function Login() {
       const data = response.data;
       login(data.access, data.refresh, data.role, data.user._id);
       if (data.user.role === "Candidate") {
-        console.log(data.user.role + " role");
         navigate("/candidate/detail");
       } else if (data.user.role === "Representative") {
         navigate("/representative/detail");
@@ -62,6 +55,7 @@ export default function Login() {
       console.error(error);
     }
   }
+
   function validateForm() {
     let errors = {};
 
@@ -141,8 +135,8 @@ export default function Login() {
                     padding: "0.5rem 0.75rem",
                   }}
                   placeholder="Write your username"
-                  name="username" // nombre del atributo de la entidad del backend
-                  value={username} // valor del atributo de la entidad del backend
+                  name="username"
+                  value={username}
                   onChange={(e) => onInputChange(e)}
                 />
                 {errors.username && (
@@ -215,7 +209,7 @@ export default function Login() {
           className="flex justify-center items-center"
           style={{ marginTop: "1rem" }}
         >
-          <button>{MainButton("Log in", "/", handleSubmit)}</button>
+          {MainButton("Log in", "/", handleSubmit)}
         </div>
       </div>
     </div>

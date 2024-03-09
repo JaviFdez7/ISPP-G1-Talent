@@ -10,6 +10,7 @@ import Profile from "../pages/candidate/CandidateDetail";
 import { useAuthContext } from "../context/authContext.jsx";
 import axios from "axios";
 import Swal from "sweetalert2";
+import Logout from "./swat/logout";
 
 export default function Navbar() {
   const [expanded, setExpanded] = useState(false);
@@ -36,37 +37,6 @@ export default function Navbar() {
     fetchUserData();
   }, [isAuthenticated]);
 
-  const Logout = () => {
-    Swal.fire({
-      title: "Are you sure you want to log out?",
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: `No`,
-      confirmButtonColor: "var(--talent-highlight)",
-      denyButtonColor: "var(--talent-black)",
-      background: "var(--talent-secondary)",
-      color: "white",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
-        navigate("/");
-        Swal.fire({
-          title: "Closed session",
-          icon: "success",
-          background: "var(--talent-secondary)",
-          color: "white",
-          confirmButtonColor: "var(--talent-highlight)",
-        });
-      } else if (result.isDenied) {
-        if (userData && userData.role === "Representative") {
-          navigate("/representative/detail");
-        } else if (userData && userData.role === "Candidate") {
-          navigate("/candidate/detail");
-        }
-      }
-    });
-  };
-
   function move_hoverer(n) {
     let t = 165;
     t += n * 68;
@@ -92,9 +62,12 @@ export default function Navbar() {
       setExpanded(false);
     }
   }
-  
-  const subscription = isAuthenticated ? ( userData && userData.role == "Representative" ? "/representative/subscription" : "/candidate/subscription") : "/login";
-  
+
+  const subscription = isAuthenticated
+    ? userData && userData.role == "Representative"
+      ? "/representative/subscription"
+      : "/candidate/subscription"
+    : "/login";
 
   return (
     <div className="sidenav" id="sidenav">
@@ -120,18 +93,20 @@ export default function Navbar() {
               <p>&nbsp;&nbsp;&nbsp;</p>
               <span>Trends</span>
             </Link>
-            {isAuthenticated && userData && userData.role === "Representative" && (
-              <Link
-                to="/analysis/analyze"
-                onMouseEnter={() => move_hoverer(1)}
-                onMouseDown={() => move_current(1)}
-                className="link-container"
-              >
-                <span>ICON</span>
-                <p>&nbsp;&nbsp;&nbsp;</p>
-                <span>My analysis</span>
-              </Link>
-            )}
+            {isAuthenticated &&
+              userData &&
+              userData.role === "Representative" && (
+                <Link
+                  to="/analysis/analyze"
+                  onMouseEnter={() => move_hoverer(1)}
+                  onMouseDown={() => move_current(1)}
+                  className="link-container"
+                >
+                  <span>ICON</span>
+                  <p>&nbsp;&nbsp;&nbsp;</p>
+                  <span>My analysis</span>
+                </Link>
+              )}
             <Link
               to={subscription}
               onMouseEnter={() => move_hoverer(2)}
@@ -207,7 +182,10 @@ export default function Navbar() {
                   </h1>
                 </div>
               </Link>
-              <button onClick={Logout} className="logout">
+              <button
+                onClick={() => Logout(logout, navigate, userData.role)}
+                className="logout"
+              >
                 <img src={logoutIcon} />
                 {/* TODO code of petitions left*/}
               </button>
@@ -226,7 +204,10 @@ export default function Navbar() {
               <Link to="/" className="mail">
                 <img src={mail} />
               </Link>
-              <button onClick={Logout} className="logout">
+              <button
+                onClick={() => Logout(logout, navigate, userData.role)}
+                className="logout"
+              >
                 <img src={logoutIcon} />
                 {/* TODO code of mail*/}
                 <div className="mail-amount">
