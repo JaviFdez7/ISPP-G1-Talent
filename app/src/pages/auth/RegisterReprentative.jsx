@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterRepresentative() {
+  const { login } = useAuthContext();
   const [form, setForm] = useState({
     username: "",
     corporative_email: "",
@@ -26,6 +29,8 @@ export default function RegisterRepresentative() {
     corporative_email,
     company_name,
     companySubscription,
+    phone_number,
+    projectSocietyName,
     password,
     password2,
   } = form;
@@ -48,15 +53,19 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
     }
+
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
+
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/representative",
@@ -64,13 +73,58 @@ export default function RegisterRepresentative() {
           ...form,
           email: form.corporative_email,
           companyName: form.company_name,
+          phone: form.phone_number,
+        }
+      );
+
+      const userDataFetch = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/user/login",
+        {
+          ...form,
         }
       );
 
       setIsCheckboxChecked(false);
-      navigate("/representative/detail");
+      const data = userDataFetch.data;
+
+      Swal.fire({
+        title: "Are you sure you want to register as a representative?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: "No",
+        confirmButtonColor: "var(--talent-highlight)",
+        denyButtonColor: "var(--talent-black)",
+        background: "var(--talent-secondary)",
+        color: "white",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          switch (response.status) {
+            case 200:
+              login(data.access, data.refresh, data.role, data.user._id);
+              navigate("/representative/detail");
+              Swal.fire({
+                title: "Successfully register!",
+                icon: "success",
+                background: "var(--talent-secondary)",
+                color: "white",
+                confirmButtonColor: "var(--talent-highlight)",
+              });
+              break;
+            case 400:
+              setErrors(error.response.data);
+              break;
+            case 409:
+              setErrors(error.response.data);
+              break;
+            default:
+              break;
+          }
+        } else if (result.isDenied) {
+          navigate("/register/representative");
+        }
+      });
     } catch (error) {
-      if (error.response.status === 409) {
+      if (error.response && error.response.status === 409) {
         setErrors(error.response.data);
         return;
       }
@@ -87,9 +141,9 @@ export default function RegisterRepresentative() {
 
     if (!form.company_name) {
       errors.company_name = "The company_name field is required";
-    } else if (form.company_name.length <= 1) {
+    } else if (form.company_name.length < 2 || form.company_name.length > 50) {
       errors.company_name =
-        "The company name field must have more than 1 character";
+        "The company name field must have be between 2 and 50 characters long";
     }
 
     if (!form.corporative_email) {
@@ -111,6 +165,20 @@ export default function RegisterRepresentative() {
 
     if (!form.password2) {
       errors.password2 = "The repeat password field is required";
+    }
+
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number =
+        "A phone number must consist of 9 digits exclusively";
+    }
+
+    if (
+      form.projectSocietyName &&
+      (form.projectSocietyName.length < 2 ||
+        form.projectSocietyName.length > 50)
+    ) {
+      errors.projectSocietyName =
+        "The Project Society Name must be between 2 and 50 characters long";
     }
 
     return errors;
@@ -204,8 +272,26 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
+            <FormTextInput
+              labelFor="ProjectSocietyName"
+              labelText="Project Society Name"
+              placeholder="Enter your Project Society Name"
+              name="projectSocietyName"
+              value={projectSocietyName}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+            />
           </div>
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <FormTextInput
+              labelFor="Phonenumber"
+              labelText="Phone number"
+              placeholder="Enter your Phone number"
+              name="phone_number"
+              value={phone_number}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+            />
             <FormTextInput
               labelFor="Password"
               labelText="Password"

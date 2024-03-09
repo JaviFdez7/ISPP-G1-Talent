@@ -12,7 +12,7 @@
     height: 100%;
     width: 450px;
     position: fixed;
-    z-index: 1;
+    z-index: 2;
     top: 0;
     left: -400px;
     overflow-x: hidden;

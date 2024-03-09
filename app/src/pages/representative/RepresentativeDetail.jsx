@@ -9,20 +9,20 @@ import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
+import Swal from "sweetalert2";
 
 
 export default function RepresentativeDetail() {
-  const { isAuthenticated, isRepresentative, logout } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
   let navigate = useNavigate();
 
 
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          console.log("id: " + currentUserId);
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
           const user = response.data.find(user => user._id === currentUserId);
           setUserData(user);
@@ -35,10 +35,34 @@ export default function RepresentativeDetail() {
   }, [isAuthenticated]);
 
 
-  function handleLogout() {
-    logout();
-    navigate("/login");
-  }
+  const Logout = () => {
+    Swal.fire({
+      title: "Are you sure you want to log out?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+      confirmButtonColor: "var(--talent-highlight)",
+      denyButtonColor: "var(--talent-black)",
+      background: "var(--talent-secondary)",
+      color: "white",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/");
+        Swal.fire({
+          title: "Closed session",
+          icon: "success",
+          background: "var(--talent-secondary)",
+          color: "white",
+          confirmButtonColor: "var(--talent-highlight)",
+
+        });
+      } else if (result.isDenied) {
+        navigate("/representative/detail");
+      }
+    });
+  };
+
 
   function getAnalysisHistory() {
     //TODO fetch real de historiales
@@ -116,14 +140,14 @@ export default function RepresentativeDetail() {
             {Input("Company name", userData ? userData.companyName : " - ")}
             {Input("Phone number", userData ? userData.phone : " - ")}
             {Input("Corporative Email", userData ? userData.email : " - ")}
-            {Input("Address", userData ? userData.address : " - ")}
+            {Input("Project Society Name", userData ? userData.projectSocietyName : " - ")}
           </div>
           <div
             className="flex flex-col"
             style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
           >
             {MainButton("Update", "", "")}
-            {SecondaryButton("Logout", "/login", handleLogout)}
+            {SecondaryButton("Logout", "/login", Logout)}
           </div>
         </div>
       </div>

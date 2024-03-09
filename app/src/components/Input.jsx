@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Input(name, value, editable) {
+export default function Input(name, value, editable, width="100%") {
 
     function expand() {
       for (var i of document.getElementsByClassName("input-value-highlighter")) {
@@ -12,8 +12,7 @@ export default function Input(name, value, editable) {
     }
 
     return (
-      <div>
-        <div className="input-container">
+        <div className="input-container" style={{width: width}}>
             <div className="input-container-name">
               <h1>{name}</h1>
             </div>
@@ -22,6 +21,5 @@ export default function Input(name, value, editable) {
               <hr className="input-value-highlighter" id={"input-value-highlighter-"+name}></hr>
             </div>
         </div>
-      </div>
     );
   }

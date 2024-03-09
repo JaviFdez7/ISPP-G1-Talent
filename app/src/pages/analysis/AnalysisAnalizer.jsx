@@ -172,7 +172,7 @@ export default function Analyzer() {
 
             <div className="flex ml-40 gap-60 mb-8">
               {MainButton("Analyze", "", handleSubmit)}
-              {SecondaryButton("Cancel", "/", "")}
+              {SecondaryButton("Cancel", "/representative/detail", "")}
               {SecondaryButton("Analyses list", "/analysis/list", "")}
             </div>
           </form>
