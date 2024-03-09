@@ -24,6 +24,7 @@
     "rules": {
         "semi":"off",
         "@typescript-eslint/semi": "off",
+	"no-constant-binary-expression": "error",
 	"array-callback-return": ["error", {
 		"allowImplicit": false,
 		"checkForEach": true,
