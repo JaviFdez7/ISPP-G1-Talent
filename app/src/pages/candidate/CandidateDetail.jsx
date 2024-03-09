@@ -10,6 +10,7 @@ import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
+import Swal from "sweetalert2";
 
 export default function CandidateDetail() {
   const { isAuthenticated, logout } = useAuthContext();
@@ -33,10 +34,34 @@ export default function CandidateDetail() {
     fetchUserData();
   }, [isAuthenticated]);
 
-  function handleLogout() {
-    logout();
-    navigate("/");
-  }
+  const Logout = () => {
+    Swal.fire({
+      title: "Are you sure you want to log out?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: `No`,
+      confirmButtonColor: "var(--talent-highlight)",
+      denyButtonColor: "var(--talent-black)",
+      background: "var(--talent-secondary)",
+      color: "white",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logout();
+        navigate("/");
+        Swal.fire({
+          title: "Closed session",
+          icon: "success",
+          background: "var(--talent-secondary)",
+          color: "white",
+          confirmButtonColor: "var(--talent-highlight)",
+
+        });
+      } else if (result.isDenied) {
+        navigate("/candidate/detail");
+      }
+    });
+  };
+
 
   return (
     <div
@@ -95,7 +120,7 @@ export default function CandidateDetail() {
               style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
             >
               {MainButton("Update", "", "")}
-              {SecondaryButton("Logout", "/login", handleLogout)}
+              {SecondaryButton("Logout", "/login", Logout)}
             </div>
           </div>
         </div>

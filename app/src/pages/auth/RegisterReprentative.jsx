@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
@@ -52,15 +53,19 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
     }
+
     const validationErrors = validateForm();
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
+
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/representative",
@@ -69,20 +74,57 @@ export default function RegisterRepresentative() {
           email: form.corporative_email,
           companyName: form.company_name,
           phone: form.phone_number,
-        });
+        }
+      );
+
       const userDataFetch = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login",
         {
           ...form,
         }
       );
+
       setIsCheckboxChecked(false);
       const data = userDataFetch.data;
-      login(data.access, data.refresh, data.role, data.user._id);
-      console.log(data);
-      navigate("/representative/detail");
+
+      Swal.fire({
+        title: "Are you sure you want to register as a representative?",
+        showDenyButton: true,
+        confirmButtonText: "Yes",
+        denyButtonText: "No",
+        confirmButtonColor: "var(--talent-highlight)",
+        denyButtonColor: "var(--talent-black)",
+        background: "var(--talent-secondary)",
+        color: "white",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          switch (response.status) {
+            case 200:
+              login(data.access, data.refresh, data.role, data.user._id);
+              navigate("/representative/detail");
+              Swal.fire({
+                title: "Successfully register!",
+                icon: "success",
+                background: "var(--talent-secondary)",
+                color: "white",
+                confirmButtonColor: "var(--talent-highlight)",
+              });
+              break;
+            case 400:
+              setErrors(error.response.data);
+              break;
+            case 409:
+              setErrors(error.response.data);
+              break;
+            default:
+              break;
+          }
+        } else if (result.isDenied) {
+          navigate("/register/representative");
+        }
+      });
     } catch (error) {
-      if (error.response.status === 409) {
+      if (error.response && error.response.status === 409) {
         setErrors(error.response.data);
         return;
       }
@@ -126,11 +168,17 @@ export default function RegisterRepresentative() {
     }
 
     if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-      errors.phone_number = "A phone number must consist of 9 digits exclusively";
+      errors.phone_number =
+        "A phone number must consist of 9 digits exclusively";
     }
 
-    if (form.projectSocietyName && (form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)) {
-      errors.projectSocietyName = "The Project Society Name must be between 2 and 50 characters long";
+    if (
+      form.projectSocietyName &&
+      (form.projectSocietyName.length < 2 ||
+        form.projectSocietyName.length > 50)
+    ) {
+      errors.projectSocietyName =
+        "The Project Society Name must be between 2 and 50 characters long";
     }
 
     return errors;
