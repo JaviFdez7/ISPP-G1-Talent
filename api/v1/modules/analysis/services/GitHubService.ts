@@ -174,6 +174,19 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
               text
             }
           }
+          issues(states: CLOSED, first: 100) {
+            totalCount
+            edges {
+              node {
+                assignees(first:5) {
+                  nodes {
+                    login
+                  }
+                }
+              }
+            }
+          }
+          
         }
       }
       contributionsCollection {
@@ -182,11 +195,12 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
         }
         totalPullRequestContributions
         totalCommitContributions
-        totalRepositoriesWithContributedCommits 
-        totalRepositoriesWithContributedPullRequests  
+        totalRepositoriesWithContributedCommits
+        totalRepositoriesWithContributedPullRequests
       }
     }
   }`;
+  
   const languagesQuery = `query  {
         user(login: "${githubUsername}") {
           pullRequests(first: 100, states: MERGED) {
@@ -211,7 +225,7 @@ export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string)
    
     const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
     const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
-  
+   
 
     const languagesUsed = getTopLanguagesPullRequest(languagesResult);
     
@@ -270,30 +284,35 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
   const globalTechnologies = new Set<string>();
   let topRepositories: RepositoryInfo[] = [];
 
-  // Preprocesar y recoger tecnologías de los 100 repositorios
   user.repositories.nodes.forEach((repo: any, index: number) => {
     if (repo.object && repo.object.text) {
       const packageJson = JSON.parse(repo.object.text);
-      // Añadir tecnologías al conjunto global
+   
       [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.devDependencies || {})]
         .filter(dep => relevantTechnologies.includes(dep.split('/')[1] || dep) && !dep.startsWith('@'))
         .forEach(dep => globalTechnologies.add(dep));
     }
 
-    // Para los 10 primeros repositorios, recoger también la información detallada
     if (index < 10) {
       const repoTechnologies = new Set<string>();
       if (repo.object && repo.object.text) {
         const packageJson = JSON.parse(repo.object.text);
-        // Filtrar y añadir solo las tecnologías relevantes a repoTechnologies
+     
         [...Object.keys(packageJson.dependencies || {}), ...Object.keys(packageJson.devDependencies || {})]
           .filter(dep => relevantTechnologies.includes(dep.split('/')[1] || dep) && !dep.startsWith('@'))
           .forEach(dep => repoTechnologies.add(dep));
       }
 
       const repoLanguages = repo.languages.edges.map((edge: any) => edge.node.name);
-      
-     
+
+      let numberOfClosedIssues = 0;
+      repo.issues.edges.forEach((issue: any) => {
+        issue.node.assignees.nodes.forEach((assignee: any) => {
+          if (assignee.login === user.login) {
+            numberOfClosedIssues++;
+          }
+        });
+      });
 
       topRepositories.push({
         name: repo.name,
@@ -303,11 +322,11 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
         forks: repo.forks.totalCount,
         languages: Array.from(repoLanguages),
         technologies: Array.from(repoTechnologies),
+        numberClossedIssues: numberOfClosedIssues,
       });
     }
   });
 
-  // Construir y devolver el objeto de análisis
   const analysis: AnalysisDocument = {
     githubUsername: user.login,
     avatarUrl: user.avatarUrl,
@@ -325,29 +344,3 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
 
   return analysis;
 }
-//GetUserAnaliseInfo('JaviFdez7').then((resultado)=>console.log(resultado));
-/*
-GetUserAnaliseInfo('JaviFdez7').then((resultado) => {
-  // Imprimir los datos generales del usuario
-  console.log(`Github Username: ${resultado.githubUsername}`);
-  console.log(`Avatar URL: ${resultado.avatarUrl}`);
-  console.log(`Followers: ${resultado.followers}`);
-  console.log(`Total Commits: ${resultado.contributions.totalCommits}`);
-  console.log(`Total Pull Requests: ${resultado.contributions.totalPullRequests}`);
-  console.log('Global Languages:', resultado.globalTopLanguages.join(', '));
-  console.log('Global Technologies:', resultado.globalTechnologies.join(', '));
-  
-  // Imprimir los detalles de cada repositorio, incluyendo los lenguajes
-  resultado.topRepositories.forEach(repo => {
-    console.log(`\nRepository Name: ${repo.name}`);
-    console.log(`URL: ${repo.url}`);
-    console.log(`Stars: ${repo.stars}`);
-    console.log(`Forks: ${repo.forks}`);
-    // Asumiendo que cada lenguaje tiene propiedades 'name' y 'size'
-    console.log('Languages:', repo.languages.join(', '));
-    
-    // Si 'technologies' es un array de strings, podrías imprimirlo directamente
-    console.log('Technologies:', repo.technologies.join(', '));
-  });
-}).catch(console.error);
-*/

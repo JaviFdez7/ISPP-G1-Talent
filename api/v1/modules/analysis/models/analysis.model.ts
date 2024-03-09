@@ -9,6 +9,8 @@ export interface RepositoryInfo {
   forks: number,
   languages: string[],
   technologies: string[], 
+  numberClossedIssues: number,
+
 }
 export interface LanguagePercentage {
   language: string;
@@ -40,6 +42,8 @@ const repositoryInfoSchema = new Schema<RepositoryInfo>({
   forks: { type: Number, required: true },
   languages:  [{ type: String }],
   technologies: [{ type: String }],
+  numberClossedIssues: {type: Number},
+
 });
 
 const analysisSchema = new Schema<AnalysisDocument>({
