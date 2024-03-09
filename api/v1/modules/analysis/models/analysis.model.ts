@@ -9,7 +9,7 @@ export interface RepositoryInfo {
   forks: number,
   languages: string[],
   technologies: string[], 
-  numberClossedIssues: number,
+  numberClosedIssues: number,
 
 }
 export interface LanguagePercentage {
@@ -22,6 +22,8 @@ export interface AnalysisDocument {
   githubUsername: string;
   avatarUrl: string;
   followers: number;
+  globalIssuesClosed: number;
+  MostClosedIssueRepo: RepositoryInfo;
   contributions: {
     totalCommits: number;
     totalPullRequests: number;
@@ -31,18 +33,18 @@ export interface AnalysisDocument {
   globalTopLanguages: LanguagePercentage[]; 
   globalTechnologies: string[]; 
   topRepositories: RepositoryInfo[]; 
+  
 }
 
 const repositoryInfoSchema = new Schema<RepositoryInfo>({
   name: { type: String, required: true },
   description: {type: String},
-
   url: { type: String, required: true },
   stars: { type: Number, required: true },
   forks: { type: Number, required: true },
   languages:  [{ type: String }],
   technologies: [{ type: String }],
-  numberClossedIssues: {type: Number},
+  numberClosedIssues: {type: Number},
 
 });
 
@@ -50,6 +52,8 @@ const analysisSchema = new Schema<AnalysisDocument>({
   githubUsername: { type: String, required: true },
   avatarUrl: { type: String, required: true },
   followers: { type: Number, required: true },
+  globalIssuesClosed: {type: Number, required: true},
+  MostClosedIssueRepo: {type: repositoryInfoSchema},
 
   contributions: {
     totalCommits: { type: Number, required: true },

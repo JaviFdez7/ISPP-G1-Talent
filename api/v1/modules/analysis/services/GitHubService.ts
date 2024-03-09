@@ -282,6 +282,20 @@ function getTopLanguagesPullRequest(result: any): LanguagePercentage[] {
 function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[]): AnalysisDocument {
   const user = result.data.user;
   const globalTechnologies = new Set<string>();
+  let globalClosedIssues = 0;
+  let maxRepoClosedIssues = 0;
+  let MostClosedIssueRepo: RepositoryInfo = {
+    name: "",
+    description: "",
+    url: "",
+    stars: 0,
+    forks: 0,
+    languages: [],
+    technologies: [],
+    numberClosedIssues: 0,
+  };
+
+
   let topRepositories: RepositoryInfo[] = [];
 
   user.repositories.nodes.forEach((repo: any, index: number) => {
@@ -293,7 +307,7 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
         .forEach(dep => globalTechnologies.add(dep));
     }
 
-    if (index < 10) {
+    
       const repoTechnologies = new Set<string>();
       if (repo.object && repo.object.text) {
         const packageJson = JSON.parse(repo.object.text);
@@ -313,7 +327,23 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
           }
         });
       });
+      globalClosedIssues += numberOfClosedIssues;
 
+
+      if (numberOfClosedIssues > maxRepoClosedIssues) {
+        maxRepoClosedIssues = numberOfClosedIssues;
+        MostClosedIssueRepo = ({
+          name: repo.name,
+          description: repo.description,
+          url: repo.url,
+          stars: repo.stargazers.totalCount,
+          forks: repo.forks.totalCount,
+          languages: Array.from(repoLanguages),
+          technologies: Array.from(repoTechnologies),
+          numberClosedIssues: numberOfClosedIssues,
+        });
+      }
+      if (index < 10) {
       topRepositories.push({
         name: repo.name,
         description: repo.description,
@@ -322,7 +352,7 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
         forks: repo.forks.totalCount,
         languages: Array.from(repoLanguages),
         technologies: Array.from(repoTechnologies),
-        numberClossedIssues: numberOfClosedIssues,
+        numberClosedIssues: numberOfClosedIssues,
       });
     }
   });
@@ -331,6 +361,8 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
     githubUsername: user.login,
     avatarUrl: user.avatarUrl,
     followers: user.followers.totalCount,
+    globalIssuesClosed: globalClosedIssues,
+    MostClosedIssueRepo: MostClosedIssueRepo,
     contributions: {
       totalCommits: user.contributionsCollection.totalCommitContributions,
       totalPullRequests: user.contributionsCollection.totalPullRequestContributions,
