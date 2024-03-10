@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom"
-import MainButton from "./mainButton";
+import MainButton from "../mainButton";
 
 const LatestHistory = ({ header, data, type = "analysis" }) => {
     const paddedData = data.concat(Array.from({ length: 3 - data.length }, () => ({})));

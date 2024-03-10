@@ -7,7 +7,7 @@ import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
 import Select from "../../components/Select.jsx";
-import AnalysisHistoryItem from "../../components/AnalysisHistoryItem.jsx";
+import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.jsx";
 
 
 export default function AnalysisDashboard() {
@@ -17,7 +17,6 @@ export default function AnalysisDashboard() {
     const borderColor = 'var(--talent-highlight)'
 
     const [dataArray, setDataArray] = useState([]);
-    const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [filter, setFilter] = useState("All");
 
@@ -25,13 +24,10 @@ export default function AnalysisDashboard() {
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
-        setError(true);
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
-            setError(false);
             return response.data;
         } catch (error) {
-            setError(false);
             setErrorMessage('Unable to connect to the server. Please try again later.');
             console.error("Error al llamar al endpoint:", error);
             throw error;
@@ -100,7 +96,6 @@ export default function AnalysisDashboard() {
                         }}>
                         <h6 className="text-3xl font-bold text-center text-white -5 mb-5 mt-5 " >
                             Analysis History
-
                         </h6>
                         {errorMessage && (
                             <div className="text-center text-white">
@@ -113,9 +108,7 @@ export default function AnalysisDashboard() {
                             {dataArray.map((item, index) => {
                                 const formattedDate = formatDate(item.date);
                                 return (
-
                                     <AnalysisHistoryItem key={index} item={item} formattedDate={formattedDate} />
-
                                 );
                             })}
                         </div>

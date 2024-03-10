@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
-import LatestHistory from "../../components/LatestHistory";
+import LatestHistory from "../../components/history/LatestHistory";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 import axios from "axios"
