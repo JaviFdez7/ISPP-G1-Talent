@@ -10,7 +10,7 @@
     "scripts": {
         "a": "tsc --init",
         "build": "tsc",
-        "test": "mocha --timeout 60000 tests/api/*.js && mocha --timeout 100000 api/v1/tests/e2e/*.js",
+        "test": "nyc mocha --timeout 60000 api/v1/tests/**/*.js",
         "release": "semantic-release",
         "semantic-release": "npx semantic-release",
         "lint": "eslint \"**/*.ts\" ./*.ts",
@@ -66,10 +66,15 @@
         "eslint-plugin-react": "^7.33.2",
         "mocha": "^10.3.0",
         "mock-require": "^3.0.3",
+        "mongodb-memory-server": "^9.1.6",
+        "nyc": "^15.1.0",
         "semantic-release": "^23.0.2",
         "ts-mocha": "^10.0.0",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.4.2"
-    }
+    },"nyc": {
+        "reporter": ["html"],
+        "include": ["api/**/*.js"]
+      }
 }
