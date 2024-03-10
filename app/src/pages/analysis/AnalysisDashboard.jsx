@@ -49,9 +49,6 @@ export default function AnalysisDashboard() {
     const tecnologies = dataArray.globalTechnologies ? dataArray.globalTechnologies.map(item => item) : [];
 
 
-
-
-
     return (
         <section className="text-white flex flex-row justify-center bg-fixed"
         style={{

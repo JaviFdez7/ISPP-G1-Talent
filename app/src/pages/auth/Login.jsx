@@ -17,11 +17,9 @@ export default function Login() {
   let navigate = useNavigate();
 
   function onInputChange(e) {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-    setErrors({ ...errors, [e.target.name]: undefined });
+    const { name, value } = e.target;
+    setForm(prevForm => ({ ...prevForm, [name]: value }));
+    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
 
   async function handleSubmit(e) {

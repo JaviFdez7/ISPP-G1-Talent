@@ -8,9 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Analyzer() {
     const textColor =  'white'
-    const backgroundColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
-    const boxColor ='var(--talent-dark-background)'
     const asteriskColor = 'var(--talent-highlight-background)'
     const navigate = useNavigate();
     const ruta = import.meta.env.VITE_BACKEND_URL;
@@ -50,7 +48,7 @@ export default function Analyzer() {
       if ( !form.githubUser) {
           setErrors({
             githubUser: form.githubUser ? '' : 
-              <span style={{color: 'orange', fontSize: '15px'}}>--->Github User is required</span>,
+              <span style={{color: 'orange', fontSize: '15px'}}> Github User is required</span>,
           });
           return;
       }
@@ -79,7 +77,7 @@ export default function Analyzer() {
         setLoading(false);
         if(response.status == 500){
           setErrors({
-            githubUser: <span style={{color: 'orange', fontSize: '15px'}}>--->This user does not exist in Github</span>,
+            githubUser: <span style={{color: 'orange', fontSize: '15px'}}> This user does not exist in Github</span>,
           });
         }
         if (!response.ok) {

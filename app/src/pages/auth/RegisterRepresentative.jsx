@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
-import Swal from "sweetalert2";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterRepresentative() {
+  const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
   const [form, setForm] = useState({
     username: "",
@@ -32,16 +32,15 @@ export default function RegisterRepresentative() {
   let navigate = useNavigate();
 
   function onInputChange(e) {
-    if (e.target.name === "termsCheckbox") {
-      setIsCheckboxChecked(e.target.checked);
-      setErrors({ ...errors, termsCheckbox: undefined });
+    const { name, value, checked } = e.target;
+  
+    if (name === "termsCheckbox") {
+      setIsCheckboxChecked(checked);
     } else {
-      setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
-      setErrors({ ...errors, [e.target.name]: undefined });
+      setForm(prevForm => ({ ...prevForm, [name]: value }));
     }
+  
+    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
   const handleCheckboxChange = (e) => {
     setIsCheckboxChecked(e.target.checked);
@@ -71,10 +70,8 @@ export default function RegisterRepresentative() {
       );
 
       const userDataFetch = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/user/login",
-        {
-          ...form,
-        }
+        import.meta.env.VITE_BACKEND_URL + "/user/login", form
+        
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data;
@@ -150,6 +147,7 @@ export default function RegisterRepresentative() {
       style={{
         backgroundImage: `url(${mainBackgroundRegisterLogin})`,
         backgroundSize: "cover",
+        overflowY: "scroll",
       }}
     >
       <div
@@ -158,7 +156,9 @@ export default function RegisterRepresentative() {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "auto",
           marginRight: "auto",
-          borderColor: "#d4983d",
+          marginTop: "80px",
+          marginBottom: "20px",
+          borderColor: talentColor,
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
           backdropFilter: "blur(8px)",
           borderWidth: "1px",
@@ -170,7 +170,7 @@ export default function RegisterRepresentative() {
         >
           Register as
         </h2>
-        <hr className="border-1 w-70 mb-4" style={{ borderColor: "#d4983d" }} />
+        <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
         <div className="flex justify-center space-x-4 mb-4">
           <Link to="/register/candidate">
             <h2
@@ -182,7 +182,7 @@ export default function RegisterRepresentative() {
           </Link>
           <h2
             className="text-2xl"
-            style={{ marginTop: "-40px", color: "var(--talent-highlight)" }}
+            style={{ marginTop: "-40px", color: talentColor }}
           >
             Representative
           </h2>
