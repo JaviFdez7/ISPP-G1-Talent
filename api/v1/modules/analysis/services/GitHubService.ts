@@ -1,5 +1,5 @@
 import type { AnalysisDocument, RepositoryInfo }  from '../models/analysis.model';
-import dotenv from 'dotenv'
+
 const { GQLPaginator } = require('gql-paginator');
 
 
