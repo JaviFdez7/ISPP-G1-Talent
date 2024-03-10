@@ -11,10 +11,10 @@ import FavoriteButton from "../../components/history/FavoriteButton.jsx";
 
 
 
+
 export default function AnalysisDashboard() {
     const textColor = ' var(--talent-white-text)'
     const textColor2 = 'var(--talent-highlight)'
-    const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
     const isRepresentative = true; //TODO forma real de obtener esta informacion
@@ -23,8 +23,8 @@ export default function AnalysisDashboard() {
     const [errorMessage, setErrorMessage] = useState('');
     const [history, setHistory] = useState(null);
 
-    const [dataArray, setDataArray] = useState([]);
 
+    const [dataArray, setDataArray] = useState([]);
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
@@ -81,9 +81,6 @@ export default function AnalysisDashboard() {
                 throw error;
             });
     };
-
-
-
 
 
     return (

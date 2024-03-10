@@ -49,6 +49,7 @@ export const createHistory: any = async (req: Request, res: Response) => {
 };
 
 export const toogleFavorite: any = async (req: Request, res: Response) => {
+
   try {
     const id = req.params.id;
     const data = await HistoryService.toggleFavorite(id);

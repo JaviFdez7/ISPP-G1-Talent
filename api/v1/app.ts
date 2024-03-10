@@ -7,6 +7,7 @@ import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
 import cors from 'cors';
+import HistoryRouter from './modules/history';
 
 const app = express();
 app.use(express.json());

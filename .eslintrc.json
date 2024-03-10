@@ -23,6 +23,43 @@
       },
     "rules": {
         "semi":"off",
-        "@typescript-eslint/semi": "off"
+        "@typescript-eslint/semi": "off",
+	"no-constructor-return": "off",
+	"no-promise-executor-return": "off",
+	"no-unmodified-loop-condition": "off",
+	"no-unused-private-class-members": "off",
+	"capitalized-comments": "off",
+	"no-self-compare": "warn",
+	"accessor-pairs": "warn",
+	"multiline-comment-style": ["warn", "starred-block"],
+        "no-console": "error",
+	"dot-notation": "error",
+	"eqeqeq": "error",
+	"max-depth": ["error", 4],
+	"default-case": "error",
+	"default-case-last": "error",
+	"default-param-last": "error",
+	"curly": ["error", "multi-or-nest"],
+	"complexity": ["error", { "max": 4 }],
+	"camelcase": "error",
+	"block-scoped-var": "error",
+	"arrow-body-style": ["error", "as-needed"],
+	"require-atomic-updates": "error",
+	"no-use-before-define": ["error", {
+		"functions": true,
+		"classes": true,
+		"variables": true,
+		"allowNamedExports": false
+	}],
+	"no-unreachable-loop":"error",
+	"no-template-curly-in-string": "error",
+	"no-new-native-nonconstructor": "error",
+	"no-duplicate-imports": ["error", { "includeExports": true }],
+	"no-constant-binary-expression": "error",
+	"array-callback-return": ["error", {
+		"allowImplicit": false,
+		"checkForEach": true,
+		"allowVoid": true
+	}]
     }
 }

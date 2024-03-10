@@ -1,9 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
 import Select from "../../components/Select.jsx";
@@ -11,11 +9,7 @@ import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.js
 
 
 export default function AnalysisDashboard() {
-    const textColor = ' var(--talent-white-text)'
-    const textColor2 = 'var(--talent-highlight)'
-    const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
-
     const [dataArray, setDataArray] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [filter, setFilter] = useState("All");
@@ -51,6 +45,7 @@ export default function AnalysisDashboard() {
             })
             .catch(error => {
                 console.log("Error fetching history data:", error);
+
             });
     }, [filter]);
 
