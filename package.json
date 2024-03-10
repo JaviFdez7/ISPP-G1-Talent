@@ -42,9 +42,12 @@
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
         "express": "^4.18.3",
+        "jsonwebtoken": "^9.0.2",
         "node-mocks-http": "^1.14.1",
         "sinon": "^17.0.1",
-        "start-backend": "^1.0.1"
+        "start-backend": "^1.0.1",
+        "swagger-jsdoc": "^6.2.8",
+        "swagger-ui-express": "^5.0.0"
     },
     "type": "commonjs",
     "devDependencies": {
@@ -64,18 +67,23 @@
         "eslint-plugin-only-warn": "^1.1.0",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.33.2",
-        "prettier": "^3.2.5",
         "mocha": "^10.3.0",
         "mock-require": "^3.0.3",
         "mongodb-memory-server": "^9.1.6",
         "nyc": "^15.1.0",
+        "prettier": "^3.2.5",
         "semantic-release": "^23.0.2",
         "ts-mocha": "^10.0.0",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.4.2"
-    },"nyc": {
-        "reporter": ["html"],
-        "include": ["api/**/*.js"]
-      }
+    },
+    "nyc": {
+        "reporter": [
+            "html"
+        ],
+        "include": [
+            "api/**/*.js"
+        ]
+    }
 }

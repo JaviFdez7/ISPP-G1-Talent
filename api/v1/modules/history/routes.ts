@@ -5,7 +5,7 @@ import {
   getNotFavoritesFromUser,
   getFavoritesFromUser,
   createHistory,
-  markAsFavorite,
+  toogleFavorite,
   updateHistory,
   deleteHistory
 } from './controllers/HistoryController';
@@ -14,12 +14,12 @@ import { checkDeleteHistory } from './validators/HistoryMiddleware';
 const router = express.Router();
 
 // Define routes for the History module
-router.get('/', getHistoryFromUser);//X
-router.get('/not_favorites', getNotFavoritesFromUser);//X
-router.get('/favorites',getFavoritesFromUser)
-router.post('/', createHistory);//X
-router.patch('/:id/favorite', markAsFavorite);
-router.patch('/:id', updateHistory);//X
-router.delete('/:id', checkDeleteHistory, deleteHistory);//X
+router.get('/:userId/history', getHistoryFromUser);//X
+router.get('/:userId/not_favorites', getNotFavoritesFromUser);//X
+router.get('/:userId/favorites',getFavoritesFromUser)
+router.post('/:userId/history', createHistory);//X
+router.patch('/:userId/history/:id/favorite', toogleFavorite);
+router.patch('/:userId/history/:id', updateHistory);//X
+router.delete('/:userId/history/:id', checkDeleteHistory, deleteHistory);//X
 
 export default router;

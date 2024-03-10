@@ -1,4 +1,6 @@
+import { ObjectId } from 'mongodb';
 import { History } from '../models/history';
+import { User } from '../../user/models/user';
 // Default service functions
 export const getHistoryFromUser: any = async (userId: string) => {
   try {
@@ -31,9 +33,14 @@ export const getFavoritesFromUser: any = async (userId: any) => {
   }
 }
 
-export const createHistory: any = async (data: any) => {
+export const createHistory: any = async (userId: any, data: any) => {
   try {
     const history = new History(data);
+    const user = await User.findById(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    history.userId = user._id;
     history.date = new Date();
     history.favorite = false;
     await history.save()
