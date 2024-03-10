@@ -2,15 +2,20 @@
 import e, { type Request, type Response } from 'express';
 import UserService from '../services/UserService';
 import UserMiddleware from '../middlewares/UserMiddleware';
+import { ApiResponse } from '../../../utils/ApiResponse';
 
 // Default controller functions
 export const getAllUser: any = async (req: Request, res: Response) => {
   try {
     const data = await UserService.getAllUser();
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -20,16 +25,26 @@ export const getUserById: any = async (req: Request, res: Response) => {
     const token = req.headers.authorization ?? '';
     const check = await UserMiddleware.checkGetUserById(id, token);
     if (check === 'User not found') {
-      res.status(404).send(check);
+      ApiResponse.sendError(res, [{
+        title: 'Finding error',
+        detail: check
+      }], 404);
     } else if (check === 'Unauthorized' || check === 'No token provided') {
-      res.status(401).send(check);
+      ApiResponse.sendError(res, [{
+        title: 'Authorization error',
+        detail: check
+      }], 401);
     } else {
       const data = await UserService.getUserById(id);
-      res.status(200).send(data);
+      ApiResponse.sendSuccess(res, data, 200, {
+        self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+      });
     }
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
