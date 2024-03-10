@@ -7,6 +7,7 @@ import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
 import Select from "../../components/Select.jsx";
+import AnalysisHistoryItem from "../../components/AnalysisHistoryItem.jsx";
 
 
 export default function AnalysisDashboard() {
@@ -60,6 +61,20 @@ export default function AnalysisDashboard() {
     const changeFilter = (newFilter) => {
         setFilter(newFilter);
     }
+    const formatDate = (date) => {
+        const dateObject = new Date(date);
+
+        const options = {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        };
+
+        return dateObject.toLocaleString('en-US', options);
+    }
 
 
     return (
@@ -79,9 +94,11 @@ export default function AnalysisDashboard() {
                             marginRight: "100",
                             borderColor: borderColor,
                             borderWidth: "1px",
+                            backdropFilter: "blur(8px)",
+                            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
 
                         }}>
-                        <h6 className="text-3xl font-bold text-center text-white -5 mb-5  " >
+                        <h6 className="text-3xl font-bold text-center text-white -5 mb-5 mt-5 " >
                             Analysis History
 
                         </h6>
@@ -92,24 +109,16 @@ export default function AnalysisDashboard() {
                         )}
 
                         <Select label="Choose a filter: " allValues={["All", "Favorites", "Non favorites"]} defaultValue={filter} functionToApply={changeFilter} />
+                        <div className="mt-4 ml-2 mr-2">
+                            {dataArray.map((item, index) => {
+                                const formattedDate = formatDate(item.date);
+                                return (
 
-                        {dataArray.map((item, index) => {
-                            console.log(item);
-                            return (
-                                <div key={index} style={{ padding: '0 90px' }}>
-                                    <Link
-                                        style={{ borderTop: index !== 0 ? '1px solid orange' : 'none', display: 'block' }}
-                                        to={`/analysis/${item.analysisId}`}
-                                        className="text-white"
-                                    >
-                                        <h6 className="text-2xl text-center text-white mb-5 mt-5">
-                                            {item.date}
-                                        </h6>
-                                    </Link>
-                                </div>
-                            );
-                        })}
+                                    <AnalysisHistoryItem key={index} item={item} formattedDate={formattedDate} />
 
+                                );
+                            })}
+                        </div>
 
                     </div>
 
@@ -119,3 +128,4 @@ export default function AnalysisDashboard() {
         </section >
     );
 }
+
