@@ -9,6 +9,7 @@ import HistoryRouter from './modules/history';
 import cors from 'cors';
 
 const app = express();
+const swaggerHost= process.env.HOST ?? 'localhost:3000';
 app.use(express.json());
 app.use(cors());
 //  Routers -----------------------------------------------------
@@ -23,7 +24,7 @@ const swaggerDefinition = {
     version: '1.0.0',
     description: 'This is'
   },
-  host: 'localhost:3000'
+  host: swaggerHost
 };
 const options = { swaggerDefinition, apis: ['./docs/**/*.yaml'] };
 // initialize swagger-jsdoc
