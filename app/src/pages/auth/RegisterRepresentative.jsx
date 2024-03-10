@@ -77,7 +77,7 @@ export default function RegisterRepresentative() {
       const data = userDataFetch.data;
 
       if (response.status === 200) {
-        login(data.access, data.refresh, data.role, data.user._id);
+        login(data.access, data.refresh, data.user.role, data.user._id);
         navigate("/representative/detail");
       } else if (response.status === 400 || response.status === 409) {
         setErrors(response.data);
