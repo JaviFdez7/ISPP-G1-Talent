@@ -3,13 +3,18 @@ info:
   version: 1.0.0
   title: IT Talent API - History Module
 paths:
-  /history:
+  /user/{userId}/history:
     get:
       tags:
         - Histories Read
       summary: Get history from user
       description: Get the complete history of a representative
       parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
       - name: authorization
         in: header
         schema:
@@ -29,18 +34,23 @@ paths:
       summary: Create history entry
       description: Create a new entry in the history of a representative
       parameters:
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          type: string
         - name: body
           in: body
           description: History entry object
           required: true
           schema:
-            $ref: "#/definitions/HistoryItem"
+            $ref: "#/definitions/NewHistoryItem"
       responses:
         201:
           description: Created
           schema:
             $ref: "#/definitions/HistoryItem"
-  /history/{id}:
+  /user/{userId}/history/{id}:
       patch:
         tags:
           - Histories Update
@@ -50,6 +60,11 @@ paths:
           - name: id
             in: path
             description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
             required: true
             type: string
           - name: body
@@ -72,6 +87,11 @@ paths:
             description: ID of the history entry
             required: true
             type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
           - name: authorization
             in: header
             schema:
@@ -79,9 +99,9 @@ paths:
               required: true
               description: Its the token of authentication.
         responses:
-          204:
-            description: No content
-  /history/{id}/favorite:
+          200:
+            description: Success
+  /user/{userId}/history/{id}/favorite:
     patch:
       tags:
           - Histories Update
@@ -93,12 +113,17 @@ paths:
             description: ID of the history entry
             required: true
             type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
       responses:
           200:
             description: Success
             schema:
               $ref: "#/definitions/HistoryItem"
-  /history/favorites:
+  /user/{userId}/favorites:
     get:
         tags:
           - Histories Read
@@ -111,13 +136,18 @@ paths:
               type: string
               required: true
               description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
         responses:
           200:
             description: Success
             schema:
               $ref: "#/definitions/HistoryItem"
 
-  /history/not_favorites:
+  /user/{userId}/not_favorites:
     get:
         tags:
           - Histories Read
@@ -130,6 +160,11 @@ paths:
               type: string
               required: true
               description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
         responses:
           200:
             description: Success
@@ -152,6 +187,14 @@ definitions:
         format: uuiid
         required: true
         description: The unique identifier for the user.
+      analysisId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the analysis.
+  NewHistoryItem:
+    type: object
+    properties:
       analysisId:
         type: string
         format: uuiid
