@@ -15,15 +15,14 @@ const LatestHistory = ({ header, data, type = "analysis" }) => {
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.header}>
-                        <th colSpan="3">{header}</th>
+                        <th colSpan="2">{header}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {paddedData.map((item, index) => (
+                    {paddedData.slice(0,3).map((item, index) => (
                         <tr key={index} >
-                            <td style={styles.row}>{item.name || " - "}</td>
                             <td style={styles.row}>{formatDateTime(item.date)}</td>
-                            <td style={styles.row}>{item.id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
+                            <td style={styles.row}>{item._id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
                         </tr>
                     ))}
                 </tbody>

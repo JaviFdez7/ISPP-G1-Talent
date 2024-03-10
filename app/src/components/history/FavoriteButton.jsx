@@ -27,8 +27,6 @@ const FavoriteButton = ({ history, toggleText = false }) => {
     const handleToggleFavorite = () => {
         setIsFavorite(!isFavorite);
         const userId = localStorage.getItem("userId");
-        console.log("historial");
-        console.log(history);
         changeFavorites(userId);
     };
 

@@ -1,8 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+
 import DataTable from '../../components/DataTable.jsx'
 import Input from '../../components/Input.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
@@ -17,7 +17,7 @@ export default function AnalysisDashboard() {
     const textColor2 = 'var(--talent-highlight)'
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
-    const isRepresentative = true; //TODO forma real de obtener esta informacion
+    const { isRepresentative } = useAuthContext();
 
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -44,7 +44,6 @@ export default function AnalysisDashboard() {
         try {
             const historyData = await getHistory(currentAnalysisId);
             setHistory(historyData);
-            console.log("estado de getHistory: ", history);
         } catch (error) {
             console.error('Error fetching history:', error);
         }
@@ -55,7 +54,6 @@ export default function AnalysisDashboard() {
             .then(data => {
                 const newArray = data;
                 const currentAnalysisId = data._id;
-                console.log("id en useEffect", currentAnalysisId);
                 setDataArray(newArray);
                 fetchHistory(currentAnalysisId);
             })
@@ -73,7 +71,6 @@ export default function AnalysisDashboard() {
         return fetchDataFromEndpoint(uri)
             .then(data => {
                 const filteredHistory = data.filter(item => item.analysisId === currentAnalysisId);
-                console.log("id en getHistory: ", currentAnalysisId)
                 return filteredHistory[0];
             })
             .catch(error => {

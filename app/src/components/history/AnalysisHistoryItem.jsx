@@ -4,27 +4,27 @@ import axios from 'axios';
 import FavoriteButton from "../../components/history/FavoriteButton.jsx";
 import DeleteHistoryButton from "../../components/history/DeleteHistoryButton.jsx";
 
-const apiURL = import.meta.env.VITE_BACKEND_URL;
 
-async function getGithubUsername(analysisId) {
-    const uri = `/analysis/${analysisId}`;
-    try {
-        const response = await axios.get(apiURL + uri);
-        return response.data.githubUsername;
-    } catch (error) {
-        console.error("Error al llamar al endpoint:", error);
-        throw error;
-    }
-}
 
 const AnalysisHistoryItem = ({ item, formattedDate }) => {
     const [githubUsername, setGithubUsername] = useState(null);
+    const apiURL = import.meta.env.VITE_BACKEND_URL;
 
+    async function getGithubUsername(analysisId) {
+        const uri = `/analysis/${analysisId}`;
+        try {
+            const response = await axios.get(apiURL + uri);
+            return response.data.githubUsername;
+        } catch (error) {
+            console.error("Error al llamar al endpoint:", error);
+            throw error;
+        }
+    }
     useEffect(() => {
         getGithubUsername(item.analysisId).then(username => {
             setGithubUsername(username);
         });
-        
+
     }, [item.analysisId]);
 
     return (

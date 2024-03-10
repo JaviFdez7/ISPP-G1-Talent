@@ -8,10 +8,14 @@ const DeleteHistoryButton = ({ history, toggleText = false }) => {
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
-    async function changeFavorites(userId) {
+    async function deleteHistoryEntry(userId, token) {
         const uri = `/user/${userId}/history/${history._id}`;
         try {
-            const response = await axios.delete(apiURL + uri);
+            const response = await axios.delete(apiURL + uri, {}, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
             setErrorMessage(null);
             return response;
         } catch (error) {
@@ -23,7 +27,9 @@ const DeleteHistoryButton = ({ history, toggleText = false }) => {
 
     const handleDeletion = () => {
         const userId = localStorage.getItem("userId");
-        changeFavorites(userId);
+        const token = localStorage.getItem("access_token");
+        console.log("token: ", token)
+        deleteHistoryEntry(userId, token);
     };
 
     return (
