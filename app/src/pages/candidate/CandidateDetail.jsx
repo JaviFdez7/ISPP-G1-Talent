@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background2.jpg";
@@ -10,7 +10,7 @@ import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
-import Swal from "sweetalert2";
+import Logout from '../../components/swat/logout';
 
 export default function CandidateDetail() {
   const { isAuthenticated, logout } = useAuthContext();
@@ -33,35 +33,6 @@ export default function CandidateDetail() {
     };
     fetchUserData();
   }, [isAuthenticated]);
-
-  const Logout = () => {
-    Swal.fire({
-      title: "Are you sure you want to log out?",
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: `No`,
-      confirmButtonColor: "var(--talent-highlight)",
-      denyButtonColor: "var(--talent-black)",
-      background: "var(--talent-secondary)",
-      color: "white",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
-        navigate("/");
-        Swal.fire({
-          title: "Closed session",
-          icon: "success",
-          background: "var(--talent-secondary)",
-          color: "white",
-          confirmButtonColor: "var(--talent-highlight)",
-
-        });
-      } else if (result.isDenied) {
-        navigate("/candidate/detail");
-      }
-    });
-  };
-
 
   return (
     <div
@@ -101,11 +72,11 @@ export default function CandidateDetail() {
             }}
           >
             <div className="flex flex-col w-full">
-              {Input("Username", candidate ? candidate.username : " - ", true)} {/* user.username */}
+              {Input("Username", candidate ? candidate.username : " - ", true)}
               <br></br>
-              {Input("Email", candidate ? candidate.email : " - ", true)} {/* user.email */}
+              {Input("Email", candidate ? candidate.email : " - ", true)}
               <br></br>
-              {Input("Phone", candidate ? candidate.phone : " - ", true)} {/* user.phone */}
+              {Input("Phone", candidate ? candidate.phone : " - ", true)}
             </div>
 
             <div className="text-white mt-8">
@@ -120,7 +91,7 @@ export default function CandidateDetail() {
               style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
             >
               {MainButton("Update", "", "")}
-              {SecondaryButton("Logout", "/login", Logout)}
+              {SecondaryButton("Logout", "/login", () => Logout(logout, navigate, "Candidate"))}
             </div>
           </div>
         </div>

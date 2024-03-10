@@ -7,13 +7,14 @@ import { useAuthContext } from "../../context/authContext";
 
 export default function Login() {
   const { login } = useAuthContext();
-  let navigate = useNavigate();
+
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
   const { username, password } = form;
+  let navigate = useNavigate();
 
   function onInputChange(e) {
     setForm({
@@ -23,7 +24,6 @@ export default function Login() {
     setErrors({ ...errors, [e.target.name]: undefined });
   }
 
-  //6)crear la funcion que se encargara de llamar al endpoint de login
   async function handleSubmit(e) {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -31,7 +31,6 @@ export default function Login() {
       setErrors(validationErrors);
       return;
     }
-
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login",
@@ -56,6 +55,7 @@ export default function Login() {
       console.error(error);
     }
   }
+
   function validateForm() {
     let errors = {};
 
@@ -209,7 +209,7 @@ export default function Login() {
           className="flex justify-center items-center"
           style={{ marginTop: "1rem" }}
         >
-          <button>{MainButton("Log in", "/", handleSubmit)}</button>
+          {MainButton("Log in", "/", handleSubmit)}
         </div>
       </div>
     </div>
