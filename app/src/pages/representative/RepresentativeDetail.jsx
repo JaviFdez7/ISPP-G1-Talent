@@ -1,30 +1,29 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background2.jpg";
 import LatestHistory from "../../components/LatestHistory";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
-import axios from "axios"
+import axios from "axios";
 import { useAuthContext } from "../../context/authContext";
-import Swal from "sweetalert2";
-
+import Logout from "../../components/swat/logout";
 
 export default function RepresentativeDetail() {
   const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
   let navigate = useNavigate();
 
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-          const user = response.data.find(user => user._id === currentUserId);
+          const response = await axios.get(
+            `${import.meta.env.VITE_BACKEND_URL}/user`
+          );
+          const user = response.data.find((user) => user._id === currentUserId);
           setUserData(user);
         }
       } catch (error) {
@@ -34,82 +33,37 @@ export default function RepresentativeDetail() {
     fetchUserData();
   }, [isAuthenticated]);
 
-
-  const Logout = () => {
-    Swal.fire({
-      title: "Are you sure you want to log out?",
-      showDenyButton: true,
-      confirmButtonText: "Yes",
-      denyButtonText: `No`,
-      confirmButtonColor: "var(--talent-highlight)",
-      denyButtonColor: "var(--talent-black)",
-      background: "var(--talent-secondary)",
-      color: "white",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logout();
-        navigate("/");
-        Swal.fire({
-          title: "Closed session",
-          icon: "success",
-          background: "var(--talent-secondary)",
-          color: "white",
-          confirmButtonColor: "var(--talent-highlight)",
-
-        });
-      } else if (result.isDenied) {
-        navigate("/representative/detail");
-      }
-    });
-  };
-
-
-  function getAnalysisHistory() {
-    //TODO fetch real de historiales
-    const analysisHistory1 = {
-      id: 1,
-      date: new Date("2024-02-28"),
-      name: "Analysis 1",
+  function createHistoryItem(id, date, name) {
+    return {
+      id,
+      date: new Date(date),
+      name,
     };
+  }
 
-    const analysisHistory2 = {
-      id: 2,
-      date: new Date("2024-02-25"),
-      name: "Analysis 2",
-    };
-
-    const analysisHistory3 = {
-      id: 3,
-      date: new Date("2024-02-27"),
-      name: "Analysis 3",
-    };
-
-    const analysisList = [analysisHistory1, analysisHistory2, analysisHistory3];
-    analysisList.sort((a, b) => b.date - a.date);
-
-    return analysisList.map((history) => ({
+  function sortAndFormatHistory(historyList) {
+    historyList.sort((a, b) => b.date - a.date);
+    return historyList.map((history) => ({
       id: history.id,
       date: history.date.toString(),
       name: history.name,
     }));
   }
 
+  function getAnalysisHistory() {
+    const analysisList = [
+      createHistoryItem(1, "2024-02-28", "Analysis 1"),
+      createHistoryItem(2, "2024-02-25", "Analysis 2"),
+      createHistoryItem(3, "2024-02-27", "Analysis 3"),
+    ];
+
+    return sortAndFormatHistory(analysisList);
+  }
+
   function getSearchHistory() {
-    //TODO fetch real de historiales
-    const searchHistory1 = {
-      id: 1,
-      date: new Date("2024-02-28"),
-      name: "Search 1",
-    };
+    const searchList = [createHistoryItem(1, "2024-02-28", "Search 1")];
 
-    const searchList = [searchHistory1];
-    searchList.sort((a, b) => b.date - a.date);
-
-    return searchList.map((history) => ({
-      id: history.id,
-      date: history.date.toString(),
-      name: history.name,
-    }));
+    return sortAndFormatHistory(searchList);
   }
 
   return (
@@ -140,14 +94,19 @@ export default function RepresentativeDetail() {
             {Input("Company name", userData ? userData.companyName : " - ")}
             {Input("Phone number", userData ? userData.phone : " - ")}
             {Input("Corporative Email", userData ? userData.email : " - ")}
-            {Input("Project Society Name", userData ? userData.projectSocietyName : " - ")}
+            {Input(
+              "Project Society Name",
+              userData ? userData.projectSocietyName : " - "
+            )}
           </div>
           <div
             className="flex flex-col"
             style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
           >
             {MainButton("Update", "", "")}
-            {SecondaryButton("Logout", "/login", Logout)}
+            {SecondaryButton("Logout", "/login", () =>
+              Logout(logout, navigate, "Representative")
+            )}
           </div>
         </div>
       </div>

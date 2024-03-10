@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -10,21 +9,17 @@ import DataTable from '../../components/DataTable.jsx'
 import Input from '../../components/Input.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
-import SecondaryButton from "../../components/secondaryButton.jsx";
+
 
 
 export default function AnalysisDashboard() {
     const textColor = ' var(--talent-white-text)'
     const textColor2 = 'var(--talent-highlight)'
-    const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
     const { analysisId } = useParams();
-
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
     const [dataArray, setDataArray] = useState([]);
-
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
@@ -47,15 +42,11 @@ export default function AnalysisDashboard() {
                 setDataArray(newArray);
             })
             .catch(error => {
-                // Manejar el error si ocurre
             });
     }, [analysisId]);
 
     const languages = dataArray.globalTopLanguages ? dataArray.globalTopLanguages.map(item => item) : [];
     const tecnologies = dataArray.globalTechnologies ? dataArray.globalTechnologies.map(item => item) : [];
-
-
-
 
 
     return (
