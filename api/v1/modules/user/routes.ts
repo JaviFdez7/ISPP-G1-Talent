@@ -30,8 +30,8 @@ import {
 const router = express.Router();
 
 // Define routes for the User module
-//TODO: método Logout, método getAllProfessionalExpByUserId
-//Revisar rutas de experience(experiences o experience)
+// TODO: método Logout, método getAllProfessionalExpByUserId
+// Revisar rutas de experience(experiences o experience)
 router.get('/', getAllUser);//X
 router.get('/:id', checkGetUserById, getUserById);//X
 router.get('/:id/experiences', checkGetProfessionalExperienceByUserId, getProfessionalExperiencesByUserId);//X

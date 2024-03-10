@@ -1,15 +1,21 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import e, { type Request, type Response } from 'express';
 import UserService from '../services/UserService';
+import UserMiddleware from '../middlewares/UserMiddleware';
+import { ApiResponse } from '../../../utils/ApiResponse';
 
 // Default controller functions
 export const getAllUser: any = async (req: Request, res: Response) => {
   try {
     const data = await UserService.getAllUser();
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -17,10 +23,14 @@ export const getUserById: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const data = await UserService.getUserById(id);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
