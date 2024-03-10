@@ -3,12 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
-import Swal from "sweetalert2";
-
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterRepresentative() {
+  const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
   const [form, setForm] = useState({
     username: "",
@@ -19,11 +18,7 @@ export default function RegisterRepresentative() {
     password2: "",
   });
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-
-  let navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
-
   const {
     username,
     corporative_email,
@@ -34,18 +29,18 @@ export default function RegisterRepresentative() {
     password,
     password2,
   } = form;
+  let navigate = useNavigate();
 
   function onInputChange(e) {
-    if (e.target.name === "termsCheckbox") {
-      setIsCheckboxChecked(e.target.checked);
-      setErrors({ ...errors, termsCheckbox: undefined });
+    const { name, value, checked } = e.target;
+  
+    if (name === "termsCheckbox") {
+      setIsCheckboxChecked(checked);
     } else {
-      setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
-      setErrors({ ...errors, [e.target.name]: undefined });
+      setForm(prevForm => ({ ...prevForm, [name]: value }));
     }
+  
+    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
   const handleCheckboxChange = (e) => {
     setIsCheckboxChecked(e.target.checked);
@@ -53,14 +48,11 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
     }
-
     const validationErrors = validateForm();
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
@@ -78,76 +70,46 @@ export default function RegisterRepresentative() {
       );
 
       const userDataFetch = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/user/login",
-        {
-          ...form,
-        }
+        import.meta.env.VITE_BACKEND_URL + "/user/login", form
+        
       );
-
       setIsCheckboxChecked(false);
       const data = userDataFetch.data;
 
-      Swal.fire({
-        title: "Are you sure you want to register as a representative?",
-        showDenyButton: true,
-        confirmButtonText: "Yes",
-        denyButtonText: "No",
-        confirmButtonColor: "var(--talent-highlight)",
-        denyButtonColor: "var(--talent-black)",
-        background: "var(--talent-secondary)",
-        color: "white",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          switch (response.status) {
-            case 200:
-              login(data.access, data.refresh, data.role, data.user._id);
-              navigate("/representative/detail");
-              Swal.fire({
-                title: "Successfully register!",
-                icon: "success",
-                background: "var(--talent-secondary)",
-                color: "white",
-                confirmButtonColor: "var(--talent-highlight)",
-              });
-              break;
-            case 400:
-              setErrors(error.response.data);
-              break;
-            case 409:
-              setErrors(error.response.data);
-              break;
-            default:
-              break;
-          }
-        } else if (result.isDenied) {
-          navigate("/register/representative");
-        }
-      });
+      if (response.status === 200) {
+        login(data.access, data.refresh, data.role, data.user._id);
+        navigate("/representative/detail");
+      } else if (response.status === 400 || response.status === 409) {
+        setErrors(response.data);
+      }
     } catch (error) {
       if (error.response && error.response.status === 409) {
         setErrors(error.response.data);
-        return;
       }
     }
   }
+  function getRequiredFieldMessage(fieldName) {
+    return `The ${fieldName} field is required`;
+  }
+  
   function validateForm() {
     let errors = {};
 
     if (!form.username) {
-      errors.username = "The username field is required";
+      errors.username = getRequiredFieldMessage('username');
     } else if (form.username.length <= 3) {
       errors.username = "The username field must be more than 3 characters";
     }
 
     if (!form.company_name) {
-      errors.company_name = "The company_name field is required";
+      errors.company_name = getRequiredFieldMessage('company name');
     } else if (form.company_name.length < 2 || form.company_name.length > 50) {
       errors.company_name =
         "The company name field must have be between 2 and 50 characters long";
     }
 
     if (!form.corporative_email) {
-      errors.corporative_email = "The corporative email field is required";
+      errors.corporative_email = getRequiredFieldMessage('corporative email');
     } else if (
       !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(
         form.corporative_email
@@ -156,22 +118,18 @@ export default function RegisterRepresentative() {
       errors.corporative_email =
         "The corporative email field must be from Gmail, Outlook, or Hotmail";
     }
-
     if (!form.password) {
-      errors.password = "The password field is required";
+      errors.password = getRequiredFieldMessage('password');
     } else if (form.password !== form.password2) {
-      errors.password2 = "Passwords do not match";
+      errors.password2 = "Password do not match";
     }
-
     if (!form.password2) {
-      errors.password2 = "The repeat password field is required";
+      errors.password2 = getRequiredFieldMessage('repeat password');
     }
-
     if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
       errors.phone_number =
         "A phone number must consist of 9 digits exclusively";
     }
-
     if (
       form.projectSocietyName &&
       (form.projectSocietyName.length < 2 ||
@@ -180,7 +138,6 @@ export default function RegisterRepresentative() {
       errors.projectSocietyName =
         "The Project Society Name must be between 2 and 50 characters long";
     }
-
     return errors;
   }
 
@@ -190,6 +147,7 @@ export default function RegisterRepresentative() {
       style={{
         backgroundImage: `url(${mainBackgroundRegisterLogin})`,
         backgroundSize: "cover",
+        overflowY: "scroll",
       }}
     >
       <div
@@ -198,20 +156,21 @@ export default function RegisterRepresentative() {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "auto",
           marginRight: "auto",
-          borderColor: "#d4983d",
+          marginTop: "80px",
+          marginBottom: "20px",
+          borderColor: talentColor,
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
           backdropFilter: "blur(8px)",
           borderWidth: "1px",
         }}
       >
-        {/* eleccion de formulario de registro*/}
         <h2
           className="text-2xl font-bold text-center mb-4 text-white"
           style={{ marginTop: "-40px", marginBottom: "-10px" }}
         >
           Register as
         </h2>
-        <hr className="border-1 w-70 mb-4" style={{ borderColor: "#d4983d" }} />
+        <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
         <div className="flex justify-center space-x-4 mb-4">
           <Link to="/register/candidate">
             <h2
@@ -223,7 +182,7 @@ export default function RegisterRepresentative() {
           </Link>
           <h2
             className="text-2xl"
-            style={{ marginTop: "-40px", color: "var(--talent-highlight)" }}
+            style={{ marginTop: "-40px", color: talentColor }}
           >
             Representative
           </h2>
@@ -234,7 +193,6 @@ export default function RegisterRepresentative() {
         {errors.existingEmail && (
           <p className="text-red-500">{errors.existingEmail}</p>
         )}
-
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
@@ -250,7 +208,6 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
-
             <FormTextInput
               labelFor="Corporativeemail"
               labelText="Corporative Email"
@@ -370,7 +327,6 @@ export default function RegisterRepresentative() {
               </div>
             </div>
           </div>
-
           <div className="flex-row space-x-24 m-auto">
             <div
               className="flex items-center justify-center h-full"
