@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express';
 import UserService from '../services/UserService';
-import UserMiddleware from '../middlewares/UserMiddleware';
 import { ApiResponse } from '../../../utils/ApiResponse';
 
 // Default controller functions
@@ -38,10 +37,14 @@ export const getProfessionalExperiencesByUserId: any = async (req: Request, res:
   try {
     const userId = req.params.id;
     const data = await UserService.getProfessionalExperiencesByUserId(userId);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -49,10 +52,14 @@ export const createCandidate: any = async (req: Request, res: Response) => {
   try {
     const role: string = 'Candidate';
     const data = await UserService.createUser(req.body, role);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -60,10 +67,14 @@ export const createRepresentative: any = async (req: Request, res: Response) => 
   try {
     const role: string = 'Representative';
     const data = await UserService.createUser(req.body, role);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -72,10 +83,14 @@ export const updateCandidate: any = async (req: Request, res: Response) => {
     const id = req.params.id;
     const role: string = 'Candidate';
     const data = await UserService.updateUser(id, req.body, role);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -84,20 +99,28 @@ export const updateRepresentative: any = async (req: Request, res: Response) => 
     const id = req.params.id;
     const role: string = 'Representative';
     const data = await UserService.updateUser(id, req.body, role);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 }
 
 export const loginUser: any = async (req: Request, res: Response) => {
   try {
     const data = await UserService.loginUser(req.body);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 
@@ -105,10 +128,14 @@ export const deleteUser: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const data = await UserService.deleteUser(id);
-    res.status(200).send(data);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
   } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
   }
 };
 export default {
