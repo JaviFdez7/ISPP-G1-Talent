@@ -1,5 +1,7 @@
 import { generateJWT } from '../helpers/handleJWT';
-import { User, ProfessionalExperience } from '../models/user';
+import { User } from '../models/user';
+import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
+
 import { getModelForRole } from '../helpers/handleRoles';
 
 export const getAllUser: any = async () => {
@@ -8,6 +10,15 @@ export const getAllUser: any = async () => {
 
 export const getUserById: any = async (id: any) => {
   return await User.findById(id);
+};
+
+export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
+  try {
+    return await ProfessionalExperience.find({ userId: userId });
+  } catch (error) {
+    console.error('Error when obtaining professional experience:', error);
+    throw error;
+  }
 };
 
 export const createUser: any = async (data: any, role: string) => {
@@ -56,55 +67,12 @@ export const loginUser: any = async (data: any) => {
     throw error;
   }
 }
-
-export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
-  try {
-    return await ProfessionalExperience.find({ userId: userId });
-  } catch (error) {
-    console.error('Error when obtaining professional experience:', error);
-    throw error;
-  }
-};
-
-export const createProfessionalExperience: any = async (data: any) => {
-  try {
-    const experience = new ProfessionalExperience(data);
-    await experience.save();
-    return experience;
-  } catch (error) {
-    console.error('Error inserting professional experience:', error);
-    throw error;
-  }
-};
-
-export const updateProfessionalExperience: any = async (id: any, data: any) => {
-  try {
-    const updatedExperience = await ProfessionalExperience.findByIdAndUpdate(id, data, { new: true });
-    return updatedExperience;
-  } catch (error) {
-    console.error('Error updating professional experience:', error);
-    throw error;
-  }
-};
-
-export const deleteProfessionalExperience: any = async (id: any) => {
-  try {
-    await ProfessionalExperience.findByIdAndDelete(id);
-    return 'Professional experience deleted successfully.';
-  } catch (error) {
-    console.error('Error deleting professional experience', error)
-    throw error;
-  }
-};
 export default {
   getAllUser,
   getUserById,
+  getProfessionalExperiencesByUserId,
   createUser,
   updateUser,
   deleteUser,
-  loginUser,
-  getProfessionalExperiencesByUserId,
-  createProfessionalExperience,
-  updateProfessionalExperience,
-  deleteProfessionalExperience
+  loginUser
 };

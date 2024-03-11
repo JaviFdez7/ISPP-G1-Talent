@@ -34,6 +34,17 @@ export const getUserById: any = async (req: Request, res: Response) => {
   }
 };
 
+export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.id;
+    const data = await UserService.getProfessionalExperiencesByUserId(userId);
+    res.status(200).send(data);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
+
 export const createCandidate: any = async (req: Request, res: Response) => {
   try {
     const role: string = 'Candidate';
@@ -100,50 +111,6 @@ export const deleteUser: any = async (req: Request, res: Response) => {
     res.status(500).send(error.message);
   }
 };
-
-export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
-  try {
-    const userId = req.params.id;
-    const data = await UserService.getProfessionalExperiencesByUserId(userId);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-};
-
-export const createProfessionalExperience: any = async (req: Request, res: Response) => {
-  try {
-    const data = await UserService.createProfessionalExperience(req.body);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-};
-
-export const updateProfessionalExperience: any = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const data = await UserService.updateProfessionalExperience(id, req.body);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-}
-
-export const deleteProfessionalExperience: any = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const data = await UserService.deleteProfessionalExperience(id);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-};
-
 export default {
   getAllUser,
   getUserById,
@@ -152,9 +119,5 @@ export default {
   updateCandidate,
   updateRepresentative,
   deleteUser,
-  loginUser,
-  getProfessionalExperiencesByUserId,
-  createProfessionalExperience,
-  updateProfessionalExperience,
-  deleteProfessionalExperience
+  loginUser
 };
