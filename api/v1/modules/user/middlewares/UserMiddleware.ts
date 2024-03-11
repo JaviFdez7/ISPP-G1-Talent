@@ -3,33 +3,36 @@ import { verifyJWT } from '../helpers/handleJWT';
 import { Candidate, Representative, User } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 import e, { type Request, type Response, type NextFunction } from 'express';
+import { ApiResponse } from '../../../utils/ApiResponse';
 
 export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id.toString();
     const token = req.headers.authorization ?? '';
     const user = await User.findById(id);
-    if (!user) {
+    if (!user || user===null) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return message;
-    }
-    if (token.length === 0) {
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
+    } else if (token.length === 0) {
       const message = 'No token provided';
-      res.status(401).send(message);
-      return message;
-    }
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+    } 
     const decodedToken = verifyJWT(token);
-    if (decodedToken.sub !== user._id.toString()) {
-      const message = 'Unauthorized';
-      res.status(401).send(message);
-      return message;
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error('Error deleting user', error)
-    throw error;
+    if (decodedToken.sub !== id) {
+      const message = 'Permission denied';
+      ApiResponse.sendError(res, [{
+        title: 'Forbidden', detail: message}], 401);
+      }
+    else { 
+        next();
+      }
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error getting user by id',
+      detail: error.message
+    }]);
   }
 }
 
@@ -41,39 +44,42 @@ export const checkGetProfessionalExperienceByUserId: any = async (req: Request, 
     const user = await User.findById(id);
     if (token.length === 0) {
       const message = 'No token provided';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id.toString()) {
-      const message = 'Unauthorized';
-      res.status(401).send(message);
-      return message;
+      const message = 'Permission denied';
+      ApiResponse.sendError(res, [{
+        title: 'Forbidden', detail: message}], 403);
     } else if (!user) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
     } else if (!experience) {
       const message = 'Professional Experience not found';
-      res.status(404).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
     } else {
       next();
     }
-  } catch (error) {
-    console.error('Error deleting user', error)
-    throw error;
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error getting professional experience by user id',
+      detail: error.message
+    }]);
   }
 }
 
 export const checkCreateCandidate: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body
+    const isMissingFields: boolean = !data.username || !data.email || !data.fullName || !data.password || !data.githubUser || !data.candidateSubscription
     // Comprobar si faltan campos requeridos en el candidato
-    if (!data.username || !data.email || !data.fullName || !data.password || !data.githubUser || !data.candidateSubscription) {
+    if (isMissingFields) {
       const message = 'Missing required fields';
-      res.status(400).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     }
 
     // Comprobar si el candidato ya existe
@@ -82,26 +88,28 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
     const existingGithubUser = await Candidate.findOne({ githubUser: data.githubUser });
     if (existingUsername) {
       const message = 'Username already exists';
-      res.status(400).send(message);
-      return { existingUsername: message}
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     }
     if (existingEmail) {
       const message = 'User with that email already exists';
-      res.status(400).send(message);
-      return { existingEmail: message }
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     }
     if (existingGithubUser) {
       const message = 'User with that GitHub username already exists';
-      res.status(400).send(message);
-      return { existingGithubUser: message }
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     } else {
       // Encriptar la contraseña
       data.password = await encrypt(data.password);
       next();
     }
-  } catch (error) {
-    console.error('Error inserting user:', error);
-    throw error;
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error creating candidate',
+      detail: error.message
+    }]);
   }
 }
 
@@ -111,11 +119,12 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
 export const checkCreateRepresentative: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
+    const isMissingFields: boolean = !data.username || !data.password || !data.email || !data.companyName 
     // Comprobar si faltan campos requeridos en el representante
-    if (!data.username || !data.password || !data.email || !data.companyName ) {
+    if (isMissingFields) {
       const message = 'Missing required fields';
-      res.status(400).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     }
 
     // Comprobar si el representante ya existe
@@ -123,23 +132,25 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
     const existingEmail = await User.findOne({ email: data.email });
     if (existingUsername) {
       const message = 'Username already exists';
-      res.status(400).send(message);
-      return { existingUsername: message}
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     }
     if (existingEmail) {
       const message = 'User with that email already exists';
-      res.status(400).send(message);
-      return { existingEmail: message}
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
     } else {
       // Encriptar la contraseña
       data.password = await encrypt(data.password);
       next();
     }
-  } catch (error) {
-    console.error('Error inserting user:', error);
-    throw error;
-  }
-};
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error creating representative',
+      detail: error.message
+    }]);
+  };
+}
 
 // Comprobar si el usuario existe
 // Comprobar si la contraseña es correcta
@@ -147,33 +158,36 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
   try {
     const data = req.body;
     const token = req.headers.authorization ?? '';
+    if (token.length > 0) {
+      const message = 'User already logged in';
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
+    }
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
     if (!user) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return { user: 'User not found' };
-    }
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
+    } else if (user) {
     // Comprobar si la contraseña es correcta
-    const checkPassword = await compare(data.password, user.password);
-    if (!checkPassword) {
-      const message = 'Invalid password';
-      res.status(401).send(message);
-      return { checkPassword: message };
-    }
-    if (token.length > 0) {
-      const message = 'User already logged in';
-      res.status(400).send(message);
-      return { userLog: message };
-    } else {
-      next();
-    }
-  } catch (error) {
-    console.error('Error logging in:', error);
-    throw error;
+      const checkPassword = await compare(data.password, user.password);
+      if (!checkPassword) {
+        const message = 'Invalid password';
+        ApiResponse.sendError(res, [{
+          title: 'Unauthorized', detail: message}], 401);
+      } else {
+        next();
+      }
+    } 
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error logging in',
+      detail: error.message
+    }]);
   }
 };
-// TODO: Check user's session token
+
 export const checkUpdateCandidate: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body;
@@ -182,24 +196,28 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
     const user = await Candidate.findById(id);
     if (!user) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
+      return;
     }
     if (!data) {
       const message = 'No data to update';
-      res.status(400).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
+      return;
     }
     if (token.length === 0) {
       const message = 'No token provided';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
       const message = 'Unauthorized';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     } else {
       // Encriptar la contraseña
       if (data.password) {
@@ -207,9 +225,11 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
       }
       next();
     }
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error updating user',
+      detail: error.message
+    }]);
   }
 };
 
@@ -225,24 +245,28 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
     const user = await Representative.findById(id);
     if (!user) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
+      return;
     }
     if (!data) {
       const message = 'No data to update';
-      res.status(400).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
+      return;
     }
     if (token.length === 0) {
       const message = 'No token provided';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
       const message = 'Unauthorized';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     } else {
       // Encriptar la contraseña si se ha actualizado
       if (data.password) {
@@ -250,9 +274,11 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
       }
       next();
     }
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error updating user',
+      detail: error.message
+    }]);
   }
 };
 
@@ -265,25 +291,30 @@ export const checkDeleteUser: any = async (req: Request, res: Response, next: Ne
     const user = await User.findById(id);
     if (!user) {
       const message = 'User not found';
-      res.status(404).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Not Found', detail: message}], 404);
+      return;
     }
     if (token.length === 0) {
       const message = 'No token provided';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     }
     const decodedToken = verifyJWT(token); 
     if (decodedToken.sub !== id) {
       const message = 'Unauthorized';
-      res.status(401).send(message);
-      return message;
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
     } else {
       next();
     }
-  } catch (error) {
-    console.error('Error deleting user', error)
-    throw error;
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error deleting user',
+      detail: error.message
+    }]);
   }
 }
 
@@ -297,3 +328,5 @@ export default {
   checkUpdateRepresentative,
   checkDeleteUser
 };
+
+

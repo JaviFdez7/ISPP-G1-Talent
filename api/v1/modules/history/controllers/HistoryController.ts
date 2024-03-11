@@ -2,6 +2,7 @@
 import { type Request, type Response } from 'express';
 import HistoryService from '../services/HistoryService';
 import { ApiResponse } from '../../../utils/ApiResponse';
+
 // Default controller functions
 export const getHistoryFromUser: any = async (req: Request, res: Response) => {
   try {
