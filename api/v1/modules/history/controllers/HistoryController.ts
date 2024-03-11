@@ -5,9 +5,7 @@ import { verifyJWT } from '../../user/helpers/handleJWT';
 // Default controller functions
 export const getHistoryFromUser: any = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization ?? '';
-    const decodedToken = verifyJWT(token);
-    const userId = decodedToken.sub;
+    const userId = req.params.userId;
     const data = await HistoryService.getHistoryFromUser(userId);
     res.status(200).send(data);
   } catch (error: any) {
@@ -17,9 +15,7 @@ export const getHistoryFromUser: any = async (req: Request, res: Response) => {
 };
 export const getNotFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization ?? '';
-    const decodedToken = verifyJWT(token);
-    const userId = decodedToken.sub;
+    const userId = req.params.userId;
     const data = await HistoryService.getNotFavoritesFromUser(userId);
     res.status(200).send(data);
   } catch (error: any) {
@@ -32,9 +28,7 @@ export const getNotFavoritesFromUser: any = async (req: Request, res: Response) 
 
 export const getFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {
-    const token = req.headers.authorization ?? '';
-    const decodedToken = verifyJWT(token);
-    const userId = decodedToken.sub;
+    const userId = req.params.userId;
     const data = await HistoryService.getFavoritesFromUser(userId);
     res.status(200).send(data);
   } catch (error: any) {
@@ -45,7 +39,8 @@ export const getFavoritesFromUser: any = async (req: Request, res: Response) => 
 
 export const createHistory: any = async (req: Request, res: Response) => {
   try {
-    const data = await HistoryService.createHistory(req.body);
+    const userId = req.params.userId;
+    const data = await HistoryService.createHistory(userId, req.body);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);
@@ -53,7 +48,7 @@ export const createHistory: any = async (req: Request, res: Response) => {
   }
 };
 
-export const markAsFavorite: any = async (req: Request, res: Response) => {
+export const toogleFavorite: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const data = await HistoryService.toggleFavorite(id);
@@ -91,5 +86,5 @@ export default {
   createHistory,
   updateHistory,
   deleteHistory,
-  markAsFavorite
+  markAsFavorite: toogleFavorite
 };
