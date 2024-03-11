@@ -14,6 +14,18 @@ import {
   updateProfessionalExperience,
   deleteProfessionalExperience
 } from './controllers/UserController';
+import {
+  checkCreateCandidate,
+  checkCreateRepresentative,
+  checkUpdateCandidate,
+  checkUpdateRepresentative,
+  checkLoginUser,
+  checkCreateProfessionalExperience,
+  checkUpdateProfessionalExperience,
+  checkDeleteProfessionalExperience,
+  checkGetUserById,
+  checkGetProfessionalExperienceByUserId, 
+  checkDeleteUser} from './middlewares/UserMiddleware';
 
 const router = express.Router();
 
@@ -21,16 +33,16 @@ const router = express.Router();
 // TODO: método Logout, método getAllProfessionalExpByUserId
 // Revisar rutas de experience(experiences o experience)
 router.get('/', getAllUser);//X
-router.get('/:id', getUserById);//X
-router.get('/:id/experiences', getProfessionalExperiencesByUserId);//X
-router.post('/candidate', createCandidate);//X
-router.post('/representative', createRepresentative);//X
-router.post('/login', loginUser);//X
-router.post('/experience', createProfessionalExperience);//X
-router.patch('/candidate/:id', updateCandidate);//X
-router.patch('/representative/:id', updateRepresentative);//X
-router.patch('/experience/:id', updateProfessionalExperience);//X
-router.delete('/:id', deleteUser);//X
-router.delete('/experience/:id', deleteProfessionalExperience);//X
+router.get('/:id', checkGetUserById, getUserById);//X
+router.get('/:id/experiences', checkGetProfessionalExperienceByUserId, getProfessionalExperiencesByUserId);//X
+router.post('/candidate', checkCreateCandidate, createCandidate);//X
+router.post('/representative', checkCreateRepresentative, createRepresentative);//X
+router.post('/login', checkLoginUser, loginUser);//X
+router.post('/experience', checkCreateProfessionalExperience, createProfessionalExperience);//X
+router.patch('/candidate/:id', checkUpdateCandidate, updateCandidate);//X
+router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentative);//X
+router.patch('/experience/:id', checkUpdateProfessionalExperience, updateProfessionalExperience);//X
+router.delete('/:id', checkDeleteUser, deleteUser);//X
+router.delete('/experience/:id', checkDeleteProfessionalExperience, deleteProfessionalExperience);//X
 
 export default router;

@@ -4,6 +4,7 @@ import { type Request, type Response, type NextFunction } from 'express';
 
 export const checkDeleteHistory: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const userId = req.params.userId.toString();
     const id = req.params.id.toString();
     const token = req.headers.authorization ?? '';
     if (token.length === 0) {
@@ -13,7 +14,7 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
     const history = await History.findById(id);
     if (!history) {
       res.status(404).send('History not found');
-    } else if (decodedToken.sub !== history.userId.toString()) {
+    } else if (decodedToken.sub !== userId) {
       res.status(401).send('Unauthorized');
     } else if (history.favorite) {
       res.status(400).send('Cannot delete a favorite history');
