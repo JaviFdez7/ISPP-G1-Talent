@@ -18,19 +18,6 @@ const LifeStyle = {
   TELEMATIC: 'Telematic'
 }
 
-const ProfessionalArea = {
-  WEB_APPLICATION: 'Web application',
-  MOBILE_APPLICATION: 'Mobile application',
-  FRONTEND: 'Frontend',
-  DEV_OPS: 'DevOps',
-  BACKEND: 'Backend',
-  OPERATING_SYSTEMS: 'Operating systems',
-  DATA_SCIENCE: 'Data science',
-  ARTIFICIAL_INTELLIGENCE: 'Artificial intelligence',
-  SECURITY: 'Security',
-  OTHER: 'Other'
-}
-
 const userSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
@@ -72,23 +59,4 @@ const candidateSchema = new Schema({
 const Representative = User.discriminator('Representative', representativeSchema);
 const Candidate = User.discriminator('Candidate', candidateSchema);
 
-const professionalExperienceSchema = new Schema({
-  startDate: { type: Date, required: true },
-  endDate: { type: Date },
-  companyName: { type: String, required: true },
-  professionalArea: {
-    type: String,
-    required: true,
-    enum: Object.values(ProfessionalArea)
-  },
-  lifestyle: {
-    type: String,
-    enum: Object.values(LifeStyle)
-  },
-  location: { type: String },
-  userId: { type: Schema.Types.ObjectId, ref: 'Candidate', required: true }
-})
-
-const ProfessionalExperience = model('ProfessionalExperience', professionalExperienceSchema);
-
-export { User, Representative, Candidate, ProfessionalExperience, CompanySubscription, CandidateSubscription, LifeStyle, ProfessionalArea }
+export { User, Representative, Candidate, CompanySubscription, CandidateSubscription, LifeStyle }

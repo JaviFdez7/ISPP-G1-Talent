@@ -1,6 +1,7 @@
 import { encrypt, compare } from '../helpers/handleBcrypt';
-import { generateJWT, verifyJWT } from '../helpers/handleJWT';
-import { Candidate, ProfessionalExperience, Representative, User } from '../models/user';
+import { verifyJWT } from '../helpers/handleJWT';
+import { Candidate, Representative, User } from '../models/user';
+import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 import e, { type Request, type Response, type NextFunction } from 'express';
 import { ApiResponse } from '../../../utils/ApiResponse';
 
@@ -111,46 +112,6 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
     }]);
   }
 }
-
-//Comprobar que los campos obligatorios esten
-//Comprobar que el userId pertenece a un candidato que exista en db
-export const checkCreateProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = req.body;
-    const token = req.headers.authorization ?? '';
-    // Comprobar si faltan campos requeridos en el representante
-    if (!data.startDate  || !data.companyName || !data.userId || !data.professionalArea ) {
-      const message = 'Missing required fields';
-      ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
-    }
-    // Comprobar si el candidato existe
-    const existingCandidate = await Candidate.findById({ id: data.userId });
-    if (!existingCandidate) {
-      const message = 'Candidate already have professional experience, go to update';
-      ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
-    }
-    if (token.length === 0) {
-      const message = 'No token provided';
-      ApiResponse.sendError(res, [{
-        title: 'Unauthorized', detail: message}], 401);
-    }
-    const decodedToken = verifyJWT(token);
-    if (decodedToken.sub !== data.userId) {
-      const message = 'Unauthorized';
-      ApiResponse.sendError(res, [{
-        title: 'Forbidden', detail: message}], 403);
-    } else {
-      next();
-    }
-  } catch (error: any) {
-    ApiResponse.sendError(res, [{
-      title: 'Error creating professional experience',
-      detail: error.message
-    }]);
-  }
-};
 
 // Comprobar si faltan campos requeridos en el representante
 // Comprobar si el representante ya existe
@@ -272,56 +233,6 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
   }
 };
 
-//Comprobar que existe la experiencia a actualizar
-//Comprobar token correcto
-//Comprobar que se envia información con campos requeridos
-export const checkUpdateProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const id = req.params.id.toString();
-    const token = req.headers.authorization ?? '';
-    const data = req.body;
-    const experience = await ProfessionalExperience.findById(id);
-    if (!experience) {
-      const message = 'Professional experience not found';
-      ApiResponse.sendError(res, [{
-        title: 'Not Found', detail: message}], 404);
-      return;
-    }
-    if (!data) {
-      const message = 'No data to update';
-      ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
-      return;
-    } // Comprobar si faltan campos requeridos en el representante
-    else if (!data.startDate  || !data.companyName || !data.userId || !data.professionalArea ) {
-      const message = 'Missing required fields';
-      ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
-      return;
-    }
-    if (token.length === 0) {
-      const message = 'No token provided';
-      ApiResponse.sendError(res, [{
-        title: 'Unauthorized', detail: message}], 401);
-      return;
-    }
-    const decodedToken = verifyJWT(token);
-    if (decodedToken.sub !== id) {
-      const message = 'Unauthorized';
-      ApiResponse.sendError(res, [{
-        title: 'Unauthorized', detail: message}], 401);
-      return;
-    } else {
-      next();
-    }
-  } catch (error: any) {
-    ApiResponse.sendError(res, [{
-      title: 'Error updating professional experience',
-      detail: error.message
-    }]);
-  }
-};
-
 // Comprobar si el usuario existe
 // Comprobar si hay datos para actualizar
 // Comprobar si el token es correcto
@@ -407,53 +318,15 @@ export const checkDeleteUser: any = async (req: Request, res: Response, next: Ne
   }
 }
 
-// Comprobar si la experiencia existe
-// Comprobar si el token es correcto
-export const checkDeleteProfessionalExperience: any = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const id = req.params.id.toString();
-    const token = req.headers.authorization ?? '';
-    const experience = await ProfessionalExperience.findById(id);
-    if (!experience) {
-      const message = 'Professional experience not found';
-      ApiResponse.sendError(res, [{
-        title: 'Not Found', detail: message}], 404);
-      return;
-    }
-    if (token.length === 0) {
-      const message = 'No token provided';
-      ApiResponse.sendError(res, [{
-        title: 'Unauthorized', detail: message}], 401);
-      return;
-    }
-    const decodedToken = verifyJWT(token); 
-    if (decodedToken.sub !== experience.userId.toString()) {
-      const message = 'Unauthorized';
-      ApiResponse.sendError(res, [{
-        title: 'Unauthorized', detail: message}], 401);
-    } else {
-      next();
-    }
-  } catch (error: any) {
-    ApiResponse.sendError(res, [{
-      title: 'Error deleting professional experience',
-      detail: error.message
-    }]);
-  }
-}
-
 export default {
   checkGetUserById,
+  checkGetProfessionalExperienceByUserId,
   checkCreateCandidate,
   checkCreateRepresentative,
   checkLoginUser,
   checkUpdateCandidate,
   checkUpdateRepresentative,
-  checkDeleteUser,
-  checkDeleteProfessionalExperience,
-  checkUpdateProfessionalExperience,
-  checkCreateProfessionalExperience,
-  checkGetProfessionalExperienceByUserId
+  checkDeleteUser
 };
 
 

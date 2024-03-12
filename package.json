@@ -41,7 +41,6 @@
         "assert": "^2.1.0",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
-        "start-backend": "^1.0.1"
         "express": "^4.18.3",
         "jsonwebtoken": "^9.0.2",
         "node-mocks-http": "^1.14.1",

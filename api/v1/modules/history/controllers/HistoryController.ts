@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express';
 import HistoryService from '../services/HistoryService';
-import { verifyJWT } from '../../user/helpers/handleJWT';
 import { ApiResponse } from '../../../utils/ApiResponse';
 
 // Default controller functions
@@ -33,8 +32,6 @@ export const getNotFavoritesFromUser: any = async (req: Request, res: Response) 
     }]);
   }
 }
-
-
 
 export const getFavoritesFromUser: any = async (req: Request, res: Response) => {
   try {

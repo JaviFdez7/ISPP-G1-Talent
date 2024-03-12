@@ -1,0 +1,201 @@
+swagger: "3.0.0"
+info:
+  title: IT Talent API - Professional experience Module
+  version: 1.0.0
+basePath: /v1
+schemes:
+  - http
+paths:
+  /professional-experience:
+    get:
+      tags:
+        - Professional experience
+      summary: Get all professional experience
+      description: Retrieves a list of all professional experience.
+      responses:
+        "200":
+          description: A list of professional experience
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/definitions/ProfessionalExperience"
+    post:
+      tags:
+        - Professional experience
+      summary: Create a professional experience
+      description: Create a new professional experience
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ProfessionalExperience"
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
+      responses:
+        "200":
+          description: Professional experience created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ProfessionalExperience"
+  /professional-experience/{id}:
+    get:
+      tags:
+        - Professional experience
+      summary: Get a professional experience by ID
+      description: Retrieves a professional experience by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the professional experience to retrieve.
+          required: true
+          type: string
+      responses:
+        "200":
+          description: The professional experience with the specified ID
+          schema:
+            $ref: "#/definitions/ProfessionalExperience"
+    patch:
+      tags:
+        - Professional experience
+      summary: Update a professional experience
+      description: Update a professional experience
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ProfessionalExperiencePatch"
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the professional experience entry.
+      responses:
+        "200":
+          description: Professional experience updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/ProfessionalExperiencePatch"
+    delete:
+      tags:
+        - Professional experience
+      summary: Delete a professional experience by ID
+      description: Deletes a professional experience by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          description: The ID of the professional experience to delete.
+          type: string
+          required: true
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
+      responses:
+        "204":
+          description: Professional experience deleted successfully
+definitions:
+  ProfessionalExperience:
+    type: object
+    required:
+      - startDate
+      - companyName
+      - professionalArea
+      - userId
+    properties:
+      startDate:
+        type: string
+        required: true
+        description: The start date of the experience
+      endDate:
+        type: string
+        description: The end date of the experience
+      companyName:
+        type: string
+        required: true
+        description: The company of the experience
+      professionalArea:
+        type: string
+        required: true
+        enum:
+          - "Web application"
+          - "Mobile application"
+          - "Frontend"
+          - "DevOps"
+          - "Backend"
+          - "Operating systems"
+          - "Data science"
+          - "Artificial intelligence"
+          - "Security"
+          - "Other"
+        description: The professional area of the experience
+      lifestyle:
+        type: string
+        enum:
+          - "On-site"
+          - "Telematic"
+        description: The life style of the user of the user
+      location:
+        type: string
+        description: The location of the experience
+      userId:
+        type: string
+        required: true
+        description: The userId of the experience
+  ProfessionalExperiencePatch:
+    type: object
+    properties:
+      startDate:
+        type: string
+        description: The start date of the experience
+      endDate:
+        type: string
+        description: The end date of the experience
+      companyName:
+        type: string
+        description: The company of the experience
+      professionalArea:
+        type: string
+        enum:
+          - "Web application"
+          - "Mobile application"
+          - "Frontend"
+          - "DevOps"
+          - "Backend"
+          - "Operating systems"
+          - "Data science"
+          - "Artificial intelligence"
+          - "Security"
+          - "Other"
+        description: The professional area of the experience
+      lifestyle:
+        type: string
+        enum:
+          - "On-site"
+          - "Telematic"
+        description: The life style of the user
+      location:
+        type: string
+        description: The location of the experience
+      userId:
+        type: string
+        description: The userId of the experience
