@@ -9,7 +9,7 @@ paths:
   /user:
     get:
       tags:
-        - Users Read
+        - Users
       summary: Get all users
       description: Retrieves a list of all users.
       responses:
@@ -24,7 +24,7 @@ paths:
   /user/{id}:
     get:
       tags:
-        - Users Read
+        - Users
       summary: Get a user by ID
       description: Retrieves a user by its unique identifier.
       parameters:
@@ -40,7 +40,7 @@ paths:
             $ref: "#/definitions/User"
     delete:
       tags:
-        - Users Delete
+        - Users
       summary: Delete a user by ID
       description: Deletes a user by its unique identifier.
       parameters:
@@ -55,7 +55,7 @@ paths:
   /user/login:
     post:
       tags:
-        - "Users Create"
+        - Users
       summary: Log in as a user
       description: Enter in the app as a existing user
       parameters:
@@ -85,7 +85,7 @@ paths:
   /user/candidate:
     post:
       tags:
-        - Users Create
+        - Users-By-Type
       summary: Create a candidate
       description: Create a new user as a candidate
       parameters:
@@ -104,7 +104,7 @@ paths:
   /user/candidate/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a candidate
       description: Update the profile of candidate
       parameters:
@@ -137,7 +137,7 @@ paths:
   /user/representative:
     post:
       tags:
-        - "Users Update"
+        - Users-By-Type
       summary: Create a representative
       description: Create a new user as a representative
       parameters:
@@ -156,7 +156,7 @@ paths:
   /user/representative/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a representative
       description: Update the profile of representative
       parameters:
@@ -188,7 +188,7 @@ paths:
   /user/{id}/professional-experiences:
     get:
       tags:
-        - Users Read
+        - Users
       summary: Get all professional experiences of user
       description: Retrieves a list of professional experiences by the id of user.
       parameters:

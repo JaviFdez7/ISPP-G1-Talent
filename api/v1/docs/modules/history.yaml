@@ -6,7 +6,7 @@ paths:
   /user/{userId}/history:
     get:
       tags:
-        - Histories Read
+        - Histories
       summary: Get history from user
       description: Get the complete history of a representative
       parameters:
@@ -30,7 +30,7 @@ paths:
               $ref: "#/definitions/HistoryItem"
     post:
       tags:
-        - Histories Create
+        - Histories
       summary: Create history entry
       description: Create a new entry in the history of a representative
       parameters:
@@ -53,7 +53,7 @@ paths:
   /user/{userId}/history/{id}:
       patch:
         tags:
-          - Histories Update
+          - Histories
         summary: Update history entry
         description: Update a specific history entry
         parameters:
@@ -78,7 +78,7 @@ paths:
             description: Success
       delete:
         tags:
-          - Histories Delete
+          - Histories
         summary: Delete history entry
         description: Delete a specific history entry
         parameters:
@@ -104,7 +104,7 @@ paths:
   /user/{userId}/history/{id}/favorite:
     patch:
       tags:
-          - Histories Update
+          - Histories-Favorites
       summary: Update the state of the history
       description: Update the state of the history
       parameters:
@@ -126,7 +126,7 @@ paths:
   /user/{userId}/favorites:
     get:
         tags:
-          - Histories Read
+          - Histories-Favorites
         summary: List all the favorite history of the user 
         description: List all the favorite history of the user
         parameters:
@@ -150,7 +150,7 @@ paths:
   /user/{userId}/not_favorites:
     get:
         tags:
-          - Histories Read
+          - Histories-Favorites
         summary: List all the not favorite history of the user 
         description: List all the not favorite history of the user 
         parameters:
