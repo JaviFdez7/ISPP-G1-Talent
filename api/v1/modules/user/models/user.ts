@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-
+import mongoose, { mongo } from 'mongoose';
+import { AnalysisDocument,AnalysisModel,analysisSchema } from '../../analysis/models/analysis.model';
 const { Schema, model } = mongoose;
 
 const CompanySubscription = {
@@ -18,6 +18,19 @@ const LifeStyle = {
   TELEMATIC: 'Telematic'
 }
 
+export interface CandidateDocument {
+  _id : mongoose.Types.ObjectId;
+  fullName: string;
+  githubUser: string;
+  profilePicture?: string;
+  candidateSubscription: keyof typeof CandidateSubscription;
+  CV?: string;
+  residence?: string;
+  lifestyle?: keyof typeof LifeStyle;
+  githubToken?: string;
+  analysisId:  AnalysisDocument;
+}
+
 const userSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
@@ -27,7 +40,7 @@ const userSchema = new Schema({
 }, { discriminatorKey: 'role' });
 
 const User = model('User', userSchema);
-
+const Analysis = model("Analysis",analysisSchema)
 const representativeSchema = new Schema({
   companyName: { type: String, required: true },
   companySubscription: {
@@ -54,7 +67,7 @@ const candidateSchema = new Schema({
     enum: Object.values(LifeStyle)
   },
   githubToken: { type: String },
-  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis' },
 });
 
 const Representative = User.discriminator('Representative', representativeSchema);

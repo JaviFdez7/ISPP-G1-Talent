@@ -11,7 +11,7 @@ export interface RepositoryInfo {
   technologies: string[], 
   numberClosedIssues: number,
 
-}
+} 
 export interface LanguagePercentage {
   language: string;
   percentage: number;
@@ -48,7 +48,7 @@ const repositoryInfoSchema = new Schema<RepositoryInfo>({
 
 });
 
-const analysisSchema = new Schema<AnalysisDocument>({
+export const analysisSchema = new Schema<AnalysisDocument>({
   githubUsername: { type: String, required: true },
   avatarUrl: { type: String, required: true },
   followers: { type: Number, required: true },
@@ -75,30 +75,7 @@ export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema)
 run().catch(err => console.log(err));
 
 async function run() {
-  // 4. Connect to MongoDB
-  //await connect('mongodb://127.0.0.1:27017/talentdb');
-/*
-  const analysis = new AnalysisModel({
-    githubUsername: 'Bill',
-    followers: 100,
-    contributions: {
-      totalCommits: 500,
-      totalPullRequests: 50,
-    },
-    topLanguages: [{
-      language: 'JavaScript',
-      count: 20,
-    }],
-    technologies: ['Node.js', 'React'],
-    topRepositories: [{
-      name: 'My Project',
-      url: 'http://github.com/Bill/myproject',
-      stars: 100,
-      forks: 25,
-    }],
-  });
-  */
-  //await analysis.save();
+
   console.log("Running database");
 }
 
