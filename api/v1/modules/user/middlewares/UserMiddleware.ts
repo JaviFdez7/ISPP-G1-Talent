@@ -14,16 +14,19 @@ export const checkGetUserById: any = async (req: Request, res: Response, next: N
       const message = 'User not found';
       ApiResponse.sendError(res, [{
         title: 'Not Found', detail: message}], 404);
+        return
     } else if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
+        return
     } 
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
       const message = 'Permission denied';
       ApiResponse.sendError(res, [{
         title: 'Forbidden', detail: message}], 401);
+        return
       }
     else { 
         next();
@@ -33,6 +36,7 @@ export const checkGetUserById: any = async (req: Request, res: Response, next: N
       title: 'Error getting user by id',
       detail: error.message
     }]);
+    return
   }
 }
 
@@ -46,20 +50,24 @@ export const checkGetProfessionalExperienceByUserId: any = async (req: Request, 
       const message = 'No token provided';
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
+        return
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id.toString()) {
       const message = 'Permission denied';
       ApiResponse.sendError(res, [{
         title: 'Forbidden', detail: message}], 403);
+        return
     } else if (!user) {
       const message = 'User not found';
       ApiResponse.sendError(res, [{
         title: 'Not Found', detail: message}], 404);
+        return
     } else if (!experience) {
       const message = 'Professional Experience not found';
       ApiResponse.sendError(res, [{
         title: 'Not Found', detail: message}], 404);
+        return
     } else {
       next();
     }
@@ -68,6 +76,7 @@ export const checkGetProfessionalExperienceByUserId: any = async (req: Request, 
       title: 'Error getting professional experience by user id',
       detail: error.message
     }]);
+    return
   }
 }
 
@@ -80,6 +89,7 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
       const message = 'Missing required fields';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
 
     // Comprobar si el candidato ya existe
@@ -90,16 +100,19 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
       const message = 'Username already exists';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
     if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
     if (existingGithubUser) {
       const message = 'User with that GitHub username already exists';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     } else {
       // Encriptar la contraseña
       data.password = await encrypt(data.password);
@@ -110,6 +123,7 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
       title: 'Error creating candidate',
       detail: error.message
     }]);
+    return
   }
 }
 
@@ -125,6 +139,7 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
       const message = 'Missing required fields';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
 
     // Comprobar si el representante ya existe
@@ -134,11 +149,13 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
       const message = 'Username already exists';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
     if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     } else {
       // Encriptar la contraseña
       data.password = await encrypt(data.password);
@@ -149,6 +166,7 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
       title: 'Error creating representative',
       detail: error.message
     }]);
+    return
   };
 }
 
@@ -162,6 +180,7 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
       const message = 'User already logged in';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
+        return
     }
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
@@ -169,6 +188,7 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
       const message = 'User not found';
       ApiResponse.sendError(res, [{
         title: 'Not Found', detail: message}], 404);
+        return
     } else if (user) {
     // Comprobar si la contraseña es correcta
       const checkPassword = await compare(data.password, user.password);
@@ -176,6 +196,7 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
         const message = 'Invalid password';
         ApiResponse.sendError(res, [{
           title: 'Unauthorized', detail: message}], 401);
+          return
       } else {
         next();
       }
@@ -185,6 +206,7 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
       title: 'Error logging in',
       detail: error.message
     }]);
+    return
   }
 };
 
@@ -230,6 +252,7 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
       title: 'Error updating user',
       detail: error.message
     }]);
+    return
   }
 };
 
@@ -279,6 +302,7 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
       title: 'Error updating user',
       detail: error.message
     }]);
+    return
   }
 };
 
@@ -315,6 +339,7 @@ export const checkDeleteUser: any = async (req: Request, res: Response, next: Ne
       title: 'Error deleting user',
       detail: error.message
     }]);
+    return
   }
 }
 
