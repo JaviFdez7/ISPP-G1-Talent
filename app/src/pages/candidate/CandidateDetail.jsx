@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background2.jpg";
@@ -10,12 +10,12 @@ import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
+import Logout from '../../components/swat/logout';
 
 export default function CandidateDetail() {
-  const { isAuthenticated, isCandidate, logout } = useAuthContext();
+  const { isAuthenticated, logout } = useAuthContext();
   const textColor2 = "#D4983D";
   const [candidate, setCandidate] = useState([]);
-  const [user, setUser] = useState([]);
   let navigate = useNavigate();
 
   React.useEffect(() => {
@@ -23,7 +23,6 @@ export default function CandidateDetail() {
       try {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
-          console.log("id: " + currentUserId);
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
           const user = response.data.find(user => user._id === currentUserId);
           setCandidate(user);
@@ -34,11 +33,6 @@ export default function CandidateDetail() {
     };
     fetchUserData();
   }, [isAuthenticated]);
-
-  function handleLogout() {
-    logout();
-    navigate("/login");
-  }
 
   return (
     <div
@@ -78,9 +72,11 @@ export default function CandidateDetail() {
             }}
           >
             <div className="flex flex-col w-full">
-              {Input("Username", candidate ? candidate.username : " - ", true)} {/* user.username */}
-              {Input("Email", candidate ? candidate.email : " - ", true)} {/* user.email */}
-              {Input("Phone", candidate ? candidate.phone : " - ", true)} {/* user.phone */}
+              {Input("Username", candidate ? candidate.username : " - ", true)}
+              <br></br>
+              {Input("Email", candidate ? candidate.email : " - ", true)}
+              <br></br>
+              {Input("Phone", candidate ? candidate.phone : " - ", true)}
             </div>
 
             <div className="text-white mt-8">
@@ -95,7 +91,7 @@ export default function CandidateDetail() {
               style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
             >
               {MainButton("Update", "", "")}
-              {SecondaryButton("Logout", "/login", handleLogout)}
+              {SecondaryButton("Logout", "/login", () => Logout(logout, navigate, "Candidate"))}
             </div>
           </div>
         </div>

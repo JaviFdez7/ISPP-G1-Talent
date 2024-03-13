@@ -8,14 +8,10 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Analyzer() {
     const textColor =  'white'
-    const backgroundColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
-    const boxColor ='var(--talent-dark-background)'
     const asteriskColor = 'var(--talent-highlight-background)'
     const navigate = useNavigate();
-
     const ruta = import.meta.env.VITE_BACKEND_URL;
-
     const [loading, setLoading] = useState(false);
     const [loadingMessage, setLoadingMessage] = useState('');
 
@@ -51,7 +47,8 @@ export default function Analyzer() {
 
       if ( !form.githubUser) {
           setErrors({
-            githubUser: form.githubUser ? '' : '--->Github User is required',
+            githubUser: form.githubUser ? '' : 
+              <span style={{color: 'orange', fontSize: '15px'}}> Github User is required</span>,
           });
           return;
       }
@@ -59,13 +56,9 @@ export default function Analyzer() {
       setLoading(true);
       
       try {
-        // Check if the username exists
         const userResponse = await fetch(ruta + `/analysis/github/${form.githubUser}`);
-        console.log(userResponse);
         if (userResponse.ok) {
-          setErrors({
-            githubUser: '--->Analysis already exists for this user',
-          });
+          navigate('/analysis/' + form.githubUser);
           setLoadingMessage('');
           return;
         } 
@@ -84,7 +77,7 @@ export default function Analyzer() {
         setLoading(false);
         if(response.status == 500){
           setErrors({
-            githubUser: '--->This user does not exist in Github',
+            githubUser: <span style={{color: 'orange', fontSize: '15px'}}> This user does not exist in Github</span>,
           });
         }
         if (!response.ok) {
@@ -173,7 +166,7 @@ export default function Analyzer() {
 
             <div className="flex ml-40 gap-60 mb-8">
               {MainButton("Analyze", "", handleSubmit)}
-              {SecondaryButton("Cancel", "/", "")}
+              {SecondaryButton("Cancel", "/representative/detail", "")}
               {SecondaryButton("Analyses list", "/analysis/list", "")}
             </div>
           </form>

@@ -214,7 +214,87 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/definitions/ProfessionalExperience"
+                  $ref: '#/definitions/ProfessionalExperience'
+  /user/experience:
+    post:
+      tags:
+        - Users Create
+      summary: Create a professional experience
+      description: Create a new professional experience for a candidate
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ProfessionalExperience'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+      responses:
+        "200":
+          description: Professional experience created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProfessionalExperience'
+  
+  /user/experience/{id}:
+    patch:
+      tags:
+        - Users Update
+      summary: Update a professional experience
+      description: Update a new professional experience for a candidate
+      parameters:
+        - name: experience
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ProfessionalExperience'
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the professional experience entry.
+      responses:
+        "200":
+          description: Professional experience created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/ProfessionalExperience' 
+    delete:
+      tags:
+        - Users Delete
+      summary: Delete a professional experience
+      description: Delete a new professional experience for a candidate
+      parameters:
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the professional experience entry.
+      responses:
+        "204":
+          description: Professional experience delete successfully
 definitions:
   RepresentativeData:
     type: object

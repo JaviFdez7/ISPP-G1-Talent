@@ -10,9 +10,7 @@ import PropTypes from "prop-types";
 export const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
-  // const [isAuthenticated, setIsAuthenticated] = useState(
-  //   localStorage.getItem("access_token") ?? false
-  // );
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     Boolean(localStorage.getItem("access_token"))
   );

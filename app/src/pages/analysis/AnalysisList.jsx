@@ -1,23 +1,16 @@
 import React from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import DataTable from '../../components/DataTable.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
 
 
 export default function AnalysisDashboard() {
-    const textColor = ' var(--talent-white-text)'
-    const textColor2 = 'var(--talent-highlight)'
-    const bgColor = 'var(--talent-secondary)'
     const borderColor = 'var(--talent-highlight)'
-
     const [dataArray, setDataArray] = useState([]);
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
@@ -41,7 +34,6 @@ export default function AnalysisDashboard() {
                 setDataArray(newArray);
             })
             .catch(error => {
-                // Manejar el error si ocurre
             });
     }, []);
 
@@ -52,6 +44,9 @@ export default function AnalysisDashboard() {
           backgroundImage: `url(${mainBackgroundRegisterLogin})`,
           backgroundSize: "cover",
         }}>
+            <div className="flex ml-10 gap-60 mt-16" style={{position: 'fixed', top: '0', left: '0'}}    >
+              {MainButton("Go back", "/analysis/analyze", "")}
+            </div>
             <div className="container mx-auto flex flex-col items-center text-center "  style={{ height: '100vh', overflowY: 'scroll' }}>
                 <div className="flex justify-between  w-full">
                     
