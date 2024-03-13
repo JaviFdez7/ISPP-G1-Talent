@@ -53,7 +53,8 @@ const candidateSchema = new Schema({
     type: String,
     enum: Object.values(LifeStyle)
   },
-  githubToken: { type: String }
+  githubToken: { type: String },
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
 });
 
 const Representative = User.discriminator('Representative', representativeSchema);
