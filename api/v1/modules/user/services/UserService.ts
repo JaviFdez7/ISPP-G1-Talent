@@ -1,8 +1,9 @@
 import { generateJWT } from '../helpers/handleJWT';
-import { User } from '../models/user';
+import { User,Candidate } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 
 import { getModelForRole } from '../helpers/handleRoles';
+import { createAnalysis } from '../../analysis/services/AnalysisService';
 
 export const getAllUser: any = async () => {
   return await User.find({});
@@ -25,6 +26,10 @@ export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
     const user = new Model(data);
+    if(role ==='Candidate'){
+      const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
+      (user as any).analysisId=analysis._id;
+    }
     await user.save();
     return user;
   } catch (error) {
@@ -36,6 +41,10 @@ export const createUser: any = async (data: any, role: string) => {
 export const updateUser: any = async (id: any, data: any, role: string) => {
   try {
     const Model = getModelForRole(role) as typeof User;
+    if(role ==='Candidate'){
+      const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
+      data.analysisId=analysis._id;
+    }
     const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
     return updatedUser;
   } catch (error) {
