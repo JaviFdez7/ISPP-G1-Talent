@@ -11,9 +11,9 @@ const DeleteHistoryButton = ({ history, toggleText = false }) => {
     async function deleteHistoryEntry(userId, token) {
         const uri = `/user/${userId}/history/${history._id}`;
         try {
-            const response = await axios.delete(apiURL + uri, {}, {
+            const response = await axios.delete(apiURL + uri, {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    'Authorization': `${token}`
                 }
             });
             setErrorMessage(null);

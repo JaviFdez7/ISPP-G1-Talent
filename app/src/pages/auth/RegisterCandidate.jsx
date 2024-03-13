@@ -83,7 +83,7 @@ export default function RegisterCandidate() {
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data;  
-      login(data.access, data.refresh, data.user.role, data.user._id);
+      login(data.token, data.user.role, data.user._id);
       navigate("/candidate/detail");
 
     } catch (error) {

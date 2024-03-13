@@ -36,7 +36,9 @@ export default function Login() {
         
       );
       const data = response.data;
-      login(data.access, data.refresh, data.user.role, data.user._id);
+      console.log("data: ", data)
+      console.log("token: ", data.access)
+      login(data.token, data.user.role, data.user._id);
       if (data.user.role === "Candidate") {
         navigate("/candidate/detail");
       } else if (data.user.role === "Representative") {
