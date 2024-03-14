@@ -14,16 +14,37 @@ interface SkillRequested{
   languages: string[];
   technologies: string[];
   yearsOfExperience: number;
-  field: string;
+  field: string[];
 }
 interface filteredCandidates{
   github_username: string;
   languages: string[];
   technologies: string[];
   yearsOfExperience: number;
-  field: string;
+  field: string[];
 }
+function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
+  const languagesSet = new Set<string>();
+  const technologiesSet = new Set<string>();
+  let minYearsOfExperience = profiles.length > 0 ? profiles[0].yearsOfExperience : 0;
+  const fieldsSet = new Set<string>();
+  profiles.forEach(profile => { 
+    profile.languages.forEach(language => languagesSet.add(language));
+    profile.technologies.forEach(technology => technologiesSet.add(technology));
+    if (profile.yearsOfExperience < minYearsOfExperience) {
+      minYearsOfExperience = profile.yearsOfExperience;
+    }
+    fieldsSet.add(profile.field);
+  });
 
+  
+  return {
+    languages: Array.from(languagesSet),
+    technologies: Array.from(technologiesSet),
+    yearsOfExperience: minYearsOfExperience,
+    field: Array.from(fieldsSet)
+  };
+}
 async function filterCandidates(skillsRequested: SkillRequested): Promise<any[]> {
 
   const queryOrConditions = [
@@ -61,7 +82,7 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<any[]>
         totalExperienceYears += years + monthDiff / 12;
       }
 
-      if (exp.professionalArea === skillsRequested.field) { 
+      if (skillsRequested.field.includes(exp.professionalArea)) { 
         matchesField = true;
       }
     });
@@ -123,7 +144,7 @@ const skillRequestedTest = {
   languages: ['JavaScript', 'Python'],
   technologies: ['react', 'Node.js'],
   yearsOfExperience: 1,
-  field: 'Data science'
+  field: ['Data science','Mobile application']
 };
 mongoose.connect('mongodb://localhost:27017/talentdb')
   .then(() => {
@@ -132,14 +153,6 @@ mongoose.connect('mongodb://localhost:27017/talentdb')
     filterCandidates(skillRequestedTest);
   })
   .catch(err => console.error('Error al conectar a MongoDB', err));
-
-
-
-
-
-
-
-
 
 export default {
 
