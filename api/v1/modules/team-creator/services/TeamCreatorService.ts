@@ -134,12 +134,19 @@ async function saveTeamCreator(username: string, profilesMap: ProfileMap): Promi
 
   await teamCreator.save();
 }
-export const createTeamCreator: any = async (data: any) => {
-  throw new Error('Not Implemented, data: ' + data);
+export const createTeamCreator: any = async (data: ProfileRequested[]) => {
+  console.log(data)
+  const skills: SkillRequested = processSkillsRequested(data);
+  const filteredcandidates: FilteredCandidates[] = await filterCandidates(skills);
+  const selectCandidates: ProfileMap = selectBestCandidates(filteredcandidates,data);
+  await saveTeamCreator("Ruben22",selectCandidates);
+
+
 };
 
 
 export const deleteTeamCreator: any = async (id: any) => {
+
   throw new Error('Not Implemented: id: ' + id);
 };
 const filteredCandidatesExample: FilteredCandidates[] = [

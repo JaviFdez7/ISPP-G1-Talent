@@ -7,7 +7,9 @@ import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
 import ProfessionalExperienceRouter from './modules/professional-experience';
+import TeamCreatorRouter from './modules/team-creator'
 import cors from 'cors';
+
 
 const app = express();
 const swaggerHost= process.env.HOST ?? 'localhost:3000';
@@ -37,6 +39,7 @@ app.use(AnalysisRouter);
 app.use(UserRouter);
 app.use(HistoryRouter)
 app.use(ProfessionalExperienceRouter)
+app.use(TeamCreatorRouter)
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {
