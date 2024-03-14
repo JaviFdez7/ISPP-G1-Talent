@@ -45,7 +45,7 @@ function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
     field: Array.from(fieldsSet)
   };
 }
-async function filterCandidates(skillsRequested: SkillRequested): Promise<any[]> {
+async function filterCandidates(skillsRequested: SkillRequested): Promise<filteredCandidates[]> {
 
   const queryOrConditions = [
     { 'globalTopLanguages.language': { $in: skillsRequested.languages } },
@@ -109,6 +109,35 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<any[]>
   return qualifiedCandidates; 
 }
 
+function selectBestCandidates(filteredCandidates: filteredCandidates[], profilesRequested: ProfileRequested[]): Map<ProfileRequested, filteredCandidates[]> {
+  const bestCandidatesPerProfile = new Map<ProfileRequested, filteredCandidates[]>();
+
+  for (const profile of profilesRequested) {
+    let maxScore = 0;
+    const candidatesScores: Map<filteredCandidates, number> = new Map();
+
+    for (const candidate of filteredCandidates) {
+      let score = 0;
+      candidate.languages.forEach(lang => {
+        if (profile.languages.includes(lang)) score++;
+      });
+      candidate.technologies.forEach(tech => {
+        if (profile.technologies.includes(tech)) score++;
+      });
+      if (candidate.yearsOfExperience >= profile.yearsOfExperience) score++;
+      if (candidate.field.includes(profile.field)) score++;
+      maxScore = Math.max(maxScore, score);
+      candidatesScores.set(candidate, score);
+    }
+    const bestCandidates = Array.from(candidatesScores.keys()).filter(candidate => candidatesScores.get(candidate) === maxScore);
+
+   
+    bestCandidatesPerProfile.set(profile, bestCandidates);
+  }
+
+  return bestCandidatesPerProfile;
+}
+
 export const createTeamCreator: any = async (data: any) => {
   throw new Error('Not Implemented, data: ' + data);
 };
@@ -117,7 +146,35 @@ export const createTeamCreator: any = async (data: any) => {
 export const deleteTeamCreator: any = async (id: any) => {
   throw new Error('Not Implemented: id: ' + id);
 };
-
+const filteredCandidatesExample: filteredCandidates[] = [
+  {
+    github_username: "devUser1",
+    languages: ["JavaScript", "TypeScript"],
+    technologies: ["React", "Node.js"],
+    yearsOfExperience: 4,
+    field: ["Front-end Development", "Back-end Development"]
+  },
+  {
+    github_username: "devUser2",
+    languages: ["Python", "JavaScript"],
+    technologies: ["Django", "React"],
+    yearsOfExperience: 5,
+    field: ["Full-stack Development"]
+  },
+  {
+    github_username: "devUser3",
+    languages: ["JavaScript"],
+    technologies: ["Vue"],
+    yearsOfExperience: 2,
+    field: ["Front-end Development"]
+  }
+];
+const profileRequestedExample: ProfileRequested[] =[ {
+  languages: ["JavaScript"],
+  technologies: ["React"],
+  yearsOfExperience: 3,
+  field: "Front-end Development"
+}];
 async function prueba(skillsRequested: SkillRequested) {
 
   const queryOrConditions = [
@@ -147,10 +204,11 @@ const skillRequestedTest = {
   field: ['Data science','Mobile application']
 };
 mongoose.connect('mongodb://localhost:27017/talentdb')
-  .then(() => {
+  .then(async () => {
     console.log('Conexión a MongoDB exitosa');
     // Coloca aquí la llamada a tu función que realiza las operaciones de Mongoose
-    filterCandidates(skillRequestedTest);
+    const cans: filteredCandidates[] =  await filterCandidates(skillRequestedTest);
+    console.log(selectBestCandidates(cans,profileRequestedExample))
   })
   .catch(err => console.error('Error al conectar a MongoDB', err));
 
