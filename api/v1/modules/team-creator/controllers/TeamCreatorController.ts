@@ -34,16 +34,6 @@ export const createTeamCreator: any = async (req: Request, res: Response) => {
   }
 };
 
-export const updateTeamCreator: any = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const data = await TeamCreatorService.updateTeamCreator(id, req.body);
-    res.status(200).send(data);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-};
 
 export const deleteTeamCreator: any = async (req: Request, res: Response) => {
   try {
@@ -59,6 +49,5 @@ export default {
   getAllTeamCreator,
   getTeamCreatorById,
   createTeamCreator,
-  updateTeamCreator,
   deleteTeamCreator
 };

@@ -1,28 +1,10 @@
 import { AnalysisModel,AnalysisDocument } from "../../analysis/models/analysis.model";
 import {ProfessionalExperience} from "../../professional-experience/models/professional-experience"
 import {Candidate,CandidateDocument}  from "../../user/models/user"
+import { ProfileRequested,SkillRequested,FilteredCandidates } from "../models/TeamCreatorModel";
 import mongoose from 'mongoose';
 
 
-interface ProfileRequested {
-  languages: string[];
-  technologies: string[];
-  yearsOfExperience: number;
-  field: string;
-}
-interface SkillRequested{
-  languages: string[];
-  technologies: string[];
-  yearsOfExperience: number;
-  field: string[];
-}
-interface filteredCandidates{
-  github_username: string;
-  languages: string[];
-  technologies: string[];
-  yearsOfExperience: number;
-  field: string[];
-}
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
   const languagesSet = new Set<string>();
   const technologiesSet = new Set<string>();
@@ -45,7 +27,7 @@ function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
     field: Array.from(fieldsSet)
   };
 }
-async function filterCandidates(skillsRequested: SkillRequested): Promise<filteredCandidates[]> {
+async function filterCandidates(skillsRequested: SkillRequested): Promise<FilteredCandidates[]> {
 
   const queryOrConditions = [
     { 'globalTopLanguages.language': { $in: skillsRequested.languages } },
@@ -59,7 +41,7 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<filter
   })
   .exec() as unknown as CandidateDocument[];
 
-  const qualifiedCandidates: filteredCandidates[] = [];
+  const qualifiedCandidates: FilteredCandidates[] = [];
 
   for (const candidate of candidates) {
     
@@ -109,12 +91,12 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<filter
   return qualifiedCandidates; 
 }
 
-function selectBestCandidates(filteredCandidates: filteredCandidates[], profilesRequested: ProfileRequested[]): Map<ProfileRequested, filteredCandidates[]> {
-  const bestCandidatesPerProfile = new Map<ProfileRequested, filteredCandidates[]>();
+function selectBestCandidates(filteredCandidates: FilteredCandidates[], profilesRequested: ProfileRequested[]): Map<ProfileRequested, FilteredCandidates[]> {
+  const bestCandidatesPerProfile = new Map<ProfileRequested, FilteredCandidates[]>();
 
   for (const profile of profilesRequested) {
     let maxScore = 0;
-    const candidatesScores: Map<filteredCandidates, number> = new Map();
+    const candidatesScores: Map<FilteredCandidates, number> = new Map();
 
     for (const candidate of filteredCandidates) {
       let score = 0;
@@ -146,7 +128,7 @@ export const createTeamCreator: any = async (data: any) => {
 export const deleteTeamCreator: any = async (id: any) => {
   throw new Error('Not Implemented: id: ' + id);
 };
-const filteredCandidatesExample: filteredCandidates[] = [
+const filteredCandidatesExample: FilteredCandidates[] = [
   {
     github_username: "devUser1",
     languages: ["JavaScript", "TypeScript"],
@@ -174,6 +156,11 @@ const profileRequestedExample: ProfileRequested[] =[ {
   technologies: ["React"],
   yearsOfExperience: 3,
   field: "Front-end Development"
+},{
+  languages: ["Python"],
+  technologies: ["React", "Django"],
+  yearsOfExperience: 1,
+  field: "Data Science"  
 }];
 async function prueba(skillsRequested: SkillRequested) {
 
@@ -207,7 +194,9 @@ mongoose.connect('mongodb://localhost:27017/talentdb')
   .then(async () => {
     console.log('Conexión a MongoDB exitosa');
     // Coloca aquí la llamada a tu función que realiza las operaciones de Mongoose
-    const cans: filteredCandidates[] =  await filterCandidates(skillRequestedTest);
+    const cans: FilteredCandidates[] =  await filterCandidates(skillRequestedTest);
+    //console.log(selectBestCandidates(cans,profileRequestedExample))
+    
     console.log(selectBestCandidates(cans,profileRequestedExample))
   })
   .catch(err => console.error('Error al conectar a MongoDB', err));
