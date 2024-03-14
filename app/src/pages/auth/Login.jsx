@@ -182,12 +182,9 @@ export default function Login() {
             </div>
           </form>
         </div>
-        {errors.checkPassword && (
-          <p className="text-red-500">{errors.checkPassword}</p>
+        {errors.errors && errors.errors[0] && errors.errors[0].detail && (
+          <p className="text-red-500">{errors.errors[0].detail}</p>
         )}
-        {errors.userLog && <p className="text-red-500">{errors.userLog}</p>}
-        {errors.user && <p className="text-red-500">{errors.user}</p>}
-
         <div
           className="flex items-center justify-center h-full"
           style={{ marginTop: "2rem" }}
