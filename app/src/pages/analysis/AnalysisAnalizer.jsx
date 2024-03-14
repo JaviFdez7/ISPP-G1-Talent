@@ -75,7 +75,7 @@ export default function Analyzer() {
         });
 
         setLoading(false);
-        if(response.status == 500){
+        if(response.status == 400){
           setErrors({
             githubUser: <span style={{color: 'orange', fontSize: '15px'}}> This user does not exist in Github</span>,
           });
@@ -84,10 +84,6 @@ export default function Analyzer() {
             console.error('An error occurred:', await response.text());
             return;
         }
-
-        const data = await response.json();
-
-
         navigate('/analysis/' + form.githubUser);
       }catch (error) {
         setLoadingMessage('Unable to connect to the server. Please try again later.');
@@ -137,7 +133,12 @@ export default function Analyzer() {
                 />
                 {errors.githubUser && (
                     <p className="text-red-500 text-xs italic">{errors.githubUser}</p>
+                    
                 )}
+                        {errors.errors && errors.errors[0] && errors.errors[0].detail && (
+          <p className="text-red-500">{errors.errors[0].detail}</p>
+        )}
+
                 </div>
 
                 <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
@@ -158,6 +159,7 @@ export default function Analyzer() {
                 {errors.githubToken && (
                     <p className="text-red-500 text-xs italic">{errors.githubToken}</p>
                 )}
+                
             </div>
 
             <h2 style={{ color: 'white', textAlign: 'center', fontSize: '1rem' }}>

@@ -24,7 +24,7 @@ export default function CandidateDetail() {
         if (isAuthenticated) {
           const currentUserId = localStorage.getItem("userId");
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-          const user = response.data.find(user => user._id === currentUserId);
+          const user = response.data.data.find(user => user._id === currentUserId);
           setCandidate(user);
         }
       } catch (error) {

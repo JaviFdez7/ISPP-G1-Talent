@@ -60,6 +60,7 @@ export const createAnalysis: any = async (githubUsername: string,user_apikey?: s
         githubUsername: userInfo.githubUsername,
         avatarUrl: userInfo.avatarUrl,
         followers: userInfo.followers,
+        globalIssuesClosed: userInfo.globalIssuesClosed,
         contributions: userInfo.contributions,
         globalTopLanguages: userInfo.globalTopLanguages,
         globalTechnologies: userInfo.globalTechnologies,
