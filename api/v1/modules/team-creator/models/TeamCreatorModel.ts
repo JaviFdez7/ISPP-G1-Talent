@@ -1,7 +1,7 @@
 import { Schema, model, connect } from 'mongoose';
 import { Document } from 'mongoose';
 
-
+export type ProfileMap = Map<ProfileRequested, FilteredCandidates[]>;
 export interface ProfileRequested {
     languages: string[];
     technologies: string[];
@@ -22,7 +22,7 @@ export interface FilteredCandidates{
     field: string[];
   }
 
-  export interface TeamCreator {
+  export interface TeamCreatorDocument {
     username: string;
     profiles: {
         profileRequested: ProfileRequested;
@@ -52,4 +52,4 @@ const profileRequestedSchema = new Schema({
     }]
   });
   
-  const TeamCreator = model('TeamCreator', teamCreatorSchema);
+  export const TeamCreator = model('TeamCreator', teamCreatorSchema);

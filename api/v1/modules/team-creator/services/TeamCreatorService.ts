@@ -1,8 +1,9 @@
 import { AnalysisModel,AnalysisDocument } from "../../analysis/models/analysis.model";
 import {ProfessionalExperience} from "../../professional-experience/models/professional-experience"
 import {Candidate,CandidateDocument}  from "../../user/models/user"
-import { ProfileRequested,SkillRequested,FilteredCandidates } from "../models/TeamCreatorModel";
+import { ProfileRequested,SkillRequested,FilteredCandidates,ProfileMap,TeamCreatorDocument,TeamCreator } from "../models/TeamCreatorModel";
 import mongoose from 'mongoose';
+
 
 
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
@@ -119,7 +120,20 @@ function selectBestCandidates(filteredCandidates: FilteredCandidates[], profiles
 
   return bestCandidatesPerProfile;
 }
+async function saveTeamCreator(username: string, profilesMap: ProfileMap): Promise<void> {
+  const profiles = Array.from(profilesMap).map(([profileRequested, recommendedCandidates]) => ({
+    profileRequested,
+    recommendedCandidates
+  }));
 
+ 
+  const teamCreator = new TeamCreator({
+    username,
+    profiles
+  });
+
+  await teamCreator.save();
+}
 export const createTeamCreator: any = async (data: any) => {
   throw new Error('Not Implemented, data: ' + data);
 };
@@ -151,6 +165,32 @@ const filteredCandidatesExample: FilteredCandidates[] = [
     field: ["Front-end Development"]
   }
 ];
+const exampleMap: ProfileMap = new Map([
+  [{
+    languages: ['JavaScript'],
+    technologies: ['React'],
+    yearsOfExperience: 3,
+    field: 'Front-end Development'
+  }, [{
+    github_username: 'alexcjohnson',
+    languages: ['JavaScript', 'TypeScript'],
+    technologies: ['React', 'Node.js'],
+    yearsOfExperience: 9.17,
+    field: ['Front-end Development']
+  }]],
+  [{
+    languages: ['Python'],
+    technologies: ['React', 'Django'],
+    yearsOfExperience: 1,
+    field: 'Data Science'
+  }, [{
+    github_username: 'alexcjohnson',
+    languages: ['Python', 'JavaScript'],
+    technologies: ['Django', 'React'],
+    yearsOfExperience: 9.17,
+    field: ['Data Science']
+  }]]
+]);
 const profileRequestedExample: ProfileRequested[] =[ {
   languages: ["JavaScript"],
   technologies: ["React"],
@@ -194,10 +234,13 @@ mongoose.connect('mongodb://localhost:27017/talentdb')
   .then(async () => {
     console.log('Conexión a MongoDB exitosa');
     // Coloca aquí la llamada a tu función que realiza las operaciones de Mongoose
-    const cans: FilteredCandidates[] =  await filterCandidates(skillRequestedTest);
+    //const cans: FilteredCandidates[] =  await filterCandidates(skillRequestedTest);
     //console.log(selectBestCandidates(cans,profileRequestedExample))
     
-    console.log(selectBestCandidates(cans,profileRequestedExample))
+    //console.log(selectBestCandidates(cans,profileRequestedExample))
+    saveTeamCreator('usernameExample', exampleMap)
+  .then(() => console.log('TeamCreator guardado con éxito'))
+  .catch(err => console.error('Error guardando el TeamCreator', err));
   })
   .catch(err => console.error('Error al conectar a MongoDB', err));
 
