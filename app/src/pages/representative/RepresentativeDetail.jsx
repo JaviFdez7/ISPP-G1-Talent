@@ -33,7 +33,7 @@ export default function RepresentativeDetail() {
           const response = await axios.get(
             `${import.meta.env.VITE_BACKEND_URL}/user`
           );
-          const user = response.data.find((user) => user._id === currentUserId);
+          const user = response.data.data.find((user) => user._id === currentUserId);
           setUserData(user);
         }
       } catch (error) {
@@ -54,7 +54,7 @@ export default function RepresentativeDetail() {
             import.meta.env.VITE_BACKEND_URL + uri
           );
           console.log(response)
-          const historyArray = response.data.map(item => item);
+          const historyArray = response.data.data.map(item => item);
           console.log("historyArray: ", historyArray)
           sortAndFormatHistory(historyArray)
           setAnalysisHistoryData(historyArray);

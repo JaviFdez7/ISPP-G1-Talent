@@ -14,7 +14,7 @@ const AnalysisHistoryItem = ({ item, formattedDate }) => {
         const uri = `/analysis/${analysisId}`;
         try {
             const response = await axios.get(apiURL + uri);
-            return response.data.githubUsername;
+            return response.data.data.githubUsername;
         } catch (error) {
             console.error("Error al llamar al endpoint:", error);
             throw error;

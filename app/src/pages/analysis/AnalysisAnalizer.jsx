@@ -48,7 +48,7 @@ export default function Analyzer() {
     const uri = `/user/${currentUserId}/history`;
     try {
       const response = await axios.post(ruta + uri, { analysisId: currentAnalysisId });
-      return response.data;
+      return response.data.data;
     } catch (error) {
       setErrorMessage('Unable to connect to the server. Please try again later.');
       console.error("Error while creating history of current analysis: ", error);
@@ -74,7 +74,7 @@ export default function Analyzer() {
         const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`);
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          saveAnalysisHistory(userData._id);
+          saveAnalysisHistory(userData.data._id);
           setLoadingMessage('');
           navigate('/analysis/' + form.githubUser);
           return;
@@ -95,8 +95,7 @@ export default function Analyzer() {
       });
 
       const responseData = await response.json();
-      console.log("response 2 ", responseData);
-      saveAnalysisHistory(responseData._id);
+      saveAnalysisHistory(responseData.data._id);
 
       setLoading(false);
       if (response.status == 500) {
@@ -162,7 +161,12 @@ export default function Analyzer() {
               />
               {errors.githubUser && (
                 <p className="text-red-500 text-xs italic">{errors.githubUser}</p>
+
               )}
+              {errors.errors && errors.errors[0] && errors.errors[0].detail && (
+                <p className="text-red-500">{errors.errors[0].detail}</p>
+              )}
+
             </div>
 
             <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
@@ -183,6 +187,7 @@ export default function Analyzer() {
               {errors.githubToken && (
                 <p className="text-red-500 text-xs italic">{errors.githubToken}</p>
               )}
+
             </div>
 
             <h2 style={{ color: 'white', textAlign: 'center', fontSize: '1rem' }}>
@@ -192,7 +197,7 @@ export default function Analyzer() {
             <div className="flex ml-40 gap-60 mb-8">
               {MainButton("Analyze", "", handleSubmit)}
               {SecondaryButton("Cancel", "/representative/detail", "")}
-              {SecondaryButton("History", "/analysis/list", "")}
+              {SecondaryButton("Analyses list", "/analysis/list", "")}
             </div>
           </form>
         </div>

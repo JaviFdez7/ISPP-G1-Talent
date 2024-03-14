@@ -20,7 +20,7 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
-            return response.data;
+            return response.data.data;
         } catch (error) {
             setErrorMessage('Unable to connect to the server. Please try again later.');
             console.error("Error al llamar al endpoint:", error);

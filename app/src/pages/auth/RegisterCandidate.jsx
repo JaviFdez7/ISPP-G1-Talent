@@ -82,12 +82,13 @@ export default function RegisterCandidate() {
         import.meta.env.VITE_BACKEND_URL + "/user/login", form
       );
       setIsCheckboxChecked(false);
-      const data = userDataFetch.data;  
+      const data = userDataFetch.data.data;  
       login(data.token, data.user.role, data.user._id);
       navigate("/candidate/detail");
 
     } catch (error) {
-      if (error.response.status === 409) {
+      if (error.response.status === 409)  { // set the status code properly
+        console.log(error);
         setErrors(error.response.data);
         return;
       }
@@ -182,16 +183,10 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
-        {errors.existingUsername && (
-          <p className="text-red-500">{errors.existingUsername}</p>
-        )}
-        {errors.existingEmail && (
-          <p className="text-red-500">{errors.existingEmail}</p>
-        )}
-        {errors.existingGithubUser && (
-          <p className="text-red-500">{errors.existingGithubUser}</p>
-        )}
-
+       {console.log(errors)}
+        {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
+  <p className="text-red-500">{errors.errors[0].detail}</p>
+)}
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
