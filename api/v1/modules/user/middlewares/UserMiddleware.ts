@@ -105,13 +105,13 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
     if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
+        title: 'Conflict', detail: message}], 409);
         return
     }
     if (existingGithubUser) {
       const message = 'User with that GitHub username already exists';
       ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
+        title: 'Conflict', detail: message}], 409);
         return
     } else {
       // Encriptar la contraseña
@@ -148,13 +148,13 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
     if (existingUsername) {
       const message = 'Username already exists';
       ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
+        title: 'Conflict', detail: message}], 409);
         return
     }
     if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{
-        title: 'Bad Request', detail: message}], 400);
+        title: 'Conflict', detail: message}], 409);
         return
     } else {
       // Encriptar la contraseña
