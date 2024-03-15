@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background.jpg";
-import LatestHistory from "../../components/LatestHistory";
+import LatestHistory from "../../components/history/LatestHistory";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 import axios from "axios";
@@ -13,6 +13,16 @@ import Logout from "../../components/swat/logout";
 export default function RepresentativeDetail() {
   const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
+  const [analysisHistoryData, setAnalysisHistoryData] = useState([{
+    id: 1,
+    date: "2024-03-10",
+    name: "Sample Analysis"
+  }]);
+  const [searchHistoryData, setSearchHistoryData] = useState([{
+    id: 1,
+    date: "2024-03-10",
+    name: "Sample Search"
+  }]);
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -33,38 +43,36 @@ export default function RepresentativeDetail() {
     fetchUserData();
   }, [isAuthenticated]);
 
-  function createHistoryItem(id, date, name) {
-    return {
-      id,
-      date: new Date(date),
-      name,
+
+  useEffect(() => {
+    const fetchAnalysisHistoryData = async () => {
+      try {
+        if (isAuthenticated) {
+          const currentUserId = localStorage.getItem("userId");
+          const uri = `/user/${currentUserId}/history`;
+          const response = await axios.get(
+            import.meta.env.VITE_BACKEND_URL + uri
+          );
+          console.log(response)
+          const historyArray = response.data.data.map(item => item);
+          console.log("historyArray: ", historyArray)
+          sortAndFormatHistory(historyArray)
+          setAnalysisHistoryData(historyArray);
+        }
+      } catch (error) {
+        console.error("Error fetching history data:", error);
+      }
     };
-  }
+    fetchAnalysisHistoryData();
+  }, []);
 
   function sortAndFormatHistory(historyList) {
     historyList.sort((a, b) => b.date - a.date);
     return historyList.map((history) => ({
-      id: history.id,
       date: history.date.toString(),
-      name: history.name,
     }));
   }
 
-  function getAnalysisHistory() {
-    const analysisList = [
-      createHistoryItem(1, "2024-02-28", "Analysis 1"),
-      createHistoryItem(2, "2024-02-25", "Analysis 2"),
-      createHistoryItem(3, "2024-02-27", "Analysis 3"),
-    ];
-
-    return sortAndFormatHistory(analysisList);
-  }
-
-  function getSearchHistory() {
-    const searchList = [createHistoryItem(1, "2024-02-28", "Search 1")];
-
-    return sortAndFormatHistory(searchList);
-  }
 
   return (
     <div
@@ -119,15 +127,13 @@ export default function RepresentativeDetail() {
       <div className="flex flex-row justify-center">
         <LatestHistory
           header="Latest Analysis"
-          data={getAnalysisHistory()}
+          data={analysisHistoryData}
           type="analysis"
-          representativeId="1"
         />
         <LatestHistory
           header="Latest Search"
-          data={getSearchHistory()}
+          data={searchHistoryData}
           type="searches"
-          representativeId="1"
         />
       </div>
     </div>
