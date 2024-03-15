@@ -1,0 +1,44 @@
+name: Format code on PR
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  format-code:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 100000
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.8.1'
+
+      - name: Install dev dependencies
+        run: |
+          npm install
+
+      - name: Format and fix warnings on modified or added files
+        run: |
+          git diff --diff-filter=d --name-only HEAD^ \
+          | grep -E '\.(json|ts|css|js|jsx)$' \
+          | while read -r file; do
+              npx prettier --write "$file" && npx eslint --fix --quiet "$file" || true
+            done
+
+      - name: Git config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Push formatted code
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "style: Autoformat"
+
