@@ -75,10 +75,9 @@ export default function RegisterRepresentative() {
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data.data;
-      console.log(userDataFetch + "data");
 
       if (response.status === 200) {
-        login(data.access, data.refresh, data.user.role, data.user._id);
+        login(data.token, data.user.role, data.user._id);
         navigate("/representative/detail");
       } else if (response.status === 400 || response.status === 409) {
         setErrors(response.data);
