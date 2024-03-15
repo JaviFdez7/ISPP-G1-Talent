@@ -5,7 +5,7 @@ import {
   //getTeamCreatorById,
   createTeamCreator,
   //updateTeamCreator,
-  //deleteTeamCreator
+  deleteTeamCreator
 } from './controllers/TeamCreatorController';
 
 const router = express.Router();
@@ -15,6 +15,6 @@ router.use(express.json());
 //router.get('/:id', getTeamCreatorById);
 router.post('/', createTeamCreator);
 //router.patch('/:id', updateTeamCreator);
-//router.delete('/:id', deleteTeamCreator);
+router.delete('/:id', deleteTeamCreator);
 
 export default router;

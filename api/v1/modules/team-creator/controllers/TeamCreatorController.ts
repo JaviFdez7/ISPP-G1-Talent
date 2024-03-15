@@ -35,9 +35,10 @@ export const createTeamCreator: any = async (req: Request, res: Response) => {
   }
 };
 
-/*
+
 export const deleteTeamCreator: any = async (req: Request, res: Response) => {
   try {
+   
     const id = req.params.id;
     const data = await TeamCreatorService.deleteTeamCreator(id);
     res.status(200).send(data);
@@ -46,7 +47,7 @@ export const deleteTeamCreator: any = async (req: Request, res: Response) => {
     res.status(500).send(error.message);
   }
 };
-*/
+
 export default {
   //getAllTeamCreator,
   //getTeamCreatorById,

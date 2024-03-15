@@ -147,7 +147,11 @@ export const createTeamCreator: any = async (data: ProfileRequested[]) => {
 
 export const deleteTeamCreator: any = async (id: any) => {
 
-  throw new Error('Not Implemented: id: ' + id);
+  try {
+    const result = await TeamCreator.findByIdAndDelete(id);
+  } catch (err) {
+    console.error(err);
+  }
 };
 const filteredCandidatesExample: FilteredCandidates[] = [
   {
