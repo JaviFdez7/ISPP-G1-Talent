@@ -137,11 +137,6 @@ export default function Login() {
                   value={username} 
                   onChange={(e) => onInputChange(e)}
                 />
-                {errors.username && (
-                  <p className="text-red-500 text-xs italic">
-                    {errors.username}
-                  </p>
-                )}
               </div>
             </div>
             <div

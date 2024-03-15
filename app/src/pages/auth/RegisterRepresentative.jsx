@@ -286,7 +286,7 @@ export default function RegisterRepresentative() {
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}
                     />
-                    conditions of use of the
+                    conditions of use of the 
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}

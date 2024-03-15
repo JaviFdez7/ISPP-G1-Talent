@@ -90,7 +90,7 @@ export default function CandidateDetail() {
               className="flex flex-col"
               style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
             >
-              {MainButton("Update", "", "")}
+              {MainButton("Update", "/candidate/detail/edit", "")}
               {SecondaryButton("Logout", "/login", () => Logout(logout, navigate, "Candidate"))}
             </div>
           </div>

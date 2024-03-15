@@ -103,7 +103,7 @@ export default function RepresentativeDetail() {
             className="flex flex-col"
             style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
           >
-            {MainButton("Update", "", "")}
+            {MainButton("Update", "/representative/detail/edit", "")}
             {SecondaryButton("Logout", "/login", () =>
               Logout(logout, navigate, "Representative")
             )}
