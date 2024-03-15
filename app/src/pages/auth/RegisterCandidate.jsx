@@ -37,13 +37,13 @@ export default function RegisterCandidate() {
 
   function onInputChange(e) {
     const { name, value, checked } = e.target;
-  
+
     if (name === "termsCheckbox") {
       setIsCheckboxChecked(checked);
     } else {
       setForm(prevForm => ({ ...prevForm, [name]: value }));
     }
-  
+
     setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
   const handleCheckboxChange = (e) => {
@@ -82,13 +82,12 @@ export default function RegisterCandidate() {
         import.meta.env.VITE_BACKEND_URL + "/user/login", form
       );
       setIsCheckboxChecked(false);
-      const data = userDataFetch.data.data;  
+      const data = userDataFetch.data.data;
       login(data.token, data.user.role, data.user._id);
       navigate("/candidate/detail");
 
     } catch (error) {
-      if (error.response.status === 409)  { // set the status code properly
-        console.log(error);
+      if (error.response.status === 409 || error.response.status === 400) { // set the status code properly
         setErrors(error.response.data);
         return;
       }
@@ -131,9 +130,10 @@ export default function RegisterCandidate() {
     if (!form.username) {
       errors.username = getRequiredFieldMessage('username');
     }
-    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+    if (form.phone_number && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(form.phone_number)) {
+      //para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
       errors.phone_number =
-        "A phone number must consist of 9 digits exclusively";
+        "The phone field must be a valid Spanish phone number or a valid American phone number";
     }
     return errors;
   }
@@ -183,10 +183,9 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
-       {console.log(errors)}
         {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-  <p className="text-red-500">{errors.errors[0].detail}</p>
-)}
+          <p className="text-red-500">{errors.errors[0].detail}</p>
+        )}
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
@@ -290,17 +289,17 @@ export default function RegisterCandidate() {
                     onChange={handleCheckboxChange}
                   />
                   <span className="ml-2">
-                    Do you accept the terms and
+                    Do you accept the terms and{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}
                     />
-                    conditions of use of the
+                    conditions of use of the{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}
                     />
-                    processing of your data?
+                    processing of your data?{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}

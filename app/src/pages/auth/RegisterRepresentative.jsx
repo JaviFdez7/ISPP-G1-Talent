@@ -83,7 +83,7 @@ export default function RegisterRepresentative() {
         setErrors(response.data);
       }
     } catch (error) {
-      if (error.response && error.response.status === 409) {
+      if (error.response && error.response.status === 409 || error.response.status === 400) {
         setErrors(error.response.data);
       }
     }
@@ -280,17 +280,17 @@ export default function RegisterRepresentative() {
                     onChange={handleCheckboxChange}
                   />
                   <span className="ml-2">
-                    Do you accept the terms and
+                    Do you accept the terms and{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}
                     />
-                    conditions of use of the 
+                    conditions of use of the{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}
                     />
-                    processing of your data?
+                    processing of your data?{" "}
                     <br
                       className="hidden lg:inline-block"
                       style={{ marginRight: "-10px" }}

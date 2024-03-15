@@ -7,17 +7,22 @@ import MainButton from '../../components/mainButton'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
+import Swal from "sweetalert2";
+import FormTextInput from "../../components/FormTextInput";
+
+
+
 
 export default function CandidateDetailEdit() {
 	const { isAuthenticated } = useAuthContext()
 
 	const [userData, setUserData] = useState({
-    username: '',
-    email: '',
-    phone: '',
-    fullName: '',
-    githubUser: '',
-  })
+		username: '',
+		email: '',
+		phone: '',
+		fullName: '',
+		githubUser: '',
+	})
 	const [profilePicture, setProfilePicture] = useState(profile)
 
 	let navigate = useNavigate()
@@ -48,7 +53,7 @@ export default function CandidateDetailEdit() {
 					const user = response.data.data.find((user) => user._id === currentUserId)
 					setUserData(user)
 				}
-        setProfilePicture(user.profilePicture)
+				setProfilePicture(user.profilePicture)
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			}
@@ -66,11 +71,19 @@ export default function CandidateDetailEdit() {
 			reader.readAsDataURL(file)
 		}
 	}
+
 	//8)creamos la funcion que se encarga de llamar al metodo de la API REST de editar
 	async function editUser(e) {
 		e.preventDefault()
 		const currentUserId = localStorage.getItem('userId')
-		const token = localStorage.getItem('token')
+		const token = localStorage.getItem('access_token')
+		const validationErrors = validateForm();
+
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors);
+			return;
+		}
+
 		try {
 			const response = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${currentUserId}`,
@@ -84,23 +97,71 @@ export default function CandidateDetailEdit() {
 			)
 			//9)validamos los los campos de los errores
 			if (response.status === 404) {
-				console.error('Error: User not found')
+				setErrors(response.data)
 				return
 			}
 			if (response.status === 400) {
-				console.error('Error: No data to update')
+				setErrors(response.data)
 				return
 			}
 			if (response.status === 401) {
-				console.error('Error: Unauthorized')
+				setErrors(response.data)
 				return
 			}
 			navigate('/candidate/detail')
-			console.log('Edit user: has editado el proyecto con exito')
+			Swal.fire({
+				icon: 'success',
+				title: 'User updated successfully',
+				showConfirmButton: false,
+				timer: 1500,
+			})
 		} catch (error) {
-			console.error('Error updating user:', error)
+			if(error.response.status === 400) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Token expired',
+					text: 'Please login again to continue',
+					timer: 1500,
+					showConfirmButton: false,
+				})
+				navigate('/login')
+			}
 		}
 	}
+
+	function getRequiredFieldMessage(fieldName) {
+		return `The ${fieldName} field is required`;
+	  }
+	
+	function validateForm() {
+		let errors = {};
+		if (!userData.username) {
+			errors.username = getRequiredFieldMessage('user name');
+		} else if (userData.username.length <= 3) {
+			errors.username = "The username field must be more than 3 characters";
+		}
+		if (!userData.email) {
+			errors.email = getRequiredFieldMessage('email');
+		} else if (
+			!/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(userData.email)
+		) {
+			errors.email = "The email field must be from Gmail, Outlook or Hotmail";
+		}
+		if (!userData.githubUser) {
+			errors.githubUser = getRequiredFieldMessage('github User');
+		}
+		if (!userData.fullName) {
+			errors.fullName = getRequiredFieldMessage('fullName');
+		}
+		if (userData.phone && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(userData.phone)) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
+			errors.phone =
+				"The phone field must be a valid Spanish phone number or a valid American phone number";
+		}
+		return errors;
+	}
+
+
 	return (
 		<div
 			className='flex flex-col'
@@ -135,72 +196,62 @@ export default function CandidateDetailEdit() {
 						style={{ width: '50%', padding: '5rem', marginRight: '8rem' }}>
 						<div className='flex flex-col mt-10 w-10/12'>
 							<div className='mb-4'>
-								<label htmlFor='Username' className='text-sm font-bold text-white'>
-									Username
-								</label>
-								<input
-									type='text'
-									className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-									placeholder='Write a Username'
-									name='username'
+								<FormTextInput
+									labelFor="Username"
+									labelText="User name"
+									placeholder="Enter your User name"
+									name="username"
 									value={username}
 									onChange={(e) => handleChange(e)}
+									errors={errors}
+									isMandatory
 								/>
 							</div>
 							<div className='mb-4'>
-								<label htmlFor='email' className='text-sm font-bold text-white'>
-									Email
-								</label>
-								<input
-									type='text'
-									className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-									placeholder='Write an Email'
-									name='email'
+								<FormTextInput
+									labelFor="Email"
+									labelText="Email"
+									placeholder="Enter your email"
+									name="email"
 									value={email}
 									onChange={(e) => handleChange(e)}
+									errors={errors}
+									isMandatory
 								/>
 							</div>
-              <div className='mb-4'>
-								<label htmlFor='phone' className='text-sm font-bold text-white'>
-									Phone
-								</label>
-								<input
-									type='text'
-									className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-									placeholder='Write a Phone'
-									name='phone'
+							<div className='mb-4'>
+								<FormTextInput
+									labelFor="Phone"
+									labelText="Phone"
+									placeholder="Enter your phone"
+									name="phone"
 									value={phone}
 									onChange={(e) => handleChange(e)}
+									errors={errors}
 								/>
 							</div>
 							<div className='mb-4'>
-								<label
-									htmlFor='fullName'
-									className='text-sm font-bold text-white'>
-									Full Name
-								</label>
-								<input
-									type='text'
-									className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-									placeholder='Write a Full Name'
-									name='fullName'
+								<FormTextInput
+									labelFor="FullName"
+									labelText="FullName"
+									placeholder="Enter your fullName"
+									name="fullName"
 									value={fullName}
 									onChange={(e) => handleChange(e)}
+									errors={errors}
+									isMandatory
 								/>
 							</div>
 							<div className='mb-4'>
-								<label
-									htmlFor='githubUser'
-									className='text-sm font-bold text-white'>
-									Github User
-								</label>
-								<input
-									type='text'
-									className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-									placeholder='Write a Github User'
-									name='githubUser'
+								<FormTextInput
+									labelFor="GithubUser"
+									labelText="Github User"
+									placeholder="Enter your github User"
+									name="githubUser"
 									value={githubUser}
 									onChange={(e) => handleChange(e)}
+									errors={errors}
+									isMandatory
 								/>
 							</div>
 						</div>
@@ -208,7 +259,6 @@ export default function CandidateDetailEdit() {
 					{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
 						<p className="text-red-500">{errors.errors[0].detail}</p>
 					)}
-
 					<div className='flex space-x-4'>
 						{MainButton('Update', '/candidate/detail', () => console.log('Update button clicked'))}
 						{SecondaryButton('Cancel', '/candidate/detail', '')}
