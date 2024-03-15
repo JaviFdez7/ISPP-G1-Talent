@@ -3,6 +3,6 @@ import Notification from './routes';
 
 const router = express.Router();
 
-router.use('/v1/notification', Notification);
+router.use('/user', Notification);
 
 export default router;
