@@ -16,7 +16,7 @@ export default function AnalysisDashboard() {
 
   const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
-
+  const candidates = ['Candidate1', 'Candidate2', 'Candidate3']; // los candidatos seleccionados
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -56,46 +56,33 @@ export default function AnalysisDashboard() {
                              Your team
                         </h6>
                     </div>
-                    
+                    <> 
+                      {candidates.map((candidate, index) => (
+                      <DropdownComponent  key={index} name={candidate}>
+                        <div className="flex flex-col items-center w-full ">
+                            <DataTableVertical
+                                data={[
+                                    {header: "Specialty", content: "Frontend"},
+                                    {header: "Technologies", content: "React"},
+                                    {header: "Languages", content: "javascript, css, TypeScript"},
+                                    {header: "Lifestyle", content: "Telecommuting"},
+                                ]}
+                            />
+                          <div className="  flex justify-center mt-16 mb-0">
+                            {MainButton("Remove", `/searches/team`, "")}
+                          </div>  
+                        </div>
+                    </DropdownComponent>
+                    ))}
+                   </>
 
-                    <DropdownComponent name='Candidate1'>
-                      <div className="flex flex-col items-center w-full ">
-                          <DataTableVertical
-                              data={[
-                                  {header: "Especialidad", content: "Frontend"},
-                                  {header: "Technologies", content: "React"},
-                                  {header: "Languages", content: "javascript, css, TypeScript"},
-                                  {header: "Lifestyle", content: "Telecommuting"},
-                              ]}
-                          />
-                          <Link to="/" className="text-white underline mt-10">
-                              View analysis
-                          </Link>
-                      </div>
-                  </DropdownComponent>
-
-                  <DropdownComponent name='Candidate2'>
-                      <div className="flex flex-col items-center w-full ">
-                          <DataTableVertical
-                              data={[
-                                  {header: "Especialidad", content: "Frontend"},
-                                  {header: "Technologies", content: "React"},
-                                  {header: "Languages", content: "javascript, css, TypeScript"},
-                                  {header: "Lifestyle", content: "Telecommuting"},
-                              ]}
-                          />
-                          <Link to="/" className="text-white underline mt-10">
-                              View analysis
-                          </Link>
-                      </div>
-                  </DropdownComponent>
        
 
                     
 
                     
                     <div className="  flex justify-center mt-16 mb-0">
-                      {MainButton("Add candidate", `/analysis/list`, "")}
+                      {MainButton("Add candidate", `/searches/search`, "")}
                     </div>        
             </div>
         </section >
