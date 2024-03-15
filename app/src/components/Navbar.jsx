@@ -108,6 +108,20 @@ export default function Navbar() {
                   <span>My analysis</span>
                 </Link>
               )}
+              {isAuthenticated &&
+              userData &&
+              userData.role === "Representative" && (
+                <Link
+                  to="/searches/team"
+                  onMouseEnter={() => move_hoverer(1)}
+                  onMouseDown={() => move_current(1)}
+                  className="link-container"
+                >
+                  <span>ICON</span>
+                  <p>&nbsp;&nbsp;&nbsp;</p>
+                  <span>Team search</span>
+                </Link>
+              )}
             <Link
               to={subscription}
               onMouseEnter={() => move_hoverer(2)}

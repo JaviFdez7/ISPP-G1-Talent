@@ -30,6 +30,9 @@ import Navbar from "./Navbar";
 import { PlaceHolder } from "../pages/PlaceHolder.jsx";
 import ProtectedRoute from "../context/routes/ProtectedRoute.jsx";
 
+//search
+import Search from "../pages/search/SearchTeam.jsx";
+
 //auth
 import Login from "../pages/auth/Login.jsx";
 import RegisterCandidate from "../pages/auth/RegisterCandidate.jsx";
@@ -89,10 +92,18 @@ function App() {
 
             {/*Search*/}
 
-            <Route path="/searches/search" element={
+            <Route path="/searches/team" element={
               <ProtectedRoute roles={['Representative']} >
-                <PlaceHolder pageName="search list" />
+                <Search/>
               </ProtectedRoute>}
+            />
+             <Route
+              path="/searches/search"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <PlaceHolder pageName="search list" />
+                </ProtectedRoute>
+              }
             />
            <Route
               path="/searches/:searchId"

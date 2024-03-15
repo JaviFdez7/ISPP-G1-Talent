@@ -25,6 +25,7 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
+            console.log("Response:", response.data.data); 
             setError(false);
             return response.data.data;
         } catch (error) {
@@ -45,7 +46,7 @@ export default function AnalysisDashboard() {
             });
     }, [analysisId]);
 
-    const languages = dataArray.globalTopLanguages ? dataArray.globalTopLanguages.map(item => item) : [];
+    const languages = dataArray.globalTopLanguages ? dataArray.globalTopLanguages.map(item => item.language) : [];
     const tecnologies = dataArray.globalTechnologies ? dataArray.globalTechnologies.map(item => item) : [];
 
 
