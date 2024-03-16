@@ -33,6 +33,7 @@ import ProtectedRoute from "../context/routes/ProtectedRoute.jsx";
 //search
 import Search from "../pages/search/SearchTeam.jsx";
 import SearchForm from "../pages/search/SearchForm.jsx";
+import SearchResult from "../pages/search/SearchResult.jsx";
 
 //auth
 import Login from "../pages/auth/Login.jsx";
@@ -110,7 +111,7 @@ function App() {
               path="/searches/:searchId"
               element={
                 <ProtectedRoute roles={['Representative']} >
-                  <PlaceHolder pageName="search list" />
+                  <SearchResult/>
                 </ProtectedRoute>
               }
             />

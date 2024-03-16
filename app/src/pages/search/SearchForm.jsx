@@ -53,7 +53,8 @@ export default function RegisterRepresentative() {
   async function handleSubmit(e) {
    
 
-    try {
+    try { 
+      navigate(`/searches/:searchId`);
       
     } catch (error) {
       if (error.response && error.response.status === 409) {
@@ -105,7 +106,7 @@ export default function RegisterRepresentative() {
         )}
         <form
           onSubmit={(e) => handleSubmit(e)}
-          className="flex flex-wrap -mx-3"
+          className="flex flex-col items-center flex-wrap -mx-3"
         >
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
             <FormTextInput
@@ -161,8 +162,9 @@ export default function RegisterRepresentative() {
                 <option value="on-site">On-site</option>
                 <option value="telematic">Telematic</option>
             </select>
-            <div className="mt-4">
-              {MainButton("Register", "/", handleSubmit)}
+            <div className="flex justify-between mt-4">
+              {MainButton("Search", "/searches/:searchId")}
+              {MainButton("Cancel", "/searches/team")}
             </div>
           </div>
         </form>

@@ -1,11 +1,12 @@
 import React from "react";
 import DataTableVertical from '../../components/DataTableVertical.jsx'
 import axios from 'axios';
+import profile from "../../images/profile.jpg";
 import { useEffect, useState } from 'react';
 import DropdownComponent from "../../components/DropDown.jsx";
-import profile from "../../images/profile.jpg";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
+import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext.jsx";
 
 
@@ -14,7 +15,8 @@ export default function AnalysisDashboard() {
 
   const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
-  const candidates = ['Candidate1', 'Candidate2', 'Candidate3']; // lista de candidatos de equipo
+  const candidates = ['Candidate1', 'Candidate2', 'Candidate3'
+, 'Candidate4', 'Candidate5', 'Candidate6']; // lista de resultados de la busqueda
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -45,11 +47,10 @@ export default function AnalysisDashboard() {
           overflowY:"scroll"
         }}>
 
-            <div className="container flex flex-col items-center w-10/12 h-full mb-10">                  
-                   
+            <div className="container flex flex-col items-center w-10/12 h-full ">
                     <div className="flex flex-col items-center w-8/12 mt-10"> 
                         <h6  className="text-3xl font-bold text-center text-white mt-5 mb-5  ">
-                             Your team
+                              Search result
                         </h6>
                     </div>
                     <> 
@@ -64,16 +65,19 @@ export default function AnalysisDashboard() {
                                     {header: "Lifestyle", content: "Telecommuting"},
                                 ]}
                             />
-                          <div className="  flex justify-center mt-16 mb-0">
-                            {MainButton("Remove", `/searches/team`, "")}
+                          <div className="  flex  mt-16 mb-0">
+                            {MainButton("Add to team", `/searches/:searchId`, "")}
+                            <Link to="/searches/searchId" className="ml-10" style={{ textDecoration: 'underline' }}  >
+                                    View Analysis
+                            </Link>
                           </div>  
                         </div>
                     </DropdownComponent>
                     ))}
-                   </>
-                    <div className="  flex justify-center mt-16 mb-0">
-                      {MainButton("Add candidate", `/searches/search`, "")}
-                    </div>        
+                   </> 
+                   <div className="  flex justify-center mt-10 mb-10">
+                      {MainButton("Back to Search", `/searches/search`, "")}
+                    </div>    
             </div>
         </section >
     );
