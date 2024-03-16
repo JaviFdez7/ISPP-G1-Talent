@@ -6,7 +6,7 @@ import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
-export default function RegisterRepresentative() {
+export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
   const [form, setForm] = useState({

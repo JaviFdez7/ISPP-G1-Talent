@@ -10,7 +10,7 @@ import { useAuthContext } from "../../context/authContext.jsx";
 
 
 
-export default function AnalysisDashboard() {
+export default function SearchTeam() {
 
   const { isAuthenticated, logout } = useAuthContext();
   const [userData, setUserData] = useState(null);
