@@ -25,11 +25,11 @@ export const getAnalysisById: any = async (id: any,token:string) => {
       throw new Error(`Analysis with the ID: ${id} was not found`);
     }
     const representative=await Representative.findById(verifyJWT(token).sub);
-    const candidate=await Candidate.findOne({githubUsername: analysis.githubUsername});
+    const candidate=await Candidate.findOne({githubUser: analysis.githubUsername});
     if(representative!==null && candidate!==null) {
       await createNotification({representativeId: representative._id
         ,candidateId:candidate._id,
-      message: `${(representative as any).companyName} has seen your profile.`})
+      message: `${(representative as any).companyName} has seen your profile.`});
     }
     return analysis;
   } catch (error) {
@@ -95,11 +95,11 @@ export const createAnalysis: any = async (githubUsername: string,token: string,u
 
     const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true  });
     const representative=await Representative.findById(verifyJWT(token).sub);
-    const candidate=await Candidate.findOne({githubUsername: githubUsername});
+    const candidate=await Candidate.findOne({githubUser: githubUsername});
     if(representative!==null && candidate!==null) {
       await createNotification({representativeId: representative._id
         ,candidateId:candidate._id,
-      message: `${(representative as any).companyName} has seen your profile.`})
+      message: `${(representative as any).companyName} has seen your profile.`});
     }
     return updatedDocument;
   }

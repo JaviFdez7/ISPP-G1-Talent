@@ -10,7 +10,8 @@ const notificationSchema = new Schema({
   candidateId: { type: Schema.Types.ObjectId, ref: 'Candidate', required: true },
 
   // Date of the request
-  dateTime: { type: Date, required: true, default: Date.now },
+  dateTime: { type: Date,
+    default:Date.now()},
 
   // Marks the request as favourite
   message: { type: String, required: true }

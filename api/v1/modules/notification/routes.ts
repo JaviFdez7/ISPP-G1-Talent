@@ -4,17 +4,18 @@ import {
   deleteNotification,
   getAllNotification,
   getNotificationById,
-  getNotificationsOfCandidate
+  getNotificationsOfCandidate,
+  updateNotification
 } from './controllers/NotificationController';
-import { checkReadingMailbox } from './validators/NotificationMiddleware';
+import { checkReadingMailbox,checkReadingOneMail } from './validators/NotificationMiddleware';
 
 const router = express.Router();
 
 // Define routes for the Notification module
-router.get('/notification',getAllNotification);
 router.get('/:userId/notification',checkReadingMailbox,getNotificationsOfCandidate);
-router.delete('/:userId/notification/:id',deleteNotification);
-router.get('/:userId/notification/:id',getNotificationById);
+router.delete('/:userId/notification/:id',checkReadingOneMail,deleteNotification);
+router.patch('/:userId/notification/:id',updateNotification);
+router.get('/:userId/notification/:id',checkReadingOneMail,getNotificationById);
 
 
 export default router;

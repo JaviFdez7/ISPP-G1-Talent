@@ -12,7 +12,7 @@ export const getAllNotification: any = async () => {
 
 export const getNotificationById: any = async (id: any) => {
   try{
-    const notifications=await Notification.findOne({_id:id});
+    const notifications=await Notification.findById(id);
     return notifications;
   }catch(error){
     throw new Error(`Unknown error when getting the notification with ID ${id}`);
@@ -21,7 +21,6 @@ export const getNotificationById: any = async (id: any) => {
 
 export const getNotificationsByCandidateId: any = async (candidateId: any) => {
   try{
-    console.log("HHHH");
     const notifications=await Notification.find({candidateId:candidateId});
     return notifications;
   }catch(error){
@@ -32,6 +31,7 @@ export const getNotificationsByCandidateId: any = async (candidateId: any) => {
 export const createNotification: any = async (data: any) => {
   try{
     const notification=new Notification(data);
+    notification.dateTime=new Date();
     const candidate=await Candidate.findOne({_id:data?.candidateId});
     const representative=await Representative.findOne({_id:data?.representativeId});
     if(!candidate) throw new Error("No Candidate with that candidateId");

@@ -20,7 +20,6 @@ export const getAllNotification: any = async (req: Request, res: Response) => {
 export const getNotificationsOfCandidate: any = async (req: Request, res: Response) => {
   try {
     const candidateId = req.params.userId;
-    console.log("HOLAA");
     const data = await NotificationService.getNotificationsByCandidateId(candidateId);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
