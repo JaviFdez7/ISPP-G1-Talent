@@ -86,12 +86,6 @@ function App() {
               </ProtectedRoute>}
             />
 
-            <Route path="/analysis/history/:representativeId" element={
-              <ProtectedRoute roles={['Representative']} >
-                <PlaceHolder pageName="analysis list" />
-              </ProtectedRoute>}
-            />
-
             {/*Search*/}
 
             <Route path="/searches/team" element={
@@ -116,7 +110,7 @@ function App() {
               }
             />
             <Route
-              path="/searches/history/:representativeId"
+              path="/searches/list"
               element={
                 <ProtectedRoute roles={['Representative']} >
                   <PlaceHolder pageName="search list" />
