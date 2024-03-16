@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom"
-import MainButton from "./mainButton";
+import MainButton from "../mainButton";
 
-const LatestHistory = ({ header, data, type = "analysis", representativeId }) => {
+const LatestHistory = ({ header, data, type = "analysis" }) => {
     const paddedData = data.concat(Array.from({ length: 3 - data.length }, () => ({})));
 
     const formatDateTime = (date) => {
@@ -15,21 +15,20 @@ const LatestHistory = ({ header, data, type = "analysis", representativeId }) =>
             <table style={styles.table}>
                 <thead>
                     <tr style={styles.header}>
-                        <th colSpan="3">{header}</th>
+                        <th colSpan="2">{header}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {paddedData.map((item, index) => (
+                    {paddedData.slice(0,3).map((item, index) => (
                         <tr key={index} >
-                            <td style={styles.row}>{item.name || " - "}</td>
                             <td style={styles.row}>{formatDateTime(item.date)}</td>
-                            <td style={styles.row}>{item.id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
+                            <td style={styles.row}>{item._id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div style={styles.buttonContainer}>
-                {MainButton("See all", `/${type}/history/${representativeId}`, "")}
+                {MainButton("See all", `/${type}/list`, "")}
             </div>
         </div>
     );

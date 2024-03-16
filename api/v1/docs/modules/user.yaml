@@ -1,4 +1,4 @@
-swagger: '3.0.0'
+swagger: "3.0.0"
 info:
   title: IT Talent API - User Module
   version: 1.0.0
@@ -9,22 +9,22 @@ paths:
   /user:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get all users
       description: Retrieves a list of all users.
       responses:
-        '200':
+        "200":
           description: A list of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/definitions/User'
+                  $ref: "#/definitions/User"
   /user/{id}:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get a user by ID
       description: Retrieves a user by its unique identifier.
       parameters:
@@ -34,13 +34,13 @@ paths:
           required: true
           type: string
       responses:
-        '200':
+        "200":
           description: The user with the specified ID
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
     delete:
       tags:
-      - Users Delete
+        - Users
       summary: Delete a user by ID
       description: Deletes a user by its unique identifier.
       parameters:
@@ -50,12 +50,12 @@ paths:
           required: true
           type: string
       responses:
-        '204':
+        "204":
           description: User deleted successfully
   /user/login:
     post:
       tags:
-        - 'Users Create'
+        - Users
       summary: Log in as a user
       description: Enter in the app as a existing user
       parameters:
@@ -68,7 +68,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/LoginData'
+            $ref: "#/definitions/LoginData"
       responses:
         "200":
           description: Candidate created successfully
@@ -80,14 +80,12 @@ paths:
                   description: Its the token of authentication.
               - name: login
                 schema:
-                  $ref: '#/definitions/User'
-
-              
+                  $ref: "#/definitions/User"
 
   /user/candidate:
     post:
-      tags: 
-        - Users Create
+      tags:
+        - Users-By-Type
       summary: Create a candidate
       description: Create a new user as a candidate
       parameters:
@@ -95,18 +93,18 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CandidateData'
+            $ref: "#/definitions/CandidateData"
       responses:
         "200":
           description: Candidate created successfully
           content:
             application/json:
               schema:
-                $ref: '#/definitions/CandidateData'
+                $ref: "#/definitions/CandidateData"
   /user/candidate/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a candidate
       description: Update the profile of candidate
       parameters:
@@ -121,7 +119,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CandidateData'
+            $ref: "#/definitions/CandidateData"
         - name: authorization
           in: header
           schema:
@@ -134,12 +132,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/definitions/CandidateData'
+                $ref: "#/definitions/CandidateData"
 
   /user/representative:
     post:
       tags:
-        - 'Users Update'
+        - Users-By-Type
       summary: Create a representative
       description: Create a new user as a representative
       parameters:
@@ -147,18 +145,18 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/RepresentativeData'
+            $ref: "#/definitions/RepresentativeData"
       responses:
         "200":
           description: Representative created successfully
           content:
             application/json:
               schema:
-                $ref: '#/definitions/RepresentativeData'  
+                $ref: "#/definitions/RepresentativeData"
   /user/representative/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a representative
       description: Update the profile of representative
       parameters:
@@ -173,7 +171,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/RepresentativeData'
+            $ref: "#/definitions/RepresentativeData"
         - name: authorization
           in: header
           schema:
@@ -186,11 +184,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/definitions/RepresentativeData'    
-  /user/{id}/experiences:
+                $ref: "#/definitions/RepresentativeData"
+  /user/{id}/professional-experiences:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get all professional experiences of user
       description: Retrieves a list of professional experiences by the id of user.
       parameters:
@@ -203,12 +201,13 @@ paths:
           description: The unique identifier for the user entry.
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
             required: true
             description: Its the token of authentication.
       responses:
-        '200':
+        "200":
           description: A list of professional experiences of user
           content:
             application/json:
@@ -297,56 +296,6 @@ paths:
         "204":
           description: Professional experience delete successfully
 definitions:
-
-  ProfessionalExperience:
-    type: object
-    required:
-      - startDate
-      - companyName
-      - professionalArea
-      - userId
-    properties:
-      startDate:
-        type: date
-        required: true
-        description: The start date of the experience
-      endDate:
-        type: date
-        description: The end date of the experience
-      companyName:
-        type: string
-        required: true
-        description: The company of the experience
-      professionalArea:
-        type: string
-        required: true
-        enum:
-          - 'Web application'
-          - 'Mobile application'
-          - 'Frontend'
-          - 'DevOps'
-          - 'Backend'
-          - 'Operating systems'
-          - 'Data science'
-          - 'Artificial intelligence'
-          - 'Security'
-          - 'Other'
-        description: The professional area of the experience
-      lifestyle:
-        type: string
-        enum:
-          - 'On-site'
-          - 'Telematic'
-        description: The life style of the user of the user.
-      location:
-        type: string
-        description: The location of the experience
-      userId:
-        type: string
-        format: uuid
-        required: true
-        description: The userId of the experience
-
   RepresentativeData:
     type: object
     required:
@@ -382,14 +331,13 @@ definitions:
       companySubscription:
         type: string
         enum:
-          - 'Basic plan'
-          - 'Pro plan'
-          - 'Custom plan'
+          - "Basic plan"
+          - "Pro plan"
+          - "Custom plan"
         description: The subscription of the company.
       projectSocietyName:
         type: string
         description: The project society name of teh representative.
-
 
   CandidateData:
     type: object
@@ -433,8 +381,8 @@ definitions:
       candidateSubscription:
         type: string
         enum:
-          - 'Basic plan'
-          - 'Pro plan'
+          - "Basic plan"
+          - "Pro plan"
         description: The subscription of the candidate.
       CV:
         type: string
@@ -445,14 +393,13 @@ definitions:
       lifestyle:
         type: string
         enum:
-          - 'On-site'
-          - 'Telematic'
+          - "On-site"
+          - "Telematic"
         description: The life style of the user of the user.
       githubToken:
         type: string
         description: The github token of the user.
-      
-      
+
   LoginData:
     type: object
     required:
@@ -488,5 +435,3 @@ definitions:
         description: The payment methods of the user.
         items:
           type: string
-          
-

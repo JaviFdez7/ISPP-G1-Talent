@@ -49,7 +49,8 @@ export default function Navbar() {
           const response = await axios.get(
             `${import.meta.env.VITE_BACKEND_URL}/user`
           );
-          const user = response.data.find((user) => user._id === currentUserId);
+          const user = response.data.data.find((user) => user._id === currentUserId);
+          console.log("user", user);
           setUserData(user);
         }
       } catch (error) {

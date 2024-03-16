@@ -74,10 +74,10 @@ export default function RegisterRepresentative() {
         
       );
       setIsCheckboxChecked(false);
-      const data = userDataFetch.data;
+      const data = userDataFetch.data.data;
 
       if (response.status === 200) {
-        login(data.access, data.refresh, data.role, data.user._id);
+        login(data.token, data.user.role, data.user._id);
         navigate("/representative/detail");
       } else if (response.status === 400 || response.status === 409) {
         setErrors(response.data);
@@ -187,11 +187,8 @@ export default function RegisterRepresentative() {
             Representative
           </h2>
         </div>
-        {errors.existingUsername && (
-          <p className="text-red-500">{errors.existingUsername}</p>
-        )}
-        {errors.existingEmail && (
-          <p className="text-red-500">{errors.existingEmail}</p>
+        {errors.errors && errors.errors[0] && errors.errors[0].detail && (
+          <p className="text-red-500">{errors.errors[0].detail}</p>
         )}
         <form
           onSubmit={(e) => handleSubmit(e)}
