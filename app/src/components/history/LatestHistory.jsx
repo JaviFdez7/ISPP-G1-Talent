@@ -11,23 +11,23 @@ const LatestHistory = ({ header, data, type = "analysis" }) => {
         return new Intl.DateTimeFormat('es', options).format(new Date(date));
     };
     return (
-        <div className="text-white m-auto mb-3" style={styles.container}>
-            <table style={styles.table}>
+        <div className="text-white m-auto mb-3 history-table-container">
+            <table className="history-table-container">
                 <thead>
-                    <tr style={styles.header}>
+                    <tr className="history-table-header">
                         <th colSpan="2">{header}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="history-table-body">
                     {paddedData.slice(0,3).map((item, index) => (
                         <tr key={index} >
-                            <td style={styles.row}>{formatDateTime(item.date)}</td>
-                            <td style={styles.row}>{item._id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
+                            <td className="p-3">{formatDateTime(item.date)}</td>
+                            <td className="p-3">{item._id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div style={styles.buttonContainer}>
+            <div className="w-full flex flex-row justify-center mt-4">
                 {MainButton("See all", `/${type}/list`, "")}
             </div>
         </div>
@@ -37,28 +37,6 @@ const LatestHistory = ({ header, data, type = "analysis" }) => {
 export default LatestHistory;
 
 const styles = {
-    table: {
-        width: "100%",
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        backdropFilter: "blur(8px)",
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-    },
-    header: {
-        borderColor: "white",
-        borderWidth: "1px",
-        backgroundColor: "rgba(0, 0, 0, 0.9)"
-    },
-    row: {
-        borderColor: "white",
-        borderWidth: "1px",
-        textAlign: "center",
-    },
-    container: {
-        width: "100%",
-        marginLeft: "5%",
-        marginRight: "5%",
-        marginBottom: "2%",
-    },
     buttonContainer: {
         width: '100%',
         display: 'flex',

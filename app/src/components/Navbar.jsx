@@ -17,6 +17,28 @@ export default function Navbar() {
   const [userData, setUserData] = useState(null);
   const { isAuthenticated, logout } = useAuthContext();
 
+  const opts = [
+    {"Information":0, "Settings":1}, //Not logged
+    {"Trends":0, "Subscription":1, "Information":2, "Settings":3}, //Candidate
+    {"Trends":0, "My analysis":1, "Subscription":2, "Information":3, "Settings":4}, //Representative
+  ];
+
+  function getOptsNum(key) {
+    let optsTemplate = 0; //Change for every case
+    if (isAuthenticated && userData && userData.role === "Candidate") {
+      optsTemplate = 1;
+    }
+    if (isAuthenticated && userData && userData.role === "Representative") {
+      optsTemplate = 2;
+    }
+
+    let res = opts[optsTemplate][key];
+    if (res === undefined) {
+      res = -1;
+    }
+    return res;
+  }
+
   let navigate = useNavigate();
 
   useEffect(() => {
@@ -39,14 +61,14 @@ export default function Navbar() {
   }, [isAuthenticated]);
 
   function move_hoverer(n) {
-    let t = 165;
-    t += n * 68;
+    let t = 130;
+    t += n * 64;
     document.getElementById("navbar-hoverer").style.top = t + "px";
   }
 
   function move_current(n) {
-    let t = 165;
-    t += n * 68;
+    let t = 130;
+    t += n * 64;
     document.getElementById("navbar-current").style.top = t + "px";
   }
 
@@ -54,12 +76,12 @@ export default function Navbar() {
     if (!expanded) {
       document.getElementById("sidenav").style.left = "-0px";
       document.getElementById("arrow-img").src = arrowLeft;
-      document.getElementById("sideNavButtonContainer").style.left = "405px";
+      document.getElementById("sideNavButtonContainer").style.left = "325px";
       setExpanded(true);
     } else {
-      document.getElementById("sidenav").style.left = "-400px";
+      document.getElementById("sidenav").style.left = "-325px";
       document.getElementById("arrow-img").src = arrowRight;
-      document.getElementById("sideNavButtonContainer").style.left = "405px";
+      document.getElementById("sideNavButtonContainer").style.left = "325px";
       setExpanded(false);
     }
   }
@@ -82,93 +104,71 @@ export default function Navbar() {
         <br />
         <div className="navbar-hoverer" id="navbar-hoverer"></div>
         <div className="navbar-current" id="navbar-current"></div>
-        {isAuthenticated && (
           <>
-            <Link
-              to="/"
-              onMouseEnter={() => move_hoverer(0)}
-              onMouseDown={() => move_current(0)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Trends</span>
-            </Link>
-            {isAuthenticated &&
-              userData &&
-              userData.role === "Representative" && (
-                <Link
-                  to="/analysis/analyze"
-                  onMouseEnter={() => move_hoverer(1)}
-                  onMouseDown={() => move_current(1)}
-                  className="link-container"
-                >
-                  <span>ICON</span>
-                  <p>&nbsp;&nbsp;&nbsp;</p>
-                  <span>My analysis</span>
-                </Link>
+            {userData && getOptsNum("Trends") !== -1 && (
+              <Link
+                to="/"
+                onMouseEnter={() => move_hoverer(getOptsNum("Trends"))}
+                onMouseDown={() => move_current(getOptsNum("Trends"))}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>Trends</span>
+              </Link>
               )}
-            <Link
-              to={subscription}
-              onMouseEnter={() => move_hoverer(2)}
-              onMouseDown={() => move_current(2)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Subscription</span>
-            </Link>
+            {userData && getOptsNum("My analysis") !== -1 && (
+              <Link
+                to="/analysis/analyze"
+                onMouseEnter={() => move_hoverer(getOptsNum("My analysis"))}
+                onMouseDown={() => move_current(getOptsNum("My analysis"))}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>My analysis</span>
+              </Link>
+            )}
+            {userData &&getOptsNum("Subscription") !== -1 && (
+              <Link
+                to={subscription}
+                onMouseEnter={() => move_hoverer(getOptsNum("Subscription"))}
+                onMouseDown={() => move_current(getOptsNum("Subscription"))}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>Subscription</span>
+              </Link>
+            )}
           </>
-        )}
-
-        {isAuthenticated ? (
           <>
-            <Link
-              to="/support"
-              onMouseEnter={() => move_hoverer(3)}
-              onMouseDown={() => move_current(3)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Information</span>
-            </Link>
-            <Link
-              to="/settings"
-              onMouseEnter={() => move_hoverer(4)}
-              onMouseDown={() => move_current(4)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Settings</span>
-            </Link>
+            {getOptsNum("Information") !== -1 && (
+              <Link
+                to="/support"
+                onMouseEnter={() => move_hoverer(getOptsNum("Information"))}
+                onMouseDown={() => move_current(getOptsNum("Information"))}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>Information</span>
+              </Link>
+            )}
+            {getOptsNum("Settings") !== -1 && (
+              <Link
+                to="/settings"
+                onMouseEnter={() => move_hoverer(getOptsNum("Settings"))}
+                onMouseDown={() => move_current(getOptsNum("Settings"))}
+                className="link-container"
+              >
+                <span>ICON</span>
+                <p>&nbsp;&nbsp;&nbsp;</p>
+                <span>Settings</span>
+              </Link>
+            )}
           </>
-        ) : (
-          <>
-            <Link
-              to="/support"
-              onMouseEnter={() => move_hoverer(0)}
-              onMouseDown={() => move_current(0)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Information</span>
-            </Link>
-            <Link
-              to="/settings"
-              onMouseEnter={() => move_hoverer(1)}
-              onMouseDown={() => move_current(1)}
-              className="link-container"
-            >
-              <span>ICON</span>
-              <p>&nbsp;&nbsp;&nbsp;</p>
-              <span>Settings</span>
-            </Link>
-          </>
-        )}
-        {isAuthenticated ? (
+        {isAuthenticated && (
           userData && userData.role == "Representative" ? (
             // Mostrar contenido para representante
             <div>
@@ -217,7 +217,7 @@ export default function Navbar() {
               </button>
             </div>
           )
-        ) : null}
+        )}
       </div>
       <div className="sideNavButtonContainer" id="sideNavButtonContainer">
         <img
