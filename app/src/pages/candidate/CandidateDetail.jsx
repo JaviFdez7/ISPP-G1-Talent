@@ -56,11 +56,11 @@ export default function CandidateDetail() {
             </h2>
           </div>
             <div className="flex flex-col w-full profile-info-text">
-              {Input("Username", candidate ? candidate.username : " - ", true)} {/* user.username */}
+              {Input("Username", candidate ? candidate.username : " - ", false)} {/* user.username */}
               <br></br>
-              {Input("Email", candidate ? candidate.email : " - ", true)}
+              {Input("Email", candidate ? candidate.email : " - ", false)}
               <br></br>
-              {Input("Phone", candidate ? candidate.phone : " - ", true)} {/* user.phone */}
+              {Input("Phone", candidate ? candidate.phone : " - ", false)} {/* user.phone */}
               <div className="text-white mt-8">
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
@@ -129,7 +129,7 @@ export default function CandidateDetail() {
             "Ayesa - Main team manager on web app development",
             "...",
           ]}
-          editable={true}
+          editable={false}
           addLink=""
           editLink=""
         />

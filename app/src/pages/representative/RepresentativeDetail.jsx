@@ -74,40 +74,36 @@ export default function RepresentativeDetail() {
         backgroundSize: "cover",
       }}
     >
-      <div className="flex flex-row justify-center">
-        <div
-          className="flex flex-col items-center mt-10"
-          style={{ width: "41.6667%", padding: "4rem" }}
-        >
+      <div className="flex flex-row justify-center items-center profile-header w-10/12 mt-20">
+        <div className="flex flex-col items-center">
           <img
-            src={profile}
-            className="rounded-full border border-gray-300 mb-4"
-            style={{ width: "25vw", height: "50vh" }}
+            src={profile} //[candidate.profilePicture}
+            className="rounded-full border border-gray-300 profile-img"
           />
         </div>
-        <div
-          className="flex flex-col"
-          style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
-        >
-          <div className="flex flex-col mt-10 w-10/12">
-            {Input("Username", userData ? userData.username : " - ")}
-            {Input("Company name", userData ? userData.companyName : " - ")}
-            {Input("Phone number", userData ? userData.phone : " - ")}
-            {Input("Corporative Email", userData ? userData.email : " - ")}
-            {Input(
-              "Project Society Name",
-              userData ? userData.projectSocietyName : " - "
-            )}
+        <div className="flex flex-col mt-10 w-fit">
+          <div className="profile-name-text text-center">
+            <h2>
+              {userData && userData.username ? userData.username : " - "}
+            </h2>
           </div>
-          <div
-            className="flex flex-col"
-            style={{ width: "50%", padding: "5rem", marginRight: "8rem" }}
-          >
-            {MainButton("Update", "", "")}
-            {SecondaryButton("Logout", "/login", () =>
-              Logout(logout, navigate, "Representative")
-            )}
-          </div>
+            <div className="flex flex-col w-full profile-info-text">
+              {Input("Company name", userData ? userData.companyName : " - ")}
+              <br></br>
+              {Input("Phone number", userData ? userData.phone : " - ")}
+              <br></br>
+              {Input("Corporative Email", userData ? userData.email : " - ")}
+              <br></br>
+              {Input(
+                "Project Society Name",
+                userData ? userData.projectSocietyName : " - "
+              )}
+
+            </div>
+            <div className="mt-8 self-center">
+              {SecondaryButton("Update", "", "")}
+            </div>
+
         </div>
       </div>
       <br></br>

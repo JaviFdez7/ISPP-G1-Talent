@@ -43,18 +43,19 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                                 <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
                                     {item}
                                 </div>
-                                <hr className="w-full "></hr>
+                                <hr className="w-full"></hr>
                             </td>
-                            <td className="datatable-cell" style={{height: cellHeight}}>
-                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
-                                    {editable && (
-                                    <Link to={editLink + "/" + index} className="edit-button">
-                                        Edit
-                                    </Link>
-                                     )}
-                                </div>
-                                <hr className="w-full "></hr>
-                            </td>
+                            {editable && (
+                                <td className="datatable-cell" style={{height: cellHeight}}>
+                                    <br></br>
+                                    <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
+                                        <Link to={editLink + "/" + index} className="edit-button">
+                                            Edit
+                                        </Link>
+                                    </div>
+                                    <hr style={{width: '110%', transform: 'translateX(-5%)'}}></hr>
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>
