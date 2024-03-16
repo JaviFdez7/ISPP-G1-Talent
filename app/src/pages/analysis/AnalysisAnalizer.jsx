@@ -59,7 +59,6 @@ export default function Analyzer() {
   async function updateAnalysisHistory(currentAnalysisId) {
     const currentUserId = localStorage.getItem("userId");
     const history = await getHistory(currentAnalysisId);
-    console.log("*****history*******",history);
     const historyId = history._id;
     const uri = `/user/${currentUserId}/history/${historyId}`;
     try {
@@ -109,6 +108,7 @@ export default function Analyzer() {
     try {
       try {
         const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`);
+        console.log("status******", userResponse.ok);
         if (userResponse.ok) {
           const userData = await userResponse.json();
           updateAnalysisHistory(userData.data._id);
