@@ -145,10 +145,21 @@ export const createTeamCreator: any = async (data: ProfileRequested[]) => {
 };
 
 
+
 export const deleteTeamCreator: any = async (id: any) => {
 
   try {
     const result = await TeamCreator.findByIdAndDelete(id);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getTeamCreatorById: any = async (id: any) => {
+
+  try {
+    const result = await TeamCreator.findById(id);
+    return result;
   } catch (err) {
     console.error(err);
   }
@@ -258,5 +269,6 @@ mongoose.connect('mongodb://localhost:27017/talentdb')
 export default {
 
   createTeamCreator,
-  deleteTeamCreator
+  deleteTeamCreator,
+  getTeamCreatorById
 };
