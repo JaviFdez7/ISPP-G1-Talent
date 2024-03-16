@@ -53,7 +53,6 @@ export default function AnalysisDashboard() {
         fetchDataFromEndpoint("/analysis/github/" + analysisId)
             .then(data => {
                 const newArray = data;
-                console.log("data*****", data)
                 const currentAnalysisId = data._id;
                 setDataArray(newArray);
                 fetchHistory(currentAnalysisId);
@@ -65,8 +64,6 @@ export default function AnalysisDashboard() {
 
     const languages = dataArray.globalTopLanguages ? dataArray.globalTopLanguages.map(item => item.language) : [];
     const tecnologies = dataArray.globalTechnologies ? dataArray.globalTechnologies.map(item => item) : [];
-    console.log("languages****", languages);
-    console.log("tecnologies****", tecnologies);
 
     function getHistory(currentAnalysisId) {
         const currentUserId = localStorage.getItem("userId");

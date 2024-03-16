@@ -8,11 +8,12 @@ import Select from "../../components/Select.jsx";
 import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.jsx";
 
 
-export default function AnalysisDashboard() {
+export default function AnalysisList() {
     const borderColor = 'var(--talent-highlight)'
     const [dataArray, setDataArray] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [filter, setFilter] = useState("All");
+    const [triggerUpdate, setTriggerUpdate] = useState(false);
 
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
@@ -47,8 +48,11 @@ export default function AnalysisDashboard() {
                 console.log("Error fetching history data:", error);
 
             });
-    }, [filter]);
+    }, [filter, triggerUpdate]);
 
+    const updateList = () => {
+        setTriggerUpdate(!triggerUpdate);
+    }
     const changeFilter = (newFilter) => {
         setFilter(newFilter);
     }
@@ -103,7 +107,7 @@ export default function AnalysisDashboard() {
                             {dataArray.map((item, index) => {
                                 const formattedDate = formatDate(item.date);
                                 return (
-                                    <AnalysisHistoryItem key={index} item={item} formattedDate={formattedDate} />
+                                    <AnalysisHistoryItem key={index} item={item} formattedDate={formattedDate} triggerUpdate={updateList}/>
                                 );
                             })}
                         </div>

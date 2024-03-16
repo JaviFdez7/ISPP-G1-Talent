@@ -51,10 +51,46 @@ export default function Analyzer() {
       return response.data.data;
     } catch (error) {
       setErrorMessage('Unable to connect to the server. Please try again later.');
-      console.error("Error while creating history of current analysis: ", error);
+      console.error("Error while saving  history of current analysis: ", error);
       throw error;
     }
   }
+
+  async function updateAnalysisHistory(currentAnalysisId) {
+    const currentUserId = localStorage.getItem("userId");
+    const history = await getHistory(currentAnalysisId);
+    const historyId = history._id;
+    const uri = `/user/${currentUserId}/history/${historyId}`;
+    try {
+      const currentDate = new Date().toISOString();
+      const isFavorite = history.favorite;
+      const response = await axios.patch(ruta + uri, {
+        date: currentDate,
+        favorite: isFavorite,
+        userId: currentUserId,
+        analysisId: currentAnalysisId
+      });
+      return response.data.data;
+    } catch (error) {
+      setErrorMessage('Unable to connect to the server. Please try again later.');
+      console.error("Error while saving  history of current analysis: ", error);
+      throw error;
+    }
+  }
+
+  async function getHistory(currentAnalysisId) {
+    const currentUserId = localStorage.getItem("userId");
+    const uri = `/user/${currentUserId}/history`;
+    try {
+      const response = await axios.get(ruta + uri);
+      const data = response.data.data
+      const filteredHistory = data.filter(item => item.analysisId === currentAnalysisId);
+      return filteredHistory[0];
+    } catch (error) {
+      console.error("Error al llamar al endpoint:", error);
+      throw error;
+    }
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -72,9 +108,10 @@ export default function Analyzer() {
     try {
       try {
         const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`);
+        console.log("status******", userResponse.ok);
         if (userResponse.ok) {
           const userData = await userResponse.json();
-          saveAnalysisHistory(userData.data._id);
+          updateAnalysisHistory(userData.data._id);
           setLoadingMessage('');
           navigate('/analysis/' + form.githubUser);
           return;
