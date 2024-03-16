@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background2.jpg";
-import LatestHistory from "../../components/LatestHistory";
+import LatestHistory from "../../components/history/LatestHistory";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
 import axios from "axios";
@@ -120,12 +120,14 @@ export default function RepresentativeDetail() {
       <br></br>
       <br></br>
       <br></br>
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-col justify-center w-8/12 self-center">
         <LatestHistory
           header="Latest Analysis"
           data={analysisHistoryData}
           type="analysis"
-        />
+          />
+      <br></br>
+      <br></br>
         <LatestHistory
           header="Latest Search"
           data={searchHistoryData}
