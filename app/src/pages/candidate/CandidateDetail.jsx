@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import profile from "../../images/profile.jpg";
 import mainBackground from "../../images/main-background2.jpg";
@@ -8,14 +8,13 @@ import { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "../../components/DataTable.jsx";
 import axios from "axios"
 import { useAuthContext } from "../../context/authContext";
-import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
-import Logout from '../../components/swat/logout';
 
 export default function CandidateDetail() {
   const { isAuthenticated, logout } = useAuthContext();
   const textColor2 = "#D4983D";
-  const [candidate, setCandidate] = useState([]);
+  const [candidate, setCandidate] = useState({});
+  const [experience, setExperience] = useState({});
   let navigate = useNavigate();
 
   React.useEffect(() => {
@@ -31,7 +30,21 @@ export default function CandidateDetail() {
         console.error("Error fetching user data:", error);
       }
     };
+    const fetchExperienceData = async () => {
+      try {
+        if (isAuthenticated) {
+          const currentexperienceId = localStorage.getItem("experienceId");
+          if (currentexperienceId) {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${currentexperienceId}`);
+            setExperience(response.data.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
     fetchUserData();
+    fetchExperienceData();
   }, [isAuthenticated]);
 
   return (
@@ -55,23 +68,23 @@ export default function CandidateDetail() {
               {candidate && candidate.fullName ? candidate.fullName : " - "}
             </h2>
           </div>
-            <div className="flex flex-col w-full profile-info-text">
-              {Input("Username", candidate ? candidate.username : " - ", false)} {/* user.username */}
-              <br></br>
-              {Input("Email", candidate ? candidate.email : " - ", false)}
-              <br></br>
-              {Input("Phone", candidate ? candidate.phone : " - ", false)} {/* user.phone */}
-              <div className="text-white mt-8">
-                <FontAwesomeIcon
-                  icon={faMapMarkerAlt}
-                  style={{ color: textColor2 }}
-                  />
-                {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
+          <div className="flex flex-col w-full profile-info-text">
+            {Input("Username", candidate.username || "", false)}
+            <br></br>
+            {Input("Email", candidate.email || "", false)}
+            <br></br>
+            {Input("Phone", candidate.phone || "", false)}
+            <div className="text-white mt-8">
+              <FontAwesomeIcon
+                icon={faMapMarkerAlt}
+                style={{ color: textColor2 }}
+              />
+              {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
             </div>
-            </div>
-            <div className="mt-8 self-center">
-              {SecondaryButton("Update", "", "")}
-            </div>
+          </div>
+          <div className="mt-8 self-center">
+            {SecondaryButton("Update", "", "")}
+          </div>
 
         </div>
       </div>
@@ -122,17 +135,26 @@ export default function CandidateDetail() {
         className="w-9/12 self-center"
         style={{ marginBottom: "3rem", marginTop: "3rem" }}
       >
-        <DataTable
-          header={""}
-          contentArray={[
-            "Fujitsu - Scraping development project",
-            "Ayesa - Main team manager on web app development",
-            "...",
-          ]}
-          editable={false}
-          addLink=""
-          editLink=""
-        />
+        <div className="flex justify-between items-center">
+          <DataTable
+            header={""}
+            contentArray={[
+              `Company Name: ${experience.companyName} || Professional Area: ${experience.professionalArea}`
+            ]}
+            editable={false}
+            addLink=""
+            editLink=""
+          />          <button
+            className="mt-8 self-center text-white font-bold py-2 px-4 rounded-full"
+            style={{ color: "#d4983d" }}
+            onClick={() => navigate("/candidate/professional-experience/detail")}
+          >
+            Detail
+          </button>
+        </div>
+      </div>
+      <div className="mt-8 self-center">
+        {SecondaryButton("Add Experience", "/candidate/professional-experience/create", "")}
       </div>
       <br></br>
       <br></br>

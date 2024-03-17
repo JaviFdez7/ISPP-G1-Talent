@@ -88,7 +88,6 @@ export default function RegisterCandidate() {
 
     } catch (error) {
       if (error.response.status === 409)  { // set the status code properly
-        console.log(error);
         setErrors(error.response.data);
         return;
       }
@@ -183,7 +182,6 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
-       {console.log(errors)}
         {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
   <p className="text-red-500">{errors.errors[0].detail}</p>
 )}
