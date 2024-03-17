@@ -8,9 +8,9 @@ export const checkGetProfessionalExperienceById: any = async (req: Request, res:
     const id = req.params.id.toString();
     const experience = await ProfessionalExperience.findById(id);
     if (!experience) {
-      const message = { message: 'Professional experience not found' };
+      const message = 'Professional experience not found';
       res.status(404).send(message);
-      return message;    
+      return message;
     }
     next();
   } catch (error) {

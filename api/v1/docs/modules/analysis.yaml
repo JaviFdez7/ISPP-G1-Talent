@@ -9,7 +9,7 @@ paths:
   /analysis:
     get:
       tags:
-      - Analysis Read
+      - Analysis
       summary: Get all analysis
       description: Retrieves a list of all analysis entries.
       responses:
@@ -23,7 +23,7 @@ paths:
                   $ref: "#/definitions/Analysis"
     post:
       tags:
-      - Analysis Create
+      - Analysis
       summary: Create or update an analysis entry
       description: Creates or update an analysis entry with the provided data.
       parameters:
@@ -32,6 +32,12 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/CreationAnalysisUser"
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
       responses:
         "201":
           description: Analysis entry created successfully
@@ -42,7 +48,7 @@ paths:
   /analysis/{id}:
     get:
       tags:
-      - Analysis Read
+      - Analysis
       summary: Get an analysis entry by ID
       description: Retrieves an analysis entry by its unique identifier.
       parameters:
@@ -53,6 +59,12 @@ paths:
             type: string
             format: uuid
           description: The unique identifier for the analysis entry.
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication(use to verify notifications).
       responses:
         "200":
           description: The analysis entry with the specified ID
@@ -63,7 +75,7 @@ paths:
   /analysis/github/{username}:
     get:
       tags:
-      - Analysis Read
+      - Analysis
       summary: Get an analysis entry by ID
       description: Retrieves an analysis entry by its unique identifier.
       parameters:
@@ -84,7 +96,7 @@ paths:
     delete:
       patch:
       tags:
-      - Analysis Delete
+      - Analysis
       summary: Delete an analysis entry by the username
       description: Delete an existing analysis entry with the provided data.
       parameters:
