@@ -12,7 +12,6 @@
 		"extraFileExtensions": [".json", ".css", ".html", ".js"]
 	},
 	"plugins": ["react", "only-warn"],
-
 	"settings": {
 		"react": {
 			"version": "detect"
