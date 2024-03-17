@@ -58,11 +58,11 @@ export default function SearchTeam() {
                         <div className="flex flex-col items-center w-full ">
                             <DataTableVertical
                                 data={[
-                                    {header: "Specialty", content: "Frontend"},
-                                    {header: "Technologies", content: "React"},
-                                    {header: "Languages", content: "javascript, css, TypeScript"},
-                                    {header: "Lifestyle", content: "Telecommuting"},
-                                ]}
+                                  {header: "Technologies", content: "React"},
+                                  {header: "Languages", content: "javascript, css, TypeScript"},
+                                  {header: "Field", content: "Frontend"},
+                                  {header: "Years of Experience", content: "3"},
+                              ]}
                             />
                           <div className="  flex justify-center mt-16 mb-0">
                             {MainButton("Remove", `/searches/team`, "")}

@@ -6,18 +6,104 @@ import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
+
+
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
   const [form, setForm] = useState({
     specialty: "",
     languages:"",
-    technologies:"",
-    experience:"",
-    lifestyle:"",
+    technologies: [],
+    field:"",
+    yearsOfExperience:"",
   });
+  const relevantTechnologies = [
+    // Front-end Frameworks/Libraries
+    "react", "vue", "angular", "svelte",
+    "next.js", "nuxt.js", "gatsby", "react-native",
+    "flutter",
+  
+    // State Management
+    "redux", "vuex", "mobx", "context-api",
+    "rxjs", "akita", "ngxs",
+  
+    // UI Frameworks
+    "material-ui", "vuetify", "bootstrap", "tailwindcss",
+    "ant-design", "chakra-ui", "semantic-ui",
+  
+    // Back-end Frameworks
+    "express", "nestjs", "koa", "fastify",
+    "hapi", "spring-boot", "django", "flask",
+    "ruby-on-rails", "laravel", "asp.net", "go-gin",
+    "echo", "fiber",
+  
+    // Testing Frameworks/Libraries
+    "jest", "mocha", "chai", "jasmine",
+    "cypress", "selenium", "puppeteer", "testing-library",
+    "karma", "enzyme",
+  
+    // Databases
+    "mongodb", "mongoose", "mysql", "postgresql",
+    "sqlite", "redis", "firebase", "oracle",
+    "microsoft-sql-server", "dynamodb", "couchbase",
+    "cassandra", "elasticsearch",
+  
+    // CI/CD Tools
+    "jenkins", "travis-ci", "circleci", "github-actions",
+    "gitlab-ci", "bitbucket-pipelines", "azure-pipelines",
+  
+    // DevOps & Virtualization
+    "docker", "kubernetes", "vagrant", "ansible",
+    "terraform", "puppet", "chef",
+  
+    // Cloud Providers/Services
+    "aws", "google-cloud", "azure", "digitalocean",
+    "heroku", "netlify", "vercel",
+  
+    // JavaScript Preprocessors
+    "typescript", "babel", "coffeescript",
+  
+    // CSS Preprocessors
+    "sass", "less", "stylus",
+  
+    // Build Tools & Bundlers
+    "webpack", "rollup", "parcel", "gulp",
+    "grunt", "broccoli",
+  
+    // Package Managers
+    "npm", "yarn", "pnpm", "bower",
+  
+    // GraphQL Tools
+    "apollo", "graphql", "relay",
+  
+    // WebAssembly
+    "wasm",
+  
+    // Serverless Frameworks
+    "serverless", "cloud-functions", "aws-lambda",
+    "azure-functions",
+  
+    // Static Site Generators
+    "jekyll", "hugo", "eleventy",
+  
+    // Message Brokers
+    "kafka", "rabbitmq", "activemq", "zeromq",
+  
+    // Monitoring & Logging
+    "prometheus", "grafana", "logstash", "kibana",
+    "elk-stack", "datadog", "new-relic",
+  
+    // Other Libraries & Frameworks
+    "lodash", "underscore", "moment", "date-fns",
+    "rxjs", "axios", "fetch-api", "socket.io",
+  ];
 
-  const EXPERIENCE_OPTIONS = [
+  const LANGUAGE_OPTIONS =[
+  'Python',
+  'Java',
+  'C++'];
+  const FIELD_OPTIONS = [
     'Web application',
     'Mobile application',
     'Frontend',
@@ -35,18 +121,21 @@ export default function SearchForm() {
     specialty,
     languages,
     technologies,
-    experience,
-    lifestyle,
+    field,
+    yearsOfExperience,
     
   } = form;
   let navigate = useNavigate();
 
   function onInputChange(e) {
+    const value = e.target.multiple
+      ? Array.from(e.target.selectedOptions, option => option.value)
+      : e.target.value;
+  
     setForm({
       ...form,
-      [e.target.name]: e.target.value
+      [e.target.name]: value
     });
-   
   }
   
 
@@ -69,6 +158,8 @@ export default function SearchForm() {
   function validateForm() {
    
   }
+
+
 
   return (
     <div
@@ -109,59 +200,55 @@ export default function SearchForm() {
           className="flex flex-col items-center flex-wrap -mx-3"
         >
           <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <FormTextInput
-              labelFor="Specialty"
-              labelText="Specialty"
-              placeholder="Enter Specialty"
-              name="specialty"
-              value={specialty}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              
-            />
-            <FormTextInput
-              labelFor="Languages"
-              labelText="Languages"
-              placeholder="Enter Languages"
-              name="languages"
-              value={languages}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              
-            />
-            <FormTextInput
-              labelFor="Technologies"
-              labelText="Technologies"
-              placeholder="Enter Technologies"
+          <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Languages</h3>
+          <select
+            id="languages"
+            name="languages"
+            value={languages}
+            onChange={(e) => onInputChange(e)}
+            multiple
+          >
+            <option value="">Select languages</option>
+            {LANGUAGE_OPTIONS.map((option, index) => (
+              <option key={index} value={option}>{option}</option>
+            ))}
+          </select>
+            <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technologies</h3>
+            <select
+              id="technologies"
               name="technologies"
               value={technologies}
               onChange={(e) => onInputChange(e)}
-              errors={errors}
-              
-            />
-            <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Experience</h3>
-            <select
-              id="experience"
-              name="experience"
-              value={experience}
-              onChange={(e) => onInputChange(e)}
+              multiple
             >
-              <option value="">Select experience</option>
-              {EXPERIENCE_OPTIONS.map((option, index) => (
+              <option value="">Select field</option>
+              {FIELD_OPTIONS.map((option, index) => (
                 <option key={index} value={option}>{option}</option>
               ))}
             </select>
-            <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Lifestyle</h3>
+            
+            <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Field</h3>
             <select
-                id="lifestyle"
-                name="lifestyle"
-                value={lifestyle}
-                onChange={(e) => onInputChange(e)}
+              id="field"
+              name="field"
+              value={field}
+              onChange={(e) => onInputChange(e)}
             >
-                <option value="">Select lifestyle</option>
-                <option value="on-site">On-site</option>
-                <option value="telematic">Telematic</option>
+              <option value="">Select field</option>
+              {FIELD_OPTIONS.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
+              ))}
             </select>
+            <FormTextInput
+              labelFor="yearsOfExperience"
+              labelText="Years of Experience"
+              placeholder="Enter years of Experience"
+              name="yearsOfExperience"
+              value={yearsOfExperience}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+              
+            />
             <div className="flex justify-between mt-4">
               {MainButton("Search", "/searches/:searchId")}
               {MainButton("Cancel", "/searches/team")}

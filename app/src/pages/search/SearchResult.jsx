@@ -59,10 +59,10 @@ export default function SearchResult() {
                         <div className="flex flex-col items-center w-full ">
                             <DataTableVertical
                                 data={[
-                                    {header: "Specialty", content: "Frontend"},
                                     {header: "Technologies", content: "React"},
                                     {header: "Languages", content: "javascript, css, TypeScript"},
-                                    {header: "Lifestyle", content: "Telecommuting"},
+                                    {header: "Field", content: "Frontend"},
+                                    {header: "Years of Experience", content: "3"},
                                 ]}
                             />
                           <div className="  flex  mt-16 mb-0">
