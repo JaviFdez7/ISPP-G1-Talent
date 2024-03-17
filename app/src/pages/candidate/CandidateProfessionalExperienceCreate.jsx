@@ -73,7 +73,6 @@ export default function CandidateProfessionalExperienceCreate() {
           }
         }
       );
-      localStorage.setItem("experienceId", response.data.data._id);
       if (response.status === 400 || response.status === 401) {
         const data = response.data;
         setErrors(data);

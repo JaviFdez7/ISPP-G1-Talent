@@ -14,7 +14,7 @@ export default function CandidateDetail() {
   const { isAuthenticated, logout } = useAuthContext();
   const textColor2 = "#D4983D";
   const [candidate, setCandidate] = useState({});
-  const [experience, setExperience] = useState({});
+  const [experience, setExperience] = useState([]);
   let navigate = useNavigate();
 
   React.useEffect(() => {
@@ -44,9 +44,6 @@ export default function CandidateDetail() {
                   ...experience,
                   userId: currentUserId,
                 },
-              },
-
-              {
                 headers: {
                   'Content-type': 'application/json',
                   'Authorization': `${token}`,
@@ -64,7 +61,9 @@ export default function CandidateDetail() {
     fetchUserData();
     fetchExperienceData();
   }, [isAuthenticated]);
-  console.log("experience", experience);
+  experience.map((exp) => {
+    console.log("exp", exp);
+  });
   return (
     <div
       className="flex flex-col bg-fixed"
@@ -157,13 +156,12 @@ export default function CandidateDetail() {
         <div className="flex justify-between items-center">
           <DataTable
             header={""}
-            contentArray={[
-              `Company Name: ${experience.companyName} || Professional Area: ${experience.professionalArea}`
-            ]}
+            contentArray={experience ? experience.map((exp) => `Company Name: ${exp.companyName} || Professional Area: ${exp.professionalArea}`) : []}
             editable={false}
             addLink=""
             editLink=""
-          />          <button
+          />
+          <button
             className="mt-8 self-center text-white font-bold py-2 px-4 rounded-full"
             style={{ color: "#d4983d" }}
             onClick={() => navigate("/candidate/professional-experience/detail")}
