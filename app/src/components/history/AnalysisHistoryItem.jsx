@@ -6,23 +6,33 @@ import DeleteHistoryButton from "../../components/history/DeleteHistoryButton.js
 
 
 
-const AnalysisHistoryItem = ({ item, formattedDate }) => {
+const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
     const [githubUsername, setGithubUsername] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
     const apiURL = import.meta.env.VITE_BACKEND_URL;
 
     async function getGithubUsername(analysisId) {
         const uri = `/analysis/${analysisId}`;
+        const token = localStorage.getItem("access_token");
         try {
-            const response = await axios.get(apiURL + uri);
+            const response = await axios.get(apiURL + uri,
+                {
+                    headers: {
+                      'Authorization': `${token}`,
+                    },
+                  }
+            );
             return response.data.data.githubUsername;
         } catch (error) {
             console.error("Error al llamar al endpoint:", error);
+            setErrorMessage("There was an error retrieving the Github username for this entry.");
             throw error;
         }
     }
     useEffect(() => {
         getGithubUsername(item.analysisId).then(username => {
             setGithubUsername(username);
+            setErrorMessage(null);
         });
 
     }, [item.analysisId]);
@@ -43,10 +53,15 @@ const AnalysisHistoryItem = ({ item, formattedDate }) => {
                         <FavoriteButton history={item} />
                     </div>
                     <div className="flex mx-2">
-                        <DeleteHistoryButton history={item} />
+                        <DeleteHistoryButton history={item} triggerUpdate={triggerUpdate} setErrorMessage={setErrorMessage} />
                     </div>
                 </div>
             </div>
+            {errorMessage && (
+                <div className="text-center text-red-600">
+                    {errorMessage}
+                </div>
+            )}
         </div>
 
 
