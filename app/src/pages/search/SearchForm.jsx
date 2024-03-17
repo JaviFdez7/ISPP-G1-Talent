@@ -1,13 +1,11 @@
 import React, { useState, useEffect  } from "react";
 import {useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
-
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
-  
   const [numForms, setNumForms] = useState(1);
   const [form, setForm] = useState(Array(numForms).fill({
     languages: [],
@@ -17,12 +15,7 @@ export default function SearchForm() {
     techCategory: "",
   }));
 
-  const [candidates, setCandidates] = useState([{
-    languages:"",
-    technologies: [],
-    field:"",
-    yearsOfExperience:"",
-  }]);
+
   const [selectedTechCategory, setSelectedTechCategory] = useState("");
   const relevantTechnologies = {
     "Front-end Frameworks/Libraries": ["react", "vue", "angular", "svelte", "next.js", "nuxt.js", "gatsby", "react-native", "flutter"],
@@ -73,7 +66,6 @@ export default function SearchForm() {
         yearsOfExperience,
       } = form[index];
     
-      // rest of the code
     }
   })}
   let navigate = useNavigate();
@@ -93,10 +85,7 @@ export default function SearchForm() {
     });
   }
   
-
   async function handleSubmit(e) {
-   
-
     try { 
       navigate(`/searches/:searchId`);
       
@@ -106,9 +95,7 @@ export default function SearchForm() {
       }
     }
   }
-  function getRequiredFieldMessage(fieldName) {
-    return `The ${fieldName} field is required`;
-  }
+
   function onTechCategoryChange(e, index) {
     const value = e.target.value;
   
@@ -122,9 +109,7 @@ export default function SearchForm() {
     });
   }
   
-
   useEffect(() => {
-    // Creamos nuevos formularios y candidatos basados en numForms
     const newForms = Array.from({length: numForms}, (_, i) => form[i] || {
       languages: [],
       technologies: [],
@@ -132,16 +117,7 @@ export default function SearchForm() {
       field: "",
     });
 
-    const newCandidates = Array.from({length: numForms}, (_, i) => candidates[i] || {
-      languages:"",
-      technologies: [],
-      field:"",
-      yearsOfExperience:"",
-    });
-
-    // Actualizamos el estado con los nuevos formularios y candidatos
     setForm(newForms);
-    setCandidates(newCandidates);
   }, [numForms]);
 
 
