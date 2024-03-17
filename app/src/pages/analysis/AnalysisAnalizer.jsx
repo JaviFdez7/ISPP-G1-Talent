@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import MainButton from "../../components/mainButton.jsx";
 import SecondaryButton from "../../components/secondaryButton.jsx";
+import Input from "../../components/Input.jsx";
 import '../../styles/palette.css';
 import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 import { useNavigate } from 'react-router-dom';
@@ -98,7 +99,7 @@ export default function Analyzer() {
     if (!form.githubUser) {
       setErrors({
         githubUser: form.githubUser ? '' :
-          <span style={{ color: 'orange', fontSize: '15px' }}>{"--->"}Github User is required</span>,
+          <span style={{ color: "var(--talent-highlight)", fontSize: '15px' }}>{"--->"}Github User is required</span>,
       });
       return;
     }
@@ -137,7 +138,7 @@ export default function Analyzer() {
       setLoading(false);
       if (response.status == 500) {
         setErrors({
-          githubUser: <span style={{ color: 'orange', fontSize: '15px' }}>{"--->"}This user does not exist in Github</span>,
+          githubUser: <span style={{ color: "var(--talent-highlight)", fontSize: '15px' }}>{"--->"}This user does not exist in Github</span>,
         });
       }
       if (!response.ok) {
@@ -153,16 +154,20 @@ export default function Analyzer() {
     }
   }
 
+  let mobile = false;
+  if (window.screen.width < 500) {
+    mobile = true;
+  }
 
 
   return (
 
-    <div className="h-screen flex flex-col justify-center bg-fixed home-container"
+    <div className="h-screen flex flex-col justify-center bg-fixed"
       style={{
         backgroundImage: `url(${mainBackgroundRegisterLogin})`,
         backgroundSize: "cover",
       }}>
-      <div className="w-full max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between"
+      <div className="w-10/12 h-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "100",
@@ -171,7 +176,7 @@ export default function Analyzer() {
           borderWidth: "1px",
         }}>
         <div>
-          <h2 className="text-3xl font-bold text-center mb-4 text-white">
+          <h2 className="text-2xl font-bold text-center mb-4 text-white">
             Enter the required data from the candidate you want to analyze and wait to get your results!
           </h2>
           {loadingMessage && (
@@ -180,22 +185,8 @@ export default function Analyzer() {
             </div>
           )}
           <form onSubmit={handleSubmit}>
-            <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
-              <label
-                htmlFor="GithubUser"
-                style={{ color: textColor, fontSize: '1.5rem', marginRight: '1rem', whiteSpace: 'nowrap' }}
-              >
-                Github User
-                <span style={{ color: asteriskColor }}> *</span>
-              </label>
-              <input
-                type="text"
-                className="w-3/5 px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Enter candidate GitHub username"
-                name="githubUser"
-                value={githubUser}
-                onChange={(e) => onInputChange(e)}
-              />
+            <div className="input-analysis-container">
+              {Input({name:'Github User', value:githubUser, editable:true, placeholder:"Enter candidate GitHub username", onChange:(e) => onInputChange(e), formName:"githubUser", col:mobile})}
               {errors.githubUser && (
                 <p className="text-red-500 text-xs italic">{errors.githubUser}</p>
 
@@ -206,32 +197,19 @@ export default function Analyzer() {
 
             </div>
 
-            <div className="mb-4 flex items-center mt-10 ml-10 mr-10">
-              <label
-                htmlFor="GithubToken"
-                style={{ color: textColor, fontSize: '1.5rem', marginRight: '1.1rem', whiteSpace: 'nowrap' }}
-              >
-                Github Token
-              </label>
-              <input
-                type="text"
-                className="w-3/5  px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                placeholder="Enter candidate GitHub token"
-                name="githubToken"
-                value={githubToken}
-                onChange={(e) => onInputChange(e)}
-              />
+            <div className="input-analysis-container">
+              {Input({name:'Github Token', value:githubToken, editable:true, placeholder:"Enter candidate GitHub token", onChange:(e) => onInputChange(e), formName:"githubToken", col:mobile})}
               {errors.githubToken && (
                 <p className="text-red-500 text-xs italic">{errors.githubToken}</p>
               )}
 
             </div>
 
-            <h2 style={{ color: 'white', textAlign: 'center', fontSize: '1rem' }}>
+            <h2 className='text-center text-white mt-10'>
               Remember that the analyzed data will remain stored in the website. Be catious who you are analyzing and ensure you obtain their permission beforehand.
             </h2>
 
-            <div className="flex ml-40 gap-60 mb-8">
+            <div className="flex flex-row justify-around mt-8">
               {MainButton("Analyze", "", handleSubmit)}
               {SecondaryButton("Cancel", "/representative/detail", "")}
               {SecondaryButton("Analyses list", "/analysis/list", "")}

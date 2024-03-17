@@ -178,9 +178,7 @@ export default function Navbar() {
                 </div>
                 <div className="profile-text">
                   <h1>{userData ? userData.username : " - "}</h1>
-                  <h1 className="text-gray-500">
-                    {userData ? userData.companyName : " - "}
-                  </h1>
+                  <h1 className="text-gray-500">{userData ? userData.companyName : " - "}</h1>
                 </div>
               </Link>
               <button
@@ -205,15 +203,15 @@ export default function Navbar() {
               <Link to="/" className="mail">
                 <img src={mail} />
               </Link>
+              {/* TODO code of mail*/}
+              <div className="mail-amount">
+                <span>1</span>
+              </div>
               <button
                 onClick={() => Logout(logout, navigate, userData.role)}
                 className="logout"
               >
                 <img src={logoutIcon} />
-                {/* TODO code of mail*/}
-                <div className="mail-amount">
-                  <span>1</span>
-                </div>
               </button>
             </div>
           )

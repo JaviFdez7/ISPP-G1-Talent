@@ -2,7 +2,7 @@ import React from "react";
 import MainButton from "./mainButton";
 import { Link } from "react-router-dom";
 
-export default function DataTable({ header, contentArray, editable=false, addLink, editLink }) {
+export default function DataTable({ header, contentArray, editable=false, addLink, editLink}) {
     const cellHeight = '100px';
     const minCellWidth = '142px';
 
@@ -17,6 +17,11 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                     <th className="datatable-header" style={{ height: cellHeight, minWidth: minCellWidth}}>
                         <div className="datatable-header-text mr-3 ml-3">{header}</div>
                     </th>
+                    {editable && (
+                        <th className="datatable-header" style={{ height: cellHeight}}>
+
+                        </th>
+                    )}
                 </tr>
             </thead>
         );
@@ -37,30 +42,37 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                 {head}
                 <tbody className="datatable-body ">
                     {contentArray.map((item, index) => (
+                    <>
                         <tr key={index}>
-                            <td className="datatable-cell" style={{height: cellHeight}}>
+                            <td className="datatable-cell">
                                 <br></br>
-                                <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
-                                    {item}
-                                </div>
-                                <hr className="w-full"></hr>
+                                {item}
                             </td>
                             {editable && (
-                                <td className="datatable-cell" style={{height: cellHeight}}>
+                                <td>
                                     <br></br>
-                                    <div style={{wordBreak: 'break-word', height: '80%', alignItems: 'center',justifyContent: 'center', paddingLeft: "16px"}}>
-                                        <Link to={editLink + "/" + index} className="edit-button">
-                                            Edit
-                                        </Link>
-                                    </div>
-                                    <hr style={{width: '110%', transform: 'translateX(-5%)'}}></hr>
+                                    <Link to={editLink + "/" + index} className="edit-button">
+                                        Edit
+                                    </Link>
                                 </td>
                             )}
                         </tr>
+                        <tr>
+                            <td>
+                                <hr style={{width: '100%'}}></hr>
+                            </td>
+                            {editable && (
+                                <td>
+                                    <hr style={{width: '105%', transform: 'translateX(-5%)'}}></hr>
+                                </td>
+                            )}
+
+                        </tr>
+                    </>
                     ))}
                 </tbody>
-                {button}
             </table>
+            {button}
         </div>
     );
 }

@@ -56,11 +56,11 @@ export default function CandidateDetail() {
             </h2>
           </div>
             <div className="flex flex-col w-full profile-info-text">
-              {Input("Username", candidate ? candidate.username : " - ", false)} {/* user.username */}
+              {Input({name:"Username", value:candidate ? candidate.username : " - ", editable:false})}
               <br></br>
-              {Input("Email", candidate ? candidate.email : " - ", false)}
+              {Input({name:"Email", value:candidate ? candidate.email : " - ", editable:false})}
               <br></br>
-              {Input("Phone", candidate ? candidate.phone : " - ", false)} {/* user.phone */}
+              {Input({name:"Phone", value:candidate ? candidate.phone : " - ", editable:false})}
               <div className="text-white mt-8">
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
@@ -102,7 +102,7 @@ export default function CandidateDetail() {
         <br></br>
         <div className="w-full"
         >
-          {Input("Github username", "martinnez123", false, true)} {/* candidate.githubUser */}
+          {Input({name:"Github username", value:"martinnez123"})} {/* candidate.githubUser */}
         </div>
         <br></br>
         <br></br>

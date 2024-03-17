@@ -96,16 +96,13 @@ export default function RepresentativeDetail() {
             </h2>
           </div>
             <div className="flex flex-col w-full profile-info-text">
-              {Input("Company name", userData ? userData.companyName : " - ")}
+              {Input({name:"Company name", value:userData ? userData.companyName : " - ", editable:false})}
               <br></br>
-              {Input("Phone number", userData ? userData.phone : " - ")}
+              {Input({name:"Phone number", value:userData ? userData.phone : " - ", editable:false})}
               <br></br>
-              {Input("Corporative Email", userData ? userData.email : " - ")}
+              {Input({name:"Corporative Email", value:userData ? userData.email : " - ", editable:false})}
               <br></br>
-              {Input(
-                "Project Society Name",
-                userData ? userData.projectSocietyName : " - "
-              )}
+              {Input({name:"Project Society Name", value:userData ? userData.projectSocietyName : " - ", editable:false})}
 
             </div>
             <div className="mt-8 self-center">

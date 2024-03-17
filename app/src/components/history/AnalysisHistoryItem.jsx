@@ -31,12 +31,12 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
     }, [item.analysisId]);
 
     return (
-        <div className="p-4 rounded-lg bg-black bg-opacity-70 transition-colors duration-300 hover:bg-gray-700 mb-2 border-b border-t border-gray-900">
+        <div className="analysis-history-item">
             <div className="flex-col relative">
                 <Link className="block text-white" to={`/analysis/${githubUsername}`}>
                     <div className="flex flex-col lg:flex-row justify-start items-center">
                         <div className="flex items-center">
-                            <h6 className="text-white py-1 px-2 rounded-lg mb-2" style={{ backgroundColor: "var(--talent-highlight)" }}>{githubUsername}</h6>
+                            <h6 className="text-white p-2" style={{ backgroundColor: "var(--talent-highlight)" }}>{githubUsername}</h6>
                             <h6 className="text-xl text-white ml-8">{formattedDate}</h6>
                         </div>
                     </div>
