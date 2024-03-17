@@ -11,6 +11,7 @@ import MainButton from "../../components/mainButton";
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
+  
   const [form, setForm] = useState({
     specialty: "",
     languages:"",
@@ -18,87 +19,29 @@ export default function SearchForm() {
     field:"",
     yearsOfExperience:"",
   });
-  const relevantTechnologies = [
-    // Front-end Frameworks/Libraries
-    "react", "vue", "angular", "svelte",
-    "next.js", "nuxt.js", "gatsby", "react-native",
-    "flutter",
-  
-    // State Management
-    "redux", "vuex", "mobx", "context-api",
-    "rxjs", "akita", "ngxs",
-  
-    // UI Frameworks
-    "material-ui", "vuetify", "bootstrap", "tailwindcss",
-    "ant-design", "chakra-ui", "semantic-ui",
-  
-    // Back-end Frameworks
-    "express", "nestjs", "koa", "fastify",
-    "hapi", "spring-boot", "django", "flask",
-    "ruby-on-rails", "laravel", "asp.net", "go-gin",
-    "echo", "fiber",
-  
-    // Testing Frameworks/Libraries
-    "jest", "mocha", "chai", "jasmine",
-    "cypress", "selenium", "puppeteer", "testing-library",
-    "karma", "enzyme",
-  
-    // Databases
-    "mongodb", "mongoose", "mysql", "postgresql",
-    "sqlite", "redis", "firebase", "oracle",
-    "microsoft-sql-server", "dynamodb", "couchbase",
-    "cassandra", "elasticsearch",
-  
-    // CI/CD Tools
-    "jenkins", "travis-ci", "circleci", "github-actions",
-    "gitlab-ci", "bitbucket-pipelines", "azure-pipelines",
-  
-    // DevOps & Virtualization
-    "docker", "kubernetes", "vagrant", "ansible",
-    "terraform", "puppet", "chef",
-  
-    // Cloud Providers/Services
-    "aws", "google-cloud", "azure", "digitalocean",
-    "heroku", "netlify", "vercel",
-  
-    // JavaScript Preprocessors
-    "typescript", "babel", "coffeescript",
-  
-    // CSS Preprocessors
-    "sass", "less", "stylus",
-  
-    // Build Tools & Bundlers
-    "webpack", "rollup", "parcel", "gulp",
-    "grunt", "broccoli",
-  
-    // Package Managers
-    "npm", "yarn", "pnpm", "bower",
-  
-    // GraphQL Tools
-    "apollo", "graphql", "relay",
-  
-    // WebAssembly
-    "wasm",
-  
-    // Serverless Frameworks
-    "serverless", "cloud-functions", "aws-lambda",
-    "azure-functions",
-  
-    // Static Site Generators
-    "jekyll", "hugo", "eleventy",
-  
-    // Message Brokers
-    "kafka", "rabbitmq", "activemq", "zeromq",
-  
-    // Monitoring & Logging
-    "prometheus", "grafana", "logstash", "kibana",
-    "elk-stack", "datadog", "new-relic",
-  
-    // Other Libraries & Frameworks
-    "lodash", "underscore", "moment", "date-fns",
-    "rxjs", "axios", "fetch-api", "socket.io",
-  ];
-
+  const [selectedTechCategory, setSelectedTechCategory] = useState("");
+  const relevantTechnologies = {
+    "Front-end Frameworks/Libraries": ["react", "vue", "angular", "svelte", "next.js", "nuxt.js", "gatsby", "react-native", "flutter"],
+    "State Management": ["redux", "vuex", "mobx", "context-api", "rxjs", "akita", "ngxs"],
+    "UI Frameworks": ["material-ui", "vuetify", "bootstrap", "tailwindcss", "ant-design", "chakra-ui", "semantic-ui"],
+    "Back-end Frameworks": ["express", "nestjs", "koa", "fastify", "hapi", "spring-boot", "django", "flask", "ruby-on-rails", "laravel", "asp.net", "go-gin", "echo", "fiber"],
+    "Testing Frameworks/Libraries": ["jest", "mocha", "chai", "jasmine", "cypress", "selenium", "puppeteer", "testing-library", "karma", "enzyme"],
+    "Databases": ["mongodb", "mongoose", "mysql", "postgresql", "sqlite", "redis", "firebase", "oracle", "microsoft-sql-server", "dynamodb", "couchbase", "cassandra", "elasticsearch"],
+    "CI/CD Tools": ["jenkins", "travis-ci", "circleci", "github-actions", "gitlab-ci", "bitbucket-pipelines", "azure-pipelines"],
+    "DevOps & Virtualization": ["docker", "kubernetes", "vagrant", "ansible", "terraform", "puppet", "chef"],
+    "Cloud Providers/Services": ["aws", "google-cloud", "azure", "digitalocean", "heroku", "netlify", "vercel"],
+    "JavaScript Preprocessors": ["typescript", "babel", "coffeescript"],
+    "CSS Preprocessors": ["sass", "less", "stylus"],
+    "Build Tools & Bundlers": ["webpack", "rollup", "parcel", "gulp", "grunt", "broccoli"],
+    "Package Managers": ["npm", "yarn", "pnpm", "bower"],
+    "GraphQL Tools": ["apollo", "graphql", "relay"],
+    "WebAssembly": ["wasm"],
+    "Serverless Frameworks": ["serverless", "cloud-functions", "aws-lambda", "azure-functions"],
+    "Static Site Generators": ["jekyll", "hugo", "eleventy"],
+    "Message Brokers": ["kafka", "rabbitmq", "activemq", "zeromq"],
+    "Monitoring & Logging": ["prometheus", "grafana", "logstash", "kibana", "elk-stack", "datadog", "new-relic"],
+    "Other Libraries & Frameworks": ["lodash", "underscore", "moment", "date-fns", "rxjs", "axios", "fetch-api", "socket.io"],
+  };
   const LANGUAGE_OPTIONS =[
   'Python',
   'Java',
@@ -154,9 +97,12 @@ export default function SearchForm() {
   function getRequiredFieldMessage(fieldName) {
     return `The ${fieldName} field is required`;
   }
-  
-  function validateForm() {
-   
+  function onTechCategoryChange(e) {
+    setSelectedTechCategory(e.target.value);
+    setForm({
+      ...form,
+      technologies: []
+    });
   }
 
 
@@ -213,19 +159,31 @@ export default function SearchForm() {
               <option key={index} value={option}>{option}</option>
             ))}
           </select>
-            <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technologies</h3>
-            <select
-              id="technologies"
-              name="technologies"
-              value={technologies}
-              onChange={(e) => onInputChange(e)}
-              multiple
-            >
-              <option value="">Select field</option>
-              {FIELD_OPTIONS.map((option, index) => (
-                <option key={index} value={option}>{option}</option>
-              ))}
-            </select>
+          <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technology Category</h3>
+          <select
+            id="techCategory"
+            name="techCategory"
+            value={selectedTechCategory}
+            onChange={(e) => onTechCategoryChange(e)}
+          >
+            <option value="">Select technology category</option>
+            {Object.keys(relevantTechnologies).map((category, index) => (
+              <option key={index} value={category}>{category}</option>
+            ))}
+          </select>
+          <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technologies</h3>
+          <select
+            id="technologies"
+            name="technologies"
+            value={technologies}
+            onChange={(e) => onInputChange(e)}
+            multiple
+          >
+            <option value="">Select technologies</option>
+            {selectedTechCategory && relevantTechnologies[selectedTechCategory].map((tech, index) => (
+              <option key={index} value={tech}>{tech}</option>
+            ))}
+          </select>
             
             <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Field</h3>
             <select
