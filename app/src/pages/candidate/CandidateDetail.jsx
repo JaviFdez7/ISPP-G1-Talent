@@ -33,20 +33,38 @@ export default function CandidateDetail() {
     const fetchExperienceData = async () => {
       try {
         if (isAuthenticated) {
-          const currentexperienceId = localStorage.getItem("experienceId");
-          if (currentexperienceId) {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${currentexperienceId}`);
+          const currentUserId = localStorage.getItem("userId");
+          const token = localStorage.getItem("access_token");
+          if (currentUserId && token) {
+            console.log("token", token);
+            const response = await axios.get(
+              `${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/professional-experiences`,
+              {
+                params: {
+                  ...experience,
+                  userId: currentUserId,
+                },
+              },
+
+              {
+                headers: {
+                  'Content-type': 'application/json',
+                  'Authorization': `${token}`,
+                },
+              }
+            );
+            console.log("rescddfefefonse", response.data.data);
             setExperience(response.data.data);
           }
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.log("Error fetching experience data:", error.response.data.message);
       }
     }
     fetchUserData();
     fetchExperienceData();
   }, [isAuthenticated]);
-
+  console.log("experience", experience);
   return (
     <div
       className="flex flex-col bg-fixed"
@@ -135,6 +153,7 @@ export default function CandidateDetail() {
         className="w-9/12 self-center"
         style={{ marginBottom: "3rem", marginTop: "3rem" }}
       >
+
         <div className="flex justify-between items-center">
           <DataTable
             header={""}
@@ -152,6 +171,7 @@ export default function CandidateDetail() {
             Detail
           </button>
         </div>
+
       </div>
       <div className="mt-8 self-center">
         {SecondaryButton("Add Experience", "/candidate/professional-experience/create", "")}
