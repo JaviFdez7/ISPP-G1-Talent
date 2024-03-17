@@ -13,8 +13,15 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 
     async function getGithubUsername(analysisId) {
         const uri = `/analysis/${analysisId}`;
+        const token = localStorage.getItem("access_token");
         try {
-            const response = await axios.get(apiURL + uri);
+            const response = await axios.get(apiURL + uri,
+                {
+                    headers: {
+                      'Authorization': `${token}`,
+                    },
+                  }
+            );
             return response.data.data.githubUsername;
         } catch (error) {
             console.error("Error al llamar al endpoint:", error);

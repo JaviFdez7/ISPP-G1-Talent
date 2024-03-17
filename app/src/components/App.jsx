@@ -11,14 +11,13 @@ import Settings from "../pages/Settings";
 import CandidateAnalysisDetail from "../pages/candidate/CandidateAnalysisDetail.jsx";
 import CandidateDetail from "../pages/candidate/CandidateDetail.jsx";
 import CandidateDetailEdit from "../pages/candidate/CandidateDetailEdit.jsx";
-import CandidateDeveloperInfoDetail from "../pages/candidate/CandidateDeveloperInfoDetail.jsx";
-import CandidateDeveloperInfoDetailEdit from "../pages/candidate/CandidateDeveloperInfoDetailEdit.jsx";
-import CandidateLaboralDetail from "../pages/candidate/CandidateLaboralDetail.jsx";
-import CandidateLaboralDetailEdit from "../pages/candidate/CandidateLaboralDetailEdit.jsx";
 import CandidateNotificationDetail from "../pages/candidate/CandidateNotificationDetail.jsx";
-import CandidateRepresentativeDetail from "../pages/candidate/CandidateRepresentativeDetail.jsx";
+
+import CandidateProfessionalExperienceCreate from "../pages/candidate/CandidateProfessionalExperienceCreate.jsx";
+import CandidateProfessionalExperienceEdit from "../pages/candidate/CandidateProfessionalExperienceEdit.jsx";
+import CandidateProfessionalExperienceDetail from "../pages/candidate/CandidateProfessionalExperienceDetail.jsx";
 import CandidateSubscription from "../pages/candidate/CandidateSubscription.jsx";
-import CandidateTrendsDetail from "../pages/candidate/CandidateTrendsDetail.jsx";
+
 
 //representatives
 import RepresentativeSubscription from "../pages/representative/RepresentativeSubscription.jsx";
@@ -62,22 +61,22 @@ function App() {
             {/*Analysis*/}
 
             <Route
-             path="/analysis/analyze" 
-             element={
-              <ProtectedRoute roles={['Representative']} >
-                <AnalysisAnalizer />
-              </ProtectedRoute>}
-             />
+              path="/analysis/analyze"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <AnalysisAnalizer />
+                </ProtectedRoute>}
+            />
 
-            <Route path="/analysis/:analysisId"element={
+            <Route path="/analysis/:analysisId" element={
               <ProtectedRoute roles={['Representative']} >
                 <AnalysisDashboard />
               </ProtectedRoute>}
             />
-          
+
             <Route path="/analysis/list" element={
               <ProtectedRoute roles={['Representative']} >
-                <AnalysisList/>
+                <AnalysisList />
               </ProtectedRoute>}
             />
 
@@ -88,7 +87,7 @@ function App() {
                 <PlaceHolder pageName="search page" />
               </ProtectedRoute>}
             />
-           <Route
+            <Route
               path="/searches/:searchId"
               element={
                 <ProtectedRoute roles={['Representative']} >
@@ -104,12 +103,12 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            
+
             {/*Subscription*/}
             <Route
               path="/pricing"
               element={
-              <PlaceHolder pageName="subscription" />}
+                <PlaceHolder pageName="subscription" />}
             />
             {/*<Route path="/pricing" element={<Pricing />} />*/}
 
@@ -117,7 +116,7 @@ function App() {
             <Route path="/candidate/detail" element={
               <ProtectedRoute roles={['Candidate']} >
                 <CandidateDetail />
-              </ProtectedRoute>} 
+              </ProtectedRoute>}
             />
             <Route
               path="/candidate/detail/edit"
@@ -136,38 +135,6 @@ function App() {
               }
             />
             <Route
-              path="/candidate/developer/info/detail"
-              element={
-                <ProtectedRoute roles={['Candidate']} >
-                  <CandidateDeveloperInfoDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/candidate/developer/info/detail/edit"
-              element={
-                <ProtectedRoute roles={['Candidate']} >
-                  <CandidateDeveloperInfoDetailEdit />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/candidate/laboral/detail"
-              element={
-                <ProtectedRoute roles={['Candidate']} >
-                  <CandidateLaboralDetail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/candidate/laboral/detail/edit"
-              element={
-                <ProtectedRoute roles={['Candidate']} >
-                  <CandidateLaboralDetailEdit />
-                </ProtectedRoute>
-              }
-            />
-            <Route
               path="/candidate/notification/detail"
               element={
                 <ProtectedRoute roles={['Candidate']} >
@@ -176,26 +143,35 @@ function App() {
               }
             />
             <Route
-              path="/candidate/representative/detail"
+              path="/candidate/professional-experience/create"
               element={
                 <ProtectedRoute roles={['Candidate']} >
-                  <CandidateRepresentativeDetail />
+                  <CandidateProfessionalExperienceCreate />
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/candidate/professional-experience/detail"
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateProfessionalExperienceDetail />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/candidate/professional-experience/edit"
+              element={
+                <ProtectedRoute roles={['Candidate']} >
+                  <CandidateProfessionalExperienceEdit />
+                </ProtectedRoute>
+              }
+            />
+
             <Route
               path="/candidate/subscription"
               element={
                 <ProtectedRoute roles={['Candidate']} >
                   <CandidateSubscription />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/candidate/trends/detail"
-              element={
-                <ProtectedRoute roles={['Candidate']} >
-                  <CandidateTrendsDetail />
                 </ProtectedRoute>
               }
             />

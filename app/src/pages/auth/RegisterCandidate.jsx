@@ -17,7 +17,7 @@ export default function RegisterCandidate() {
     password: "",
     password2: "",
     phone_number: "",
-    github_username: "",
+    githubUsername: "",
     candidateSubscription: "Basic plan",
   });
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
@@ -30,7 +30,7 @@ export default function RegisterCandidate() {
     password,
     password2,
     phone_number,
-    github_username,
+    githubUsername,
     candidateSubscription,
   } = form;
   let navigate = useNavigate();
@@ -70,7 +70,7 @@ export default function RegisterCandidate() {
           ...form,
           fullName: form.first_name + " " + form.surname,
           phone: form.phone_number,
-          githubUser: form.github_username,
+          githubUser: form.githubUsername,
         }
       );
       if (response.status === 400) {
@@ -87,8 +87,7 @@ export default function RegisterCandidate() {
       navigate("/candidate/detail");
 
     } catch (error) {
-      if (error.response.status === 409)  { // set the status code properly
-        console.log(error);
+      if (error.response.status === 409 || error.response.status === 400)  { // set the status code properly
         setErrors(error.response.data);
         return;
       }
@@ -125,8 +124,8 @@ export default function RegisterCandidate() {
     if (!form.password2) {
       errors.password2 = getRequiredFieldMessage('repeat password');
     }
-    if (!form.github_username) {
-      errors.github_username = getRequiredFieldMessage('github username');
+    if (!form.githubUsername) {
+      errors.githubUsername = getRequiredFieldMessage('github username');
     }
     if (!form.username) {
       errors.username = getRequiredFieldMessage('username');
@@ -183,7 +182,6 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
-       {console.log(errors)}
         {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
   <p className="text-red-500">{errors.errors[0].detail}</p>
 )}
@@ -271,8 +269,8 @@ export default function RegisterCandidate() {
               labelFor="Githubusername"
               labelText="Github username"
               placeholder="Enter your Github username"
-              name="github_username"
-              value={github_username}
+              name="githubUsername"
+              value={githubUsername}
               onChange={(e) => onInputChange(e)}
               errors={errors}
               isMandatory

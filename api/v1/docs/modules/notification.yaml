@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title:  IT Talent API - Analysis Module
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /user/{userId}/notification:
+    get:
+      tags:
+        - Notification
+      summary: Get the mailbox of a candidate
+      description: Get the mailbox of a candidate
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        type: string
+        required: true
+        description: Its the token of authentication of the candidate.
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/NotificationItem"
+
+  /user/{userId}/notification/{id}:
+    get:
+      tags:
+        - Notification
+      summary: Get one notification of the candidate 's mailbox.
+      description: Get the notification with ID from the mailbox of the candidate
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        type: string
+        required: true
+        description: Its the token of authentication of the candidate.
+      - name: id
+        in: path
+        description: ID of the notification
+        required: true
+        type: string
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/NotificationItem"
+    delete:
+      tags:
+        - Notification
+      summary: Delete one notification of the candidate 's mailbox.
+      description: Delete the notification with ID from the mailbox of the candidate
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        type: string
+        required: true
+        description: Its the token of authentication of the candidate.
+      - name: id
+        in: path
+        description: ID of the notification
+        required: true
+        type: string
+      responses:
+        200:
+          description: Success
+    patch:
+      tags:
+        - Notification
+      summary: Update one notification of the candidate 's mailbox.
+      description: Update the notification with ID from the mailbox of the candidate
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        type: string
+        required: true
+        description: Its the token of authentication of the candidate.
+      - name: id
+        in: path
+        description: ID of the notification
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Notification entry object
+        required: true
+        schema:
+          $ref: "#/definitions/NotificationInput"
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/NotificationItem"
+  
+   
+definitions:
+  NotificationItem:
+    type: object
+    properties:
+      candidateId:
+        type: string
+        format: uuiud
+        required: true
+        description: The unique ID of the candidate
+      representativeId:
+        type: string
+        format: uuiud
+        required: true
+        description: The unique ID of the representative
+      dateTime:
+        type: string
+        required: true
+        description: The notification date.
+      message:
+        type: string
+        required: true
+        description: The message of the notification.
+  NotificationInput:
+    type: object
+    properties:
+      message:
+        type: string
+        required: true
+        description: The message of the notification.

@@ -21,4 +21,5 @@ router.post('/:userId/history', createHistory);//X
 router.patch('/:userId/history/:id/favorite', toogleFavorite);
 router.patch('/:userId/history/:id', updateHistory);//X
 router.delete('/:userId/history/:id', checkDeleteHistory, deleteHistory);//X
+
 export default router;
