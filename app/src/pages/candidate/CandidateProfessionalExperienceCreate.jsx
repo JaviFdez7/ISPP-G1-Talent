@@ -24,21 +24,21 @@ export default function CandidateProfessionalExperienceCreate() {
 
   let navigate = useNavigate();
 
-  React.useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (isAuthenticated) {
-          const currentUserId = localStorage.getItem("userId");
-          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-          const user = response.data.data.find(user => user._id === currentUserId);
-          setForm(prevForm => ({ ...prevForm, ...user }));
-        }
-      } catch (error) {
-        console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
-      }
-    };
-    fetchUserData();
-  }, [isAuthenticated]);
+  // React.useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       if (isAuthenticated) {
+  //         const currentUserId = localStorage.getItem("userId");
+  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+  //         const user = response.data.data.find(user => user._id === currentUserId);
+  //         setForm(prevForm => ({ ...prevForm, ...user }));
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, [isAuthenticated]);
 
   function onInputChange(e) {
     const { name, value, checked } = e.target;
@@ -54,6 +54,9 @@ export default function CandidateProfessionalExperienceCreate() {
     const currentUserId = localStorage.getItem('userId')
     const token = localStorage.getItem('access_token')
     const validationErrors = validateForm();
+    console.log(token);
+    console.log(currentUserId);
+    console.log(form);
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);

@@ -36,7 +36,6 @@ export default function CandidateDetail() {
           const currentUserId = localStorage.getItem("userId");
           const token = localStorage.getItem("access_token");
           if (currentUserId && token) {
-            console.log("token", token);
             const response = await axios.get(
               `${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/professional-experiences`,
               {
@@ -50,7 +49,6 @@ export default function CandidateDetail() {
                 },
               }
             );
-            console.log("rescddfefefonse", response.data.data);
             setExperience(response.data.data);
           }
         }
@@ -61,9 +59,6 @@ export default function CandidateDetail() {
     fetchUserData();
     fetchExperienceData();
   }, [isAuthenticated]);
-  experience.map((exp) => {
-    console.log("exp", exp);
-  });
   return (
     <div
       className="flex flex-col bg-fixed"
@@ -157,22 +152,14 @@ export default function CandidateDetail() {
           <DataTable
             header={""}
             contentArray={experience ? experience.map((exp) => `Company Name: ${exp.companyName} || Professional Area: ${exp.professionalArea}`) : []}
-            editable={false}
-            addLink=""
-            editLink=""
+            editable={true}
+            addLink="/candidate/professional-experience/create"
+            editLink="/candidate/professional-experience/detail"
+            idArray={experience ? experience.map((exp) => exp._id) : []}
+            idName="experienceId"
           />
-          <button
-            className="mt-8 self-center text-white font-bold py-2 px-4 rounded-full"
-            style={{ color: "#d4983d" }}
-            onClick={() => navigate("/candidate/professional-experience/detail")}
-          >
-            Detail
-          </button>
         </div>
 
-      </div>
-      <div className="mt-8 self-center">
-        {SecondaryButton("Add Experience", "/candidate/professional-experience/create", "")}
       </div>
       <br></br>
       <br></br>
