@@ -1,6 +1,9 @@
 import type { AnalysisDocument, RepositoryInfo }  from '../models/analysis.model';
 import  {AnalysisModel} from '../models/analysis.model';
+import { createNotification } from '../../notification/services/NotificationService';
+import { Candidate,Representative } from '../../user/models/user';
 import { GetUserAnaliseInfo } from './GitHubService';
+import { verifyJWT } from '../../user/helpers/handleJWT';
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
   try {
@@ -11,7 +14,7 @@ export const getAllAnalysis = async (): Promise<any[]> => {
   }
 };
 
-export const getAnalysisById: any = async (id: any) => {
+export const getAnalysisById: any = async (id: any,token:string) => {
   if (!id) {
     throw new Error('A valid ID was not provided');
   }
@@ -20,6 +23,13 @@ export const getAnalysisById: any = async (id: any) => {
     const analysis = await AnalysisModel.findById(id);
     if (!analysis) {
       throw new Error(`Analysis with the ID: ${id} was not found`);
+    }
+    const representative=await Representative.findById(verifyJWT(token).sub);
+    const candidate=await Candidate.findOne({githubUser: analysis.githubUsername});
+    if(representative!==null && candidate!==null) {
+      await createNotification({representativeId: representative._id
+        ,candidateId:candidate._id,
+      message: `${(representative as any).companyName} has seen your profile.`});
     }
     return analysis;
   } catch (error) {
@@ -46,7 +56,7 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
     throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
-export const createAnalysis: any = async (githubUsername: string,user_apikey?: string) => {
+export const createAnalysis: any = async (githubUsername: string,token: string,user_apikey?: string) => {
   if (!githubUsername) {
     throw new Error('A valid GitHub username was not provided.');
   }
@@ -84,6 +94,13 @@ export const createAnalysis: any = async (githubUsername: string,user_apikey?: s
     const filter = { githubUsername: githubUsername };
 
     const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true  });
+    const representative=await Representative.findById(verifyJWT(token).sub);
+    const candidate=await Candidate.findOne({githubUser: githubUsername});
+    if(representative!==null && candidate!==null) {
+      await createNotification({representativeId: representative._id
+        ,candidateId:candidate._id,
+      message: `${(representative as any).companyName} has seen your profile.`});
+    }
     return updatedDocument;
   }
   } catch (error) {

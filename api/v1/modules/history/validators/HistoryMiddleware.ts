@@ -12,7 +12,6 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
       const message = 'No token provided';
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
-        return
     }
     const decodedToken = verifyJWT(token);
     const history = await History.findById(id);
@@ -20,17 +19,14 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
       const message = 'Permission denied';
       ApiResponse.sendError(res, [{
         title: 'Forbidden', detail: message}], 401);
-        return
     } else if (!history) {
       const message = 'History not found';
       ApiResponse.sendError(res, [{
         title: 'Not Found', detail: message}], 404);
-        return
     } else if (history.favorite) {
       const message = 'Cannot delete favorite history';
       ApiResponse.sendError(res, [{
         title: 'Bad Request', detail: message}], 400);
-        return
     } else {
       next();
     }
@@ -39,6 +35,5 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
       title: 'Error deleting history',
       detail: error.message
     }]);
-    return
   }
 }
