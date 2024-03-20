@@ -1,13 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express'
-import HistoryService from '../services/HistoryService'
+import NotificationService from '../services/NotificationService'
 import { ApiResponse } from '../../../utils/ApiResponse'
 
 // Default controller functions
-export const getHistoryFromUser: any = async (req: Request, res: Response) => {
+export const getAllNotification: any = async (req: Request, res: Response) => {
 	try {
-		const userId = req.params.userId
-		const data = await HistoryService.getHistoryFromUser(userId)
+		const data = await NotificationService.getAllNotification()
 		ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
@@ -20,27 +19,10 @@ export const getHistoryFromUser: any = async (req: Request, res: Response) => {
 		])
 	}
 }
-export const getNotFavoritesFromUser: any = async (req: Request, res: Response) => {
+export const getNotificationsOfCandidate: any = async (req: Request, res: Response) => {
 	try {
-		const userId = req.params.userId
-		const data = await HistoryService.getNotFavoritesFromUser(userId)
-		ApiResponse.sendSuccess(res, data, 200, {
-			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-		})
-	} catch (error: any) {
-		ApiResponse.sendError(res, [
-			{
-				title: 'Internal Server Error',
-				detail: error.message,
-			},
-		])
-	}
-}
-
-export const getFavoritesFromUser: any = async (req: Request, res: Response) => {
-	try {
-		const userId = req.params.userId
-		const data = await HistoryService.getFavoritesFromUser(userId)
+		const candidateId = req.params.userId
+		const data = await NotificationService.getNotificationsByCandidateId(candidateId)
 		ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
@@ -54,27 +36,10 @@ export const getFavoritesFromUser: any = async (req: Request, res: Response) => 
 	}
 }
 
-export const createHistory: any = async (req: Request, res: Response) => {
-	try {
-		const userId = req.params.userId
-		const data = await HistoryService.createHistory(userId, req.body)
-		ApiResponse.sendSuccess(res, data, 200, {
-			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-		})
-	} catch (error: any) {
-		ApiResponse.sendError(res, [
-			{
-				title: 'Internal Server Error',
-				detail: error.message,
-			},
-		])
-	}
-}
-
-export const toogleFavorite: any = async (req: Request, res: Response) => {
+export const getNotificationById: any = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id
-		const data = await HistoryService.toggleFavorite(id)
+		const data = await NotificationService.getNotificationById(id)
 		ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
@@ -88,10 +53,9 @@ export const toogleFavorite: any = async (req: Request, res: Response) => {
 	}
 }
 
-export const updateHistory: any = async (req: Request, res: Response) => {
+export const createNotification: any = async (req: Request, res: Response) => {
 	try {
-		const id = req.params.id
-		const data = await HistoryService.updateHistory(id, req.body)
+		const data = await NotificationService.createNotification(req.body)
 		ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
@@ -105,10 +69,27 @@ export const updateHistory: any = async (req: Request, res: Response) => {
 	}
 }
 
-export const deleteHistory: any = async (req: Request, res: Response) => {
+export const updateNotification: any = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id
-		const data = await HistoryService.deleteHistory(id)
+		const data = await NotificationService.updateNotification(id, req.body)
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
+
+export const deleteNotification: any = async (req: Request, res: Response) => {
+	try {
+		const id = req.params.id
+		const data = await NotificationService.deleteNotification(id)
 		ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
@@ -122,10 +103,9 @@ export const deleteHistory: any = async (req: Request, res: Response) => {
 	}
 }
 export default {
-	getHistoryFromUser,
-	getNotFavoritesFromUser,
-	createHistory,
-	updateHistory,
-	deleteHistory,
-	markAsFavorite: toogleFavorite,
+	getAllNotification,
+	getNotificationById,
+	createNotification,
+	updateNotification,
+	deleteNotification,
 }

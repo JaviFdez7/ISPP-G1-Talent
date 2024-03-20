@@ -1,98 +1,104 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
-import { type Request, type Response } from 'express';
-import AnalysisService from '../services/AnalysisService';
-import { ApiResponse } from '../../../utils/ApiResponse';
+import { type Request, type Response } from 'express'
+import AnalysisService from '../services/AnalysisService'
+import { ApiResponse } from '../../../utils/ApiResponse'
 
 // Default controller functions
 export const getAllAnalysis: any = async (req: Request, res: Response) => {
-  try {
-    const data = await AnalysisService.getAllAnalysis();
-    ApiResponse.sendSuccess(res,data,200,{
-      self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
-    });
-    
-  } catch (error: any) {
-    console.error(error);
-    ApiResponse.sendError(res,[{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  
-  }
-};
+	try {
+		const data = await AnalysisService.getAllAnalysis()
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		console.error(error)
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
 
 export const getAnalysisById: any = async (req: Request, res: Response) => {
-  try {
-    const id = req.params.id;
-    const data = await AnalysisService.getAnalysisById(id);
-    ApiResponse.sendSuccess(res,data,200,{
-      self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
-    });
-  } catch (error: any) {
-    console.error(error);
-    ApiResponse.sendError(res,[{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  }
-};
+	try {
+		const id = req.params.id
+		const token = req.headers.authorization ?? ''
+		const data = await AnalysisService.getAnalysisById(id, token)
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		console.error(error)
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
 
 export const getAnalysisByGitHubUsername: any = async (req: Request, res: Response) => {
-  try {
+	try {
+		const githubUsername = req.params.username.toString()
 
-    const githubUsername = (req.params.username).toString();
-
-    const data = await AnalysisService.getAnalysisByGitHubUsername(githubUsername);
-    ApiResponse.sendSuccess(res,data,200,{
-      self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
-    });
-  } catch (error: any) {
-    ApiResponse.sendError(res,[{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  }
-};
+		const data = await AnalysisService.getAnalysisByGitHubUsername(githubUsername)
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
 
 export const createAnalysis: any = async (req: Request, res: Response) => {
-  try {
- 
-  const githubUsername = req.body.username;
-  const user_apikey = req.body.apikey;
- 
-    const data = await AnalysisService.createAnalysis(githubUsername,user_apikey);
-    ApiResponse.sendSuccess(res,data,200,{
-      self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
-    });
-  } catch (error: any) {
-    ApiResponse.sendError(res,[{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  }
-};
+	try {
+		const githubUsername = req.body.username
+		const user_apikey = req.body.apikey
+		const token = req.headers.authorization ?? ''
 
-
+		const data = await AnalysisService.createAnalysis(githubUsername, token, user_apikey)
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
 
 export const deleteAnalysis: any = async (req: Request, res: Response) => {
-  try {
-    const githubUsername = req.params.username;
-    const data = await AnalysisService.deleteAnalysis(githubUsername);
-    ApiResponse.sendSuccess(res,data,200,{
-      self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
-    });
-  } catch (error: any) {
-    console.error(error);
-    ApiResponse.sendError(res,[{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  }
-};
+	try {
+		const githubUsername = req.params.username
+		const data = await AnalysisService.deleteAnalysis(githubUsername)
+		ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		console.error(error)
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
 export default {
-  getAllAnalysis,
-  getAnalysisById,
-  getAnalysisByGitHubUsername,
-  createAnalysis,
-  deleteAnalysis
-};
+	getAllAnalysis,
+	getAnalysisById,
+	getAnalysisByGitHubUsername,
+	createAnalysis,
+	deleteAnalysis,
+}
