@@ -105,7 +105,7 @@ function selectBestCandidates(filteredCandidates: FilteredCandidates[], profiles
 
   return bestCandidatesPerProfile;
 }
-async function saveTeamCreator(username: string, profilesMap: ProfileMap): Promise<void> {
+async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise<void> {
   const profiles = Array.from(profilesMap).map(([profileRequested, recommendedCandidates]) => ({
     profileRequested,
     recommendedCandidates
@@ -113,18 +113,18 @@ async function saveTeamCreator(username: string, profilesMap: ProfileMap): Promi
 
  
   const teamCreator = new TeamCreator({
-    username,
+    userId,
     profiles
   });
 
   await teamCreator.save();
 }
-export const createTeamCreator: any = async (data: ProfileRequested[]) => {
+export const createTeamCreator: any = async (data: ProfileRequested[],userId: string) => {
   console.log(data)
   const skills: SkillRequested = processSkillsRequested(data);
   const filteredcandidates: FilteredCandidates[] = await filterCandidates(skills);
   const selectCandidates: ProfileMap = selectBestCandidates(filteredcandidates,data);
-  await saveTeamCreator("Ruben22",selectCandidates);
+  await saveTeamCreator(userId,selectCandidates);
 
 
 };
@@ -237,19 +237,7 @@ const skillRequestedTest = {
   yearsOfExperience: 1,
   field: ['Data science','Mobile application']
 };
-mongoose.connect('mongodb://localhost:27017/talentdb')
-  .then(async () => {
-    console.log('Conexión a MongoDB exitosa');
-    // Coloca aquí la llamada a tu función que realiza las operaciones de Mongoose
-    //const cans: FilteredCandidates[] =  await filterCandidates(skillRequestedTest);
-    //console.log(selectBestCandidates(cans,profileRequestedExample))
-    
-    //console.log(selectBestCandidates(cans,profileRequestedExample))
-    saveTeamCreator('usernameExample', exampleMap)
-  .then(() => console.log('TeamCreator guardado con éxito'))
-  .catch(err => console.error('Error guardando el TeamCreator', err));
-  })
-  .catch(err => console.error('Error al conectar a MongoDB', err));
+
 
 export default {
 

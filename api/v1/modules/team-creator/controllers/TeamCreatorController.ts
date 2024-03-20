@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express';
 import TeamCreatorService from '../services/TeamCreatorService';
-
+import { verifyJWT } from '../../user/helpers/handleJWT';
 // Default controller functions
 /*
 export const getAllTeamCreator: any = async (req: Request, res: Response) => {
@@ -28,7 +28,12 @@ export const getTeamCreatorById: any = async (req: Request, res: Response) => {
 
 export const createTeamCreator: any = async (req: Request, res: Response) => {
   try {
-    const data = await TeamCreatorService.createTeamCreator(req.body);
+    
+    const token = req.headers.authorization ?? '';
+    console.log(token)
+    const decodedToken = verifyJWT(token);
+    const userId = decodedToken.sub;
+    const data = await TeamCreatorService.createTeamCreator(req.body,userId);
     res.status(200).send(data);
   } catch (error: any) {
     console.error(error);

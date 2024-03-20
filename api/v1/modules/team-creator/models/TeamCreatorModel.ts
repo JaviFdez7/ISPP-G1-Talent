@@ -45,7 +45,7 @@ const profileRequestedSchema = new Schema({
   }, { _id: false });
 
   const teamCreatorSchema = new Schema({
-    username: { type: String, required: true }, 
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     profiles: [{
       profileRequested: profileRequestedSchema, 
       recommendedCandidates: [filteredCandidatesSchema] 

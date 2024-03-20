@@ -11,5 +11,5 @@ const generateJWT = (id: string | undefined) => {
 const verifyJWT = (token: string) => {
   return verify(token, JWT_TOKEN);
 }
-
+console.log(generateJWT('65f22491a59fa69005bb18f1'))
 export { generateJWT, verifyJWT };
