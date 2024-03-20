@@ -1,13 +1,26 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
 import { type Request, type Response } from 'express';
-import ProfessionalExperienceService from '../services/ProfessionalExperienceService';
+import NotificationService from '../services/NotificationService';
 import { ApiResponse } from '../../../utils/ApiResponse';
-import { Candidate } from '../../user/models/user';
 
 // Default controller functions
-export const getAllProfessionalExperience: any = async (req: Request, res: Response) => {
+export const getAllNotification: any = async (req: Request, res: Response) => {
   try {
-    const data = await ProfessionalExperienceService.getAllProfessionalExperience();
+    const data = await NotificationService.getAllNotification();
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
+  }
+};
+export const getNotificationsOfCandidate: any = async (req: Request, res: Response) => {
+  try {
+    const candidateId = req.params.userId;
+    const data = await NotificationService.getNotificationsByCandidateId(candidateId);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
@@ -19,10 +32,10 @@ export const getAllProfessionalExperience: any = async (req: Request, res: Respo
   }
 };
 
-export const getProfessionalExperienceById: any = async (req: Request, res: Response) => {
+export const getNotificationById: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await ProfessionalExperienceService.getProfessionalExperienceById(id);
+    const data = await NotificationService.getNotificationById(id);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
@@ -34,16 +47,10 @@ export const getProfessionalExperienceById: any = async (req: Request, res: Resp
   }
 };
 
-
-export const createProfessionalExperience : any = async (req: Request, res: Response) => {
+export const createNotification: any = async (req: Request, res: Response) => {
   try {
-   
-    const professionalExperience = await ProfessionalExperienceService.createProfessionalExperience(req.body);
-    const candidateId = req.body.userId; 
-    await Candidate.findByIdAndUpdate(candidateId, {
-      $push: { profesionalExperiences: professionalExperience._id }
-    });
-    ApiResponse.sendSuccess(res, professionalExperience, 200, {
+    const data = await NotificationService.createNotification(req.body);
+    ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
@@ -54,10 +61,10 @@ export const createProfessionalExperience : any = async (req: Request, res: Resp
   }
 };
 
-export const updateProfessionalExperience: any = async (req: Request, res: Response) => {
+export const updateNotification: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await ProfessionalExperienceService.updateProfessionalExperience(id, req.body);
+    const data = await NotificationService.updateNotification(id, req.body);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
@@ -67,12 +74,12 @@ export const updateProfessionalExperience: any = async (req: Request, res: Respo
       detail: error.message
     }]);
   }
-}
+};
 
-export const deleteProfessionalExperience: any = async (req: Request, res: Response) => {
+export const deleteNotification: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await ProfessionalExperienceService.deleteProfessionalExperience(id);
+    const data = await NotificationService.deleteNotification(id);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
@@ -84,9 +91,9 @@ export const deleteProfessionalExperience: any = async (req: Request, res: Respo
   }
 };
 export default {
-  getAllProfessionalExperience,
-  getProfessionalExperienceById,
-  createProfessionalExperience,
-  updateProfessionalExperience,
-  deleteProfessionalExperience
+  getAllNotification,
+  getNotificationById,
+  createNotification,
+  updateNotification,
+  deleteNotification
 };
