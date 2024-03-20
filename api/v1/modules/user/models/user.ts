@@ -1,7 +1,7 @@
 import mongoose, { mongo } from 'mongoose';
 import { AnalysisDocument,AnalysisModel,analysisSchema } from '../../analysis/models/analysis.model';
 const { Schema, model } = mongoose;
-
+import {ProfessionalExperienceDocument} from '../../professional-experience/models/professional-experience'
 const CompanySubscription = {
   BASIC: 'Basic plan',
   PRO: 'Pro plan',
@@ -29,6 +29,7 @@ export interface CandidateDocument {
   lifestyle?: keyof typeof LifeStyle;
   githubToken?: string;
   analysisId:  AnalysisDocument;
+  profesionalExperiences: [ProfessionalExperienceDocument]
 }
 
 const userSchema = new Schema({

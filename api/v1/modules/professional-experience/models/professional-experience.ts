@@ -19,7 +19,14 @@ const ProfessionalArea = {
   SECURITY: 'Security',
   OTHER: 'Other'
 }
-
+export interface ProfessionalExperienceDocument {
+  startDate: Date;
+  endDate?: Date; 
+  companyName: string;
+  professionalArea: string; 
+  lifestyle?: string; 
+  location?: string; 
+}
 const professionalExperienceSchema = new Schema({
   startDate: { type: Date, required: true },
   endDate: { type: Date }, 

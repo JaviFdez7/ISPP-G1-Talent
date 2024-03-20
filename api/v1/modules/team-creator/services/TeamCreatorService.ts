@@ -30,48 +30,34 @@ function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 }
 async function filterCandidates(skillsRequested: SkillRequested): Promise<FilteredCandidates[]> {
 
-  const queryOrConditions = [
-    { 'globalTopLanguages.language': { $in: skillsRequested.languages } },
-    { 'globalTechnologies': { $in: skillsRequested.technologies } }
-  ];
-
   const candidates = await Candidate.find()
-  .populate({
-    path: 'analysisId',
-    match: { $or: queryOrConditions },
-  })
+  .populate('analysisId')
+  .populate('profesionalExperiences') 
   .exec() as unknown as CandidateDocument[];
 
   const qualifiedCandidates: FilteredCandidates[] = [];
 
-  for (const candidate of candidates) {
-    
-    if (!candidate.analysisId){
-      continue
-    }
-    const experiences = await ProfessionalExperience.find({ userId: candidate._id });
-    
-    
+  candidates.forEach(candidate => {
+    const hasMatchingSkill = candidate.analysisId.globalTopLanguages.some(lang => skillsRequested.languages.includes(lang.language)) || candidate.analysisId.globalTechnologies.some(tech => skillsRequested.technologies.includes(tech));
+
     let totalExperienceYears = 0;
     let matchesField = false;
 
-    experiences.forEach(exp => {
+    candidate.profesionalExperiences.forEach(exp => {
       const startDate = new Date(exp.startDate);
       const endDate = exp.endDate ? new Date(exp.endDate) : new Date();
       const years = endDate.getFullYear() - startDate.getFullYear();
       const monthDiff = endDate.getMonth() - startDate.getMonth();
-
       if (years > 0 || monthDiff > 0) {
         totalExperienceYears += years + monthDiff / 12;
       }
 
-      if (skillsRequested.field.includes(exp.professionalArea)) { 
+      if (skillsRequested.field.includes(exp.professionalArea)) {
         matchesField = true;
       }
     });
 
-    if (totalExperienceYears >= skillsRequested.yearsOfExperience && matchesField) {
-
+    if (hasMatchingSkill || (matchesField && totalExperienceYears >= skillsRequested.yearsOfExperience)) {
       const filteredLanguages = candidate.analysisId.globalTopLanguages
         .map(lang => lang.language)
         .filter(lang => skillsRequested.languages.includes(lang));
@@ -84,12 +70,11 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<Filter
         languages: filteredLanguages,
         technologies: filteredTechnologies,
         yearsOfExperience: totalExperienceYears,
-        field: skillsRequested.field 
+        field: skillsRequested.field
       });
     }
-  }
-  console.log(qualifiedCandidates)
-  return qualifiedCandidates; 
+  });
+  return qualifiedCandidates;
 }
 
 function selectBestCandidates(filteredCandidates: FilteredCandidates[], profilesRequested: ProfileRequested[]): Map<ProfileRequested, FilteredCandidates[]> {
