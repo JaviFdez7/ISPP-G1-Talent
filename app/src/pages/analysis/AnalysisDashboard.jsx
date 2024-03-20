@@ -30,6 +30,7 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
+            console.log("Response:", response.data.data); 
             setError(false);
             return response.data.data;
         } catch (error) {

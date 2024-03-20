@@ -6,10 +6,9 @@ import logoutIcon from '../images/logout.png'
 import mail from '../images/mail.png'
 import profile from '../images/profile.jpg'
 import '../styles/navbar.css'
-import Profile from '../pages/candidate/CandidateDetail'
 import { useAuthContext } from '../context/authContext.jsx'
 import axios from 'axios'
-import Swal from 'sweetalert2'
+
 import Logout from './swat/logout'
 
 export default function Navbar() {
@@ -17,10 +16,11 @@ export default function Navbar() {
 	const [userData, setUserData] = useState(null)
 	const { isAuthenticated, logout } = useAuthContext()
 
+
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
 		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 }, //Candidate
-		{ Trends: 0, 'My analysis': 1, Subscription: 2, Information: 3, Settings: 4 }, //Representative
+		{ Trends: 0, 'My analysis': 1,'Team Search':2,  Subscription: 3, Information: 4, Settings: 5 }, //Representative
 	]
 
 	function getOptsNum(key) {
@@ -123,6 +123,18 @@ export default function Navbar() {
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>My analysis</span>
 						</Link>
+					)}
+					{userData && getOptsNum("Team Search") !== -1 && (
+					<Link
+						to="/searches/team"
+						onMouseEnter={() => move_hoverer(getOptsNum("Team Search"))}
+						onMouseDown={() => move_current(getOptsNum("Team Search"))}
+						className="link-container"
+						>
+						<span>ICON</span>
+						<p>&nbsp;&nbsp;&nbsp;</p>
+						<span>Team search</span>
+					</Link>
 					)}
 					{userData && getOptsNum('Subscription') !== -1 && (
 						<Link
