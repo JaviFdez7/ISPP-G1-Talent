@@ -120,7 +120,7 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
   await teamCreator.save();
 }
 export const createTeamCreator: any = async (data: ProfileRequested[],userId: string) => {
-  console.log(data)
+  
   const skills: SkillRequested = processSkillsRequested(data);
   const filteredcandidates: FilteredCandidates[] = await filterCandidates(skills);
   const selectCandidates: ProfileMap = selectBestCandidates(filteredcandidates,data);

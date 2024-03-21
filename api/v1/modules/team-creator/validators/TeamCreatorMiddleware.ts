@@ -5,7 +5,7 @@ import e, { type Request, type Response, type NextFunction } from 'express';
 
 export const checkCreateTeam: any = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(req.body)
+    
         const data = req.body;
      
         const token = req.headers.authorization ?? '';
@@ -17,9 +17,11 @@ export const checkCreateTeam: any = async (req: Request, res: Response, next: Ne
           }])
           return;
         }
+       
         for (let i=0; i<data.length; i++){
             let profile = data[i];
-            if (!profile.languages && !profile.technologies && !profile.yearsOfExperience && !profile.field){
+            
+            if (profile.languages.length==0 && profile.technologies.length==0 && profile.yearsOfExperience=='' && profile.field==''){
                 ApiResponse.sendError(res,[{
                     title: 'Internal Server Error',
                     detail:'profile requested is empty.'

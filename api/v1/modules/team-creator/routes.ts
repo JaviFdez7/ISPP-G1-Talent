@@ -7,13 +7,16 @@ import {
   //updateTeamCreator,
   deleteTeamCreator
 } from './controllers/TeamCreatorController';
+import {
+  checkCreateTeam,
 
+} from './validators/TeamCreatorMiddleware';
 const router = express.Router();
 router.use(express.json());
 // Define routes for the TeamCreator module
 //router.get('/', getAllTeamCreator);
 router.get('/:id', getTeamCreatorById);
-router.post('/', createTeamCreator);
+router.post('/',checkCreateTeam, createTeamCreator);
 //router.patch('/:id', updateTeamCreator);
 router.delete('/:id', deleteTeamCreator);
 
