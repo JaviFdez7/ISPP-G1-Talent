@@ -17,10 +17,12 @@ export async function connectToMongoDB (): Promise<void> {
     const dbExists = collections.some((collection) => collection.collectionName === dbName);
 
     // If the database doesn't exist, create it
-    if (!dbExists)
+    if (!dbExists){
       console.log(`Database ${dbName} created successfully`);
-    else
+    }
+    else{
       console.log(`The database ${dbName} already exists`);
+    }
 
     // The script for populating the database will go here.
   } catch (error) {

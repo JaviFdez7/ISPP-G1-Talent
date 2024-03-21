@@ -55,10 +55,10 @@ export const getAnalysisByGitHubUsername: any = async (req: Request, res: Respon
 export const createAnalysis: any = async (req: Request, res: Response) => {
   try {
     const githubUsername = req.body.username;
-    const user_apikey = req.body.apikey;
+    const userApikey = req.body.apikey;
     const token = req.headers.authorization ?? '';
 
-    const data = await AnalysisService.createAnalysis(githubUsername, token, user_apikey);
+    const data = await AnalysisService.createAnalysis(githubUsername, token, userApikey);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
     });

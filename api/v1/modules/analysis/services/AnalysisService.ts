@@ -14,13 +14,15 @@ export const getAllAnalysis = async (): Promise<any[]> => {
 };
 
 export const getAnalysisById: any = async (id: any, token: string) => {
-  if (!id)
+  if (!id){
     throw new Error('A valid ID was not provided');
+  }
 
   try {
     const analysis = await AnalysisModel.findById(id);
-    if (!analysis)
+    if (!analysis){
       throw new Error(`Analysis with the ID: ${id} was not found`);
+    }
 
     const representative = await Representative.findById(verifyJWT(token).sub);
     const candidate = await Candidate.findOne({ githubUser: analysis.githubUsername });
@@ -40,13 +42,15 @@ export const getAnalysisById: any = async (id: any, token: string) => {
   }
 };
 export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
-  if (!githubUsername)
+  if (!githubUsername){
     throw new Error('A valid GitHub username was not provided.');
+  }
 
   try {
     const analysis = await AnalysisModel.findOne({ githubUsername });
-    if (!analysis)
+    if (!analysis){
       throw new Error(`Analysis for the GitHub user: ${githubUsername} was not found`);
+    }
 
     return analysis;
   } catch (error: any) {
@@ -54,8 +58,9 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
   }
 };
 export const createAnalysis: any = async (githubUsername: string, token: string, user_apikey?: string) => {
-  if (!githubUsername)
+  if (!githubUsername){
     throw new Error('A valid GitHub username was not provided.');
+  }
 
   try {
     const analysis = await AnalysisModel.findOne({ githubUsername });
