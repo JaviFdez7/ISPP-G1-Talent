@@ -24,7 +24,8 @@ export const getAllAnalysis: any = async (req: Request, res: Response) => {
 export const getAnalysisById: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await AnalysisService.getAnalysisById(id);
+    const token = req.headers.authorization ?? '';
+    const data = await AnalysisService.getAnalysisById(id,token);
     ApiResponse.sendSuccess(res,data,200,{
       self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
     });
@@ -59,8 +60,9 @@ export const createAnalysis: any = async (req: Request, res: Response) => {
  
   const githubUsername = req.body.username;
   const user_apikey = req.body.apikey;
+  const token = req.headers.authorization ?? '';
  
-    const data = await AnalysisService.createAnalysis(githubUsername,user_apikey);
+    const data = await AnalysisService.createAnalysis(githubUsername,token,user_apikey);
     ApiResponse.sendSuccess(res,data,200,{
       self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`
     });

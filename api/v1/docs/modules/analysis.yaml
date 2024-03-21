@@ -32,6 +32,12 @@ paths:
           required: true
           schema:
             $ref: "#/definitions/CreationAnalysisUser"
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication.
       responses:
         "201":
           description: Analysis entry created successfully
@@ -53,6 +59,12 @@ paths:
             type: string
             format: uuid
           description: The unique identifier for the analysis entry.
+        - name: authorization
+          in: header
+          schema:
+            type: string
+            required: true
+            description: Its the token of authentication(use to verify notifications).
       responses:
         "200":
           description: The analysis entry with the specified ID

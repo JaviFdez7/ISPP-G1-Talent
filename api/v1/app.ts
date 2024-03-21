@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import AnalysisRouter from './modules/analysis';
 import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
+import NotificationRouter from './modules/notification';
 import ProfessionalExperienceRouter from './modules/professional-experience';
 import SubscriptionRouter from './modules/subscriptions';
 import cors from 'cors';
@@ -39,6 +40,8 @@ app.use(UserRouter);
 app.use(HistoryRouter)
 app.use(ProfessionalExperienceRouter)
 app.use(SubscriptionRouter)
+app.use(NotificationRouter);
+
 // Server -------------------------------------------------------
 connectToMongoDB()
   .then(() => {

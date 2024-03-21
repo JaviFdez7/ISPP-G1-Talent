@@ -29,11 +29,12 @@ const candidateSchema = new Schema({
   CV: String,
   residence: String,
   lifestyle: {
-    type: String,
+    type: String,  
     enum: Object.values(LifeStyle)
   },
   githubToken: { type: String },
-  // analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
+  profesionalExperiences: [{type: Schema.Types.ObjectId, ref: 'ProfessionalExperience'}],
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
 });
 
 const Representative = User.discriminator('Representative', representativeSchema);
