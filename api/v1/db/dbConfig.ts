@@ -27,4 +27,6 @@ export async function connectToMongoDB() {
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
   }
+  //In TS is usefull to add the return, even if the function return void.
+  return;
 }

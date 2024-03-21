@@ -50,7 +50,12 @@
 		"classes": true,
 		"variables": true,
 		"allowNamedExports": false
-	}],
+	}],"@typescript-eslint/no-misused-promises": [
+		"error",
+		{
+		  "checksVoidReturn": false
+		}
+	  ],
 	"no-unreachable-loop":"error",
 	"no-template-curly-in-string": "error",
 	"no-new-native-nonconstructor": "error",

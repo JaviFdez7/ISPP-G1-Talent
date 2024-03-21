@@ -1,7 +1,5 @@
-import { IntegerType } from 'mongodb';
 import type { AnalysisDocument, RepositoryInfo,LanguagePercentage }  from '../models/analysis.model';
-import dotenv from 'dotenv'
-const { GQLPaginator } = require('gql-paginator');
+const  GQLPaginator  = require('gql-paginator');
 
 
 const GITHUB_APIKEY = process.env.GH_TOKEN
@@ -140,103 +138,7 @@ const relevantTechnologies = [
   "rxjs", "axios", "fetch-api", "socket.io",
 ];
 
-export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string): Promise<AnalysisDocument> {
-  const queryUserInfo = `query {
-    user(login: "${githubUsername}") {
-      login
-      avatarUrl
-      followers {
-        totalCount
-      }
-      repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
-        totalCount
-        nodes {
-          name
-          description
-          url
-          stargazers {
-            totalCount
-          }
-          forks {
-            totalCount
-          }
-          languages(first: 5, orderBy: {field: SIZE, direction: DESC}) {
-            edges {
-              node {
-                name
-              }
-              size
-            }
-            totalCount
-          }
-          object(expression: "HEAD:package.json") {
-            ... on Blob {
-              text
-            }
-          }
-          issues(states: CLOSED, first: 100) {
-            totalCount
-            edges {
-              node {
-                assignees(first:5) {
-                  nodes {
-                    login
-                  }
-                }
-              }
-            }
-          }
-          
-        }
-      }
-      contributionsCollection {
-        contributionCalendar {
-          totalContributions
-        }
-        totalPullRequestContributions
-        totalCommitContributions
-        totalRepositoriesWithContributedCommits
-        totalRepositoriesWithContributedPullRequests
-      }
-    }
-  }`;
-  
-  const languagesQuery = `query  {
-        user(login: "${githubUsername}") {
-          pullRequests(first: 100, states: MERGED) {
-            nodes {
-              title
-              url
-              files(first: 100) {
-                nodes {
-                  path
-                }
-              }
-            }
-          }
-        }
-      }
-    `;
 
-
-  try {
-    const effectiveApiKey = apikey || GITHUB_APIKEY;
-    
-   
-    const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
-    const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
-   
-
-    const languagesUsed = getTopLanguagesPullRequest(languagesResult);
-    
-    const userAnalysis: AnalysisDocument = processGitHubUserInfo(result, languagesUsed);
-  
-    return userAnalysis
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
-}
 
 function getTopLanguagesPullRequest(result: any): LanguagePercentage[] {
   const pullRequests = result?.data?.user?.pullRequests?.nodes;
@@ -375,4 +277,102 @@ function processGitHubUserInfo(result: any, languagesSorted: LanguagePercentage[
   };
 
   return analysis;
+}
+
+export async function GetUserAnaliseInfo(githubUsername: string,apikey?: string): Promise<AnalysisDocument> {
+  const queryUserInfo = `query {
+    user(login: "${githubUsername}") {
+      login
+      avatarUrl
+      followers {
+        totalCount
+      }
+      repositories(first: 100, orderBy: {field: CREATED_AT, direction: DESC}) {
+        totalCount
+        nodes {
+          name
+          description
+          url
+          stargazers {
+            totalCount
+          }
+          forks {
+            totalCount
+          }
+          languages(first: 5, orderBy: {field: SIZE, direction: DESC}) {
+            edges {
+              node {
+                name
+              }
+              size
+            }
+            totalCount
+          }
+          object(expression: "HEAD:package.json") {
+            ... on Blob {
+              text
+            }
+          }
+          issues(states: CLOSED, first: 100) {
+            totalCount
+            edges {
+              node {
+                assignees(first:5) {
+                  nodes {
+                    login
+                  }
+                }
+              }
+            }
+          }
+          
+        }
+      }
+      contributionsCollection {
+        contributionCalendar {
+          totalContributions
+        }
+        totalPullRequestContributions
+        totalCommitContributions
+        totalRepositoriesWithContributedCommits
+        totalRepositoriesWithContributedPullRequests
+      }
+    }
+  }`;
+  
+  const languagesQuery = `query  {
+        user(login: "${githubUsername}") {
+          pullRequests(first: 100, states: MERGED) {
+            nodes {
+              title
+              url
+              files(first: 100) {
+                nodes {
+                  path
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+
+  try {
+    const effectiveApiKey = apikey || GITHUB_APIKEY;
+    
+   
+    const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
+    const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
+   
+
+    const languagesUsed = getTopLanguagesPullRequest(languagesResult);
+    
+    const userAnalysis: AnalysisDocument = processGitHubUserInfo(result, languagesUsed);
+  
+    return userAnalysis
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
 }

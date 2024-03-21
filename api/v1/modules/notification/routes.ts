@@ -2,7 +2,6 @@
 import express from 'express';
 import {
   deleteNotification,
-  getAllNotification,
   getNotificationById,
   getNotificationsOfCandidate,
   updateNotification

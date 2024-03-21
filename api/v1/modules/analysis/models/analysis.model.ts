@@ -1,5 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
-import { Document } from 'mongoose';
+import { Schema, model } from 'mongoose';
 // 1. Create an interface representing a document in MongoDB.
 export interface RepositoryInfo {
   name: string;
@@ -71,35 +70,3 @@ const analysisSchema = new Schema<AnalysisDocument>({
 
 // 3. Create a Model.
 export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema);
-
-run().catch(err => console.log(err));
-
-async function run() {
-  // 4. Connect to MongoDB
-  //await connect('mongodb://127.0.0.1:27017/talentdb');
-/*
-  const analysis = new AnalysisModel({
-    githubUsername: 'Bill',
-    followers: 100,
-    contributions: {
-      totalCommits: 500,
-      totalPullRequests: 50,
-    },
-    topLanguages: [{
-      language: 'JavaScript',
-      count: 20,
-    }],
-    technologies: ['Node.js', 'React'],
-    topRepositories: [{
-      name: 'My Project',
-      url: 'http://github.com/Bill/myproject',
-      stars: 100,
-      forks: 25,
-    }],
-  });
-  */
-  //await analysis.save();
-  console.log("Running database");
-}
-
-

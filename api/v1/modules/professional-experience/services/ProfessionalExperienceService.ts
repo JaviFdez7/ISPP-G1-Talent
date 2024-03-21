@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb';
 import { ProfessionalExperience } from '../models/professional-experience';
 
 export const getAllProfessionalExperience: any = async () => {
