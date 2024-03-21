@@ -116,9 +116,7 @@ export const deleteAnalysis: any = async (githubUsername: string) => {
   try {
     const deletedAnalysis = await AnalysisModel.findOneAndDelete({ githubUsername });
 
-    if (!deletedAnalysis){
-      throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`);
-    }
+    if (!deletedAnalysis) throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`);
 
     return deletedAnalysis;
   } catch (error: any) {
