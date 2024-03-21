@@ -23,7 +23,6 @@
 		"no-constructor-return": "off",
 		"@typescript-eslint/explicit-function-return-type": "off",
 		"no-promise-executor-return": "off",
-		"no-explicit-any":"off",
 		"no-unmodified-loop-condition": "off",
 		"no-unused-private-class-members": "off",
 		"capitalized-comments": "off",

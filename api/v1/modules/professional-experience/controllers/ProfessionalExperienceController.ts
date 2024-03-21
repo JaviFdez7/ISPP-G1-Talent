@@ -34,12 +34,10 @@ export const getProfessionalExperienceById: any = async (req: Request, res: Resp
   }
 };
 
-
-export const createProfessionalExperience : any = async (req: Request, res: Response) => {
+export const createProfessionalExperience: any = async (req: Request, res: Response) => {
   try {
-   
     const professionalExperience = await ProfessionalExperienceService.createProfessionalExperience(req.body);
-    const candidateId = req.body.userId; 
+    const candidateId = req.body.userId;
     await Candidate.findByIdAndUpdate(candidateId, {
       $push: { profesionalExperiences: professionalExperience._id }
     });

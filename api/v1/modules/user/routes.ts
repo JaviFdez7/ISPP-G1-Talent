@@ -18,22 +18,25 @@ import {
   checkUpdateRepresentative,
   checkLoginUser,
   checkGetUserById,
-  checkGetProfessionalExperienceByUserId, 
-  checkDeleteUser} from './middlewares/UserMiddleware';
+  checkGetProfessionalExperienceByUserId,
+  checkDeleteUser
+} from './middlewares/UserMiddleware';
 
 const router = express.Router();
 
-// Define routes for the User module
-// TODO: método Logout, método getAllProfessionalExpByUserId
-// Revisar rutas de experience(experiences o experience)
-router.get('/', getAllUser);//X
-router.get('/:id', checkGetUserById, getUserById);//X
-router.get('/:id/professional-experiences', checkGetProfessionalExperienceByUserId, getProfessionalExperiencesByUserId);//X
-router.post('/candidate', checkCreateCandidate, createCandidate);//X
-router.post('/representative', checkCreateRepresentative, createRepresentative);//X
-router.post('/login', checkLoginUser, loginUser);//X
-router.patch('/candidate/:id', checkUpdateCandidate, updateCandidate);//X
-router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentative);//X
-router.delete('/:id', checkDeleteUser, deleteUser);//X
+/*
+ * Define routes for the User module
+ * TODO: método Logout, método getAllProfessionalExpByUserId
+ * Revisar rutas de experience(experiences o experience)
+ */
+router.get('/', getAllUser);// X
+router.get('/:id', checkGetUserById, getUserById);// X
+router.get('/:id/professional-experiences', checkGetProfessionalExperienceByUserId, getProfessionalExperiencesByUserId);// X
+router.post('/candidate', checkCreateCandidate, createCandidate);// X
+router.post('/representative', checkCreateRepresentative, createRepresentative);// X
+router.post('/login', checkLoginUser, loginUser);// X
+router.patch('/candidate/:id', checkUpdateCandidate, updateCandidate);// X
+router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentative);// X
+router.delete('/:id', checkDeleteUser, deleteUser);// X
 
 export default router;
