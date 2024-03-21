@@ -120,12 +120,8 @@ export const deleteAnalysis: any = async (githubUsername: string) => {
 
     return deletedAnalysis;
   } catch (error: any) {
-    if (error instanceof Error){
-      throw new Error(`Error when deleting the analysis by username: ${error.message}`);
-    }
-    else{
-      throw new Error('Unknown error when deleting the analysis by username.');
-    }
+    if (error instanceof Error) throw new Error(`Error when deleting the analysis by username: ${error.message}`);
+    else throw new Error('Unknown error when deleting the analysis by username.');
   }
 };
 
