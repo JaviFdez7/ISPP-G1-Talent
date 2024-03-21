@@ -2,12 +2,11 @@
 .input-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-top: 20px;
+    justify-content: space-around;
 }
 .input-container-name {
     padding-top: 10px;
-    width: 35%;
+    width: 45%;
 }
 .input-value-highlighter {
     width: 5%;
@@ -21,7 +20,8 @@
     padding-top: 10px;
     padding-bottom: 0px;
     margin-bottom: 0px;
-    width: 65%;
+    margin-left: 10px;
+    width: 55%;
     align-items: flex-end;
     display: flex;
     flex-direction: column;
