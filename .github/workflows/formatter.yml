@@ -11,7 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 100000
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
@@ -24,9 +27,11 @@ jobs:
 
       - name: Format and fix warnings on modified or added files
         run: |
-          for file in $(git diff --diff-filter=d --name-only ${{ github.base_ref }} ${{ github.head_ref }} | grep -E '\.(json|ts|css|js|jsx)$'); do
-            npx prettier --write $file && npx eslint --fix --quiet $file
-          done
+          git diff --diff-filter=d --name-only HEAD^ \
+          | grep -E '\.(json|ts|css|js|jsx)$' \
+          | while read -r file; do
+              npx prettier --write "$file" && npx eslint --fix --quiet "$file" || true
+            done
 
       - name: Git config
         run: |

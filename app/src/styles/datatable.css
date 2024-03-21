@@ -1,6 +1,6 @@
 
 .datatable-container {
-
+    width: 100%;
     backdrop-filter: blur(8px);
 }
 
@@ -10,8 +10,6 @@
     overflow-y: auto;
 }
 .datatable-header {
-    display: flex;
-    flex-direction: column;
     padding: 0;
     background-color: var(--talent-light-background);
     border-top: 10px solid var(--talent-secondary);
