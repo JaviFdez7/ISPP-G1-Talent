@@ -67,6 +67,7 @@ try {
     title: 'Internal Server Error',
     detail: error.message
   }])
+  return;
   
 }
 };
