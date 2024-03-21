@@ -1,5 +1,4 @@
-import type { AnalysisDocument, RepositoryInfo }  from '../models/analysis.model';
-import  {AnalysisModel} from '../models/analysis.model';
+import  {AnalysisDocument,AnalysisModel} from '../models/analysis.model';
 import { createNotification } from '../../notification/services/NotificationService';
 import { Candidate,Representative } from '../../user/models/user';
 import { GetUserAnaliseInfo } from './GitHubService';
@@ -32,7 +31,7 @@ export const getAnalysisById: any = async (id: any,token:string) => {
       message: `${(representative as any).companyName} has seen your profile.`});
     }
     return analysis;
-  } catch (error) {
+  } catch (error:any) {
     if (error instanceof Error) {
       throw new Error(`Error when getting the analysis by ID: ${error.message}`);
     } else {
@@ -52,7 +51,7 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
     }
 
     return analysis;
-  } catch (error) {
+  } catch (error:any) {
     throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
