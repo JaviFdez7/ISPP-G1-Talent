@@ -13,14 +13,26 @@ const CandidateSubscriptionTypes = {
   PRO: 'Pro plan'
 }
 
-const SubscriptionSchema = new Schema({
+const SupportedCurrencies = {
+  EUR: 'EUR'
+  // USD: 'USD',
+  // GBP: 'GBP'
+}
+
+// Define el esquema de Mongoose para la suscripción
+const subscriptionSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, required: true, unique:true },
-  prize: Number,
+  prize: { 
+    amount: { type: Number, required: true },
+    currency: { type: String, required: true, enum: Object.values(SupportedCurrencies)}
+  },
   lastPaymentDate: Date,
   expirationDate: Date,
   automaticRenovation: Boolean
 }, { discriminatorKey: 'type' });
-const Subscription = model('Subscription', SubscriptionSchema);
+
+// Crea el modelo de Mongoose para la Subscription
+const Subscription = model('Subscription', subscriptionSchema);
 
 const CompanySubscriptionSchema = new Schema({
   subtype: {
@@ -40,4 +52,4 @@ const CandidateSubscriptionSchema = new Schema({
 });
 const CandidateSubscription = Subscription.discriminator('CandidateSubscription', CandidateSubscriptionSchema);
 
-export { CompanySubscription, CandidateSubscription }
+export {Subscription, CompanySubscription, CandidateSubscription }

@@ -4,7 +4,7 @@ import { ProfessionalExperience } from '../../professional-experience/models/pro
 
 import { getModelForRole } from '../helpers/handleRoles';
 import { createAnalysis } from '../../analysis/services/AnalysisService';
-
+import { createSubscriptions } from '../../subscriptions/services/SubscriptionsService';
 export const getAllUser: any = async () => {
   return await User.find({});
 };
@@ -26,10 +26,11 @@ export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
     const user = new Model(data);
-    if(role ==='Candidate'){
-      const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
-      (user as any).analysisId=analysis._id;
-    }
+    // if(role ==='Candidate'){
+    //   const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
+    //   (user as any).analysisId=analysis._id;
+    // }
+    const subscription = createSubscriptions(user._id);
     await user.save();
     return user;
   } catch (error) {
