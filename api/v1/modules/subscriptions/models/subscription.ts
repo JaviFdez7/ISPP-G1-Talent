@@ -21,7 +21,6 @@ const SupportedCurrencies = {
 
 // Define el esquema de Mongoose para la suscripción
 const subscriptionSchema = new Schema({
-  userId: { type: Schema.Types.ObjectId, required: true, unique:true },
   prize: { 
     amount: { type: Number, required: true },
     currency: { type: String, required: true, enum: Object.values(SupportedCurrencies)}
@@ -52,4 +51,4 @@ const CandidateSubscriptionSchema = new Schema({
 });
 const CandidateSubscription = Subscription.discriminator('CandidateSubscription', CandidateSubscriptionSchema);
 
-export {Subscription, CompanySubscription, CandidateSubscription }
+export {Subscription, CompanySubscription, CandidateSubscription, CompanySubscriptionTypes, CandidateSubscriptionTypes }

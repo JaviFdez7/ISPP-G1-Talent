@@ -12,7 +12,8 @@ const userSchema = new Schema({
   password: { type: String, required: true },
   email: { type: String, required: true },
   phone: String,
-  paymentMethods: [String]
+  paymentMethods: [String],
+  subscriptionId: { type: Schema.Types.ObjectId, ref: 'Subscription', required: true },
 }, { discriminatorKey: 'role' });
 
 const User = model('User', userSchema);

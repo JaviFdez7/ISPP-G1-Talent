@@ -83,7 +83,7 @@ export const checkGetProfessionalExperienceByUserId: any = async (req: Request, 
 export const checkCreateCandidate: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = req.body
-    const isMissingFields: boolean = !data.username || !data.email || !data.fullName || !data.password || !data.githubUser || !data.candidateSubscription
+    const isMissingFields: boolean = !data.username || !data.email || !data.fullName || !data.password || !data.githubUser
     // Comprobar si faltan campos requeridos en el candidato
     if (isMissingFields) {
       const message = 'Missing required fields';

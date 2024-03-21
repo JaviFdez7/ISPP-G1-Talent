@@ -1,28 +1,27 @@
 import { Candidate, Representative, User } from "../../user/models/user";
-import { CandidateSubscription, CompanySubscription } from "../models/subscription";
+import { CandidateSubscription, CompanySubscription, CandidateSubscriptionTypes, CompanySubscriptionTypes } from "../models/subscription";
 import { Subscription } from "../models/subscription";
 // Default service functions
 export const getAllSubscriptions: any = async () => {
-  return await Subscription.find({});
+  return await Subscription.find();
 };
 
-export const getSubscriptionsByUserId: any = async (userId: any) => {
-  return await Subscription.findOne({ userId: userId });
-};
-
-export const createSubscriptions: any = async (userId: any) => {
-  const user = User.findById(userId);
+export const getSubscriptionsById: any = async (id: any) => {
+  const user = User.findById(id);
   if (!user) {
     throw new Error('User not found');
   }
-  if (user instanceof Representative) {
+  return await Subscription.findById(id);
+};
+
+export const createSubscriptions: any = async (role: any) => {
+  if (role === 'Representative') {
     const expirationDate = new Date();
     expirationDate.setMonth(expirationDate.getMonth() + 1);
     const subscription = new CompanySubscription({ 
-      userId: userId,
-      subtype: 'BASIC',
+      subtype: CompanySubscriptionTypes.BASIC,
       prize: {
-        amount: 0,
+        amount: 29.99,
         currency: 'EUR'
       },
       lastPaymentDate: new Date(),
@@ -31,13 +30,11 @@ export const createSubscriptions: any = async (userId: any) => {
     });
     await subscription.save();
     return subscription;
-  }
-  if (user instanceof Candidate) {
+  } else if (role === "Candidate") {
     const expirationDate = new Date();
     expirationDate.setMonth(expirationDate.getMonth() + 1);
     const subscription = new CandidateSubscription({ 
-      userId: userId,
-      subtype: 'BASIC',
+      subtype: CandidateSubscriptionTypes.BASIC,
       prize: {
         amount: 0,
         currency: 'EUR'
@@ -51,29 +48,29 @@ export const createSubscriptions: any = async (userId: any) => {
   }
 };
 
-export const updateSubscriptions: any = async (userId: any, subtype: any) => {
-  const subscription = await Subscription.findOne({ userId: userId });
+export const updateSubscriptions: any = async (id: any, subtype: any) => {
+  const subscription = await Subscription.findById(id);
   if (!subscription) {
     throw new Error('Subscription not found');
   }
-    else if (subscription instanceof CompanySubscription) {
+    else if ((subscription as any).type === 'CompanySubscription') {
       subscription.set( { subtype: subtype });
-    if (subtype === 'BASIC') {
-      subscription.set( { prize: { amount: 30, currency: 'EUR' } });
-    } else if (subtype === 'PRO') {
-      subscription.set( { prize: { amount: 80, currency: 'EUR' } });
+    if (subtype === CompanySubscriptionTypes.BASIC) {
+      subscription.set( { prize: { amount: 29.99, currency: 'EUR' } });
+    } else if (subtype === CompanySubscriptionTypes.PRO) {
+      subscription.set( { prize: { amount: 79.99, currency: 'EUR' } });
     }
     subscription.lastPaymentDate = new Date();
     subscription.expirationDate = new Date();
     subscription.expirationDate.setMonth(subscription.expirationDate.getMonth() + 1);
     await subscription.save();
     return subscription;
-  } else if (subscription instanceof CandidateSubscription) {
+  } else if ((subscription as any).type === 'CandidateSubscription') {
     subscription.set( { subtype: subtype });
-    if (subtype === 'BASIC') {
+    if (subtype === CandidateSubscriptionTypes.BASIC) {
       subscription.set( { prize: { amount: 0, currency: 'EUR' } });
-    } else if (subtype === 'PRO') {
-      subscription.set( { prize: { amount: 30, currency: 'EUR' } });
+    } else if (subtype === CandidateSubscriptionTypes.PRO) {
+      subscription.set( { prize: { amount: 9.99, currency: 'EUR' } });
     }
     subscription.lastPaymentDate = new Date();
     subscription.expirationDate = new Date();
@@ -83,17 +80,9 @@ export const updateSubscriptions: any = async (userId: any, subtype: any) => {
   }
 }
 
-export const deleteSubscriptions: any = async (userId: any) => {
-  const subscription = await Subscription.findByIdAndDelete(userId);
-  if (!subscription) {
-    throw new Error('Subscription not found');
-  }
-  return 'Subscription deleted successfully.';
-};
 export default {
   getAllSubscriptions,
-  getSubscriptionsByUserId,
+  getSubscriptionsById,
   createSubscriptions,
-  updateSubscriptions,
-  deleteSubscriptions
+  updateSubscriptions
 };
