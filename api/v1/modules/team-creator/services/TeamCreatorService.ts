@@ -128,7 +128,15 @@ export const createTeamCreator: any = async (data: ProfileRequested[],userId: st
 
 
 };
+export const getAllTeamCreatorOfRepresentative: any = async (id: any) => {
 
+  try {
+    const result = await TeamCreator.find({ userId: id }).exec();
+    return result;
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 
 export const deleteTeamCreator: any = async (id: any) => {
@@ -149,98 +157,10 @@ export const getTeamCreatorById: any = async (id: any) => {
     console.error(err);
   }
 };
-const filteredCandidatesExample: FilteredCandidates[] = [
-  {
-    github_username: "devUser1",
-    languages: ["JavaScript", "TypeScript"],
-    technologies: ["React", "Node.js"],
-    yearsOfExperience: 4,
-    field: ["Front-end Development", "Back-end Development"]
-  },
-  {
-    github_username: "devUser2",
-    languages: ["Python", "JavaScript"],
-    technologies: ["Django", "React"],
-    yearsOfExperience: 5,
-    field: ["Full-stack Development"]
-  },
-  {
-    github_username: "devUser3",
-    languages: ["JavaScript"],
-    technologies: ["Vue"],
-    yearsOfExperience: 2,
-    field: ["Front-end Development"]
-  }
-];
-const exampleMap: ProfileMap = new Map([
-  [{
-    languages: ['JavaScript'],
-    technologies: ['React'],
-    yearsOfExperience: 3,
-    field: 'Front-end Development'
-  }, [{
-    github_username: 'alexcjohnson',
-    languages: ['JavaScript', 'TypeScript'],
-    technologies: ['React', 'Node.js'],
-    yearsOfExperience: 9.17,
-    field: ['Front-end Development']
-  }]],
-  [{
-    languages: ['Python'],
-    technologies: ['React', 'Django'],
-    yearsOfExperience: 1,
-    field: 'Data Science'
-  }, [{
-    github_username: 'alexcjohnson',
-    languages: ['Python', 'JavaScript'],
-    technologies: ['Django', 'React'],
-    yearsOfExperience: 9.17,
-    field: ['Data Science']
-  }]]
-]);
-const profileRequestedExample: ProfileRequested[] =[ {
-  languages: ["JavaScript"],
-  technologies: ["React"],
-  yearsOfExperience: 3,
-  field: "Front-end Development"
-},{
-  languages: ["Python"],
-  technologies: ["React", "Django"],
-  yearsOfExperience: 1,
-  field: "Data Science"  
-}];
-async function prueba(skillsRequested: SkillRequested) {
-
-  const queryOrConditions = [
-    { 'globalTopLanguages.language': { $in: skillsRequested.languages } },
-    { 'globalTechnologies': { $in: skillsRequested.technologies } }
-  ];
-
-  //const candidates = await Candidate.find().populate("analysisId").exec();
-  const candidates = await Candidate.find()
-  .populate({
-    path: 'analysisId',
-    match: { $or: queryOrConditions },
-  })
-  .exec()
-  for (const candidate of candidates as any[]){
-    console.log(candidate.githubUser)
-  }
-
-
-  //console.log("Candidatos encontrados:", candidates);
-}
-
-const skillRequestedTest = {
-  languages: ['JavaScript', 'Python'],
-  technologies: ['react', 'Node.js'],
-  yearsOfExperience: 1,
-  field: ['Data science','Mobile application']
-};
 
 
 export default {
-
+  getAllTeamCreatorOfRepresentative,
   createTeamCreator,
   deleteTeamCreator,
   getTeamCreatorById

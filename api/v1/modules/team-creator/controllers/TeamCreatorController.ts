@@ -25,7 +25,16 @@ export const getTeamCreatorById: any = async (req: Request, res: Response) => {
     res.status(500).send(error.message);
   }
 };
-
+export const getAllTeamCreatorOfRepresentative: any = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const data = await TeamCreatorService.getAllTeamCreatorOfRepresentative(id);
+    res.status(200).send(data);
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).send(error.message);
+  }
+};
 export const createTeamCreator: any = async (req: Request, res: Response) => {
   try {
     
