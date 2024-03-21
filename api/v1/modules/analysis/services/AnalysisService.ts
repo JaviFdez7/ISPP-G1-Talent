@@ -124,7 +124,7 @@ export const deleteAnalysis: any = async (githubUsername: string) => {
     }
 
     return deletedAnalysis;
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof Error) {
       throw new Error(`Error when deleting the analysis by username: ${error.message}`);
     } else {
@@ -132,18 +132,6 @@ export const deleteAnalysis: any = async (githubUsername: string) => {
     }
   }
 };
-
-async function main() {
-  try {
-    // Prueba getAllAnalysis
-    console.log('Obteniendo todos los análisis...');
-    const allAnalysis = await createAnalysis("JaviFdez7");
-    console.log(allAnalysis)
-  }catch (error) {
-    console.error('Error durante las pruebas:', error);
-  }
-}
-//main()
 
 export default {
   getAllAnalysis,
