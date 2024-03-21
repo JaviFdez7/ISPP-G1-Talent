@@ -94,14 +94,16 @@ function selectBestCandidates(filteredCandidates: FilteredCandidates[], profiles
       });
       if (candidate.yearsOfExperience >= profile.yearsOfExperience) score++;
       if (candidate.field.includes(profile.field)) score++;
-      maxScore = Math.max(maxScore, score);
       candidatesScores.set(candidate, score);
     }
-    const bestCandidates = Array.from(candidatesScores.keys()).filter(candidate => candidatesScores.get(candidate) === maxScore);
+    const sortedCandidates = Array.from(candidatesScores.entries())
+      .sort((a, b) => b[1] - a[1]) 
+      .slice(0, 3) 
+      .map(entry => entry[0]); 
 
-   
-    bestCandidatesPerProfile.set(profile, bestCandidates);
+    bestCandidatesPerProfile.set(profile, sortedCandidates);
   }
+
 
   return bestCandidatesPerProfile;
 }
