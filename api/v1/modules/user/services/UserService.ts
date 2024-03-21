@@ -35,6 +35,7 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
     const Model = getModelForRole(role) as typeof User;
     if (role === 'Candidate') {
       const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
+      data.analisisId=analysis._id;
     }
     const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
     return updatedUser;

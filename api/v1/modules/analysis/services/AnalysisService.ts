@@ -57,14 +57,14 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
     throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
-export const createAnalysis: any = async (githubUsername: string, token: string, user_apikey?: string) => {
+export const createAnalysis: any = async (githubUsername: string, token: string, userApikey?: string) => {
   if (!githubUsername){
     throw new Error('A valid GitHub username was not provided.');
   }
 
   try {
     const analysis = await AnalysisModel.findOne({ githubUsername });
-    const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, user_apikey);
+    const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey);
     if (!analysis) {
       const userAnalysis = new AnalysisModel({
         githubUsername: userInfo.githubUsername,
@@ -109,21 +109,25 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
 };
 
 export const deleteAnalysis: any = async (githubUsername: string) => {
-  if (!githubUsername)
+  if (!githubUsername){
     throw new Error('A valid GitHub username was not provided.');
+  }
 
   try {
     const deletedAnalysis = await AnalysisModel.findOneAndDelete({ githubUsername });
 
-    if (!deletedAnalysis)
+    if (!deletedAnalysis){
       throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`);
+    }
 
     return deletedAnalysis;
   } catch (error: any) {
-    if (error instanceof Error)
+    if (error instanceof Error){
       throw new Error(`Error when deleting the analysis by username: ${error.message}`);
-    else
+    }
+    else{
       throw new Error('Unknown error when deleting the analysis by username.');
+    }
   }
 };
 
