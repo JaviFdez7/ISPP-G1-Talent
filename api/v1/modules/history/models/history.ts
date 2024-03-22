@@ -19,4 +19,3 @@ const historySchema = new Schema({
 const History = model('History', historySchema);
 
 export { History }
-

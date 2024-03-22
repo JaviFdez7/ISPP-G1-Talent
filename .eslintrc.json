@@ -21,6 +21,7 @@
 		"semi": "off",
 		"@typescript-eslint/semi": "off",
 		"no-constructor-return": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
 		"no-promise-executor-return": "off",
 		"no-unmodified-loop-condition": "off",
 		"no-unused-private-class-members": "off",
@@ -49,7 +50,11 @@
 				"variables": true,
 				"allowNamedExports": false
 			}
-		],
+		],"@typescript-eslint/no-misused-promises": [
+			"error",
+			{
+			  "checksVoidReturn": false
+			}],
 		"no-unreachable-loop": "error",
 		"no-template-curly-in-string": "error",
 		"no-new-native-nonconstructor": "error",

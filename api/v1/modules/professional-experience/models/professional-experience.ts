@@ -22,7 +22,7 @@ const ProfessionalArea = {
 
 const professionalExperienceSchema = new Schema({
   startDate: { type: Date, required: true },
-  endDate: { type: Date }, 
+  endDate: { type: Date },
   companyName: { type: String, required: true },
   professionalArea: {
     type: String,
@@ -33,7 +33,7 @@ const professionalExperienceSchema = new Schema({
     type: String,
     enum: Object.values(LifeStyle)
   },
-  location: { type: String },
+  location: { type: String }
 })
 
 const ProfessionalExperience = model('ProfessionalExperience', professionalExperienceSchema);
