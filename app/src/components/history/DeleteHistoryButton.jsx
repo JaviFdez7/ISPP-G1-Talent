@@ -33,7 +33,7 @@ const DeleteHistoryButton = ({ history, toggleText = false , triggerUpdate, setE
             className="flex items-center text-white transition-colors duration-300 hover:text-red-600 bg-transparent border-none rounded-full p-2"
             style={{ width: "40px", height: "40px" }}
         >
-            <div className="bg-transparent hover:bg-red-500 hover:bg-opacity-50 rounded-full p-2">
+            <div className="bg-transparent hover:bg-red-500 hover:bg-opacity-50 rounded-lg duration-300 p-2">
                 <FontAwesomeIcon icon={faTrash} style={{ color: "gray" }} />
             </div>
             {toggleText && (

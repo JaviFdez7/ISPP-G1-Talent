@@ -72,54 +72,66 @@ export default function RepresentativeDetail() {
 		}))
 	}
 
-	return (
-		<div
-			className='flex flex-col'
-			style={{
-				backgroundImage: `url(${mainBackground})`,
-				backgroundSize: 'cover',
-			}}>
-			<div className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'>
-				<div className='flex flex-col items-center'>
-					<img
-						src={profile} //[candidate.profilePicture}
-						className='rounded-full border border-gray-300 profile-img'
-					/>
-				</div>
-				<div className='flex flex-col mt-10 w-fit'>
-					<div className='profile-name-text text-center'>
-						<h2>{userData && userData.username ? userData.username : ' - '}</h2>
-					</div>
-					<div className='flex flex-col w-full profile-info-text'>
-						{Input('Company name', userData ? userData.companyName : ' - ')}
-						<br></br>
-						{Input('Phone number', userData ? userData.phone : ' - ')}
-						<br></br>
-						{Input('Corporative Email', userData ? userData.email : ' - ')}
-						<br></br>
-						{Input(
-							'Project Society Name',
-							userData ? userData.projectSocietyName : ' - '
-						)}
-					</div>
-					<div className='mt-8 self-center'>{SecondaryButton('Update', '', '')}</div>
-				</div>
-			</div>
-			<br></br>
-			<h3 className='profile-title'>Latest Actions</h3>
-			<hr className='w-5/12 self-center'></hr>
-			<br></br>
-			<br></br>
-			<br></br>
-			<div className='flex flex-col justify-center w-8/12 self-center'>
-				<LatestHistory
-					header='Latest Analysis'
-					data={analysisHistoryData}
-					type='analysis'
-				/>
-				<br></br>
-				<br></br>
-			</div>
-		</div>
-	)
+  function sortAndFormatHistory(historyList) {
+    historyList.sort((a, b) => b.date - a.date);
+    return historyList.map((history) => ({
+      date: history.date.toString(),
+    }));
+  }
+
+
+  return (
+    <div
+      className="flex flex-col"
+      style={{
+        backgroundImage: `url(${mainBackground})`,
+        backgroundSize: "cover",
+      }}
+    >
+      <div className="flex flex-row justify-center items-center profile-header w-10/12 mt-20">
+        <div className="flex flex-col items-center">
+          <img
+            src={profile} //[candidate.profilePicture}
+            className="rounded-full border border-gray-300 profile-img"
+          />
+        </div>
+        <div className="flex flex-col mt-10 w-fit">
+          <div className="profile-name-text text-center">
+            <h2>
+              {userData && userData.username ? userData.username : " - "}
+            </h2>
+          </div>
+            <div className="flex flex-col w-full profile-info-text">
+              {Input({name:"Company name", value:userData ? userData.companyName : " - ", editable:false})}
+              <br></br>
+              {Input({name:"Phone number", value:userData ? userData.phone : " - ", editable:false})}
+              <br></br>
+              {Input({name:"Corporative Email", value:userData ? userData.email : " - ", editable:false})}
+              <br></br>
+              {Input({name:"Project Society Name", value:userData ? userData.projectSocietyName : " - ", editable:false})}
+
+            </div>
+            <div className="mt-8 self-center">
+              {SecondaryButton("Update", "", "")}
+            </div>
+
+        </div>
+      </div>
+      <br></br>
+      <h3 className="profile-title">Latest Actions</h3>
+      <hr className="w-5/12 self-center"></hr>
+      <br></br>
+      <br></br>
+      <br></br>
+      <div className="flex flex-col justify-center w-8/12 self-center">
+        <LatestHistory
+          header="Latest Analysis"
+          data={analysisHistoryData}
+          type="analysis"
+          />
+      <br></br>
+      <br></br>
+      </div>
+    </div>
+  );
 }

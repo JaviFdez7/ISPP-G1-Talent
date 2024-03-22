@@ -80,14 +80,18 @@ export default function AnalysisDashboard() {
             });
     };
 
-
+    let mobile = false;
+    if (window.screen.width < 500) {
+      mobile = true;
+    }
+    
     return (
         <section className="text-white flex flex-row justify-center bg-fixed"
             style={{
                 backgroundImage: `url(${mainBackgroundRegisterLogin})`,
                 backgroundSize: "cover",
             }}>
-            <div className="fixed top-6 left-0 mb-4 ml-6">
+            <div className="fixed top-6 left-0 mb-4 ml-6" style={{ zIndex: "2" }}>
                 {MainButton("Go back", `/analysis/list`, "")}
             </div>
 
@@ -95,7 +99,7 @@ export default function AnalysisDashboard() {
                 {/* CANDIDATE column */}
 
                 <br></br>
-                <div className="flex flex-col items-center w-8/12 mt-10">
+                <div className="flex flex-col items-center w-full mt-10">
 
                     {isRepresentative && history ? (<FavoriteButton history={history} toggleText />) : null}
                     <br></br>
@@ -104,20 +108,22 @@ export default function AnalysisDashboard() {
                         GitHub Statistics
                     </h6>
                     <br></br>
-                    <div className="h-full w-full flex flex-row items-center" style={{ fontSize: '1.0rem' }}>
-                        <img src={dataArray.avatarUrl} alt="Imagen" className="rounded-full border w-80 ml-20" style={{ position: "relative", left: "0%", zIndex: "1" }} />
-                        <div className="flex flex-col h-full w-full" style={{ position: "relative", left: "-10%" }}>
-                            <div className="flex flex-row items-center h-14 pl-32 w-full" style={{ backgroundColor: "var(--talent-highlight-background)" }}>
-                                <h2 style={{ fontSize: '1.5rem' }}>{dataArray.githubUsername}</h2>
+                    <div className="analysis-profile">
+
+                        <img src={dataArray.avatarUrl} alt="Imagen" className="analysis-profile-img" style={{ position: "relative", left: "0%", zIndex: "1" }} />
+                        
+                        <div className="analysis-profile-text">
+                            <div className="analysis-profile-textcell-main">
+                                <h2>{dataArray.githubUsername}</h2>
                             </div>
-                            <div className="flex flex-row items-center h-14 pl-32 w-full" style={{ backgroundColor: "var(--talent-dark-background)" }}>
-                                {Input('Followers', dataArray.followers, false, "300px")}
+                            <div className="analysis-profile-textcell">
+                                {Input({name:'Followers', value:dataArray.followers, width:"300px"})}
                             </div>
-                            <div className="flex flex-row items-center h-14 pl-32 w-full" style={{ backgroundColor: "var(--talent-dark-background)" }}>
-                                {Input('Commits', dataArray && dataArray.contributions ? dataArray.contributions.totalCommits : 0, false, "300px")}
+                            <div className="analysis-profile-textcell">
+                                {Input({name:'Commits', value:dataArray && dataArray.contributions ? dataArray.contributions.totalCommits : 0, width:"300px"})}
                             </div>
-                            <div className="flex flex-row items-center h-14 pl-32 w-full" style={{ backgroundColor: "var(--talent-dark-background)" }}>
-                                {Input('Pull Requests', dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0, false, "300px")}
+                            <div className="analysis-profile-textcell">
+                                {Input({name:'Pull Requests', value:dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0, width:"300px"})}
                             </div>
 
                         </div>
@@ -151,7 +157,7 @@ export default function AnalysisDashboard() {
                                     {errorMessage}
                                 </div>
                             ) : (
-                                <div className="mt-2 w-11/12 self-center" style={{ backdropFilter: "blur(8px)" }}>
+                                <div className="mt-2 w-11/12 self-center" style={{ backdropFilter: "blur(8px)", overflow: "scroll" }}>
                                     <table className="w-full">
                                         <thead>
                                             <tr>
@@ -178,63 +184,68 @@ export default function AnalysisDashboard() {
 
                                         <tbody className="datatable-body">
                                             {dataArray.topRepositories ? dataArray.topRepositories.map((item, index) => (
+                                            <>
                                                 <tr key={index}>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            {item.name}
-                                                        </div>
-                                                        <hr style={{ width: '110%' }}></hr>
+                                                        {item.name}
                                                     </td>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            {item.stars}
-                                                        </div>
-                                                        <hr style={{ width: '110%' }}></hr>
+                                                        {item.stars}
                                                     </td>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            {item.forks}
-                                                        </div>
-                                                        <hr style={{ width: '110%' }}></hr>
+                                                        {item.forks}
                                                     </td>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            {item.languages.join(', ')}
-                                                        </div>
-                                                        <hr style={{ width: '110%' }}></hr>
+                                                        {item.languages.join(', ')}
                                                     </td>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            {item.technologies.join(', ')}
-                                                        </div>
-                                                        <hr style={{ width: '110%' }}></hr>
+                                                        {item.technologies.join(', ')}
                                                     </td>
-                                                    <td className="datatable-cell">
+                                                    <td className="datatable-cell-small">
                                                         <br></br>
-                                                        <div style={{ wordBreak: 'break-word', height: '35px', alignItems: 'center', justifyContent: 'center', paddingLeft: "20px", paddingBottom: "20px" }}>
-                                                            <Link to={item.url}>
-                                                                ICON
-                                                            </Link>
-                                                        </div>
-                                                        <hr style={{ width: '100%' }}></hr>
+                                                        <Link to={item.url}>
+                                                            ICON
+                                                        </Link>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                    <td>
+                                                        <hr style={{ width: '105%' }}></hr>
+                                                    </td>
+                                                </tr>
+                                            </>
+
                                             ))
                                                 : null}
                                         </tbody>
                                     </table>
                                     <br></br>
-                                    <div className="flex flex-row w-full justify-around mt-10 mb-10">
+                                    <div className="flex w-full justify-around mt-10 mb-10" style={{flexDirection: mobile ? "column" : "row"}}>
                                         <div className="flex flex-row justify-center pl-20">
-                                            {Input('Repositories Contributes with Commits', dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithCommits : 0, false)}
+                                            {Input({name:'Repositories Contributes with Commits', value:dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithCommits : 0})}
                                         </div>
                                         <div className="flex flex-row justify-center pl-20">
-                                            {Input('Repositories Contributes with Pull Requests', dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithPullRequests : 0, false)}
+                                            {Input({name:'Repositories Contributes with Pull Requests', value:dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithPullRequests : 0})}
                                         </div>
                                     </div>
                                     <br></br>
@@ -267,7 +278,7 @@ export default function AnalysisDashboard() {
                     ) : (
                         <>
                             <div className="flex flex-col items-center w-8/12 self-center">
-                                <DataTable header={'Top 5 Used Languages'} contentArray={languages} />
+                                <DataTable header={'Top 5 Used Languages'} contentArray={languages}/>
                                 <div className="mr-20 "></div>
                                 <br></br>
                                 <br></br>

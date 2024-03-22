@@ -83,7 +83,7 @@ export default function AnalysisList() {
                 <div className="flex justify-between  w-full">
 
 
-                    <div className="w-full max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between mt-10"
+                    <div className="w-10/12 max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between mt-10"
                         style={{
                             backgroundColor: "rgba(0, 0, 0, 0.5)",
                             marginLeft: "100",
