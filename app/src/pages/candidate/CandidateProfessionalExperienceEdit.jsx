@@ -1,14 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import Input from '../../components/Input'
-import profile from '../../images/profile.jpg'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import Swal from 'sweetalert2'
-import FormTextInput from '../../components/FormTextInput'
 
 export default function CandidateProfessionalExperienceEdit() {
 	const { isAuthenticated } = useAuthContext()

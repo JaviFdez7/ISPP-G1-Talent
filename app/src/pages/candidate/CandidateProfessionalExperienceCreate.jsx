@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import MainButton from "../../components/mainButton";
-import Input from "../../components/Input";
 import Swal from "sweetalert2";
 
 export default function CandidateProfessionalExperienceCreate() {
@@ -118,10 +117,14 @@ export default function CandidateProfessionalExperienceCreate() {
     } else {
       const startDate = new Date(form.startDate)
       const endDate = new Date(form.endDate)
+      const currentDate = new Date();
       if (startDate > endDate) {
         errors.startDate = 'Start Date cannot be after the EndDate'
       }
-
+      if (endDate > currentDate) {
+        errors.endDate = 'End Date cannot be after the current date';
+      }
+    
       const year1970 = new Date('1970-01-01')
       if (startDate < year1970 || endDate < year1970) {
         errors.startDate = 'Start Date cannot be before 1970 or after the current date'
