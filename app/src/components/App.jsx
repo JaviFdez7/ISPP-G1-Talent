@@ -28,6 +28,11 @@ import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
+//search
+import Search from "../pages/search/SearchTeam.jsx";
+import SearchForm from "../pages/search/SearchForm.jsx";
+import SearchResult from "../pages/search/SearchResult.jsx";
+
 //auth
 import Login from '../pages/auth/Login.jsx'
 import RegisterCandidate from '../pages/auth/RegisterCandidate.jsx'
@@ -84,32 +89,36 @@ function App() {
 							}
 						/>
 
-						{/*Search*/}
-
-						<Route
-							path='/searches/search'
-							element={
-								<ProtectedRoute roles={['Representative']}>
-									<PlaceHolder pageName='search page' />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='/searches/:searchId'
-							element={
-								<ProtectedRoute roles={['Representative']}>
-									<PlaceHolder pageName='search by id' />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='/searches/list'
-							element={
-								<ProtectedRoute roles={['Representative']}>
-									<PlaceHolder pageName='search list' />
-								</ProtectedRoute>
-							}
-						/>
+            <Route path="/searches/team" element={
+              <ProtectedRoute roles={['Representative']} >
+                <Search/>
+              </ProtectedRoute>}
+            />
+             <Route
+              path="/searches/search"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <SearchForm />
+                </ProtectedRoute>
+              }
+            />
+           <Route
+              path="/searches/:searchId"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <SearchResult/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/searches/list"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <PlaceHolder pageName="search list" />
+                </ProtectedRoute>
+              }
+            />
+   
 
 						{/*Subscription*/}
 						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />

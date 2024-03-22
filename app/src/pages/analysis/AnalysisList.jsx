@@ -42,6 +42,7 @@ export default function AnalysisList() {
         fetchDataFromEndpoint(uri)
             .then(data => {
                 const newArray = data.map(item => item);
+                newArray.sort((a, b) => new Date(b.date) - new Date(a.date));
                 setDataArray(newArray);
             })
             .catch(error => {

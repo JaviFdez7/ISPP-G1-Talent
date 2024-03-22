@@ -60,22 +60,26 @@ export default function Analyzer() {
   async function updateAnalysisHistory(currentAnalysisId) {
     const currentUserId = localStorage.getItem("userId");
     const history = await getHistory(currentAnalysisId);
-    const historyId = history._id;
-    const uri = `/user/${currentUserId}/history/${historyId}`;
-    try {
-      const currentDate = new Date().toISOString();
-      const isFavorite = history.favorite;
-      const response = await axios.patch(ruta + uri, {
-        date: currentDate,
-        favorite: isFavorite,
-        userId: currentUserId,
-        analysisId: currentAnalysisId
-      });
-      return response.data.data;
-    } catch (error) {
-      setErrorMessage('Unable to connect to the server. Please try again later.');
-      console.error("Error while saving  history of current analysis: ", error);
-      throw error;
+    if (history) {
+      const historyId = history._id;
+      const uri = `/user/${currentUserId}/history/${historyId}`;
+      try {
+        const currentDate = new Date().toISOString();
+        const isFavorite = history.favorite;
+        const response = await axios.patch(ruta + uri, {
+          date: currentDate,
+          favorite: isFavorite,
+          userId: currentUserId,
+          analysisId: currentAnalysisId
+        });
+        return response.data.data;
+      } catch (error) {
+        setErrorMessage('Unable to connect to the server. Please try again later.');
+        console.error("Error while saving  history of current analysis: ", error);
+        throw error;
+      }
+    } else {
+      saveAnalysisHistory(currentAnalysisId);
     }
   }
 
@@ -109,7 +113,7 @@ export default function Analyzer() {
     try {
       try {
         const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`);
-        console.log("status******", userResponse.ok);
+        console.log("existe?******", userResponse.ok);
         if (userResponse.ok) {
           const userData = await userResponse.json();
           updateAnalysisHistory(userData.data._id);
