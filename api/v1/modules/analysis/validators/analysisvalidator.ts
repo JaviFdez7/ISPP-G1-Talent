@@ -59,15 +59,14 @@ try {
         title: 'Internal Server Error',
         detail:'An error occurred while fetching the GitHub user data.'
       }])
-      return;
     }
-    next();
+    return next();
 } catch (error: any) {
   console.error("Error:", error.message);
   ApiResponse.sendError(res,[{
     title: 'Internal Server Error',
     detail: error.message
   }])
-  return
+  
 }
 };

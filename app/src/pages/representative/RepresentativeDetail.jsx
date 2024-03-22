@@ -125,11 +125,6 @@ export default function RepresentativeDetail() {
           />
       <br></br>
       <br></br>
-        <LatestHistory
-          header="Latest Search"
-          data={searchHistoryData}
-          type="searches"
-        />
       </div>
     </div>
   );

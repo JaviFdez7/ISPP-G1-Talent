@@ -50,7 +50,6 @@ export default function Navbar() {
             `${import.meta.env.VITE_BACKEND_URL}/user`
           );
           const user = response.data.data.find((user) => user._id === currentUserId);
-          console.log("user", user);
           setUserData(user);
         }
       } catch (error) {

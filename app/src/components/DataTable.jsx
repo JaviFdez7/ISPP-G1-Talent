@@ -2,7 +2,7 @@ import React from "react";
 import MainButton from "./mainButton";
 import { Link } from "react-router-dom";
 
-export default function DataTable({ header, contentArray, editable=false, addLink, editLink}) {
+export default function DataTable({ header, contentArray, editable=false, addLink="", editLink="", idArray=[], idName="" }) {
     const cellHeight = '100px';
     const minCellWidth = '142px';
 
@@ -51,7 +51,8 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                             {editable && (
                                 <td>
                                     <br></br>
-                                    <Link to={editLink + "/" + index} className="edit-button">
+                                    <Link to={editLink} className="edit-button"
+                                    onClick={() => localStorage.setItem(idName, idArray[index])}>
                                         Edit
                                     </Link>
                                 </td>

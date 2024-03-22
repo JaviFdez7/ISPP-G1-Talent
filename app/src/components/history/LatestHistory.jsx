@@ -1,9 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom"
 import MainButton from "../mainButton";
+import AnalysisHistoryItem from "./AnalysisHistoryItem";
 
 const LatestHistory = ({ header, data, type = "analysis" }) => {
-    const paddedData = data.concat(Array.from({ length: 3 - data.length }, () => ({})));
+    const paddedDataToShow = data.slice(0, 3); 
 
     const formatDateTime = (date) => {
         if (!date) return " - ";
@@ -19,21 +20,12 @@ const LatestHistory = ({ header, data, type = "analysis" }) => {
                     </tr>
                 </thead>
                 <tbody className="history-table-body">
-                    {paddedData.slice(0,3).map((item, index) => (
-                    <>
-                        <tr key={index} >
-                            <td className="pl-4">{formatDateTime(item.date)}</td>
-                            <td className="pl-4">{item._id ? <Link to={`/${type}/${item.id}`} style={{ color: 'var(--talent-highlight)' }}>See details</Link> : " - "}</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <hr style={{width: '105%'}}></hr>
-                            </td>
-                            <td>
-                                <hr style={{width: '100%'}}></hr>
-                            </td>
-                        </tr>
-                    </>
+                    {paddedDataToShow.map((item, index) => (
+                        <AnalysisHistoryItem
+                            item={item}
+                            formattedDate={formatDateTime(item.date)}
+                            type="searches"
+                        />
                     ))}
                 </tbody>
             </table>
