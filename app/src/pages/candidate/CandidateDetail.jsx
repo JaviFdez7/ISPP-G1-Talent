@@ -97,9 +97,6 @@ export default function CandidateDetail() {
               {SecondaryButton("Update", "", "")}
             </div>
           </div>
-          <div className="mt-8 self-center">
-            {SecondaryButton("Update", "", "")}
-          </div>
 
         </div>
       </div>

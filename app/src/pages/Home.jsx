@@ -37,9 +37,6 @@ export default function Home() {
           <Typewriter text="Welcome to IT TALENT" delay={100} />
           <br />
         </h1>
-        <br></br>
-        <br></br>
-        <br></br>
         <h2>
           Prepare for a <strong>revolution</strong>
           <br />
@@ -59,6 +56,9 @@ export default function Home() {
             </div>
           )}
 
+          <br></br>
+          <br></br>
+          <br></br>
           <br></br>
         </div>
       </div>

@@ -5,6 +5,7 @@ import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
+import Input from "../../components/Input";
 
 export default function RegisterRepresentative() {
   const talentColor = "var(--talent-highlight)";
@@ -140,6 +141,11 @@ export default function RegisterRepresentative() {
     }
     return errors;
   }
+  
+  let mobile = false;
+  if (window.screen.width < 500) {
+    mobile = true;
+  }
 
   return (
     <div
@@ -150,28 +156,29 @@ export default function RegisterRepresentative() {
         overflowY: "scroll",
       }}
     >
-      <div
-        className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          marginLeft: "auto",
-          marginRight: "auto",
-          marginTop: "80px",
-          marginBottom: "20px",
-          borderColor: talentColor,
-          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-          backdropFilter: "blur(8px)",
-          borderWidth: "1px",
-        }}
-      >
-        <h2
+    <div
+      className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
+      style={{
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        marginLeft: "auto",
+        marginRight: "auto",
+        marginTop: "50px",
+        borderColor: talentColor,
+        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+        backdropFilter: "blur(8px)",
+        borderWidth: "1px",
+      }}
+    >
+      <h2
           className="text-2xl font-bold text-center mb-4 text-white"
           style={{ marginTop: "-40px", marginBottom: "-10px" }}
         >
           Register as
         </h2>
         <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex justify-center items-center space-x-4 mb-4"
+          style={{flexDirection: mobile ? "column" : "row"}}
+        >
           <Link to="/register/candidate">
             <h2
               className="text-2xl text-white hover:text-gray-600 px-6 py-3"
@@ -193,81 +200,34 @@ export default function RegisterRepresentative() {
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
+          style={{fontSize: "18px"}}
         >
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <FormTextInput
-              labelFor="Username"
-              labelText="Username"
-              placeholder="Enter your Username"
-              name="username"
-              value={username}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Corporativeemail"
-              labelText="Corporative Email"
-              placeholder="Enter your Corporative Email"
-              name="corporative_email"
-              value={corporative_email}
-              onChange={(e) => onInputChange(e)}
-              type="email"
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="companyname"
-              labelText="Company Name"
-              placeholder="Enter your Company Name"
-              name="company_name"
-              value={company_name}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="ProjectSocietyName"
-              labelText="Project Society Name"
-              placeholder="Enter your Project Society Name"
-              name="projectSocietyName"
-              value={projectSocietyName}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-            />
+          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
+
+            {Input({name:'Username', value:username, editable:true, placeholder:"Enter your Username", 
+            onChange:(e) => onInputChange(e), formName:"username", col:mobile, isMandatory:true, errors:errors})}
+
+            {Input({name:'Corporative Email', value:corporative_email, editable:true, placeholder:"Enter your Corporative Email", 
+            onChange:(e) => onInputChange(e), formName:"corporative_email", col:mobile, isMandatory:true, errors:errors, type:"email"})}
+
+            {Input({name:'Company Name', value:company_name, editable:true, placeholder:"Enter your Company Name", 
+            onChange:(e) => onInputChange(e), formName:"company_name", col:mobile, isMandatory:true, errors:errors, type:"email"})}
+
+            {Input({name:'Project Society Name', value:projectSocietyName, editable:true, placeholder:"Enter your Project Society Name", 
+            onChange:(e) => onInputChange(e), formName:"projectSocietyName", col:mobile, isMandatory:true, errors:errors, type:"email"})}
+
           </div>
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <FormTextInput
-              labelFor="Phonenumber"
-              labelText="Phone number"
-              placeholder="Enter your Phone number"
-              name="phone_number"
-              value={phone_number}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-            />
-            <FormTextInput
-              labelFor="Password"
-              labelText="Password"
-              placeholder="Enter your Password"
-              name="password"
-              value={password}
-              onChange={(e) => onInputChange(e)}
-              type="password"
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Password2"
-              labelText="Repeat Password"
-              placeholder="Enter your Password again"
-              name="password2"
-              value={password2}
-              onChange={(e) => onInputChange(e)}
-              type="password"
-              errors={errors}
-              isMandatory
-            />
+          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
+
+            {Input({name:'Phone number', value:phone_number, editable:true, placeholder:"Enter your Phone number", 
+            onChange:(e) => onInputChange(e), formName:"phone_number", col:mobile, errors:errors, type:"email"})}
+
+            {Input({name:'Password', value:password, editable:true, placeholder:"Enter your Password", 
+            onChange:(e) => onInputChange(e), formName:"password", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+
+            {Input({name:'Repeat Password', value:password2, editable:true, placeholder:"Enter your Password again", 
+            onChange:(e) => onInputChange(e), formName:"password2", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+
             <div className="flex items-center justify-end">
               <div
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
@@ -297,13 +257,13 @@ export default function RegisterRepresentative() {
                     />
                     <a
                       href="https://tu-enlace-externo.com"
-                      className="text-yellow-500 hover:underline"
+                      className="text-white hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Read the conditions in here
                       <svg
-                        className="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6 inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -324,7 +284,8 @@ export default function RegisterRepresentative() {
               </div>
             </div>
           </div>
-          <div className="flex-row space-x-24 m-auto">
+          
+          <div className="flex-row space-x-24 m-auto mt-4">
             <div
               className="flex items-center justify-center h-full"
               style={{ marginTop: "2rem" }}
@@ -340,12 +301,13 @@ export default function RegisterRepresentative() {
                 </Link>
               </p>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 mb-4">
               {MainButton("Register", "/", handleSubmit)}
             </div>
           </div>
         </form>
       </div>
+      <br></br>
     </div>
   );
 }

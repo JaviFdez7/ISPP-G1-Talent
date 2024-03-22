@@ -4,6 +4,7 @@ import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import MainButton from "../../components/mainButton";
+import Input from "../../components/Input";
 import Swal from "sweetalert2";
 
 export default function CandidateProfessionalExperienceCreate() {
@@ -152,15 +153,9 @@ export default function CandidateProfessionalExperienceCreate() {
       }}
     >
       <div
-        className="h-100 rounded shadow-md flex flex-col justify-between"
+        className="h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          maxWidth: "48rem",
-          padding: "2rem",
-          margin: "1rem",
-          marginLeft: "auto",
-          marginRight: "auto",
           borderColor: "var(--talent-highlight)",
           borderWidth: "1px",
         }}
@@ -169,40 +164,25 @@ export default function CandidateProfessionalExperienceCreate() {
           <h2
             className="font-bold text-center text-white"
             style={{
-              fontSize: "4rem",
+              fontSize: "2rem",
               marginTop: "2rem",
               marginBottom: "4rem",
             }}
           >
             Add work experience
           </h2>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+          <form className="w-full flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="StartDate"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 StartDate
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
-                  type="date"
-                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  type="date" w-full
+                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
                     width: "100%",
                     padding: "0.5rem 0.75rem",
@@ -218,29 +198,14 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="EndDate"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 EndDate
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
                   type="text"
                   className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -261,29 +226,14 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="CompanyName"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 Company or Project Name
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
                   type="text"
                   className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -303,29 +253,14 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="ProfessionalArea"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 Professional Area
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <select
                   className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{

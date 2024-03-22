@@ -31,6 +31,6 @@
 .input-container-value > input:focus {
     outline: none !important;    
 }
-.input-container * h1 {
+.input-container * h5 {
     color: white;
 }

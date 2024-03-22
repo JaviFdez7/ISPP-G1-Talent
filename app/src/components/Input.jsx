@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Input({name="", value="", editable=false, placeholder="", onChange="", formName="", width="100%", col=false}={}) {
+export default function Input({name="", value="", editable=false, placeholder="", onChange="", formName="", width="100%", col=false, isMandatory=false, errors={}, type="text"}={}) {
 
   if (formName === "") {
     formName = name;
@@ -25,10 +25,10 @@ export default function Input({name="", value="", editable=false, placeholder=""
     return (
         <div className="input-container" style={{width: width, flexDirection: col ? "column" : "row"}}>
             <div className="input-container-name" style={{width: n_width}}>
-              <h1>{name}</h1>
+              <h5>{name + (isMandatory ? " *" : "")}</h5>
             </div>
             <div className="input-container-value" style={{width: v_width}}>
-              <input id={"input-"+name} type="text" disabled={!editable} onFocus={expand} placeholder={placeholder} onChange={onChange} name={formName} value={value}></input>
+              <input id={"input-"+name} disabled={!editable} onFocus={expand} placeholder={placeholder} onChange={onChange} name={formName} value={value} isMandatory={isMandatory} errors={errors} type={type}></input>
               <hr className="input-value-highlighter" id={"input-value-highlighter-"+name}></hr>
             </div>
         </div>

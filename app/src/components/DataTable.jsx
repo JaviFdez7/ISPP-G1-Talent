@@ -49,7 +49,7 @@ export default function DataTable({ header, contentArray, editable=false, addLin
                                 {item}
                             </td>
                             {editable && (
-                                <td>
+                                <td className="pl-2 pr-2">
                                     <br></br>
                                     <Link to={editLink} className="edit-button"
                                     onClick={() => localStorage.setItem(idName, idArray[index])}>

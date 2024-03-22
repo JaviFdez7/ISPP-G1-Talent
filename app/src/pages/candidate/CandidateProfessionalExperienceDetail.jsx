@@ -34,15 +34,9 @@ export default function CandidateProfessionalExperienceDetail({ }) {
       }}
     >
       <div
-        className="h-100 rounded shadow-md flex flex-col justify-between"
+        className="h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          maxWidth: "48rem",
-          padding: "2rem",
-          margin: "1rem",
-          marginLeft: "auto",
-          marginRight: "auto",
           borderColor: "var(--talent-highlight)",
           borderWidth: "1px",
         }}
@@ -51,7 +45,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
           <h2
             className="font-bold text-center text-white"
             style={{
-              fontSize: "3rem",
+              fontSize: "2rem",
               marginTop: "2rem",
               marginBottom: "4rem",
             }}
@@ -97,7 +91,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
                 </div>
               </div>
             </div>
-            <div className="mt-8 self-center w-full">
+            <div className="mt-8 self-center w-full flex flex-row justify-center">
               {SecondaryButton("Back", "/candidate/detail", "")}
               {MainButton("Update", "/candidate/professional-experience/edit", "")}
             </div>

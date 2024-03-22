@@ -165,15 +165,9 @@ export default function CandidateProfessionalExperienceEdit() {
       }}
     >
       <div
-        className="h-100 rounded shadow-md flex flex-col justify-between"
+        className="h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          maxWidth: "48rem",
-          padding: "2rem",
-          margin: "1rem",
-          marginLeft: "auto",
-          marginRight: "auto",
           borderColor: "var(--talent-highlight)",
           borderWidth: "1px",
         }}
@@ -182,27 +176,32 @@ export default function CandidateProfessionalExperienceEdit() {
           <h2
             className="font-bold text-center text-white"
             style={{
-              fontSize: "3rem",
+              fontSize: "2rem",
               marginTop: "2rem",
               marginBottom: "4rem",
             }}
           >
-            Professional Experience Detail
+            Add work experience
           </h2>
-          <form onSubmit={(e) => editProffesionalExperience(e)}>
-            <div className='flex flex-col items-center'>
-              <div className='mb-4'>
-                <label htmlFor="StartDate" className="block text-lg font-bold text-white self-center">
-                  Start Date
-                </label>
+          <form className="w-full flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
+              <label
+                htmlFor="StartDate"
+                className="block text-lg font-bold text-white"
+              >
+                StartDate
+              </label>
+              <div className="flex-grow">
                 <input
-                  type="date"
-                  id="StartDate"
+                  type="date" w-full
+                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem 0.75rem",
+                  }}
                   name="startDate"
                   value={startDate}
-                  onChange={(e) => handleChange(e)}
-                  required
-                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  onChange={(e) => onInputChange(e)}
                 />
                 {errors.startDate && (
                   <p className="text-red-500 text-xs italic">
@@ -210,17 +209,27 @@ export default function CandidateProfessionalExperienceEdit() {
                   </p>
                 )}
               </div>
-              <div className='mb-4'>
-                <label htmlFor="EndDate" className="block text-lg font-bold text-white self-center">
-                  End Date
-                </label>
+            </div>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
+              <label
+                htmlFor="EndDate"
+                className="block text-lg font-bold text-white"
+              >
+                EndDate
+              </label>
+              <div className="flex-grow">
                 <input
-                  id="EndDate"
+                  type="text"
+                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem 0.75rem",
+                  }}
+                  placeholder="Write your endDate"
                   name="endDate"
-                  value={formattedDate}
-                  onChange={(e) => handleChange(e)}
-                  readOnly
-                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  value={endDate}
+                  onChange={(e) => onInputChange(e)}
+                  disabled
                 />
                 {errors.endDate && (
                   <p className="text-red-500 text-xs italic">
@@ -228,18 +237,26 @@ export default function CandidateProfessionalExperienceEdit() {
                   </p>
                 )}
               </div>
-              <div className='mb-4'>
-                <label htmlFor="CompanyName" className="block text-lg font-bold text-white self-center">
-                  Company Name
-                </label>
+            </div>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
+              <label
+                htmlFor="CompanyName"
+                className="block text-lg font-bold text-white"
+              >
+                Company or Project Name
+              </label>
+              <div className="flex-grow">
                 <input
                   type="text"
-                  id="CompanyName"
+                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem 0.75rem",
+                  }}
+                  placeholder="Write your companyName"
                   name="companyName"
                   value={companyName}
-                  onChange={(e) => handleChange(e)}
-                  required
-                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  onChange={(e) => onInputChange(e)}
                 />
                 {errors.companyName && (
                   <p className="text-red-500 text-xs italic">
@@ -247,17 +264,25 @@ export default function CandidateProfessionalExperienceEdit() {
                   </p>
                 )}
               </div>
-              <div className='mb-4'>
-                <label htmlFor="ProfessionalArea" className="block text-lg font-bold text-white self-center">
-                  Professional Area
-                </label>
+            </div>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
+              <label
+                htmlFor="ProfessionalArea"
+                className="block text-lg font-bold text-white"
+              >
+                Professional Area
+              </label>
+              <div className="flex-grow">
                 <select
-                  id="ProfessionalArea"
+                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  style={{
+                    width: "100%",
+                    padding: "0.5rem 0.75rem",
+                    overflowY: "scroll"
+                  }}
                   name="professionalArea"
                   value={professionalArea}
-                  onChange={(e) => handleChange(e)}
-                  required
-                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  onChange={(e) => onInputChange(e)}
                 >
                   <option value="">Select your professional area</option>
                   <option value="Web application">Web application</option>
@@ -269,7 +294,7 @@ export default function CandidateProfessionalExperienceEdit() {
                   <option value="Data science">Data science</option>
                   <option value="Artificial intelligence">Artificial intelligence</option>
                   <option value="Security">Security</option>
-                  <option value="Other">Other</option>
+                  <option value="Other">Other </option>
                 </select>
                 {errors.professionalArea && (
                   <p className="text-red-500 text-xs italic">
@@ -278,16 +303,16 @@ export default function CandidateProfessionalExperienceEdit() {
                 )}
               </div>
             </div>
-            {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-              <p className="text-red-500">{errors.errors[0].detail}</p>
-            )}
-            <div className='flex align-center justify-center'>
-              {MainButton('Update', '/candidate/detail', () => console.log('Update button clicked'))}
-              {SecondaryButton('Cancel', '/candidate/detail', '')}
-            </div>
           </form>
+        </div>
+        {errors.errors && errors.errors[0] && errors.errors[0].detail && (
+          <p className="text-red-500">{errors.errors[0].detail}</p>
+        )}
+        <div className='flex align-center justify-center'>
+          {MainButton('Update', '/candidate/detail', () => console.log('Update button clicked'))}
+          {SecondaryButton('Cancel', '/candidate/detail', '')}
         </div>
       </div>
     </div>
-  )
+  );
 }

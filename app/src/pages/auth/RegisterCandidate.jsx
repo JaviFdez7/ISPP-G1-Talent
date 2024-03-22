@@ -5,6 +5,7 @@ import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
+import Input from "../../components/Input.jsx";
 
 export default function RegisterCandidate() {
   const talentColor = "var(--talent-highlight)";
@@ -137,6 +138,11 @@ export default function RegisterCandidate() {
     return errors;
   }
 
+  let mobile = false;
+  if (window.screen.width < 500) {
+    mobile = true;
+  }
+
   return (
     <div
       className="h-screen flex flex-col justify-center bg-fixed home-container"
@@ -147,12 +153,12 @@ export default function RegisterCandidate() {
       }}
     >
       <div
-        className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "150px",
+          marginTop: "50px",
           borderColor: talentColor,
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
           backdropFilter: "blur(8px)",
@@ -166,7 +172,9 @@ export default function RegisterCandidate() {
           Register as
         </h2>
         <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex justify-center items-center space-x-4 mb-4"
+          style={{flexDirection: mobile ? "column" : "row"}}
+        >
           <h2
             className="text-2xl"
             style={{ marginTop: "-40px", color: talentColor }}
@@ -188,93 +196,36 @@ export default function RegisterCandidate() {
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
+          style={{fontSize: "18px"}}
         >
-          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-            <FormTextInput
-              labelFor="Firstname"
-              labelText="First name"
-              placeholder="Enter your First name"
-              name="first_name"
-              value={first_name}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
+          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
 
-            <FormTextInput
-              labelFor="Surname"
-              labelText="Surname"
-              placeholder="Enter your Surname"
-              name="surname"
-              value={surname}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Username"
-              labelText="Username"
-              placeholder="Enter your Username"
-              name="username"
-              value={username}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Password"
-              labelText="Password"
-              placeholder="Enter your Password"
-              name="password"
-              value={password}
-              onChange={(e) => onInputChange(e)}
-              type="password"
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Password2"
-              labelText="Repeat Password"
-              placeholder="Enter your Password again"
-              name="password2"
-              value={password2}
-              onChange={(e) => onInputChange(e)}
-              type="password"
-              errors={errors}
-              isMandatory
-            />
+            {Input({name:'First name', value:first_name, editable:true, placeholder:"Enter your First name", 
+            onChange:(e) => onInputChange(e), formName:"first_name", col:mobile, isMandatory:true, errors:errors})}
+
+            {Input({name:'Surname', value:surname, editable:true, placeholder:"Enter your Surname", 
+            onChange:(e) => onInputChange(e), formName:"surname", col:mobile, isMandatory:true, errors:errors})}
+
+            {Input({name:'Username', value:username, editable:true, placeholder:"Enter your Username", 
+            onChange:(e) => onInputChange(e), formName:"username", col:mobile, isMandatory:true, errors:errors})}
+
+            {Input({name:'Password', value:password, editable:true, placeholder:"Enter your Password", 
+            onChange:(e) => onInputChange(e), formName:"password", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+
+            {Input({name:'Repeat Password', value:password2, editable:true, placeholder:"Enter your Password again", 
+            onChange:(e) => onInputChange(e), formName:"password2", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+
           </div>
-          <div className="w-full md:w-1/2 px-3">
-            <FormTextInput
-              labelFor="Email"
-              labelText="Email"
-              placeholder="Enter your Email"
-              name="email"
-              value={email}
-              onChange={(e) => onInputChange(e)}
-              type="email"
-              errors={errors}
-              isMandatory
-            />
-            <FormTextInput
-              labelFor="Phonenumber"
-              labelText="Phone number"
-              placeholder="Enter your Phone number"
-              name="phone_number"
-              value={phone_number}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-            />
-            <FormTextInput
-              labelFor="Githubusername"
-              labelText="Github username"
-              placeholder="Enter your Github username"
-              name="githubUsername"
-              value={githubUsername}
-              onChange={(e) => onInputChange(e)}
-              errors={errors}
-              isMandatory
-            />
+          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
+
+            {Input({name:'Email', value:email, editable:true, placeholder:"Enter your Email", 
+            onChange:(e) => onInputChange(e), formName:"email", col:mobile, isMandatory:true, errors:errors, type:"email"})}
+
+            {Input({name:'Phone number', value:phone_number, editable:true, placeholder:"Enter your Phone number", 
+            onChange:(e) => onInputChange(e), formName:"phone_number", col:mobile, errors:errors})}
+
+            {Input({name:'Github username', value:githubUsername, editable:true, placeholder:"Enter your Phone number", 
+            onChange:(e) => onInputChange(e), formName:"githubUsername", col:mobile, isMandatory:true, errors:errors})}
 
             <div className="flex items-center justify-end">
               <div
@@ -305,13 +256,13 @@ export default function RegisterCandidate() {
                     />
                     <a
                       href="https://tu-enlace-externo.com"
-                      className="text-yellow-500 hover:underline"
+                      className="text-white hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Read the conditions in here
                       <svg
-                        className="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6  inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -333,10 +284,10 @@ export default function RegisterCandidate() {
             </div>
           </div>
 
-          <div className="flex-row space-x-24 m-auto">
+          <div className="flex-row space-x-24 m-auto mt-4">
             <div
               className="flex items-center justify-center h-full"
-              style={{ marginTop: "2rem" }}
+              style={{ marginTop: "3rem" }}
             >
               <p className="text-md text-white mb-1 mr-2 text-center">
                 Already have an account?{" "}
@@ -349,12 +300,13 @@ export default function RegisterCandidate() {
                 </Link>
               </p>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 mb-4">
               {MainButton("Register", "/", handleSubmit)}
             </div>
           </div>
         </form>
       </div>
+      <br></br>
     </div>
   );
 }
