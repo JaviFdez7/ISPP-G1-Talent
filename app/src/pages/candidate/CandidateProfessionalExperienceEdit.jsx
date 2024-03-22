@@ -11,13 +11,10 @@ import Swal from 'sweetalert2'
 import FormTextInput from '../../components/FormTextInput'
 
 export default function CandidateProfessionalExperienceEdit() {
-	const today = new Date()
-
-	const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 	const { isAuthenticated } = useAuthContext()
 	const [form, setform] = useState({
 		startDate: '',
-		endDate: formattedToday,
+		endDate: '',
 		companyName: '',
 		professionalArea: '',
 		userId: localStorage.getItem('userId'),
@@ -137,8 +134,8 @@ export default function CandidateProfessionalExperienceEdit() {
 			}
 
 			const year1970 = new Date('1970-01-01')
-			if (startDate < year1970) {
-				errors.startDate = 'Start Date cannot be before 1970'
+			if (startDate < year1970 || endDate < year1970) {
+				errors.startDate = 'Start Date cannot be before 1970 or after the current date'
 			}
 		}
 		if (!form.companyName) {

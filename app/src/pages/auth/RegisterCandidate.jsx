@@ -8,96 +8,136 @@ import MainButton from "../../components/mainButton";
 import Input from "../../components/Input.jsx";
 
 export default function RegisterCandidate() {
-	const talentColor = 'var(--talent-highlight)'
-	const { login } = useAuthContext()
-	const [form, setForm] = useState({
-		first_name: '',
-		surname: '',
-		email: '',
-		username: '',
-		password: '',
-		password2: '',
-		phone_number: '',
-		githubUsername: '',
-		candidateSubscription: 'Basic plan',
-	})
-	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
-	const [errors, setErrors] = useState({})
-	const {
-		first_name,
-		surname,
-		email,
-		username,
-		password,
-		password2,
-		phone_number,
-		githubUsername,
-		candidateSubscription,
-	} = form
-	let navigate = useNavigate()
+  const talentColor = 'var(--talent-highlight)'
+  const { login } = useAuthContext()
+  const [form, setForm] = useState({
+    first_name: '',
+    surname: '',
+    email: '',
+    username: '',
+    password: '',
+    password2: '',
+    phone_number: '',
+    githubUsername: '',
+    candidateSubscription: 'Basic plan',
+  })
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
+  const [errors, setErrors] = useState({})
+  const {
+    first_name,
+    surname,
+    email,
+    username,
+    password,
+    password2,
+    phone_number,
+    githubUsername,
+    candidateSubscription,
+  } = form
+  let navigate = useNavigate()
 
-	function onInputChange(e) {
-		const { name, value, checked } = e.target
+  function onInputChange(e) {
+    const { name, value, checked } = e.target
 
-		if (name === 'termsCheckbox') {
-			setIsCheckboxChecked(checked)
-		} else {
-			setForm((prevForm) => ({ ...prevForm, [name]: value }))
-		}
+    if (name === 'termsCheckbox') {
+      setIsCheckboxChecked(checked)
+    } else {
+      setForm((prevForm) => ({ ...prevForm, [name]: value }))
+    }
 
-		setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
-	}
-	const handleCheckboxChange = (e) => {
-		setIsCheckboxChecked(e.target.checked)
-	}
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
+  }
+  const handleCheckboxChange = (e) => {
+    setIsCheckboxChecked(e.target.checked)
+  }
 
-	async function handleSubmit(e) {
-		e.preventDefault()
-		if (!isCheckboxChecked) {
-			setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
-			return
-		}
-		const validationErrors = validateForm()
+  async function handleSubmit(e) {
+    e.preventDefault()
+    if (!isCheckboxChecked) {
+      setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
+      return
+    }
+    const validationErrors = validateForm()
 
-		if (Object.keys(validationErrors).length > 0) {
-			setErrors(validationErrors)
-			return
-		}
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      return
+    }
 
-		try {
-			const response = await axios.post(
-				import.meta.env.VITE_BACKEND_URL + '/user/candidate',
-				{
-					...form,
-					fullName: form.first_name + ' ' + form.surname,
-					phone: form.phone_number,
-					githubUser: form.githubUsername,
-				}
-			)
-			if (response.status === 400) {
-				const data = response.data
-				setErrors(data)
-				return
-			}
-			const userDataFetch = await axios.post(
-				import.meta.env.VITE_BACKEND_URL + '/user/login',
-				form
-			)
-			setIsCheckboxChecked(false)
-			const data = userDataFetch.data.data
-			login(data.token, data.user.role, data.user._id)
-			navigate('/candidate/detail')
-		} catch (error) {
-			if (error.response.status === 409 || error.response.status === 400) {
-				// set the status code properly
-				setErrors(error.response.data)
-				return
-			}
-		}
-	}
-	function getRequiredFieldMessage(fieldName) {
-		return `The ${fieldName} field is required`
-	}
+    try {
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/user/candidate',
+        {
+          ...form,
+          fullName: form.first_name + ' ' + form.surname,
+          phone: form.phone_number,
+          githubUser: form.githubUsername,
+        }
+      )
+      if (response.status === 400) {
+        const data = response.data
+        setErrors(data)
+        return
+      }
+      const userDataFetch = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/user/login',
+        form
+      )
+      setIsCheckboxChecked(false)
+      const data = userDataFetch.data.data
+      login(data.token, data.user.role, data.user._id)
+      navigate('/candidate/detail')
+    } catch (error) {
+      if (error.response.status === 409 || error.response.status === 400) {
+        // set the status code properly
+        setErrors(error.response.data)
+        return
+      }
+    }
+  }
+  function getRequiredFieldMessage(fieldName) {
+    return `The ${fieldName} field is required`
+  }
+
+  function validateForm() {
+    let errors = {};
+    if (!form.first_name) {
+      errors.first_name = getRequiredFieldMessage('name');
+    } else if (form.first_name.length <= 3) {
+      errors.first_name = "The name field must be more than 3 characters";
+    }
+    if (!form.surname) {
+      errors.surname = getRequiredFieldMessage('surname');
+    } else if (form.surname.length <= 3) {
+      errors.surname = "The surname field must have more than 3 characters";
+    }
+    if (!form.email) {
+      errors.email = getRequiredFieldMessage('email');
+    } else if (
+      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
+    ) {
+      errors.email = "The email field must be from Gmail, Outlook or Hotmail";
+    }
+    if (!form.password) {
+      errors.password = getRequiredFieldMessage('password');
+    } else if (form.password !== form.password2) {
+      errors.password2 = "Passwords do not match";
+    }
+    if (!form.password2) {
+      errors.password2 = getRequiredFieldMessage('repeat password');
+    }
+    if (!form.githubUsername) {
+      errors.githubUsername = getRequiredFieldMessage('github username');
+    }
+    if (!form.username) {
+      errors.username = getRequiredFieldMessage('username');
+    }
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number =
+        "A phone number must consist of 9 digits exclusively";
+    }
+    return errors;
+  }
 
   let mobile = false;
   if (window.screen.width < 500) {
@@ -134,7 +174,7 @@ export default function RegisterCandidate() {
         </h2>
         <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
         <div className="flex justify-center items-center space-x-4 mb-4"
-          style={{flexDirection: mobile ? "column" : "row"}}
+          style={{ flexDirection: mobile ? "column" : "row" }}
         >
           <h2
             className="text-2xl"
@@ -152,41 +192,57 @@ export default function RegisterCandidate() {
           </Link>
         </div>
         {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-  <p className="text-red-500">{errors.errors[0].detail}</p>
-)}
+          <p className="text-red-500">{errors.errors[0].detail}</p>
+        )}
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
-          style={{fontSize: "18px"}}
+          style={{ fontSize: "18px" }}
         >
           <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
 
-            {Input({name:'First name', value:first_name, editable:true, placeholder:"Enter your First name", 
-            onChange:(e) => onInputChange(e), formName:"first_name", col:mobile, isMandatory:true, errors:errors})}
+            {Input({
+              name: 'First name', value: first_name, editable: true, placeholder: "Enter your First name",
+              onChange: (e) => onInputChange(e), formName: "first_name", col: mobile, isMandatory: true, errors: errors
+            })}
 
-            {Input({name:'Surname', value:surname, editable:true, placeholder:"Enter your Surname", 
-            onChange:(e) => onInputChange(e), formName:"surname", col:mobile, isMandatory:true, errors:errors})}
+            {Input({
+              name: 'Surname', value: surname, editable: true, placeholder: "Enter your Surname",
+              onChange: (e) => onInputChange(e), formName: "surname", col: mobile, isMandatory: true, errors: errors
+            })}
 
-            {Input({name:'Username', value:username, editable:true, placeholder:"Enter your Username", 
-            onChange:(e) => onInputChange(e), formName:"username", col:mobile, isMandatory:true, errors:errors})}
+            {Input({
+              name: 'Username', value: username, editable: true, placeholder: "Enter your Username",
+              onChange: (e) => onInputChange(e), formName: "username", col: mobile, isMandatory: true, errors: errors
+            })}
 
-            {Input({name:'Password', value:password, editable:true, placeholder:"Enter your Password", 
-            onChange:(e) => onInputChange(e), formName:"password", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+            {Input({
+              name: 'Password', value: password, editable: true, placeholder: "Enter your Password",
+              onChange: (e) => onInputChange(e), formName: "password", col: mobile, isMandatory: true, errors: errors, type: "password"
+            })}
 
-            {Input({name:'Repeat Password', value:password2, editable:true, placeholder:"Enter your Password again", 
-            onChange:(e) => onInputChange(e), formName:"password2", col:mobile, isMandatory:true, errors:errors, type:"password"})}
+            {Input({
+              name: 'Repeat Password', value: password2, editable: true, placeholder: "Enter your Password again",
+              onChange: (e) => onInputChange(e), formName: "password2", col: mobile, isMandatory: true, errors: errors, type: "password"
+            })}
 
           </div>
           <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
 
-            {Input({name:'Email', value:email, editable:true, placeholder:"Enter your Email", 
-            onChange:(e) => onInputChange(e), formName:"email", col:mobile, isMandatory:true, errors:errors, type:"email"})}
+            {Input({
+              name: 'Email', value: email, editable: true, placeholder: "Enter your Email",
+              onChange: (e) => onInputChange(e), formName: "email", col: mobile, isMandatory: true, errors: errors, type: "email"
+            })}
 
-            {Input({name:'Phone number', value:phone_number, editable:true, placeholder:"Enter your Phone number", 
-            onChange:(e) => onInputChange(e), formName:"phone_number", col:mobile, errors:errors})}
+            {Input({
+              name: 'Phone number', value: phone_number, editable: true, placeholder: "Enter your Phone number",
+              onChange: (e) => onInputChange(e), formName: "phone_number", col: mobile, errors: errors
+            })}
 
-            {Input({name:'Github username', value:githubUsername, editable:true, placeholder:"Enter your Phone number", 
-            onChange:(e) => onInputChange(e), formName:"githubUsername", col:mobile, isMandatory:true, errors:errors})}
+            {Input({
+              name: 'Github username', value: githubUsername, editable: true, placeholder: "Enter your Phone number",
+              onChange: (e) => onInputChange(e), formName: "githubUsername", col: mobile, isMandatory: true, errors: errors
+            })}
 
             <div className="flex items-center justify-end">
               <div
