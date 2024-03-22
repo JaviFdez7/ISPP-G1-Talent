@@ -1,70 +1,76 @@
-import React, { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Input from "../../components/Input";
-import profile from "../../images/profile.jpg";
-import mainBackground from "../../images/main-background2.jpg";
-import LatestHistory from "../../components/history/LatestHistory";
-import MainButton from "../../components/mainButton";
-import SecondaryButton from "../../components/secondaryButton";
-import axios from "axios";
-import { useAuthContext } from "../../context/authContext";
-import Logout from "../../components/swat/logout";
+import React, { useContext, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Input from '../../components/Input'
+import profile from '../../images/profile.jpg'
+import mainBackground from '../../images/main-background2.jpg'
+import LatestHistory from '../../components/history/LatestHistory'
+import MainButton from '../../components/mainButton'
+import SecondaryButton from '../../components/secondaryButton'
+import axios from 'axios'
+import { useAuthContext } from '../../context/authContext'
+import Logout from '../../components/swat/logout'
 
 export default function RepresentativeDetail() {
-  const { isAuthenticated, logout } = useAuthContext();
-  const [userData, setUserData] = useState(null);
-  const [analysisHistoryData, setAnalysisHistoryData] = useState([{
-    id: 1,
-    date: "2024-03-10",
-    name: "Sample Analysis"
-  }]);
-  const [searchHistoryData, setSearchHistoryData] = useState([{
-    id: 1,
-    date: "2024-03-10",
-    name: "Sample Search"
-  }]);
-  let navigate = useNavigate();
+	const { isAuthenticated, logout } = useAuthContext()
+	const [userData, setUserData] = useState(null)
+	const [analysisHistoryData, setAnalysisHistoryData] = useState([
+		{
+			id: 1,
+			date: '2024-03-10',
+			name: 'Sample Analysis',
+		},
+	])
+	const [searchHistoryData, setSearchHistoryData] = useState([
+		{
+			id: 1,
+			date: '2024-03-10',
+			name: 'Sample Search',
+		},
+	])
+	let navigate = useNavigate()
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (isAuthenticated) {
-          const currentUserId = localStorage.getItem("userId");
-          const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/user`
-          );
-          const user = response.data.data.find((user) => user._id === currentUserId);
-          setUserData(user);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
-  }, [isAuthenticated]);
+	useEffect(() => {
+		const fetchUserData = async () => {
+			try {
+				if (isAuthenticated) {
+					const currentUserId = localStorage.getItem('userId')
+					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
+					const user = response.data.data.find((user) => user._id === currentUserId)
+					setUserData(user)
+				}
+			} catch (error) {
+				console.error('Error fetching user data:', error)
+			}
+		}
+		fetchUserData()
+	}, [isAuthenticated])
 
+	useEffect(() => {
+		const fetchAnalysisHistoryData = async () => {
+			try {
+				if (isAuthenticated) {
+					const currentUserId = localStorage.getItem('userId')
+					const uri = `/user/${currentUserId}/history`
+					const response = await axios.get(import.meta.env.VITE_BACKEND_URL + uri)
+					console.log(response)
+					const historyArray = response.data.data.map((item) => item)
+					console.log('historyArray: ', historyArray)
+					sortAndFormatHistory(historyArray)
+					setAnalysisHistoryData(historyArray)
+				}
+			} catch (error) {
+				console.error('Error fetching history data:', error)
+			}
+		}
+		fetchAnalysisHistoryData()
+	}, [])
 
-  useEffect(() => {
-    const fetchAnalysisHistoryData = async () => {
-      try {
-        if (isAuthenticated) {
-          const currentUserId = localStorage.getItem("userId");
-          const uri = `/user/${currentUserId}/history`;
-          const response = await axios.get(
-            import.meta.env.VITE_BACKEND_URL + uri
-          );
-          console.log(response)
-          const historyArray = response.data.data.map(item => item);
-          console.log("historyArray: ", historyArray)
-          sortAndFormatHistory(historyArray)
-          setAnalysisHistoryData(historyArray);
-        }
-      } catch (error) {
-        console.error("Error fetching history data:", error);
-      }
-    };
-    fetchAnalysisHistoryData();
-  }, []);
+	function sortAndFormatHistory(historyList) {
+		historyList.sort((a, b) => b.date - a.date)
+		return historyList.map((history) => ({
+			date: history.date.toString(),
+		}))
+	}
 
   function sortAndFormatHistory(historyList) {
     historyList.sort((a, b) => b.date - a.date);

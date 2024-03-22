@@ -8,139 +8,149 @@ import Input from "../../components/Input";
 import Swal from "sweetalert2";
 
 export default function CandidateProfessionalExperienceCreate() {
-  const today = new Date();
-  const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  const { isAuthenticated } = useAuthContext()
+	const today = new Date()
+	const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+	const { isAuthenticated } = useAuthContext()
 
-  const [form, setForm] = useState({
-    startDate: "",
-    endDate: formattedToday,
-    companyName: "",
-    professionalArea: "",
-    userId: localStorage.getItem("userId"),
-  });
+	const [form, setForm] = useState({
+		startDate: '',
+		endDate: formattedToday,
+		companyName: '',
+		professionalArea: '',
+		userId: localStorage.getItem('userId'),
+	})
 
-  const [errors, setErrors] = useState({});
-  const { startDate, endDate, companyName, professionalArea, userId } = form;
+	const [errors, setErrors] = useState({})
+	const { startDate, endDate, companyName, professionalArea, userId } = form
 
-  let navigate = useNavigate();
+	let navigate = useNavigate()
 
-  // React.useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       if (isAuthenticated) {
-  //         const currentUserId = localStorage.getItem("userId");
-  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-  //         const user = response.data.data.find(user => user._id === currentUserId);
-  //         setForm(prevForm => ({ ...prevForm, ...user }));
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, [isAuthenticated]);
+	// React.useEffect(() => {
+	//   const fetchUserData = async () => {
+	//     try {
+	//       if (isAuthenticated) {
+	//         const currentUserId = localStorage.getItem("userId");
+	//         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+	//         const user = response.data.data.find(user => user._id === currentUserId);
+	//         setForm(prevForm => ({ ...prevForm, ...user }));
+	//       }
+	//     } catch (error) {
+	//       console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
+	//     }
+	//   };
+	//   fetchUserData();
+	// }, [isAuthenticated]);
 
-  function onInputChange(e) {
-    const { name, value, checked } = e.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
-    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
-    if (name === 'professionalArea') {
-      setForm(prevForm => ({ ...prevForm, [name]: value }));
-    }
-  }
+	function onInputChange(e) {
+		const { name, value, checked } = e.target
+		setForm((prevForm) => ({ ...prevForm, [name]: value }))
+		setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
+		if (name === 'professionalArea') {
+			setForm((prevForm) => ({ ...prevForm, [name]: value }))
+		}
+	}
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const currentUserId = localStorage.getItem('userId')
-    const token = localStorage.getItem('access_token')
-    const validationErrors = validateForm();
-    console.log(token);
-    console.log(currentUserId);
-    console.log(form);
+	async function handleSubmit(e) {
+		e.preventDefault()
+		const currentUserId = localStorage.getItem('userId')
+		const token = localStorage.getItem('access_token')
+		const validationErrors = validateForm()
+		console.log(token)
+		console.log(currentUserId)
+		console.log(form)
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors)
+			return
+		}
 
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/professional-experience",
-        {
-          ...form,
-          userId: currentUserId,
-        },
-        {
-          headers: {
-            'Authorization': `${token}`
-          }
-        }
-      );
-      if (response.status === 400 || response.status === 401) {
-        const data = response.data;
-        setErrors(data);
-        return;
-      }
-      navigate("/candidate/professional-experience/detail");
+		try {
+			const response = await axios.post(
+				import.meta.env.VITE_BACKEND_URL + '/professional-experience',
+				{
+					...form,
+					userId: currentUserId,
+				},
+				{
+					headers: {
+						Authorization: `${token}`,
+					},
+				}
+			)
+			if (response.status === 400 || response.status === 401) {
+				const data = response.data
+				setErrors(data)
+				return
+			}
+			navigate('/candidate/professional-experience/detail')
+		} catch (error) {
+			console.error('Error creating professional experience:', error)
+			if (error.response && error.response.status === 400) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Token expired',
+					text: 'Please login again to continue',
+					timer: 1500,
+					showConfirmButton: false,
+				})
+				navigate('/login')
+			}
+			if (error.response.data.errors[0].detail.includes('E11000')) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Error',
+					text: 'You already have a professional experience with the same company name',
+					timer: 1500,
+					showConfirmButton: false,
+				})
+				navigate('/candidate/detail')
+			}
+		}
+	}
 
-    } catch (error) {
-      console.error("Error creating professional experience:", error);
-      if (error.response && error.response.status === 400) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Token expired',
-          text: 'Please login again to continue',
-          timer: 1500,
-          showConfirmButton: false,
-        })
-        navigate('/login')
-      } if (error.response.data.errors[0].detail.includes("E11000")) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'You already have a professional experience with the same company name',
-          timer: 1500,
-          showConfirmButton: false,
-        })
-        navigate('/candidate/detail')
-      }
+	function getRequiredFieldMessage(fieldName) {
+		return `The ${fieldName} field is required`
+	}
 
-    }
-  }
+	function validateForm() {
+		let errors = {}
 
-  function getRequiredFieldMessage(fieldName) {
-    return `The ${fieldName} field is required`;
-  }
+		if (!form.startDate) {
+			errors.startDate = getRequiredFieldMessage('startDate')
+		} else {
+			const startDate = new Date(form.startDate)
+			const endDate = new Date(form.endDate)
+			if (startDate > endDate) {
+				errors.startDate = 'Start Date cannot be after the EndDate'
+			}
 
-  function validateForm() {
-    let errors = {};
-
-    if (!form.startDate) {
-      errors.startDate = getRequiredFieldMessage('startDate');
-    } else {
-      const startDate = new Date(form.startDate);
-      const endDate = new Date(form.endDate);
-      if (startDate > endDate) {
-        errors.startDate = "Start Date cannot be after the EndDate";
-      }
-
-      const year1970 = new Date('1970-01-01');
-      if (startDate < year1970) {
-        errors.startDate = "Start Date cannot be before 1970";
-      }
-    }
-    if (!form.companyName) {
-      errors.companyName = getRequiredFieldMessage('companyName');
-    } else if (form.companyName.length <= 3) {
-      errors.companyName = "The company Name field must have more than 3 characters";
-    }
-    const validProfessionalAreas = ["Web application", "Mobile application", "Frontend", "DevOps", "Backend", "Operating systems", "Data science", "Artificial intelligence", "Security", "Other"];
-    if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea)) {
-      errors.professionalArea = "Invalid professional area";
-    }
-    return errors;
-  }
+			const year1970 = new Date('1970-01-01')
+			if (startDate < year1970) {
+				errors.startDate = 'Start Date cannot be before 1970'
+			}
+		}
+		if (!form.companyName) {
+			errors.companyName = getRequiredFieldMessage('companyName')
+		} else if (form.companyName.length <= 3) {
+			errors.companyName = 'The company Name field must have more than 3 characters'
+		}
+		const validProfessionalAreas = [
+			'Web application',
+			'Mobile application',
+			'Frontend',
+			'DevOps',
+			'Backend',
+			'Operating systems',
+			'Data science',
+			'Artificial intelligence',
+			'Security',
+			'Other',
+		]
+		if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea)) {
+			errors.professionalArea = 'Invalid professional area'
+		}
+		return errors
+	}
 
   return (
     <div

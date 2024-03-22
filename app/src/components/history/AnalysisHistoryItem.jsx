@@ -1,40 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import axios from 'axios';
-import FavoriteButton from "../../components/history/FavoriteButton.jsx";
-import DeleteHistoryButton from "../../components/history/DeleteHistoryButton.jsx";
-
-
+import axios from 'axios'
+import FavoriteButton from '../../components/history/FavoriteButton.jsx'
+import DeleteHistoryButton from '../../components/history/DeleteHistoryButton.jsx'
 
 const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
-    const [githubUsername, setGithubUsername] = useState(null);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const apiURL = import.meta.env.VITE_BACKEND_URL;
+	const [githubUsername, setGithubUsername] = useState(null)
+	const [errorMessage, setErrorMessage] = useState(null)
+	const apiURL = import.meta.env.VITE_BACKEND_URL
 
-    async function getGithubUsername(analysisId) {
-        const uri = `/analysis/${analysisId}`;
-        const token = localStorage.getItem("access_token");
-        try {
-            const response = await axios.get(apiURL + uri,
-                {
-                    headers: {
-                      'Authorization': `${token}`,
-                    },
-                  }
-            );
-            return response.data.data.githubUsername;
-        } catch (error) {
-            console.error("Error al llamar al endpoint:", error);
-            setErrorMessage("There was an error retrieving the Github username for this entry.");
-            throw error;
-        }
-    }
-    useEffect(() => {
-        getGithubUsername(item.analysisId).then(username => {
-            setGithubUsername(username);
-            setErrorMessage(null);
-        });
-
+	async function getGithubUsername(analysisId) {
+		const uri = `/analysis/${analysisId}`
+		const token = localStorage.getItem('access_token')
+		try {
+			const response = await axios.get(apiURL + uri, {
+				headers: {
+					Authorization: `${token}`,
+				},
+			})
+			return response.data.data.githubUsername
+		} catch (error) {
+			console.error('Error al llamar al endpoint:', error)
+			setErrorMessage('There was an error retrieving the Github username for this entry.')
+			throw error
+		}
+	}
+	useEffect(() => {
+		getGithubUsername(item.analysisId).then((username) => {
+			setGithubUsername(username)
+			setErrorMessage(null)
+		})
     }, [item.analysisId]);
 
     return (
@@ -68,4 +63,4 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
     );
 }
 
-export default AnalysisHistoryItem;
+export default AnalysisHistoryItem

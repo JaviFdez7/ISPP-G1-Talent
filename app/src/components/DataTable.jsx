@@ -1,11 +1,18 @@
-import React from "react";
-import MainButton from "./mainButton";
-import { Link } from "react-router-dom";
+import React from 'react'
+import MainButton from './mainButton'
+import { Link } from 'react-router-dom'
 
-export default function DataTable({ header, contentArray, editable=false, addLink="", editLink="", idArray=[], idName="" }) {
-    const cellHeight = '100px';
-    const minCellWidth = '142px';
-
+export default function DataTable({
+	header,
+	contentArray,
+	editable = false,
+	addLink = '',
+	editLink = '',
+	idArray = [],
+	idName = '',
+}) {
+	const cellHeight = '100px'
+	const minCellWidth = '142px'
 
     let head = "";
     if (header === "") {

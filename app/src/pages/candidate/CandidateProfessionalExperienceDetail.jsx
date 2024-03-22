@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from "react";
-import SecondaryButton from "../../components/secondaryButton";
-import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
-import MainButton from "../../components/mainButton";
+import React, { useEffect, useState } from 'react'
+import SecondaryButton from '../../components/secondaryButton'
+import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
+import MainButton from '../../components/mainButton'
 
+export default function CandidateProfessionalExperienceDetail({}) {
+	const talentColor = 'var(--talent-highlight)'
 
-export default function CandidateProfessionalExperienceDetail({ }) {
-  const talentColor = "var(--talent-highlight)";
+	const [experience, setExperience] = useState({})
 
-  const [experience, setExperience] = useState({});
+	const id = localStorage.getItem('experienceId')
 
-  const id = localStorage.getItem("experienceId");
+	async function getExperienceById() {
+		const response = await fetch(
+			import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`,
+			{
+				method: 'GET',
+			}
+		)
+		const data = await response.json()
+		setExperience(data.data)
+	}
 
-  async function getExperienceById() {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`, {
-      method: "GET",
-    });
-    const data = await response.json();
-    setExperience(data.data);
-  }
+	useEffect(() => {
+		getExperienceById()
+	}, [id])
 
   useEffect(() => {
     getExperienceById();
@@ -84,7 +90,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
               <br />
               <div className="p-4 border rounded" style={{
                 borderColor: talentColor,
-              }}>
+              }}>z
                 <p><strong>Professional Area:</strong></p>
                 <div className="flex flex-col w-full profile-info-text">
                   {experience.professionalArea}

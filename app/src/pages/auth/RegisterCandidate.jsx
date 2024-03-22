@@ -8,135 +8,96 @@ import MainButton from "../../components/mainButton";
 import Input from "../../components/Input.jsx";
 
 export default function RegisterCandidate() {
-  const talentColor = "var(--talent-highlight)";
-  const { login } = useAuthContext();
-  const [form, setForm] = useState({
-    first_name: "",
-    surname: "",
-    email: "",
-    username: "",
-    password: "",
-    password2: "",
-    phone_number: "",
-    githubUsername: "",
-    candidateSubscription: "Basic plan",
-  });
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-  const [errors, setErrors] = useState({});
-  const {
-    first_name,
-    surname,
-    email,
-    username,
-    password,
-    password2,
-    phone_number,
-    githubUsername,
-    candidateSubscription,
-  } = form;
-  let navigate = useNavigate();
+	const talentColor = 'var(--talent-highlight)'
+	const { login } = useAuthContext()
+	const [form, setForm] = useState({
+		first_name: '',
+		surname: '',
+		email: '',
+		username: '',
+		password: '',
+		password2: '',
+		phone_number: '',
+		githubUsername: '',
+		candidateSubscription: 'Basic plan',
+	})
+	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
+	const [errors, setErrors] = useState({})
+	const {
+		first_name,
+		surname,
+		email,
+		username,
+		password,
+		password2,
+		phone_number,
+		githubUsername,
+		candidateSubscription,
+	} = form
+	let navigate = useNavigate()
 
-  function onInputChange(e) {
-    const { name, value, checked } = e.target;
-  
-    if (name === "termsCheckbox") {
-      setIsCheckboxChecked(checked);
-    } else {
-      setForm(prevForm => ({ ...prevForm, [name]: value }));
-    }
-  
-    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
-  }
-  const handleCheckboxChange = (e) => {
-    setIsCheckboxChecked(e.target.checked);
-  };
+	function onInputChange(e) {
+		const { name, value, checked } = e.target
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    if (!isCheckboxChecked) {
-      setErrors({ termsCheckbox: "You must accept the terms and conditions" });
-      return;
-    }
-    const validationErrors = validateForm();
+		if (name === 'termsCheckbox') {
+			setIsCheckboxChecked(checked)
+		} else {
+			setForm((prevForm) => ({ ...prevForm, [name]: value }))
+		}
 
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+		setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
+	}
+	const handleCheckboxChange = (e) => {
+		setIsCheckboxChecked(e.target.checked)
+	}
 
-    try {
-      const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/user/candidate",
-        {
-          ...form,
-          fullName: form.first_name + " " + form.surname,
-          phone: form.phone_number,
-          githubUser: form.githubUsername,
-        }
-      );
-      if (response.status === 400) {
-        const data = response.data;
-        setErrors(data);
-        return;
-      }
-      const userDataFetch = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/user/login", form
-      );
-      setIsCheckboxChecked(false);
-      const data = userDataFetch.data.data;  
-      login(data.token, data.user.role, data.user._id);
-      navigate("/candidate/detail");
+	async function handleSubmit(e) {
+		e.preventDefault()
+		if (!isCheckboxChecked) {
+			setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
+			return
+		}
+		const validationErrors = validateForm()
 
-    } catch (error) {
-      if (error.response.status === 409 || error.response.status === 400)  { // set the status code properly
-        setErrors(error.response.data);
-        return;
-      }
-    }
-  }
-  function getRequiredFieldMessage(fieldName) {
-    return `The ${fieldName} field is required`;
-  }
+		if (Object.keys(validationErrors).length > 0) {
+			setErrors(validationErrors)
+			return
+		}
 
-  function validateForm() {
-    let errors = {};
-    if (!form.first_name) {
-      errors.first_name = getRequiredFieldMessage('name');
-    } else if (form.first_name.length <= 3) {
-      errors.first_name = "The name field must be more than 3 characters";
-    }
-    if (!form.surname) {
-      errors.surname = getRequiredFieldMessage('surname');
-    } else if (form.surname.length <= 3) {
-      errors.surname = "The surname field must have more than 3 characters";
-    }
-    if (!form.email) {
-      errors.email = getRequiredFieldMessage('email');
-    } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
-    ) {
-      errors.email = "The email field must be from Gmail, Outlook or Hotmail";
-    }
-    if (!form.password) {
-      errors.password = getRequiredFieldMessage('password');
-    } else if (form.password !== form.password2) {
-      errors.password2 = "Passwords do not match";
-    }
-    if (!form.password2) {
-      errors.password2 = getRequiredFieldMessage('repeat password');
-    }
-    if (!form.githubUsername) {
-      errors.githubUsername = getRequiredFieldMessage('github username');
-    }
-    if (!form.username) {
-      errors.username = getRequiredFieldMessage('username');
-    }
-    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-      errors.phone_number =
-        "A phone number must consist of 9 digits exclusively";
-    }
-    return errors;
-  }
+		try {
+			const response = await axios.post(
+				import.meta.env.VITE_BACKEND_URL + '/user/candidate',
+				{
+					...form,
+					fullName: form.first_name + ' ' + form.surname,
+					phone: form.phone_number,
+					githubUser: form.githubUsername,
+				}
+			)
+			if (response.status === 400) {
+				const data = response.data
+				setErrors(data)
+				return
+			}
+			const userDataFetch = await axios.post(
+				import.meta.env.VITE_BACKEND_URL + '/user/login',
+				form
+			)
+			setIsCheckboxChecked(false)
+			const data = userDataFetch.data.data
+			login(data.token, data.user.role, data.user._id)
+			navigate('/candidate/detail')
+		} catch (error) {
+			if (error.response.status === 409 || error.response.status === 400) {
+				// set the status code properly
+				setErrors(error.response.data)
+				return
+			}
+		}
+	}
+	function getRequiredFieldMessage(fieldName) {
+		return `The ${fieldName} field is required`
+	}
 
   let mobile = false;
   if (window.screen.width < 500) {
