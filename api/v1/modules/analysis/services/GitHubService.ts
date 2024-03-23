@@ -1,5 +1,5 @@
 import type { AnalysisDocument, RepositoryInfo, LanguagePercentage } from '../models/analysis.model';
-const GQLPaginator = require('gql-paginator');
+const {GQLPaginator} = require('gql-paginator');
 
 const GITHUB_APIKEY = process.env.GH_TOKEN
 const languageMap: Record<string, string> = {
