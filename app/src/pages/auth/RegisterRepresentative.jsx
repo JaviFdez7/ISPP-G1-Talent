@@ -32,6 +32,8 @@ export default function RegisterRepresentative() {
   const [emailValid, setEmailValid] = useState(true);
   const [loading, setLoading] = useState(false);
 
+  const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED==='true' || false;
+
   let navigate = useNavigate();
 
   function onInputChange(e) {
@@ -62,13 +64,16 @@ export default function RegisterRepresentative() {
       setErrors(validationErrors);
       return;
     }
-    setLoading(true);
-    const isValidEmail = await validateEmail(form.corporative_email);
-    setLoading(false);
-    if (!isValidEmail) {
-      setEmailValid(false);
-      return;
+    if (enableValidation) {
+      setLoading(true);
+      const isValidEmail = await validateEmail(form.corporative_email);
+      setLoading(false);
+      if (!isValidEmail) {
+        setEmailValid(false);
+        return;
+      }
     }
+
 
     try {
       const response = await axios.post(
@@ -134,7 +139,7 @@ export default function RegisterRepresentative() {
             password: verifaliaUserPwd,
           },
         });
-        console.log("taskResponse****",taskResponse)
+        console.log("taskResponse****", taskResponse)
         taskStatus = taskResponse.status;
         result = taskResponse.data.entries.data[0].classification === 'Deliverable';
         console.log('Estado de la tarea:', taskStatus + " -- " + result);
