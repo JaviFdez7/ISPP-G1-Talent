@@ -13,27 +13,35 @@ import { useAuthContext } from "../../context/authContext.jsx";
 export default function SearchTeam() {
 
   const { isAuthenticated, logout } = useAuthContext();
-  const [userData, setUserData] = useState(null);
+  const [teamData, setTeamData] = useState(null);
   const candidates = ['Candidate1', 'Candidate2', 'Candidate3']; // lista de candidatos de equipo
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (isAuthenticated) {
-          const currentUserId = localStorage.getItem("userId");
-          const response = await axios.get(
-            `${import.meta.env.VITE_BACKEND_URL}/user`
-          );
-          console.log(response.data.data)
-          const user = response.data.data.find((user) => user._id === currentUserId);
-          setUserData(user);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUserData();
-  }, [isAuthenticated]);
+  async function fetchDataFromEndpoint(representativeId) {
+    try {
+        // Obtén el token de la sesión
+        const token = localStorage.getItem("access_token");
+
+        // Configura el header de autorización con el token
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+
+        // Realiza la llamada al endpoint con el representativeId y el header de autorización
+        const response = await axios.get(apiURL + "/team-creator/representative-user/" + representativeId, config);
+
+        console.log("Response:", response.data.data); 
+        setTeamData(response.data.data);
+        setError(false);
+        return response.data.data;
+    } catch (error) {
+        setError(false);
+        setErrorMessage('Unable to connect to the server. Please try again later.');
+        console.error("Error al llamar al endpoint:", error);
+        throw error;
+    }
+}
+
+
 
     
 
