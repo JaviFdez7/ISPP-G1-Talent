@@ -37,10 +37,35 @@ export const createUser: any = async (data: any, role: string) => {
 export const updateUser: any = async (id: any, data: any, role: string) => {
   try {
     const Model = getModelForRole(role) as typeof User;
-    const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
+    if (role === 'Candidate') {
+      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
+      data.analysisId = analysis._id;
+    }
+    const { password, profilePicture, ...editableDetails } = data;
+    const updatedUser = await Model.findByIdAndUpdate(id, editableDetails, { new: true });
     return updatedUser;
   } catch (error) {
     console.error('Error updating user:', error);
+    throw error;
+  }
+};
+
+export const updateUserProfilePicture: any = async (id: any, picture: string) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, { profilePicture: picture }, { new: true });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user profile picture:', error);
+    throw error;
+  }
+};
+
+export const updateUserPassword: any = async (id: any, password: string) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user password:', error);
     throw error;
   }
 };
@@ -69,11 +94,13 @@ export const loginUser: any = async (data: any) => {
 	}
 }
 export default {
-	getAllUser,
-	getUserById,
-	getProfessionalExperiencesByUserId,
-	createUser,
-	updateUser,
-	deleteUser,
-	loginUser,
-}
+  getAllUser,
+  getUserById,
+  getProfessionalExperiencesByUserId,
+  createUser,
+  updateUser,
+  updateUserProfilePicture,
+  updateUserPassword,
+  deleteUser,
+  loginUser
+};
