@@ -5,7 +5,6 @@ import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
-import Input from "../../components/Input";
 
 export default function RegisterRepresentative() {
   const talentColor = "var(--talent-highlight)";
@@ -34,13 +33,13 @@ export default function RegisterRepresentative() {
 
   function onInputChange(e) {
     const { name, value, checked } = e.target;
-  
+
     if (name === "termsCheckbox") {
       setIsCheckboxChecked(checked);
     } else {
       setForm(prevForm => ({ ...prevForm, [name]: value }));
     }
-  
+
     setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
   const handleCheckboxChange = (e) => {
@@ -72,7 +71,7 @@ export default function RegisterRepresentative() {
 
       const userDataFetch = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login", form
-        
+
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data.data;
@@ -92,7 +91,7 @@ export default function RegisterRepresentative() {
   function getRequiredFieldMessage(fieldName) {
     return `The ${fieldName} field is required`;
   }
-  
+
   function validateForm() {
     let errors = {};
 
@@ -141,7 +140,7 @@ export default function RegisterRepresentative() {
     }
     return errors;
   }
-  
+
   let mobile = false;
   if (window.screen.width < 500) {
     mobile = true;
@@ -156,20 +155,20 @@ export default function RegisterRepresentative() {
         overflowY: "scroll",
       }}
     >
-    <div
-      className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
-      style={{
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        marginLeft: "auto",
-        marginRight: "auto",
-        marginTop: "50px",
-        borderColor: talentColor,
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-        backdropFilter: "blur(8px)",
-        borderWidth: "1px",
-      }}
-    >
-      <h2
+      <div
+        className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
+        style={{
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          marginLeft: "auto",
+          marginRight: "auto",
+          marginTop: "50px",
+          borderColor: talentColor,
+          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+          backdropFilter: "blur(8px)",
+          borderWidth: "1px",
+        }}
+      >
+        <h2
           className="text-2xl font-bold text-center mb-4 text-white"
           style={{ marginTop: "-40px", marginBottom: "-10px" }}
         >
@@ -177,7 +176,7 @@ export default function RegisterRepresentative() {
         </h2>
         <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
         <div className="flex justify-center items-center space-x-4 mb-4"
-          style={{flexDirection: mobile ? "column" : "row"}}
+          style={{ flexDirection: mobile ? "column" : "row" }}
         >
           <Link to="/register/candidate">
             <h2
@@ -200,34 +199,81 @@ export default function RegisterRepresentative() {
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
-          style={{fontSize: "18px"}}
         >
-          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
-
-            {Input({name:'Username', value:username, editable:true, placeholder:"Enter your Username", 
-            onChange:(e) => onInputChange(e), formName:"username", col:mobile, isMandatory:true, errors:errors})}
-
-            {Input({name:'Corporative Email', value:corporative_email, editable:true, placeholder:"Enter your Corporative Email", 
-            onChange:(e) => onInputChange(e), formName:"corporative_email", col:mobile, isMandatory:true, errors:errors, type:"email"})}
-
-            {Input({name:'Company Name', value:company_name, editable:true, placeholder:"Enter your Company Name", 
-            onChange:(e) => onInputChange(e), formName:"company_name", col:mobile, isMandatory:true, errors:errors, type:"email"})}
-
-            {Input({name:'Project Society Name', value:projectSocietyName, editable:true, placeholder:"Enter your Project Society Name", 
-            onChange:(e) => onInputChange(e), formName:"projectSocietyName", col:mobile, isMandatory:true, errors:errors, type:"email"})}
-
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <FormTextInput
+              labelFor="Username"
+              labelText="Username"
+              placeholder="Enter your Username"
+              name="username"
+              value={username}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="Corporativeemail"
+              labelText="Corporative Email"
+              placeholder="Enter your Corporative Email"
+              name="corporative_email"
+              value={corporative_email}
+              onChange={(e) => onInputChange(e)}
+              type="email"
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="companyname"
+              labelText="Company Name"
+              placeholder="Enter your Company Name"
+              name="company_name"
+              value={company_name}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="ProjectSocietyName"
+              labelText="Project Society Name"
+              placeholder="Enter your Project Society Name"
+              name="projectSocietyName"
+              value={projectSocietyName}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+            />
           </div>
-          <div className="w-full flex flex-col justify-around md:w-1/2 px-3 mb-6 md:mb-0">
-
-            {Input({name:'Phone number', value:phone_number, editable:true, placeholder:"Enter your Phone number", 
-            onChange:(e) => onInputChange(e), formName:"phone_number", col:mobile, errors:errors, type:"email"})}
-
-            {Input({name:'Password', value:password, editable:true, placeholder:"Enter your Password", 
-            onChange:(e) => onInputChange(e), formName:"password", col:mobile, isMandatory:true, errors:errors, type:"password"})}
-
-            {Input({name:'Repeat Password', value:password2, editable:true, placeholder:"Enter your Password again", 
-            onChange:(e) => onInputChange(e), formName:"password2", col:mobile, isMandatory:true, errors:errors, type:"password"})}
-
+          <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+            <FormTextInput
+              labelFor="Phonenumber"
+              labelText="Phone number"
+              placeholder="Enter your Phone number"
+              name="phone_number"
+              value={phone_number}
+              onChange={(e) => onInputChange(e)}
+              errors={errors}
+            />
+            <FormTextInput
+              labelFor="Password"
+              labelText="Password"
+              placeholder="Enter your Password"
+              name="password"
+              value={password}
+              onChange={(e) => onInputChange(e)}
+              type="password"
+              errors={errors}
+              isMandatory
+            />
+            <FormTextInput
+              labelFor="Password2"
+              labelText="Repeat Password"
+              placeholder="Enter your Password again"
+              name="password2"
+              value={password2}
+              onChange={(e) => onInputChange(e)}
+              type="password"
+              errors={errors}
+              isMandatory
+            />
             <div className="flex items-center justify-end">
               <div
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
@@ -284,7 +330,7 @@ export default function RegisterRepresentative() {
               </div>
             </div>
           </div>
-          
+
           <div className="flex-row space-x-24 m-auto mt-4">
             <div
               className="flex items-center justify-center h-full"

@@ -20,7 +20,7 @@ export default function Navbar() {
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
 		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 }, //Candidate
-		{ Trends: 0, 'My analysis': 1, Subscription: 2, Information: 3, Settings: 4 }, //Representative
+		{ Trends: 0, 'My analysis': 1,'Team Search':2,  Subscription: 3, Information: 4, Settings: 5 }, //Representative
 	]
 
 	function getOptsNum(key) {
@@ -126,6 +126,18 @@ export default function Navbar() {
                 <span>My analysis</span>
               </Link>
             )}
+            {userData && getOptsNum("Team Search") !== -1 && (
+					<Link
+						to="/searches/team"
+						onMouseEnter={() => move_hoverer(getOptsNum("Team Search"))}
+						onMouseDown={() => move_current(getOptsNum("Team Search"))}
+						className="link-container"
+						>
+						<span>ICON</span>
+						<p>&nbsp;&nbsp;&nbsp;</p>
+						<span>Team search</span>
+					</Link>
+					)}
             {userData &&getOptsNum("Subscription") !== -1 && (
               <Link
                 to={subscription}
