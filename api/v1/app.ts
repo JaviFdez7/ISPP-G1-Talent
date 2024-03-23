@@ -13,11 +13,13 @@ import cors from 'cors';
 
 
 const app = express();
-const swaggerHost= process.env.HOST ?? 'localhost:3000';
+const swaggerHost = process.env.HOST ?? 'localhost:3000';
 app.use(express.json());
 app.use(cors());
-//  Routers -----------------------------------------------------
-//  Default
+//Routers -----------------------------------------------------
+
+
+//Default
 app.get('/', (req: Request, res: Response) => {
   res.send('Welcome to the Talent API! 🚀\n See the documentation at /v1/docs');
 });
