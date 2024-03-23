@@ -10,7 +10,7 @@ export interface RepositoryInfo {
   technologies: string[]
   numberClosedIssues: number
 
-}
+} 
 export interface LanguagePercentage {
   language: string
   percentage: number
@@ -46,7 +46,7 @@ const repositoryInfoSchema = new Schema<RepositoryInfo>({
 
 });
 
-const analysisSchema = new Schema<AnalysisDocument>({
+export const analysisSchema = new Schema<AnalysisDocument>({
   githubUsername: { type: String, required: true },
   avatarUrl: { type: String, required: true },
   followers: { type: Number, required: true },
@@ -68,4 +68,12 @@ const analysisSchema = new Schema<AnalysisDocument>({
 }, { timestamps: true });
 
 // 3. Create a Model.
+
 export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema);
+
+run().catch(err => console.log(err));
+
+async function run() {
+
+  console.log("Running database");
+}

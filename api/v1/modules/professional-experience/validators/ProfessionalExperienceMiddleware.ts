@@ -23,6 +23,7 @@ export const checkCreateProfessionalExperience: any = async (req: Request, res: 
   try {
     console.log(req.body)
     const data = req.body;
+ 
     const token = req.headers.authorization ?? '';
 
     if (!data) {
@@ -52,6 +53,7 @@ export const checkCreateProfessionalExperience: any = async (req: Request, res: 
     }
 
     const decodedToken = verifyJWT(token);
+  
     if (decodedToken.sub !== data.userId.toString()) {
       const message = 'Unauthorized';
       res.status(401).send(message);

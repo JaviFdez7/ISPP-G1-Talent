@@ -55,12 +55,16 @@ export const validateGitHubUserAndApiKey = async (req: Request, res: Response, n
         detail: 'An error occurred while fetching the GitHub user data.'
       }])
     }
-    next();
-  } catch (error: any) {
-    console.error('Error:', error.message);
-    ApiResponse.sendError(res, [{
-      title: 'Internal Server Error',
-      detail: error.message
-    }])
-  }
+
+    return next();
+} catch (error: any) {
+  console.error("Error:", error.message);
+  ApiResponse.sendError(res,[{
+    title: 'Internal Server Error',
+    detail: error.message
+  }])
+  return;
+  
+}
+
 };
