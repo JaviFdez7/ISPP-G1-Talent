@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv'
 import { ApiResponse } from '../../../utils/ApiResponse';
+import { verifyJWT } from '../../user/helpers/handleJWT';
+import { CompanySubscription } from '../../subscriptions/models/subscription';
+import { Representative } from '../../user/models/user';
 
 
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
@@ -23,6 +26,28 @@ export const validateGitHubUserAndApiKey = async (req: Request, res: Response, n
 const githubUsername: string = req.body.username;
 let user_apikey: string | undefined = req.body.apikey;
 user_apikey = user_apikey || process.env.GH_TOKEN;
+const token = req.headers.authorization ?? '';
+if (token.length === 0) {
+    const message = 'No token provided';
+    ApiResponse.sendError(res, [{
+    title: 'Unauthorized', detail: message}], 401);
+    return;
+}
+const decodedToken = verifyJWT(token);
+const representative=await Representative.findById(decodedToken);
+if(!representative){
+  const message = 'Incorrect token,no user found';
+    ApiResponse.sendError(res, [{
+    title: 'Not Found', detail: message}], 404);
+    return;
+}
+const subscription=await CompanySubscription.findById((representative as any).subscriptionId);
+if(!subscription || (subscription as any).remainingSearches<=0){
+  const message = 'You cannot search until next month';
+    ApiResponse.sendError(res, [{
+    title: 'Bad Request', detail: message}], 400);
+    return;
+}
 
 
 if (!githubUsername) {

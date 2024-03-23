@@ -4,6 +4,7 @@ import { Candidate, Representative, User } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 import e, { type Request, type Response, type NextFunction } from 'express';
 import { ApiResponse } from '../../../utils/ApiResponse';
+import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription';
 
 export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -240,7 +241,14 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
       return;
-    } else {
+    }
+    const subscription=await CandidateSubscription.findById((user as any).subscriptionId);
+    if(!subscription || (subscription as any).remainingUpdates<=0){
+      const message = 'You cant update your profile until next month';
+      ApiResponse.sendError(res, [{
+        title: 'Bad Request', detail: message}], 400);
+      return;
+    }else {
       // Encriptar la contraseña
       if (data.password) {
         data.password = await encrypt(data.password);

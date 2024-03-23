@@ -30,6 +30,7 @@ const subscriptionSchema = new Schema({
   lastPaymentDate: Date,
   expirationDate: Date,
   automaticRenovation: Boolean
+
 }, { discriminatorKey: 'type' });
 
 // Crea el modelo de Mongoose para la Subscription
@@ -40,7 +41,9 @@ const CompanySubscriptionSchema = new Schema({
     type: String,
     required: true,
     enum: Object.values(CompanySubscriptionTypes)
-  }
+  },
+  remainingSearches:{ type: Number, required: true,default:25 },
+  teamLimit:{type: Number, required: true,default:3}
 });
 const CompanySubscription = Subscription.discriminator('CompanySubscription', CompanySubscriptionSchema);
 
@@ -49,7 +52,9 @@ const CandidateSubscriptionSchema = new Schema({
     type: String,
     required: true,
     enum: Object.values(CandidateSubscriptionTypes)
-  }
+  },
+  remainingUpdates:{type: Number, required: true, default:1},
+  canInspectEmail:{type: Boolean,required:true, default:false}
 });
 const CandidateSubscription = Subscription.discriminator('CandidateSubscription', CandidateSubscriptionSchema);
 

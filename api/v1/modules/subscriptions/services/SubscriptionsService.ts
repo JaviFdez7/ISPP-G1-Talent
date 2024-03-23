@@ -60,9 +60,9 @@ export const updateSubscriptions: any = async (userId: any, subtype: any) => {
     else if ((subscription as any).type === 'CompanySubscription') {
       subscription.set( { subtype: subtype });
     if (subtype === CompanySubscriptionTypes.BASIC) {
-      subscription.set( { price: { amount: 29.99, currency: 'EUR' } });
+      subscription.set( { price: { amount: 29.99, currency: 'EUR' } ,remainingSearches:25,teamLimit:3});
     } else if (subtype === CompanySubscriptionTypes.PRO) {
-      subscription.set( { price: { amount: 79.99, currency: 'EUR' } });
+      subscription.set( { price: { amount: 79.99, currency: 'EUR' },remainingSearches:150,teamLimit:5 });
     }
     subscription.lastPaymentDate = new Date();
     subscription.expirationDate = new Date();
@@ -72,9 +72,9 @@ export const updateSubscriptions: any = async (userId: any, subtype: any) => {
   } else if ((subscription as any).type === 'CandidateSubscription') {
     subscription.set( { subtype: subtype });
     if (subtype === CandidateSubscriptionTypes.BASIC) {
-      subscription.set( { price: { amount: 0, currency: 'EUR' } });
+      subscription.set( { price: { amount: 0, currency: 'EUR' } ,remainingUpdates:1,canInspectEmail:false});
     } else if (subtype === CandidateSubscriptionTypes.PRO) {
-      subscription.set( { price: { amount: 9.99, currency: 'EUR' } });
+      subscription.set( { price: { amount: 9.99, currency: 'EUR' },remainingUpdates:3,canInspectEmail:true });
     }
     subscription.lastPaymentDate = new Date();
     subscription.expirationDate = new Date();

@@ -4,6 +4,8 @@ import { createNotification } from '../../notification/services/NotificationServ
 import { Candidate,Representative } from '../../user/models/user';
 import { GetUserAnaliseInfo } from './GitHubService';
 import { verifyJWT } from '../../user/helpers/handleJWT';
+import { getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService';
+import { CompanySubscription } from '../../subscriptions/models/subscription';
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
   try {
@@ -61,6 +63,9 @@ export const createAnalysis: any = async (githubUsername: string,token: string,u
     throw new Error('A valid GitHub username was not provided.');
   }
   try {
+    const actualSubscription= await getSubscriptionsByUserId(verifyJWT(token).sub);
+    actualSubscription.remainingSearches--;
+    await CompanySubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
     const analysis = await AnalysisModel.findOne({ githubUsername: githubUsername }); 
     const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername,user_apikey);
     if (!analysis) {
