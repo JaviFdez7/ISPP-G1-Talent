@@ -1,30 +1,27 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
-
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 
 export default function RegisterCandidate() {
+  const talentColor = 'var(--talent-highlight)'
+  const { login } = useAuthContext()
   const [form, setForm] = useState({
-    first_name: "",
-    surname: "",
-    email: "",
-    username: "",
-    password: "",
-    password2: "",
-    phone_number: "",
-    github_username: "",
-    candidateSubscription: "Basic plan",
-  });
-
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-
-  let navigate = useNavigate();
-
-  const [errors, setErrors] = useState({});
-
+    first_name: '',
+    surname: '',
+    email: '',
+    username: '',
+    password: '',
+    password2: '',
+    phone_number: '',
+    githubUsername: '',
+    candidateSubscription: 'Basic plan',
+  })
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
+  const [errors, setErrors] = useState({})
   const {
     first_name,
     surname,
@@ -33,138 +30,212 @@ export default function RegisterCandidate() {
     password,
     password2,
     phone_number,
-    github_username,
+    githubUsername,
     candidateSubscription,
-  } = form;
+  } = form
+  const [emailValid, setEmailValid] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-  //4)creamos la funcion que se encargara de actualizar el estado del formulario
+  const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED==='true' || false;
+
+  let navigate = useNavigate()
+
   function onInputChange(e) {
-    if (e.target.name === "termsCheckbox") {
-      setIsCheckboxChecked(e.target.checked);
-      setErrors({ ...errors, termsCheckbox: undefined });
+    const { name, value, checked } = e.target
+
+    if (name === 'termsCheckbox') {
+      setIsCheckboxChecked(checked)
     } else {
-      setForm({
-        ...form,
-        [e.target.name]: e.target.value,
-      });
-      setErrors({ ...errors, [e.target.name]: undefined });
+      setForm((prevForm) => ({ ...prevForm, [name]: value }))
     }
+
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
   }
   const handleCheckboxChange = (e) => {
-    setIsCheckboxChecked(e.target.checked);
-  };
+    setIsCheckboxChecked(e.target.checked)
+  }
 
-  //5) creamos la funcion que se encargara de enviar los datos del formulario
   async function handleSubmit(e) {
-    //onFormSubmit == handleSubmit
-    e.preventDefault();
-
+    e.preventDefault()
     if (!isCheckboxChecked) {
-      setErrors({ termsCheckbox: "You must accept the terms and conditions" });
-      return;
+      setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
+      return
     }
-
-    const validationErrors = validateForm();
+    const validationErrors = validateForm()
 
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+      setErrors(validationErrors)
+      return
+    }
+
+    if (enableValidation) {
+      setLoading(true);
+      const isValidEmail = await validateEmail(form.email);
+      setLoading(false);
+      if (!isValidEmail) {
+        setEmailValid(false);
+        return;
+      }
     }
 
     try {
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/user/candidate",
+        import.meta.env.VITE_BACKEND_URL + '/user/candidate',
         {
           ...form,
-          fullName: form.first_name + " " + form.surname,
+          fullName: form.first_name + ' ' + form.surname,
           phone: form.phone_number,
-          githubUser: form.github_username,
+          githubUser: form.githubUsername,
+        }
+      )
+      if (response.status === 400) {
+        const data = response.data
+        setErrors(data)
+        return
+      }
+      const userDataFetch = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + '/user/login',
+        form
+      )
+      setIsCheckboxChecked(false)
+      const data = userDataFetch.data.data
+      login(data.token, data.user.role, data.user._id)
+      navigate('/candidate/detail')
+    } catch (error) {
+      if (error.response.status === 409 || error.response.status === 400) {
+        // set the status code properly
+        setErrors(error.response.data)
+        return
+      }
+    }
+  }
+  function getRequiredFieldMessage(fieldName) {
+    return `The ${fieldName} field is required`
+  }
+
+  async function validateEmail(email) {
+    const verifaliaUserId = 'ittalentID1111111111111111';
+    const verifaliaUserPwd = 'rI8e.gOjdUWfv0';
+
+    try {
+      // Enviar solicitud de validación de correo electrónico
+      const response = await axios.post(
+        'https://api.verifalia.com/v2.5/email-validations',
+        {
+          entries: [{ inputData: email }],
+        },
+        {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
         }
       );
-      if (response.status === 400) {
-        const data = response.data;
-        setErrors(data);
-        return;
+      console.log("response**********", response)
+      const taskId = response.data.overview.id;
+      console.log("TaskID**********", taskId)
+      let taskStatus = 'InProgress';
+      let result = false;
+      while (taskStatus === 'InProgress') {
+        const taskResponse = await axios.get(`https://api.verifalia.com/v2.5/email-validations/${taskId}`, {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        });
+        console.log("taskResponse****", taskResponse)
+        taskStatus = taskResponse.status;
+        result = taskResponse.data.entries.data[0].classification === 'Deliverable';
+        console.log('Estado de la tarea:', taskStatus + " -- " + result);
+        await new Promise(resolve => setTimeout(resolve, 1000));
       }
-      setIsCheckboxChecked(false);
-      navigate("/candidate/detail");
+
+      return result;
     } catch (error) {
-      if (error.response.status === 409) {
-        setErrors(error.response.data);
-        return;
-      }
+      console.error('Error validating email:', error);
+      return false;
     }
   }
 
   function validateForm() {
     let errors = {};
     if (!form.first_name) {
-      errors.first_name = "The name field is required";
+      errors.first_name = getRequiredFieldMessage('first name');
     } else if (form.first_name.length <= 3) {
-      errors.first_name = "The name field must be more than 3 characters";
+      errors.first_name = "The first name field must be more than 3 characters";
     }
     if (!form.surname) {
-      errors.surname = "The surname field is required";
+      errors.surname = getRequiredFieldMessage('surname');
     } else if (form.surname.length <= 3) {
-      errors.surname = "The last name field must have more than 3 characters";
+      errors.surname = "The surname field must have more than 3 characters";
     }
     if (!form.email) {
-      errors.email = "The email field is required";
+      errors.email = getRequiredFieldMessage('email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
     ) {
-      errors.email = "The email field must be from Gmail, Outlook or Hotmail";
+      errors.email = "The input must be an email";
     }
     if (!form.password) {
-      errors.password = "The password field is required";
+      errors.password = getRequiredFieldMessage('password');
     } else if (form.password !== form.password2) {
       errors.password2 = "Passwords do not match";
     }
-
     if (!form.password2) {
-      errors.password2 = "The repeat password field is required";
+      errors.password2 = getRequiredFieldMessage('repeat password');
     }
-    if (!form.github_username) {
-      errors.github_username = "The github_username field is required";
+    if (!form.githubUsername) {
+      errors.githubUsername = getRequiredFieldMessage('github username');
     }
     if (!form.username) {
-      errors.username = "The username field is required";
+      errors.username = getRequiredFieldMessage('username');
+    }
+    if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
+      errors.phone_number =
+        "A phone number must consist of 9 digits exclusively";
     }
     return errors;
   }
 
+  let mobile = false;
+  if (window.screen.width < 500) {
+    mobile = true;
+  }
   return (
     <div
       className="h-screen flex flex-col justify-center bg-fixed home-container"
       style={{
         backgroundImage: `url(${mainBackgroundRegisterLogin})`,
         backgroundSize: "cover",
+        overflowY: "scroll",
       }}
     >
       <div
-        className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "auto",
           marginRight: "auto",
-          borderColor: "#d4983d",
+          marginTop: "50px",
+          borderColor: talentColor,
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
           backdropFilter: "blur(8px)",
           borderWidth: "1px",
         }}
       >
-        {/* eleccion de formulario de registro*/}
         <h2
           className="text-2xl font-bold text-center mb-4 text-white"
           style={{ marginTop: "-40px", marginBottom: "-10px" }}
         >
           Register as
         </h2>
-        <hr className="border-1 w-70 mb-4" style={{ borderColor: "#d4983d" }} />
-        <div className="flex justify-center space-x-4 mb-4">
+        <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
+        <div className="flex justify-center items-center space-x-4 mb-4"
+          style={{ flexDirection: mobile ? "column" : "row" }}
+        >
           <h2
             className="text-2xl"
-            style={{ marginTop: "-40px", color: "var(--talent-highlight)" }}
+            style={{ marginTop: "-40px", color: talentColor }}
           >
             Candidate
           </h2>
@@ -177,16 +248,9 @@ export default function RegisterCandidate() {
             </h2>
           </Link>
         </div>
-        {errors.existingUsername && (
-          <p className="text-red-500">{errors.existingUsername}</p>
+        {errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
+          <p className="text-red-500">{errors.errors[0].detail}</p>
         )}
-        {errors.existingEmail && (
-          <p className="text-red-500">{errors.existingEmail}</p>
-        )}
-        {errors.existingGithubUser && (
-          <p className="text-red-500">{errors.existingGithubUser}</p>
-        )}
-
         <form
           onSubmit={(e) => handleSubmit(e)}
           className="flex flex-wrap -mx-3"
@@ -258,6 +322,8 @@ export default function RegisterCandidate() {
               errors={errors}
               isMandatory
             />
+            {loading && <p className="text-white">Validating email...</p>}
+            {!emailValid && <p className="text-red-500">Please use a real email.</p>}
             <FormTextInput
               labelFor="Phonenumber"
               labelText="Phone number"
@@ -271,13 +337,12 @@ export default function RegisterCandidate() {
               labelFor="Githubusername"
               labelText="Github username"
               placeholder="Enter your Github username"
-              name="github_username"
-              value={github_username}
+              name="githubUsername"
+              value={githubUsername}
               onChange={(e) => onInputChange(e)}
               errors={errors}
               isMandatory
             />
-
             <div className="flex items-center justify-end">
               <div
                 className="text-md text-gray-500 mb-1 mr-2 text-right"
@@ -307,13 +372,13 @@ export default function RegisterCandidate() {
                     />
                     <a
                       href="https://tu-enlace-externo.com"
-                      className="text-yellow-500 hover:underline"
+                      className="text-white hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Read the conditions in here
                       <svg
-                        className="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6  inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -335,10 +400,10 @@ export default function RegisterCandidate() {
             </div>
           </div>
 
-          <div className="flex-row space-x-24 m-auto">
+          <div className="flex-row space-x-24 m-auto mt-4">
             <div
               className="flex items-center justify-center h-full"
-              style={{ marginTop: "2rem" }}
+              style={{ marginTop: "3rem" }}
             >
               <p className="text-md text-white mb-1 mr-2 text-center">
                 Already have an account?{" "}
@@ -351,12 +416,13 @@ export default function RegisterCandidate() {
                 </Link>
               </p>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 mb-4">
               {MainButton("Register", "/", handleSubmit)}
             </div>
           </div>
         </form>
       </div>
+      <br></br>
     </div>
   );
 }

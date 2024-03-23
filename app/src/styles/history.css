@@ -1,0 +1,19 @@
+.history-table-container {
+    width: 100%;
+    backdrop-filter: blur(8px);
+}
+
+.history-table-header {
+    padding: 0;
+    background-color: var(--talent-light-background);
+    border-top: 10px solid var(--talent-secondary);
+    height: 60px;
+}
+.history-table-body {
+    background-color: var(--talent-dark-background);
+    max-height: 200px; /* Adjust as needed */
+    overflow-y: auto;
+}
+.history-table-body * td {
+    height: 50px;
+}
