@@ -172,9 +172,9 @@ export default function RegisterCandidate() {
     if (!form.email) {
       errors.email = getRequiredFieldMessage('email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
     ) {
-      errors.email = "The email field must be from Gmail, Outlook or Hotmail";
+      errors.email = "The input must be an email";
     }
     if (!form.password) {
       errors.password = getRequiredFieldMessage('password');

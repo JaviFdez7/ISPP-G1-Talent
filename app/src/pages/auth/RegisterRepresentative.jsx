@@ -173,12 +173,12 @@ export default function RegisterRepresentative() {
     if (!form.corporative_email) {
       errors.corporative_email = getRequiredFieldMessage('corporative email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
         form.corporative_email
       )
     ) {
       errors.corporative_email =
-        "The corporative email field must be from Gmail, Outlook, or Hotmail";
+        "The input must be an email";
     }
     if (!form.password) {
       errors.password = getRequiredFieldMessage('password');
