@@ -218,13 +218,8 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
       return;
-    } else {
-      // Encriptar la contraseña
-      if (data.password) {
-        data.password = await encrypt(data.password);
-      }
-      next();
     }
+    next();
   } catch (error: any) {
     ApiResponse.sendError(res, [{
       title: 'Error updating user',
@@ -236,7 +231,6 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
 // Comprobar si el usuario existe
 // Comprobar si hay datos para actualizar
 // Comprobar si el token es correcto
-// Encriptar la contraseña si se ha actualizado
 export const checkUpdateRepresentative: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = req.params.id.toString();
@@ -267,13 +261,8 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
       ApiResponse.sendError(res, [{
         title: 'Unauthorized', detail: message}], 401);
       return;
-    } else {
-      // Encriptar la contraseña si se ha actualizado
-      if (data.password) {
-        data.password = await encrypt(data.password);
-      }
-      next();
     }
+    next();
   } catch (error: any) {
     ApiResponse.sendError(res, [{
       title: 'Error updating user',
@@ -281,6 +270,62 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
     }]);
   }
 };
+
+export const checkUpdateUserProfilePicture: any = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id.toString();
+    const token = req.headers.authorization ?? '';
+    if (token.length === 0) {
+      const message = 'No token provided';
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
+    }
+    const decodedToken = verifyJWT(token);
+    if (decodedToken.sub !== id) {
+      const message = 'Unauthorized';
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
+    }
+    next();
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error updating profile picture',
+      detail: error.message
+    }]);
+  }
+};
+
+export const checkUpdatePassword: any = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id.toString();
+    const data = req.body;
+    const token = req.headers.authorization ?? '';
+    if (token.length === 0) {
+      const message = 'No token provided';
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
+    }
+    const decodedToken = verifyJWT(token);
+    if (decodedToken.sub !== id) {
+      const message = 'Unauthorized';
+      ApiResponse.sendError(res, [{
+        title: 'Unauthorized', detail: message}], 401);
+      return;
+    }
+    if (data.password) {
+      data.password = await encrypt(data.password);
+    }
+    next();
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Error updating password',
+      detail: error.message
+    }]);
+  }
+}; 
 
 // Comprobar si el usuario existe
 // Comprobar si el token es correcto
@@ -326,7 +371,7 @@ export default {
   checkLoginUser,
   checkUpdateCandidate,
   checkUpdateRepresentative,
+  checkUpdateUserProfilePicture,
+  checkUpdatePassword,
   checkDeleteUser
 };
-
-

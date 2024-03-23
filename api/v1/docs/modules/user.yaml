@@ -52,6 +52,41 @@ paths:
       responses:
         "204":
           description: User deleted successfully
+  /user/{id}/password:
+    patch:
+      tags:
+        - Users
+      summary: Update user's password
+      description: Allows a user to update their password.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the user.
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication.
+        - in: body
+          name: password
+          required: true
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                description: The new password for the user.
+      responses:
+        "200":
+          description: Password updated successfully.
+        "401":
+          description: Unauthorized. Token is invalid or missing.
+        "400":
+          description: Bad Request. Missing or invalid new password.
   /user/login:
     post:
       tags:
@@ -81,7 +116,6 @@ paths:
               - name: login
                 schema:
                   $ref: "#/definitions/User"
-
   /user/candidate:
     post:
       tags:
@@ -119,7 +153,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CandidateData"
+            $ref: "#/definitions/EditCandidateData"
         - name: authorization
           in: header
           schema:
@@ -132,8 +166,42 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/definitions/CandidateData"
-
+                $ref: "#/definitions/EditCandidateData"
+  /user/candidate/{id}/profile-picture:
+    patch:
+      tags:
+        - Users-By-Type
+      summary: Update user's profile picture
+      description: Allows a user to update their profile picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the user.
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication.
+        - in: body
+          name: profilePicture
+          required: true
+          schema:
+            type: object
+            properties:
+              profilePicture:
+                type: string
+                description: The new profile picture for the user.
+      responses:
+        "200":
+          description: Profile picture updated successfully.
+        "401":
+          description: Unauthorized. Token is invalid or missing.
+        "400":
+          description: Bad Request. Missing or invalid profile picture URL.
   /user/representative:
     post:
       tags:
@@ -171,7 +239,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/RepresentativeData"
+            $ref: "#/definitions/EditRepresentativeData"
         - name: authorization
           in: header
           schema:
@@ -184,7 +252,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/definitions/RepresentativeData"
+                $ref: "#/definitions/EditRepresentativeData"
   /user/{id}/professional-experiences:
     get:
       tags:
@@ -232,6 +300,39 @@ definitions:
       password:
         type: string
         description: The password of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      companyName:
+        type: string
+        description: The company name of the representative.
+      companySubscription:
+        type: string
+        enum:
+          - "Basic plan"
+          - "Pro plan"
+          - "Custom plan"
+        description: The subscription of the company.
+      projectSocietyName:
+        type: string
+        description: The project society name of teh representative.
+
+  EditRepresentativeData:
+    type: object
+    properties:
+      username:
+        type: string
+        description: The name of the user.
       email:
         type: string
         format: email
@@ -320,6 +421,52 @@ definitions:
         type: string
         description: The github token of the user.
 
+  EditCandidateData:
+    type: object
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      fullName:
+        type: string
+        description: The full name of the user.
+      githubUser:
+        type: string
+        description: The github username of the user.
+      candidateSubscription:
+        type: string
+        enum:
+          - "Basic plan"
+          - "Pro plan"
+        description: The subscription of the candidate.
+      CV:
+        type: string
+        description: The CV of the user.
+      residence:
+        type: string
+        description: The residence of the user.
+      lifestyle:
+        type: string
+        enum:
+          - "On-site"
+          - "Telematic"
+        description: The life style of the user of the user.
+      githubToken:
+        type: string
+        description: The github token of the user.
   LoginData:
     type: object
     required:
