@@ -15,15 +15,17 @@ const CandidateSubscriptionTypes = {
 
 const SupportedCurrencies = {
   EUR: 'EUR'
-  // USD: 'USD',
-  // GBP: 'GBP'
+  /*
+   * USD: 'USD',
+   * GBP: 'GBP'
+   */
 }
 
 // Define el esquema de Mongoose para la suscripción
 const subscriptionSchema = new Schema({
-  prize: { 
+  price: {
     amount: { type: Number, required: true },
-    currency: { type: String, required: true, enum: Object.values(SupportedCurrencies)}
+    currency: { type: String, required: true, enum: Object.values(SupportedCurrencies) }
   },
   lastPaymentDate: Date,
   expirationDate: Date,
@@ -51,4 +53,4 @@ const CandidateSubscriptionSchema = new Schema({
 });
 const CandidateSubscription = Subscription.discriminator('CandidateSubscription', CandidateSubscriptionSchema);
 
-export {Subscription, CompanySubscription, CandidateSubscription, CompanySubscriptionTypes, CandidateSubscriptionTypes }
+export { Subscription, CompanySubscription, CandidateSubscription, CompanySubscriptionTypes, CandidateSubscriptionTypes }

@@ -1,0 +1,100 @@
+openapi: 3.0.0
+info:
+  title:  IT Talent API - Analysis Module
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /subscriptions:
+    get:
+      tags:
+        - Subscription
+      summary: Get all the subscriptions
+      description: Get all the subscriptions
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubscriptionItem"
+
+  /subscriptions/{userId}:
+    get:
+      tags:
+        - Subscription
+      summary: Get the actual subscription of a user
+      description: Get the actual subscription level by user ID
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubscriptionItem"
+    patch:
+      tags:
+        - Subscription
+      summary: Update the actual subscription of a user
+      description: Update the actual subscription level by user ID
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - in: body
+        name: subtype
+        required: true
+        schema:
+          $ref: "#/definitions/SubscriptionInput"
+        description: Its the new type of subscription of the user.
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/SubscriptionItem"
+
+definitions:
+  SubscriptionInput:
+    type: object
+    properties:
+      subtype:
+        type: string
+        required: true
+        description: The new type of subscription to update
+        
+  SubscriptionItem:
+    type: object
+    properties:
+      price:
+        type: object
+        description: The price of the subscription level.
+        properties:
+          amount:
+            type: number
+            required: true
+          currency:
+            type: string
+            required: true
+      lastPaymentDate:
+        type: string
+        required: true
+        description: The last time you pay.
+      expirationDate:
+        type: string
+        required: true
+        description: The expiration date of your subscription.
+      automaticRenovation:
+        type: boolean
+        required: true
+        description: If it is activated the automatic renovation or is not

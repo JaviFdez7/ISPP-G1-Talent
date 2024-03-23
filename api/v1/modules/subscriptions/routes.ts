@@ -3,15 +3,14 @@ import express from 'express';
 import {
   getAllSubscriptions,
   getSubscriptionsByUserId,
-  createSubscriptions,
-  updateSubscriptions
+  updateSubscriptionByUserId
 } from './controllers/SubscriptionsController';
 
 const router = express.Router();
 
 // Define routes for the Subscriptions module
 router.get('/', getAllSubscriptions);
-router.get('/:id', getSubscriptionsByUserId);
-router.patch('/:id', updateSubscriptions);
+router.get('/:userId', getSubscriptionsByUserId);
+router.patch('/:userId', updateSubscriptionByUserId);
 
 export default router;
