@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Input from '../../components/Input'
 import profile from '../../images/profile.jpg'
 import mainBackground from '../../images/main-background2.jpg'
@@ -12,10 +11,9 @@ import SecondaryButton from '../../components/secondaryButton'
 
 export default function CandidateDetail() {
 	const { isAuthenticated, logout } = useAuthContext()
-	const textColor2 = '#D4983D'
+	const textColor2 = '--talent-highlight'
 	const [candidate, setCandidate] = useState({})
 	const [experience, setExperience] = useState([])
-	let navigate = useNavigate()
 
   React.useEffect(() => {
     const fetchUserData = async () => {

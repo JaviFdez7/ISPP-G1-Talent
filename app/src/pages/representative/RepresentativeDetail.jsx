@@ -52,9 +52,7 @@ export default function RepresentativeDetail() {
 					const currentUserId = localStorage.getItem('userId')
 					const uri = `/user/${currentUserId}/history`
 					const response = await axios.get(import.meta.env.VITE_BACKEND_URL + uri)
-					console.log(response)
 					const historyArray = response.data.data.map((item) => item)
-					console.log('historyArray: ', historyArray)
 					sortAndFormatHistory(historyArray)
 					setAnalysisHistoryData(historyArray)
 				}

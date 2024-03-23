@@ -1,33 +1,55 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import SecondaryButton from '../../components/secondaryButton'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton'
+import Modal from 'react-modal';
 
-export default function CandidateProfessionalExperienceDetail({}) {
-	const talentColor = 'var(--talent-highlight)'
+export default function CandidateProfessionalExperienceDetail({ }) {
+  const talentColor = 'var(--talent-highlight)'
 
-	const [experience, setExperience] = useState({})
+  const [experience, setExperience] = useState({})
+  const [showModal, setShowModal] = useState(false);
+  const id = localStorage.getItem('experienceId')
+  let navigate = useNavigate()
 
-	const id = localStorage.getItem('experienceId')
-
-	async function getExperienceById() {
-		const response = await fetch(
-			import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`,
-			{
-				method: 'GET',
-			}
-		)
-		const data = await response.json()
-		setExperience(data.data)
-	}
-
-	useEffect(() => {
-		getExperienceById()
-	}, [id])
+  async function getExperienceById() {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`,
+      {
+        method: 'GET',
+      }
+    )
+    const data = await response.json()
+    setExperience(data.data)
+  }
 
   useEffect(() => {
-    getExperienceById();
-  }, [id]);
+    getExperienceById()
+  }, [id])
+
+  async function handleConfirm() {
+    const token = localStorage.getItem('access_token');
+    await fetch(
+      import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`, {
+      method: "DELETE",
+      headers: {
+        'Authorization': `${token}`
+      }
+    });
+    navigate("/candidate/detail");
+    alert("Professional experience deleted successfully!");
+    setShowModal(false);
+  }
+
+  function handleCancel() {
+    navigate("/candidate/detail");
+    setShowModal(false);
+  }
+
+  function deleteProffesionalExperience() {
+    setShowModal(true);
+  }
 
   return (
     <div
@@ -90,7 +112,7 @@ export default function CandidateProfessionalExperienceDetail({}) {
               <br />
               <div className="p-4 border rounded" style={{
                 borderColor: talentColor,
-              }}>z
+              }}>
                 <p><strong>Professional Area:</strong></p>
                 <div className="flex flex-col w-full profile-info-text">
                   {experience.professionalArea}
@@ -100,11 +122,27 @@ export default function CandidateProfessionalExperienceDetail({}) {
             <div className="mt-8 self-center w-full flex flex-row justify-center">
               {SecondaryButton("Back", "/candidate/detail", "")}
               {MainButton("Update", "/candidate/professional-experience/edit", "")}
+              {SecondaryButton("Delete", "/", deleteProffesionalExperience)}
             </div>
           </div>
         </div>
       </div>
+      <Modal
+        isOpen={showModal}
+        onRequestClose={handleCancel}
+        contentLabel="Delete Confirmation"
+        style={{
+          content: {
+            width: '40%',
+            height: '20%',
+            margin: 'auto',
+          },
+        }}
+      >
+        <h2>Are you sure you want to delete this professional experience?</h2>
+        <button onClick={handleConfirm}>Yes</button>
+        <button onClick={handleCancel}>No</button>
+      </Modal>
     </div>
-
   )
 }

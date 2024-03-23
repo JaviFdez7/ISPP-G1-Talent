@@ -4,6 +4,7 @@ import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import MainButton from "../../components/mainButton";
+import SecondaryButton from '../../components/secondaryButton'
 import Swal from "sweetalert2";
 
 export default function CandidateProfessionalExperienceCreate() {
@@ -52,10 +53,6 @@ export default function CandidateProfessionalExperienceCreate() {
     const currentUserId = localStorage.getItem('userId')
     const token = localStorage.getItem('access_token')
     const validationErrors = validateForm()
-    console.log(token)
-    console.log(currentUserId)
-    console.log(form)
-
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
@@ -79,7 +76,7 @@ export default function CandidateProfessionalExperienceCreate() {
         setErrors(data)
         return
       }
-      navigate('/candidate/professional-experience/detail')
+      navigate('/candidate/detail')
     } catch (error) {
       console.error('Error creating professional experience:', error)
       if (error.response && error.response.status === 400) {
@@ -310,6 +307,7 @@ export default function CandidateProfessionalExperienceCreate() {
           style={{ marginTop: "1rem" }}
         >
           {MainButton("Create", "/", handleSubmit)}
+          {SecondaryButton('Cancel', '/candidate/detail', '')}
         </div>
       </div>
     </div>
