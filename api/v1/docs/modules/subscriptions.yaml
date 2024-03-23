@@ -32,6 +32,12 @@ paths:
         description: ID of the user
         required: true
         type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Its the token of authentication.
       responses:
         200:
           description: ºSuccess
@@ -50,6 +56,12 @@ paths:
         description: ID of the user
         required: true
         type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+          description: Its the token of authentication.
       - in: body
         name: subtype
         required: true

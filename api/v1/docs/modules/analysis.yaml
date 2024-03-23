@@ -34,9 +34,9 @@ paths:
             $ref: "#/definitions/CreationAnalysisUser"
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication.
       responses:
         "201":
@@ -61,9 +61,9 @@ paths:
           description: The unique identifier for the analysis entry.
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication(use to verify notifications).
       responses:
         "200":

@@ -6,11 +6,14 @@ import {
   updateSubscriptionByUserId
 } from './controllers/SubscriptionsController';
 
+import {checkGetSubscriptionByUserId
+  ,checkUpdateSubscriptionByUserId} from './middlewares/SubscriptionsMiddleware';
+
 const router = express.Router();
 
 // Define routes for the Subscriptions module
 router.get('/', getAllSubscriptions);
-router.get('/:userId', getSubscriptionsByUserId);
-router.patch('/:userId', updateSubscriptionByUserId);
+router.get('/:userId',checkGetSubscriptionByUserId, getSubscriptionsByUserId);
+router.patch('/:userId',checkUpdateSubscriptionByUserId, updateSubscriptionByUserId);
 
 export default router;

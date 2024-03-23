@@ -15,9 +15,7 @@ export const getSubscriptionsByUserId: any = async (userId: any) => {
 };
 
 export const createSubscriptions: any = async (role: any) => {
-  console.log("holaa");
   if (role === 'Representative') {
-    console.log("holaa");
     const expirationDate = new Date();
     expirationDate.setMonth(expirationDate.getMonth() + 1);
     const subscription = new CompanySubscription({ 

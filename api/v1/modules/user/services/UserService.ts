@@ -29,10 +29,8 @@ export const createUser: any = async (data: any, role: string) => {
       const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
       data.analysisId= analysis._id;
     }
-    console.log("ho");
     const subscription = await createSubscriptions(role);
     data.subscriptionId = subscription._id;
-    console.log("ho");
     const user = new Model(data);
     await user.save();
     return user;
