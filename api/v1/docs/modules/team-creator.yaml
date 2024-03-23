@@ -1,0 +1,187 @@
+openapi: 3.0.0
+info:
+  title: IT Talent API - Team Creator Module
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+paths:
+  /team-creator/{id}:
+    get:
+      tags:
+        - Team Creator
+      summary: Get a Team Creator entry by ID
+      description: Retrieves a Team Creator entry by its unique identifier.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the Team Creator entry.
+        - in: header
+          name: authorization
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication.
+      responses:
+        "200":
+          description: A Team Creator entry
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/TeamCreator"
+        "400":
+          description: Bad request, invalid ID supplied
+        "401":
+          description: Unauthorized, JWT token is missing or invalid
+        "404":
+          description: Team Creator entry not found
+        "500":
+          description: Internal server error
+    delete:
+      tags:
+        - Team Creator
+      summary: Delete a Team Creator entry
+      description: Deletes a Team Creator entry with the specified ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the Team Creator entry to be deleted.
+        - in: header
+          name: authorization
+          required: true
+          schema:
+            type: string
+            description: JWT token for authentication.
+      responses:
+        "200":
+          description: Team Creator entry deleted successfully
+        "400":
+          description: Bad request, invalid ID supplied
+        "401":
+          description: Unauthorized, JWT token is missing or invalid
+        "404":
+          description: Team Creator entry not found
+        "500":
+          description: Internal server error
+ 
+
+  /team-creator/representative-user/{representativeId}:
+    get:
+      tags:
+        - Team Creator
+      summary: Get all Team Creator entries of a representative
+      description: Retrieves all Team Creator entries that belong to a representative.
+      parameters:
+        - in: path
+          name: representativeId
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the representative.
+        - in: header
+          name: authorization
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication.
+      responses:
+        "200":
+          description: A list of Team Creator entries for a representative
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/definitions/TeamCreator"
+        "400":
+          description: Bad request, invalid ID supplied
+        "401":
+          description: Unauthorized, JWT token is missing or invalid
+        "404":
+          description: Team Creator entry not found
+        "500":
+          description: Internal server error
+
+  /team-creator:
+    post:
+      tags:
+        - Team Creator
+      summary: Create a Team Creator entry
+      description: Creates a Team Creator entry with the provided profiles.
+      parameters:
+        - name: profile requested
+          in: body
+          description: List of profiles requested
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ProfileRequested"
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+          description: JWT token for authentication
+      responses:
+        "200":
+          description: Team Creator entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/TeamCreator"
+        "400":
+          description: Bad request, invalid input data
+        "401":
+          description: Unauthorized, JWT token is missing or invalid
+        "500":
+          description: Internal server error
+  
+   
+definitions:
+  ProfileRequested:
+    type: object
+    required:
+      - languages
+      - technologies
+      - yearsOfExperience
+      - field
+    properties:
+      languages:
+        type: array
+        items:
+          type: string
+        description: An array of programming languages known by the candidate.
+      technologies:
+        type: array
+        items:
+          type: string
+        description: An array of technologies the candidate is experienced with.
+      yearsOfExperience:
+        type: integer
+        format: int32
+        description: Number of years of professional experience.
+      field:
+        type: string
+        description: The field or domain of expertise.
+
+  TeamCreator:
+    type: object
+    required:
+      - userId
+      - profiles
+    properties:
+      userId:
+        type: string
+        description: The unique identifier of the user who created the team.
+      profiles:
+        type: array
+        description: An array of ProfileRequested objects.
+        items:
+          $ref: '#/definitions/ProfileRequested'

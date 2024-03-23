@@ -1,13 +1,8 @@
-import { ObjectId } from 'mongodb';
 import { ProfessionalExperience } from '../models/professional-experience';
 
-export const getAllProfessionalExperience: any = async () => {
-  return await ProfessionalExperience.find({});
-};
+export const getAllProfessionalExperience: any = async () => await ProfessionalExperience.find({});
 
-export const getProfessionalExperienceById: any = async (id: any) => {
-  return await ProfessionalExperience.findById(id);
-};
+export const getProfessionalExperienceById: any = async (id: any) => await ProfessionalExperience.findById(id);
 
 export const createProfessionalExperience: any = async (data: any) => {
   try {

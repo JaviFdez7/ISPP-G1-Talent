@@ -1,10 +1,9 @@
-import { ObjectId } from 'mongodb';
 import { History } from '../models/history';
 import { User } from '../../user/models/user';
 // Default service functions
 export const getHistoryFromUser: any = async (userId: string) => {
   try {
-    const history = await History.find({userId: userId }).sort({ date: 1 });
+    const history = await History.find({ userId }).sort({ date: 1 });
     return history;
   } catch (error) {
     console.error('Error getting history:', error);
@@ -22,7 +21,6 @@ export const getNotFavoritesFromUser: any = async (userId: any) => {
   }
 }
 
-
 export const getFavoritesFromUser: any = async (userId: any) => {
   try {
     const history = await History.find({}).where('userId').equals(userId).where('favorite').equals(true);
@@ -37,9 +35,9 @@ export const createHistory: any = async (userId: any, data: any) => {
   try {
     const history = new History(data);
     const user = await User.findById(userId);
-    if (!user) {
+    if (!user)
       throw new Error('User not found');
-    }
+
     history.userId = user._id;
     history.date = new Date();
     history.favorite = false;
@@ -54,9 +52,9 @@ export const createHistory: any = async (userId: any, data: any) => {
 export const toggleFavorite: any = async (id: any) => {
   try {
     const history = await History.findById(id);
-    if (!history) {
+    if (!history)
       throw new Error('History not found');
-    }
+
     const updatedHistory = await History.findByIdAndUpdate(id, { favorite: !(history.favorite) }, { new: true });
     return updatedHistory;
   } catch (error) {

@@ -1,21 +1,17 @@
 import { generateJWT } from '../helpers/handleJWT';
-import { User,Candidate } from '../models/user';
+import { User } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 
 import { getModelForRole } from '../helpers/handleRoles';
 import { createAnalysis } from '../../analysis/services/AnalysisService';
 
-export const getAllUser: any = async () => {
-  return await User.find({});
-};
+export const getAllUser: any = async () => await User.find({});
 
-export const getUserById: any = async (id: any) => {
-  return await User.findById(id);
-};
+export const getUserById: any = async (id: any) => await User.findById(id);
 
 export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
   try {
-    return await ProfessionalExperience.find({ userId: userId });
+    return await ProfessionalExperience.find({ userId });
   } catch (error) {
     console.error('Error when obtaining professional experience:', error);
     throw error;
