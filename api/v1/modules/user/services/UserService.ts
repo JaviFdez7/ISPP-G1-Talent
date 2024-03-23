@@ -1,26 +1,22 @@
-import { generateJWT } from '../helpers/handleJWT'
-import { User, Candidate } from '../models/user'
-import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
+import { generateJWT } from '../helpers/handleJWT';
+import { User } from '../models/user';
+import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 
 import { getModelForRole } from '../helpers/handleRoles'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
 
-export const getAllUser: any = async () => {
-	return await User.find({})
-}
+export const getAllUser: any = async () => await User.find({});
 
-export const getUserById: any = async (id: any) => {
-	return await User.findById(id)
-}
+export const getUserById: any = async (id: any) => await User.findById(id);
 
 export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
-	try {
-		return await ProfessionalExperience.find({ userId: userId })
-	} catch (error) {
-		console.error('Error when obtaining professional experience:', error)
-		throw error
-	}
-}
+  try {
+    return await ProfessionalExperience.find({ userId });
+  } catch (error) {
+    console.error('Error when obtaining professional experience:', error);
+    throw error;
+  }
+};
 
 export const createUser: any = async (data: any, role: string) => {
 	try {
@@ -35,19 +31,19 @@ export const createUser: any = async (data: any, role: string) => {
 }
 
 export const updateUser: any = async (id: any, data: any, role: string) => {
-	try {
-		const Model = getModelForRole(role) as typeof User
-		if (role === 'Candidate') {
-			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
-			data.analysisId = analysis._id
-		}
-		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
-		return updatedUser
-	} catch (error) {
-		console.error('Error updating user:', error)
-		throw error
-	}
-}
+  try {
+    const Model = getModelForRole(role) as typeof User;
+    if (role === 'Candidate') {
+      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
+      data.analisisId=analysis._id;
+    }
+    const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+};
 
 export const deleteUser: any = async (id: any, role: string) => {
 	try {

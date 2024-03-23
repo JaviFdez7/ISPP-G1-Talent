@@ -42,23 +42,24 @@ const representativeSchema = new Schema({
 })
 
 const candidateSchema = new Schema({
-	fullName: { type: String, required: true },
-	githubUser: { type: String, required: true },
-	profilePicture: String,
-	candidateSubscription: {
-		type: String,
-		required: true,
-		enum: Object.values(CandidateSubscription),
-	},
-	CV: String,
-	residence: String,
-	lifestyle: {
-		type: String,
-		enum: Object.values(LifeStyle),
-	},
-	githubToken: { type: String },
-	analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis' },
-})
+  fullName: { type: String, required: true },
+  githubUser: { type: String, required: true },
+  profilePicture: String,
+  candidateSubscription: {
+    type: String,
+    required: true,
+    enum: Object.values(CandidateSubscription)
+  },
+  CV: String,
+  residence: String,
+  lifestyle: {
+    type: String,
+    enum: Object.values(LifeStyle)
+  },
+  githubToken: { type: String },
+  profesionalExperiences: [{ type: Schema.Types.ObjectId, ref: 'ProfessionalExperience' }],
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true }
+});
 
 const Representative = User.discriminator('Representative', representativeSchema)
 const Candidate = User.discriminator('Candidate', candidateSchema)

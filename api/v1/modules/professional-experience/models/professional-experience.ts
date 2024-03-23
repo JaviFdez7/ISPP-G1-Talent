@@ -33,8 +33,7 @@ const professionalExperienceSchema = new Schema({
     type: String,
     enum: Object.values(LifeStyle)
   },
-  location: { type: String },
-  userId: { type: Schema.Types.ObjectId, ref: 'Candidate', required: true }
+  location: { type: String }
 })
 
 const ProfessionalExperience = model('ProfessionalExperience', professionalExperienceSchema);

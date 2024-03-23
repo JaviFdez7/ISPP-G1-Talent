@@ -10,12 +10,14 @@ import NotificationRouter from './modules/notification'
 import ProfessionalExperienceRouter from './modules/professional-experience'
 import cors from 'cors'
 
-const app = express()
-const swaggerHost = process.env.HOST ?? 'localhost:3000'
-app.use(express.json())
-app.use(cors())
-//  Routers -----------------------------------------------------
-//  Default
+const app = express();
+const swaggerHost = process.env.HOST ?? 'localhost:3000';
+app.use(express.json());
+app.use(cors());
+//Routers -----------------------------------------------------
+
+
+//Default
 app.get('/', (req: Request, res: Response) => {
 	res.send('Welcome to the Talent API! 🚀\n See the documentation at /v1/docs')
 })
