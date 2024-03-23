@@ -11,7 +11,6 @@ import SecondaryButton from '../../components/secondaryButton'
 
 export default function CandidateDetail() {
 	const { isAuthenticated, logout } = useAuthContext()
-	const textColor2 = '--talent-highlight'
 	const [candidate, setCandidate] = useState({})
 	const [experience, setExperience] = useState([])
 
@@ -87,7 +86,7 @@ export default function CandidateDetail() {
               <div className="text-white mt-8">
                 <FontAwesomeIcon
                   icon={faMapMarkerAlt}
-                  style={{ color: textColor2 }}
+                  style={{ color: "var(--talent-highlight)" }}
                   />
                 {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
             </div>

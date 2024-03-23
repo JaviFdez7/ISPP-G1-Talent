@@ -1,6 +1,5 @@
 import React, { useState} from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/authContext";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import MainButton from "../../components/mainButton";
@@ -8,7 +7,6 @@ import SecondaryButton from '../../components/secondaryButton'
 import Swal from "sweetalert2";
 
 export default function CandidateProfessionalExperienceCreate() {
-  const { isAuthenticated } = useAuthContext()
 
   const [form, setForm] = useState({
     startDate: '',
@@ -22,22 +20,6 @@ export default function CandidateProfessionalExperienceCreate() {
   const { startDate, endDate, companyName, professionalArea, userId } = form
 
   let navigate = useNavigate()
-
-  // React.useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       if (isAuthenticated) {
-  //         const currentUserId = localStorage.getItem("userId");
-  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-  //         const user = response.data.data.find(user => user._id === currentUserId);
-  //         setForm(prevForm => ({ ...prevForm, ...user }));
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, [isAuthenticated]);
 
   function onInputChange(e) {
     const { name, value, checked } = e.target

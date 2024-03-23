@@ -136,12 +136,44 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             width: '40%',
             height: '20%',
             margin: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'var(--talent-secondary)',
+            borderRadius: '10px',
+            color: 'white',
           },
         }}
       >
-        <h2>Are you sure you want to delete this professional experience?</h2>
-        <button onClick={handleConfirm}>Yes</button>
-        <button onClick={handleCancel}>No</button>
+        <h2 style={{ marginBottom: '3%' }}>Are you sure you want to delete this professional experience?</h2>
+        <div>
+          <button
+            onClick={handleConfirm}
+            style={{
+              marginRight: '10px',
+              padding: '10px',
+              backgroundColor: 'var(--talent-highlight)', // Change as needed
+              color: 'white', // Change as needed
+              border: 'none', // Change as needed
+              borderRadius: '5px', // Change as needed
+            }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={handleCancel}
+            style={{
+              padding: '10px',
+              backgroundColor: 'var(--talent-black)', // Change as needed
+              color: 'white', // Change as needed
+              border: 'none', // Change as needed
+              borderRadius: '5px', // Change as needed
+            }}
+          >
+            No
+          </button>
+        </div>
       </Modal>
     </div>
   )

@@ -4,14 +4,12 @@ import Input from '../../components/Input'
 import profile from '../../images/profile.jpg'
 import mainBackground from '../../images/main-background2.jpg'
 import LatestHistory from '../../components/history/LatestHistory'
-import MainButton from '../../components/mainButton'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
-import Logout from '../../components/swat/logout'
 
 export default function RepresentativeDetail() {
-	const { isAuthenticated, logout } = useAuthContext()
+	const { isAuthenticated } = useAuthContext()
 	const [userData, setUserData] = useState(null)
 	const [analysisHistoryData, setAnalysisHistoryData] = useState([
 		{
