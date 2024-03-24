@@ -3,6 +3,8 @@ import {useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
+const apiURL = import.meta.env.VITE_BACKEND_URL;
+import axios from 'axios';
 
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
@@ -14,7 +16,7 @@ export default function SearchForm() {
     field: "",
     techCategory: "",
   }));
-
+  let searchId="";
 
   const [selectedTechCategory, setSelectedTechCategory] = useState("");
   const relevantTechnologies = {
@@ -39,21 +41,20 @@ export default function SearchForm() {
     "Monitoring & Logging": ["prometheus", "grafana", "logstash", "kibana", "elk-stack", "datadog", "new-relic"],
     "Other Libraries & Frameworks": ["lodash", "underscore", "moment", "date-fns", "rxjs", "axios", "fetch-api", "socket.io"],
   };
-  const LANGUAGE_OPTIONS =[
-  'Python',
-  'Java',
-  'C++'];
+  const LANGUAGE_OPTIONS= {
+    js: 'JavaScript', py: 'Python', ts: 'TypeScript', java: 'Java', kt: 'Kotlin', cpp: 'C++',
+    c: 'C', cs: 'C#', rb: 'Ruby', go: 'Go', rs: 'Rust', php: 'PHP', ex: 'Elixir', exs: 'Elixir', scala: 'Scala',
+    hs: 'Haskell', jl: 'Julia', r: 'R', swift: 'Swift', m: 'Objective-C', mm: 'Objective-C++',
+    pl: 'Perl', sh: 'Shell', bat: 'Batch', ps1: 'PowerShell', lua: 'Lua', groovy: 'Groovy', clj: 'Clojure',
+    cljc: 'Clojure', cljs: 'ClojureScript', elm: 'Elm', erl: 'Erlang', hrl: 'Erlang', fs: 'F#', fsi: 'F#',
+    ml: 'OCaml', mli: 'OCaml', dart: 'Dart', pas: 'Pascal', dfm: 'Delphi Forms', vb: 'Visual Basic',
+    vbs: 'VBScript', asm: 'Assembly', s: 'Assembly', rkt: 'Racket', scm: 'Scheme', lisp: 'Common Lisp',
+    lsp: 'Common Lisp', coffee: 'CoffeeScript', tsx: 'TypeScript JSX',  jsx: 'JavaScript JSX'
+    };
+
   const FIELD_OPTIONS = [
-    'Web application',
-    'Mobile application',
-    'Frontend',
-    'DevOps',
-    'Backend',
-    'Operating systems',
-    'Data science',
-    'Artificial intelligence',
-    'Security',
-    'Other'
+    'Web application','Mobile application', 'Frontend', 'DevOps', 'Backend',
+    'Operating systems', 'Data science', 'Artificial intelligence', 'Security', 'Other'
   ];
 
   const [errors, setErrors] = useState({});
@@ -86,10 +87,30 @@ export default function SearchForm() {
   }
   
   async function handleSubmit(e) {
+    e.preventDefault(); 
+    console.log(form);
     try { 
-      navigate(`/searches/:searchId`);
-      
+      const representativeId = localStorage.getItem("userId");
+      const token = localStorage.getItem("access_token");
+      const config = {
+          headers: { Authorization: `${token}` }
+      };
+  
+      // Convert form object to array
+      const formArray = Object.values(form);
+      const formArrayWithoutTechCategory = formArray.map(obj => {
+        const { techCategory, ...rest } = obj;
+        return rest;
+      });
+  
+      const response = await axios.post(
+        apiURL + "/team-creator", formArrayWithoutTechCategory, config
+      )
+      const todosSearches = await axios.get(apiURL + "/team-creator/representative-user/" + representativeId, config);
+      const lastSearch = todosSearches.data[todosSearches.data.length - 1];
+      navigate("/searches/" + lastSearch._id);
     } catch (error) {
+      console.log('Error in handleSubmit:', error);
       if (error.response && error.response.status === 409) {
         setErrors(error.response.data);
       }
@@ -146,13 +167,13 @@ export default function SearchForm() {
         />
       </div>
       
-
-      {[...Array(numForms)].map((_, index) => (
-        <div key={index} style={{ marginTop: "40px" }}>
-          <form
+      <form
               onSubmit={(e) => handleSubmit(e)}
               className="flex flex-col items-center flex-wrap -mx-3"
             >
+      {[...Array(numForms)].map((_, index) => (
+        <div key={index} style={{ marginTop: "40px" }}>
+          
             <div
               className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between items-center"
               style={{
@@ -189,7 +210,7 @@ export default function SearchForm() {
                   multiple
                 >
                   <option value="">Select languages</option>
-                  {LANGUAGE_OPTIONS.map((option, index) => (
+                  { Object.values(LANGUAGE_OPTIONS).map((option, index) => (
                     <option key={index} value={option}>{option}</option>
                   ))}
                 </select>
@@ -244,13 +265,15 @@ export default function SearchForm() {
                 </div>
             </div>
             
-          </form>
+          
         </div>
       ))}
       <div className="flex justify-center mt-4">
-                    {MainButton("Search", "/searches/:searchId")}
+                    {MainButton("Search",  "", handleSubmit)}
                     {MainButton("Cancel", "/searches/team")}
-                  </div>
+            </div>
+      </form>
+      
     </div>
   );
 }
