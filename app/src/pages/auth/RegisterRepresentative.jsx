@@ -29,6 +29,11 @@ export default function RegisterRepresentative() {
     password,
     password2,
   } = form;
+  const [emailValid, setEmailValid] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED==='true' || false;
+
   let navigate = useNavigate();
 
   function onInputChange(e) {
@@ -48,6 +53,8 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setEmailValid(true);
+
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
@@ -57,6 +64,16 @@ export default function RegisterRepresentative() {
       setErrors(validationErrors);
       return;
     }
+    if (enableValidation) {
+      setLoading(true);
+      const isValidEmail = await validateEmail(form.corporative_email);
+      setLoading(false);
+      if (!isValidEmail) {
+        setEmailValid(false);
+        return;
+      }
+    }
+
 
     try {
       const response = await axios.post(
@@ -92,6 +109,50 @@ export default function RegisterRepresentative() {
     return `The ${fieldName} field is required`;
   }
 
+  async function validateEmail(email) {
+    const verifaliaUserId = 'ittalentID1111111111111111';
+    const verifaliaUserPwd = 'rI8e.gOjdUWfv0';
+
+    try {
+      // Enviar solicitud de validación de correo electrónico
+      const response = await axios.post(
+        'https://api.verifalia.com/v2.5/email-validations',
+        {
+          entries: [{ inputData: email }],
+        },
+        {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        }
+      );
+      console.log("response**********", response)
+      const taskId = response.data.overview.id;
+      console.log("TaskID**********", taskId)
+      let taskStatus = 'InProgress';
+      let result = false;
+      while (taskStatus === 'InProgress') {
+        const taskResponse = await axios.get(`https://api.verifalia.com/v2.5/email-validations/${taskId}`, {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        });
+        console.log("taskResponse****", taskResponse)
+        taskStatus = taskResponse.status;
+        result = taskResponse.data.entries.data[0].classification === 'Deliverable';
+        console.log('Estado de la tarea:', taskStatus + " -- " + result);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error validating email:', error);
+      return false;
+    }
+  }
+
   function validateForm() {
     let errors = {};
 
@@ -111,12 +172,12 @@ export default function RegisterRepresentative() {
     if (!form.corporative_email) {
       errors.corporative_email = getRequiredFieldMessage('corporative email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
         form.corporative_email
       )
     ) {
       errors.corporative_email =
-        "The corporative email field must be from Gmail, Outlook, or Hotmail";
+        "The input must be an email";
     }
     if (!form.password) {
       errors.password = getRequiredFieldMessage('password');
@@ -222,6 +283,8 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
+            {loading && <p className="text-white">Validating email...</p>}
+            {!emailValid && <p className="text-red-500">Please use a real email.</p>}
             <FormTextInput
               labelFor="companyname"
               labelText="Company Name"

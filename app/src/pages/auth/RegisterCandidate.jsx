@@ -33,6 +33,12 @@ export default function RegisterCandidate() {
     githubUsername,
     candidateSubscription,
   } = form
+  
+  const [emailValid, setEmailValid] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED==='true' || false;
+
   let navigate = useNavigate()
 
   function onInputChange(e) {
@@ -61,6 +67,16 @@ export default function RegisterCandidate() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
       return
+    }
+
+    if (enableValidation) {
+      setLoading(true);
+      const isValidEmail = await validateEmail(form.email);
+      setLoading(false);
+      if (!isValidEmail) {
+        setEmailValid(false);
+        return;
+      }
     }
 
     try {
@@ -98,6 +114,50 @@ export default function RegisterCandidate() {
     return `The ${fieldName} field is required`
   }
 
+  async function validateEmail(email) {
+    const verifaliaUserId = 'ittalentID1111111111111111';
+    const verifaliaUserPwd = 'rI8e.gOjdUWfv0';
+
+    try {
+      // Enviar solicitud de validación de correo electrónico
+      const response = await axios.post(
+        'https://api.verifalia.com/v2.5/email-validations',
+        {
+          entries: [{ inputData: email }],
+        },
+        {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        }
+      );
+      console.log("response**********", response)
+      const taskId = response.data.overview.id;
+      console.log("TaskID**********", taskId)
+      let taskStatus = 'InProgress';
+      let result = false;
+      while (taskStatus === 'InProgress') {
+        const taskResponse = await axios.get(`https://api.verifalia.com/v2.5/email-validations/${taskId}`, {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        });
+        console.log("taskResponse****", taskResponse)
+        taskStatus = taskResponse.status;
+        result = taskResponse.data.entries.data[0].classification === 'Deliverable';
+        console.log('Estado de la tarea:', taskStatus + " -- " + result);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error validating email:', error);
+      return false;
+    }
+  }
+
   function validateForm() {
     let errors = {};
     if (!form.first_name) {
@@ -113,9 +173,9 @@ export default function RegisterCandidate() {
     if (!form.email) {
       errors.email = getRequiredFieldMessage('email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(form.email)
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)
     ) {
-      errors.email = "The email field must be from Gmail, Outlook or Hotmail";
+      errors.email = "The input must be an email";
     }
     if (!form.password) {
       errors.password = getRequiredFieldMessage('password');
@@ -263,6 +323,8 @@ export default function RegisterCandidate() {
               errors={errors}
               isMandatory
             />
+            {loading && <p className="text-white">Validating email...</p>}
+            {!emailValid && <p className="text-red-500">Please use a real email.</p>}
             <FormTextInput
               labelFor="Phonenumber"
               labelText="Phone number"
