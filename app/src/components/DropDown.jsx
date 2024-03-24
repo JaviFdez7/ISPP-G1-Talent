@@ -4,7 +4,7 @@ export default function DropdownComponent({ name, imgSrc, children }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="w-10/12 max-w-6xl h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10  ml-10 mr-10"
+        <div className="w-auto h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10  ml-10 mr-10"
             style={{
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
                 marginLeft: "50",

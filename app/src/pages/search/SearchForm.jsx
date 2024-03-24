@@ -9,6 +9,8 @@ import axios from 'axios';
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const [numForms, setNumForms] = useState(1);
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState(Array(numForms).fill({
     languages: [],
     technologies: [],
@@ -72,10 +74,13 @@ export default function SearchForm() {
   let navigate = useNavigate();
 
   function onInputChange(e, index) {
-    const value = e.target.multiple
+    let value = e.target.multiple
       ? Array.from(e.target.selectedOptions, option => option.value)
       : e.target.value;
-  
+ 
+    if (e.target.name === 'yearsOfExperience' && value < 0) {
+      value = 0; 
+    }
     setForm(form => {
       const newForm = [...form];
       newForm[index] = {
@@ -85,6 +90,8 @@ export default function SearchForm() {
       return newForm;
     });
   }
+
+  
   
   async function handleSubmit(e) {
     e.preventDefault(); 
@@ -111,9 +118,23 @@ export default function SearchForm() {
       navigate("/searches/" + lastSearch._id);
     } catch (error) {
       console.log('Error in handleSubmit:', error);
-      if (error.response && error.response.status === 409) {
-        setErrors(error.response.data);
+      if (error.message && error.message.includes('Network Error')) {
+        setErrors({ message: 'Unable to connect to the server. Please make sure the server is running and accepting connections.' });
+      } else if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            setErrors({ message: 'Bad request, invalid input data.' });
+            break;
+          case 500:
+            setErrors({ message: 'Internal server error. Please try again later' });
+            break;
+          default:
+            setErrors({ message: 'An unknown error occurred.' });
+        }
+      } else {
+        setErrors({ message: 'An unknown error occurred.' });
       }
+      console.log(errors); // Log the errors state
     }
   }
 
@@ -163,7 +184,15 @@ export default function SearchForm() {
           min="1"
           max="5"
           value={numForms}
-          onChange={(e) => setNumForms(Number(e.target.value))}
+          onChange={(e) => {
+            let value = Number(e.target.value);
+            if (value < 1) {
+              value = 1;
+            } else if (value > 5) {
+              value = 5;
+            }
+            setNumForms(value);
+          }}
         />
       </div>
       
@@ -194,6 +223,7 @@ export default function SearchForm() {
               >
                 Enter the search filters for candidate {index +1}
               </h2>
+              {errors.message && <p style={{ color: 'white' }}>{errors.message}</p>}
               <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
               
               {errors.errors && errors.errors[0] && errors.errors[0].detail && (
@@ -257,11 +287,13 @@ export default function SearchForm() {
                     labelText="Years of Experience"
                     placeholder="Enter years of Experience"
                     name="yearsOfExperience"
+                    type="number"
+                    min="0"
                     value={form[index]?.yearsOfExperience}
                     onChange={(e) => onInputChange(e, index)}
                     errors={errors}
                   />
-                  
+                                    
                 </div>
             </div>
             
