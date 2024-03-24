@@ -97,7 +97,6 @@ export default function SearchForm() {
   
   async function handleSubmit(e) {
     e.preventDefault(); 
-    console.log(form);
     try { 
       const representativeId = localStorage.getItem("userId");
       const token = localStorage.getItem("access_token");
@@ -119,7 +118,6 @@ export default function SearchForm() {
       const lastSearch = todosSearches.data[todosSearches.data.length - 1];
       navigate("/searches/" + lastSearch._id);
     } catch (error) {
-      console.log('Error in handleSubmit:', error);
       if (error.message && error.message.includes('Network Error')) {
         setErrors({ message: 'Unable to connect to the server. Please make sure the server is running and accepting connections.' });
       } else if (error.response) {
@@ -136,7 +134,6 @@ export default function SearchForm() {
       } else {
         setErrors({ message: 'An unknown error occurred.' });
       }
-      console.log(errors); // Log the errors state
     }
   }
 

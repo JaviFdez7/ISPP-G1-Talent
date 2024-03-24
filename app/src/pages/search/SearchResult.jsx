@@ -28,16 +28,13 @@ async function fetchDataFromEndpoint(searchId) {
       headers: { Authorization: `${token}` }
     };
     const response = await axios.get(apiURL + "/team-creator/" + searchId, config);
-    console.log("Response:", response.data); 
     setTeamData(response.data); 
     setError(false);
     return response.data; 
   }catch (error) {
     if (error.message && error.message.includes('Network Error')) {
-      console.log("Error:", error);
       setErrorMessage('Unable to connect to the server. Please make sure the server is running and accepting connections.');
     } else if (error.response) {
-      console.log(error.response.data.errors);
       if (error.response.status === 500) {
         setErrorMessage('Internal server error. Please try again later.');
       } else {
@@ -47,7 +44,6 @@ async function fetchDataFromEndpoint(searchId) {
       setErrorMessage('An unknown error occurred. Please try again later.');
     }
     setError(true);
-    console.error("Error al llamar al endpoint:", error);
   }
 }
 

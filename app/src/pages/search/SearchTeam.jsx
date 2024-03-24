@@ -28,14 +28,11 @@ async function fetchDataFromEndpoint(representativeId) {
       headers: { Authorization: `${token}` }
     };
     const response = await axios.get(apiURL + "/team-creator/representative-user/" + representativeId, config);
-    console.log("Response:", response.data); 
     setTeamData(response.data); 
     setError(false);
     return response.data; 
   } catch (error) {
     if (!error.response) {
-      // The request was made but no response was received
-      console.log(error.request);
       setErrorMessage('Invalid ID supplied');
     } else if(error.response) {
       if (error.response.status === 400) {
@@ -49,7 +46,6 @@ async function fetchDataFromEndpoint(representativeId) {
       }
     } 
     setError(true);
-    console.error("Error al llamar al endpoint:", error);
     throw error;
   }
 }
@@ -61,17 +57,12 @@ async function deleteDataFromEndpoint(searchId) {
       headers: { Authorization: `${token}` }
     };
     const response = await axios.delete(apiURL + "/team-creator/" + searchId, config);
-    console.log("Delete Response:", response.data); 
-
-    // Recargar la página después de la operación de eliminación
     window.location.reload();
 
     return response.data; 
   } catch (error) {
-    console.log(error.response.data.errors);
     setError(true);
     setErrorMessage('Unable to connect to the server. Please try again later.');
-    console.error("Error al llamar al endpoint:", error);
     throw error;
   }
 }
@@ -85,7 +76,6 @@ function handleCancel() {
 }
 
 useEffect(() => {
-  // Aquí puedes poner el representativeId que necesitas para llamar a fetchDataFromEndpoint
   const representativeId = localStorage.getItem("userId");
   fetchDataFromEndpoint(representativeId);
 }, []);
@@ -144,7 +134,6 @@ return (
               )
             })}
             <div className="flex justify-center mt-16 mb-0">
-              {console.log("teamList", teamList._id)}
               {MainButton("Delete search", "", () => deleteSearchResult(teamList._id))}
               <Link to="/searches/searchId" className="ml-10" style={{ textDecoration: 'underline' }}>
                 View Analysis
