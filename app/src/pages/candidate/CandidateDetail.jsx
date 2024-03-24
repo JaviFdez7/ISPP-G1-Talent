@@ -8,11 +8,13 @@ import DataTable from '../../components/DataTable.jsx'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import SecondaryButton from '../../components/secondaryButton'
+import WorkExperienceList from '../../components/WorkExperienceList';
+
 
 export default function CandidateDetail() {
-	const { isAuthenticated, logout } = useAuthContext()
-	const [candidate, setCandidate] = useState({})
-	const [experience, setExperience] = useState([])
+  const { isAuthenticated } = useAuthContext()
+  const [candidate, setCandidate] = useState({})
+  const [experience, setExperience] = useState([])
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -56,6 +58,8 @@ export default function CandidateDetail() {
     fetchUserData();
     fetchExperienceData();
   }, [isAuthenticated]);
+
+
   return (
     <div
       className="flex flex-col bg-fixed"
@@ -77,18 +81,18 @@ export default function CandidateDetail() {
               {candidate && candidate.fullName ? candidate.fullName : " - "}
             </h2>
           </div>
-            <div className="flex flex-col w-full profile-info-text">
-              {Input({name:"Username", value:candidate ? candidate.username : " - ", editable:false})}
-              <br></br>
-              {Input({name:"Email", value:candidate ? candidate.email : " - ", editable:false})}
-              <br></br>
-              {Input({name:"Phone", value:candidate ? candidate.phone : " - ", editable:false})}
-              <div className="text-white mt-8">
-                <FontAwesomeIcon
-                  icon={faMapMarkerAlt}
-                  style={{ color: "var(--talent-highlight)" }}
-                  />
-                {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
+          <div className="flex flex-col w-full profile-info-text">
+            {Input({ name: "Username", value: candidate ? candidate.username : " - ", editable: false })}
+            <br></br>
+            {Input({ name: "Email", value: candidate ? candidate.email : " - ", editable: false })}
+            <br></br>
+            {Input({ name: "Phone", value: candidate ? candidate.phone : " - ", editable: false })}
+            <div className="text-white mt-8">
+              <FontAwesomeIcon
+                icon={faMapMarkerAlt}
+                style={{ color: "var(--talent-highlight)" }}
+              />
+              {candidate.residence} {candidate && candidate.address ? candidate.address : " Seville, Spain "}
             </div>
             <div className="mt-8 self-center">
               {SecondaryButton("Update", "", "")}
@@ -124,7 +128,7 @@ export default function CandidateDetail() {
         <br></br>
         <div className="w-full"
         >
-          {Input({name:"Github username", value:"martinnez123"})} {/* candidate.githubUser */}
+          {Input({ name: "Github username", value: "martinnez123" })} {/* candidate.githubUser */}
         </div>
         <br></br>
         <br></br>
@@ -142,21 +146,11 @@ export default function CandidateDetail() {
       <hr className="w-5/12 self-center"></hr>
       <div
         className="w-9/12 self-center"
-        style={{ marginBottom: "3rem", marginTop: "3rem" }}
+        style={{ marginBottom: "3rem", marginTop: "2rem" }}
       >
-
         <div className="flex justify-between items-center">
-          <DataTable
-            header={""}
-            contentArray={experience ? experience.map((exp) => `Company Name: ${exp.companyName} || Professional Area: ${exp.professionalArea}`) : []}
-            editable={true}
-            addLink="/candidate/professional-experience/create"
-            editLink="/candidate/professional-experience/detail"
-            idArray={experience ? experience.map((exp) => exp._id) : []}
-            idName="experienceId"
-          />
+          <WorkExperienceList experience={experience} />
         </div>
-
       </div>
       <br></br>
       <br></br>

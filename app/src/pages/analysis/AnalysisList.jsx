@@ -1,9 +1,7 @@
 import React from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
-import MainButton from "../../components/mainButton.jsx";
 import Select from "../../components/Select.jsx";
 import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.jsx";
 

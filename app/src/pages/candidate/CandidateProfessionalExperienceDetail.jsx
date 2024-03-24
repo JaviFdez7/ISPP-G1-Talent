@@ -38,7 +38,6 @@ export default function CandidateProfessionalExperienceDetail({ }) {
       }
     });
     navigate("/candidate/detail");
-    alert("Professional experience deleted successfully!");
     setShowModal(false);
   }
 

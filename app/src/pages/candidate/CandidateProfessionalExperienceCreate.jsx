@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
@@ -22,12 +22,12 @@ export default function CandidateProfessionalExperienceCreate() {
   let navigate = useNavigate()
 
   function onInputChange(e) {
-    const { name, value, checked } = e.target
+    const { name, value } = e.target
     setForm((prevForm) => ({ ...prevForm, [name]: value }))
     setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
-    if (name === 'professionalArea') {
+    if (name === 'professionalArea')
       setForm((prevForm) => ({ ...prevForm, [name]: value }))
-    }
+
   }
 
   async function handleSubmit(e) {
@@ -91,29 +91,32 @@ export default function CandidateProfessionalExperienceCreate() {
   function validateForm() {
     let errors = {}
 
-    if (!form.startDate) {
+    if (!form.startDate) 
       errors.startDate = getRequiredFieldMessage('startDate')
-    } else {
+     else {
       const startDate = new Date(form.startDate)
       const endDate = new Date(form.endDate)
       const currentDate = new Date();
-      if (startDate > endDate) {
+      if (startDate > endDate) 
         errors.startDate = 'Start Date cannot be after the EndDate'
-      }
-      if (endDate > currentDate) {
+      
+      if (endDate > currentDate) 
         errors.endDate = 'End Date cannot be after the current date';
-      }
-    
+      
+
       const year1970 = new Date('1970-01-01')
-      if (startDate < year1970 || endDate < year1970) {
+      if (startDate < year1970 || endDate < year1970) 
         errors.startDate = 'Start Date cannot be before 1970 or after the current date'
-      }
+      
     }
-    if (!form.companyName) {
+    if (!form.endDate) 
+      errors.endDate = getRequiredFieldMessage('endDate')
+    
+    if (!form.companyName) 
       errors.companyName = getRequiredFieldMessage('companyName')
-    } else if (form.companyName.length <= 3) {
+     else if (form.companyName.length <= 3) 
       errors.companyName = 'The company Name field must have more than 3 characters'
-    }
+    
     const validProfessionalAreas = [
       'Web application',
       'Mobile application',
@@ -126,9 +129,9 @@ export default function CandidateProfessionalExperienceCreate() {
       'Security',
       'Other',
     ]
-    if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea)) {
+    if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea)) 
       errors.professionalArea = 'Invalid professional area'
-    }
+    
     return errors
   }
 
@@ -171,7 +174,7 @@ export default function CandidateProfessionalExperienceCreate() {
               </label>
               <div className="flex-grow">
                 <input
-                  type="date" w-full
+                  type="date"
                   className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
                     width: "100%",
@@ -197,7 +200,7 @@ export default function CandidateProfessionalExperienceCreate() {
               </label>
               <div className="flex-grow">
                 <input
-                  type="date" w-full
+                  type="date"
                   className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
                     width: "100%",
