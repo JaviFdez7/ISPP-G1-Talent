@@ -7,6 +7,8 @@ import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import Swal from 'sweetalert2'
 import { useParams } from 'react-router-dom';
+import { handleNetworkError } from '../../components/TokenExpired'
+
 
 export default function CandidateProfessionalExperienceEdit() {
   const { isAuthenticated } = useAuthContext()
@@ -102,17 +104,7 @@ export default function CandidateProfessionalExperienceEdit() {
         timer: 1500,
       })
     } catch (error) {
-      if (error.response && error.response.status === 400) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Token expired',
-          text: 'Please login again to continue',
-          timer: 1500,
-          showConfirmButton: false,
-        })
-        navigate('/login')
-      }
-    }
+      handleNetworkError(error, navigate);}
   }
 
   function getRequiredFieldMessage(fieldName) {

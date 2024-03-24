@@ -8,9 +8,8 @@ import Input from '../../components/Input.jsx'
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import MainButton from "../../components/mainButton.jsx";
 import FavoriteButton from "../../components/history/FavoriteButton.jsx";
-
-
-
+import { handleNetworkError } from "../../components/TokenExpired";
+import { useNavigate } from "react-router-dom";
 
 export default function AnalysisDashboard() {
     const textColor = ' var(--talent-white-text)'
@@ -22,6 +21,7 @@ export default function AnalysisDashboard() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [history, setHistory] = useState(null);
+    const navigate = useNavigate();
 
 
     const [dataArray, setDataArray] = useState([]);
@@ -30,15 +30,14 @@ export default function AnalysisDashboard() {
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
             const response = await axios.get(apiURL + analysisEndPoint);
-            console.log("Response:", response.data.data); 
+            console.log("Response:", response.data.data);
             setError(false);
             return response.data.data;
         } catch (error) {
             setError(false);
             setErrorMessage('Unable to connect to the server. Please try again later.');
-            console.error("Error al llamar al endpoint:", error);
-            throw error;
-        }
+            handleNetworkError(error, navigate);
+  S      }
     }
 
     async function fetchHistory(currentAnalysisId) {
@@ -82,9 +81,9 @@ export default function AnalysisDashboard() {
 
     let mobile = false;
     if (window.screen.width < 500) {
-      mobile = true;
+        mobile = true;
     }
-    
+
     return (
         <section className="text-white flex flex-row justify-center bg-fixed"
             style={{
@@ -111,19 +110,19 @@ export default function AnalysisDashboard() {
                     <div className="analysis-profile">
 
                         <img src={dataArray.avatarUrl} alt="Imagen" className="analysis-profile-img" style={{ position: "relative", left: "0%", zIndex: "1" }} />
-                        
+
                         <div className="analysis-profile-text">
                             <div className="analysis-profile-textcell-main">
                                 <h2>{dataArray.githubUsername}</h2>
                             </div>
                             <div className="analysis-profile-textcell">
-                                {Input({name:'Followers', value:dataArray.followers, width:"300px"})}
+                                {Input({ name: 'Followers', value: dataArray.followers, width: "300px" })}
                             </div>
                             <div className="analysis-profile-textcell">
-                                {Input({name:'Commits', value:dataArray && dataArray.contributions ? dataArray.contributions.totalCommits : 0, width:"300px"})}
+                                {Input({ name: 'Commits', value: dataArray && dataArray.contributions ? dataArray.contributions.totalCommits : 0, width: "300px" })}
                             </div>
                             <div className="analysis-profile-textcell">
-                                {Input({name:'Pull Requests', value:dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0, width:"300px"})}
+                                {Input({ name: 'Pull Requests', value: dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0, width: "300px" })}
                             </div>
 
                         </div>
@@ -184,68 +183,68 @@ export default function AnalysisDashboard() {
 
                                         <tbody className="datatable-body">
                                             {dataArray.topRepositories ? dataArray.topRepositories.map((item, index) => (
-                                            <>
-                                                <tr key={index}>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        {item.name}
-                                                    </td>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        {item.stars}
-                                                    </td>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        {item.forks}
-                                                    </td>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        {item.languages.join(', ')}
-                                                    </td>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        {item.technologies.join(', ')}
-                                                    </td>
-                                                    <td className="datatable-cell-small">
-                                                        <br></br>
-                                                        <Link to={item.url}>
-                                                            ICON
-                                                        </Link>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                    <td>
-                                                        <hr style={{ width: '105%' }}></hr>
-                                                    </td>
-                                                </tr>
-                                            </>
+                                                <>
+                                                    <tr key={index}>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            {item.name}
+                                                        </td>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            {item.stars}
+                                                        </td>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            {item.forks}
+                                                        </td>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            {item.languages.join(', ')}
+                                                        </td>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            {item.technologies.join(', ')}
+                                                        </td>
+                                                        <td className="datatable-cell-small">
+                                                            <br></br>
+                                                            <Link to={item.url}>
+                                                                ICON
+                                                            </Link>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                        <td>
+                                                            <hr style={{ width: '105%' }}></hr>
+                                                        </td>
+                                                    </tr>
+                                                </>
 
                                             ))
                                                 : null}
                                         </tbody>
                                     </table>
                                     <br></br>
-                                    <div className="flex w-full justify-around mt-10 mb-10" style={{flexDirection: mobile ? "column" : "row"}}>
+                                    <div className="flex w-full justify-around mt-10 mb-10" style={{ flexDirection: mobile ? "column" : "row" }}>
                                         <div className="flex flex-row justify-center pl-20">
-                                            {Input({name:'Repositories Contributes with Commits', value:dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithCommits : 0})}
+                                            {Input({ name: 'Repositories Contributes with Commits', value: dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithCommits : 0 })}
                                         </div>
                                         <div className="flex flex-row justify-center pl-20">
-                                            {Input({name:'Repositories Contributes with Pull Requests', value:dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithPullRequests : 0})}
+                                            {Input({ name: 'Repositories Contributes with Pull Requests', value: dataArray && dataArray.contributions ? dataArray.contributions.totalRepositoriesContributedWithPullRequests : 0 })}
                                         </div>
                                     </div>
                                     <br></br>
@@ -278,7 +277,7 @@ export default function AnalysisDashboard() {
                     ) : (
                         <>
                             <div className="flex flex-col items-center w-8/12 self-center">
-                                <DataTable header={'Top 5 Used Languages'} contentArray={languages}/>
+                                <DataTable header={'Top 5 Used Languages'} contentArray={languages} />
                                 <div className="mr-20 "></div>
                                 <br></br>
                                 <br></br>

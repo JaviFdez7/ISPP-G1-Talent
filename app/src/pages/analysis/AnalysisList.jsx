@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import Select from "../../components/Select.jsx";
 import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.jsx";
-
+import { handleNetworkError } from "../../components/TokenExpired";
+import { useNavigate } from "react-router-dom";
 
 export default function AnalysisList() {
     const borderColor = 'var(--talent-highlight)'
@@ -12,6 +13,7 @@ export default function AnalysisList() {
     const [errorMessage, setErrorMessage] = useState('');
     const [filter, setFilter] = useState("All");
     const [triggerUpdate, setTriggerUpdate] = useState(false);
+    let navigate = useNavigate();
 
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
@@ -21,9 +23,7 @@ export default function AnalysisList() {
             const response = await axios.get(apiURL + analysisEndPoint);
             return response.data.data;
         } catch (error) {
-            setErrorMessage('Unable to connect to the server. Please try again later.');
-            console.error("Error al llamar al endpoint:", error);
-            throw error;
+            handleNetworkError(error, navigate);
         }
     }
 

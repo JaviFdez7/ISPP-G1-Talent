@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import FavoriteButton from '../../components/history/FavoriteButton.jsx'
 import DeleteHistoryButton from '../../components/history/DeleteHistoryButton.jsx'
+import { handleNetworkError } from '../TokenExpired.jsx'
+import { useNavigate } from 'react-router-dom'
 
 const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 	const [githubUsername, setGithubUsername] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
 	const apiURL = import.meta.env.VITE_BACKEND_URL
+	const navigate = useNavigate()
 
 	async function getGithubUsername(analysisId) {
 		const uri = `/analysis/${analysisId}`
@@ -20,9 +23,7 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 			})
 			return response.data.data.githubUsername
 		} catch (error) {
-			console.error('Error al llamar al endpoint:', error)
-			setErrorMessage('There was an error retrieving the Github username for this entry.')
-			throw error
+			handleNetworkError(error, navigate)
 		}
 	}
 	useEffect(() => {
@@ -54,7 +55,6 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 					<div className='flex mx-2'>
 						<DeleteHistoryButton
 							history={item}
-							triggerUpdate={triggerUpdate}
 							setErrorMessage={setErrorMessage}
 						/>
 					</div>

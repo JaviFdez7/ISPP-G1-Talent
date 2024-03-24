@@ -5,6 +5,7 @@ import axios from "axios";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from '../../components/secondaryButton'
 import Swal from "sweetalert2";
+import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function CandidateProfessionalExperienceCreate() {
 
@@ -59,7 +60,7 @@ export default function CandidateProfessionalExperienceCreate() {
       }
       navigate('/candidate/detail')
     } catch (error) {
-      console.error('Error creating professional experience:', error)
+      handleNetworkError(error, navigate);
       if (error.response && error.response.status === 400) {
         Swal.fire({
           icon: 'error',

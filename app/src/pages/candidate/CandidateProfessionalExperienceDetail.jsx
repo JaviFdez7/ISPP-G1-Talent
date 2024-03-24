@@ -5,6 +5,7 @@ import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton'
 import Modal from 'react-modal';
 import { useParams } from 'react-router-dom';
+import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function CandidateProfessionalExperienceDetail({ }) {
   const talentColor = 'var(--talent-highlight)'
@@ -31,15 +32,19 @@ export default function CandidateProfessionalExperienceDetail({ }) {
 
   async function handleConfirm() {
     const token = localStorage.getItem('access_token');
-    await fetch(
-      import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`, {
-      method: "DELETE",
-      headers: {
-        'Authorization': `${token}`
-      }
-    });
-    navigate("/candidate/detail");
-    setShowModal(false);
+    try {
+      await fetch(
+        import.meta.env.VITE_BACKEND_URL + `/professional-experience/${id}/`, {
+        method: "DELETE",
+        headers: {
+          'Authorization': `${token}`
+        }
+      });
+      navigate("/candidate/detail");
+      setShowModal(false);
+    } catch (error) {
+      handleNetworkError(error,navigate);
+    }
   }
 
   function handleCancel() {
@@ -156,7 +161,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
               backgroundColor: 'var(--talent-highlight)',
               color: 'white',
               border: 'none',
-              borderRadius: '5px', 
+              borderRadius: '5px',
             }}
           >
             Yes
@@ -166,9 +171,9 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             style={{
               padding: '10px',
               backgroundColor: 'var(--talent-black)',
-              color: 'white', 
-              border: 'none', 
-              borderRadius: '5px', 
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
             }}
           >
             No
