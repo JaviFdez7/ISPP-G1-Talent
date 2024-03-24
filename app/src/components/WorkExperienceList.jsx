@@ -11,6 +11,11 @@ const WorkExperienceList = ({ experience }) => {
   const [selectedId, setSelectedId] = useState(null);
   let navigate = useNavigate()
 
+  function formatDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(date).toLocaleDateString('en-US', options);
+  }
+
   function deleteProffesionalExperience(id) {
     setSelectedId(id);
     setShowModal(true);
@@ -45,9 +50,10 @@ const WorkExperienceList = ({ experience }) => {
                 <div className='flex flex-col lg:flex-row justify-start items-center'>
                   <div className='flex items-center'>
                     <h6 className='text-white py-1 px-2 rounded-lg mb-2' style={{ backgroundColor: 'var(--talent-highlight)' }}>
-                      {item.companyName}
+                      {item.professionalArea}
                     </h6>
-                    <h6 className='text-xl text-white ml-8'>{item.professionalArea}</h6>
+                    <h6 className='text-xl text-white ml-8'>{item.companyName}</h6>
+                    <h6 className='text-xl text-white ml-8'>{formatDate(item.startDate)} - {formatDate(item.endDate)}</h6>
                   </div>
                 </div>
               </Link>
