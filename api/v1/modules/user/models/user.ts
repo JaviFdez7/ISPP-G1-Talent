@@ -25,6 +25,8 @@ const userSchema = new Schema(
 		email: { type: String, required: true },
 		phone: String,
 		paymentMethods: [String],
+		stripeUserId: String,
+		lastPayment: String
 	},
 	{ discriminatorKey: 'role' }
 )

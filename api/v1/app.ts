@@ -8,6 +8,7 @@ import UserRouter from './modules/user'
 import HistoryRouter from './modules/history'
 import NotificationRouter from './modules/notification'
 import ProfessionalExperienceRouter from './modules/professional-experience'
+import PaymentRouter from "./modules/payment"
 import cors from 'cors'
 
 const app = express()
@@ -39,6 +40,8 @@ app.use(UserRouter)
 app.use(HistoryRouter)
 app.use(ProfessionalExperienceRouter)
 app.use(NotificationRouter)
+app.use(PaymentRouter)
+
 // Server -------------------------------------------------------
 connectToMongoDB()
 	.then(() => {

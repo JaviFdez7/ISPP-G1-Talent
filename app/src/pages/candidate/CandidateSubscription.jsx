@@ -1,8 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import axios from 'axios'
+import { useAuthContext } from '../../context/authContext'
 import mainBackground from "../../images/main-background2.jpg";
 
 export default function CandidateSubscription() {
+  const { isAuthenticated } = useAuthContext()
   const suscriptions = [
     {
       name: "Basic",
@@ -13,6 +16,8 @@ export default function CandidateSubscription() {
         "1 update per month",
         "No access to trends",
       ],
+      paymentView: "",
+      plan: 'Basic plan'
     },
     {
       name: "Advance",
@@ -23,8 +28,99 @@ export default function CandidateSubscription() {
         "3 updates per month",
         "Full access to trends",
       ],
+      paymentView: "https://buy.stripe.com/test_28oaIl7SugrsaGI3ce",
+      plan: 'Pro plan'
     },
   ];
+
+  const fetchUser = async () => {
+    
+    try {
+      if (isAuthenticated) {
+        const currentUserId = localStorage.getItem("userId");
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+        const user = response.data.data.find(user => user._id === currentUserId);
+        return user;
+      }
+    } catch (error) {
+      return {}
+    }
+  };
+
+  const handleSubscribe = async (paymentView, plan) => {
+    try {
+      // Esperar a que fetchUserEmail termine de ejecutarse
+      const user = await fetchUser();
+
+      const baseUrl = paymentView;
+      const userEmail = user.email;
+      const url = `${baseUrl}?prefilled_email=${userEmail}`;
+
+      // if (user.candidateSubscription === plan) {
+      //   alert("Already Selected"); // TODO Change for a more visual
+      //   return;
+      // }
+      
+      if (!baseUrl)
+      {
+        user.candidateSubscription = plan;
+        const updatePlan = await axios.patch(
+          import.meta.env.VITE_BACKEND_URL + '/user/candidate/' + user._id,
+          {
+            user
+          },
+          {
+            headers: {
+              'Authorization': `${localStorage.getItem('access_token')}`
+            }
+          }
+        )
+        if (updatePlan.status === 400) {
+          alert("Error upgradeando el Plan")
+        }
+        else
+        {
+          alert("Basic Plan set")
+        }
+        return;
+      }
+      
+      window.open(url, "_blank");
+      // TODO: Show a Pop Up saying that the subscription is being made, do not close the screen
+      // Llamada a payment
+      try {
+        const payment = await axios.get(import.meta.env.VITE_BACKEND_URL + "/payment/" + user._id)
+        const updatePlan = await axios.patch(
+          import.meta.env.VITE_BACKEND_URL + '/user/candidate/' + user._id,
+          {
+            user
+          },
+          {
+            headers: {
+              'Authorization': `${localStorage.getItem('access_token')}`
+            }
+          }
+        )
+        if (updatePlan.status === 400) {
+          alert("Error upgradeando el Plan")
+        }
+        else
+        {
+          alert(plan + "set")
+        }
+      } catch (error) {
+        alert("Error en la transacción")
+      }
+      // Si todo OK, update candidateSubscription con el plan nuevo
+      // Sino, mostrar error
+
+
+    } catch (error) {
+    }
+  };
+  
+
+
   return (
     <div
       className="flex flex-col items-center justify-center bg-fixed h-screen w-screen"
@@ -69,12 +165,12 @@ export default function CandidateSubscription() {
                   </p>
                 ))}
                 <Link
-                  to={`/payments/${suscription.name}/${suscription.price}`}
                   className={`flex items-center mt-auto border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded ${
                     suscription.name == "standar"
                       ? "bg-indigo-400 text-white hover:bg-indigo-600"
                       : "text-gray-600 bg-gray-200"
-                  }`}
+                    }`}
+                  onClick={() => handleSubscribe(suscription.paymentView, suscription.plan)}
                 >
                   Suscribirse
                   <svg
