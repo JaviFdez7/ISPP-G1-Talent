@@ -1,13 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { AuthContextProvider } from '../context/authContext.jsx'
 
-//pages
-//para todos
 import Home from '../pages/Home'
 import Support from '../pages/Support'
 import Settings from '../pages/Settings'
 
-//candidates
 import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
 import CandidateDetail from '../pages/candidate/CandidateDetail.jsx'
 import CandidateDetailEdit from '../pages/candidate/CandidateDetailEdit.jsx'
@@ -18,22 +15,18 @@ import CandidateProfessionalExperienceEdit from '../pages/candidate/CandidatePro
 import CandidateProfessionalExperienceDetail from '../pages/candidate/CandidateProfessionalExperienceDetail.jsx'
 import CandidateSubscription from '../pages/candidate/CandidateSubscription.jsx'
 
-//representatives
 import RepresentativeSubscription from '../pages/representative/RepresentativeSubscription.jsx'
 import RepresentativeDetail from '../pages/representative/RepresentativeDetail.jsx'
 import RepresentativeDetailEdit from '../pages/representative/RepresentativeDetailEdit.jsx'
 
-//components
 import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
-//search
 import Search from "../pages/search/SearchTeam.jsx";
 import SearchForm from "../pages/search/SearchForm.jsx";
 import SearchResult from "../pages/search/SearchResult.jsx";
 
-//auth
 import Login from '../pages/auth/Login.jsx'
 import RegisterCandidate from '../pages/auth/RegisterCandidate.jsx'
 import RegisterRepresentative from '../pages/auth/RegisterRepresentative.jsx'
@@ -41,7 +34,6 @@ import AnalysisDashboard from '../pages/analysis/AnalysisDashboard.jsx'
 import AnalysisAnalizer from '../pages/analysis/AnalysisAnalizer.jsx'
 import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 
-//TODO Implementar los placeholders de las rutas como componentes reales
 function App() {
 	return (
 		<div>
@@ -61,7 +53,6 @@ function App() {
 						/>
 						{/*RUTAS PRIVADAS */}
 						{/*Analysis*/}
-
 						<Route
 							path='/analysis/analyze'
 							element={
@@ -89,36 +80,36 @@ function App() {
 							}
 						/>
 
-            <Route path="/searches/team" element={
-              <ProtectedRoute roles={['Representative']} >
-                <Search/>
-              </ProtectedRoute>}
-            />
-             <Route
-              path="/searches/search"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchForm />
-                </ProtectedRoute>
-              }
-            />
-           <Route
-              path="/searches/:searchId"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchResult/>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/searches/list"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <PlaceHolder pageName="search list" />
-                </ProtectedRoute>
-              }
-            />
-   
+						<Route path="/searches/team" element={
+							<ProtectedRoute roles={['Representative']} >
+								<Search />
+							</ProtectedRoute>}
+						/>
+						<Route
+							path="/searches/search"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<SearchForm />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/searches/:searchId"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<SearchResult />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/searches/list"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<PlaceHolder pageName="search list" />
+								</ProtectedRoute>
+							}
+						/>
+
 
 						{/*Subscription*/}
 						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
@@ -166,7 +157,7 @@ function App() {
 							}
 						/>
 						<Route
-							path='/candidate/professional-experience/detail'
+							path='/candidate/professional-experience/detail/:id'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
 									<CandidateProfessionalExperienceDetail />
@@ -174,7 +165,7 @@ function App() {
 							}
 						/>
 						<Route
-							path='/candidate/professional-experience/edit'
+							path='/candidate/professional-experience/edit/:id'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
 									<CandidateProfessionalExperienceEdit />

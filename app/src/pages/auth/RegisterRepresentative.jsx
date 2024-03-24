@@ -153,7 +153,6 @@ export default function RegisterRepresentative() {
     }
   }
 
-
   function validateForm() {
     let errors = {};
 
