@@ -1,6 +1,6 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { ApiResponse } from '../../../utils/ApiResponse';
-
+import { verifyJWT } from '../../user/helpers/handleJWT';
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
   const username: string | undefined = req.params.username;
 
@@ -15,6 +15,30 @@ export const validateUsername = (req: Request, res: Response, next: NextFunction
 
   next();
 };
+export const checkValidToken: any = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+      const token = req.headers.authorization ?? '';
+  
+      if (token.length === 0) {
+          ApiResponse.sendError(res,[{
+              title: 'Internal Server Error',
+              detail:'No token provided.'
+            }])
+            return;
+       
+        }
+        const decodedToken = verifyJWT(token);
+      
+    next();
+  } catch (error: any) {
+  
+    ApiResponse.sendError(res,[{
+      title: 'Internal Server Error',
+      detail:error.message
+    }])
+    return;
+  }
+}
 
 export const validateGitHubUserAndApiKey = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const githubUsername: string = req.body.username;
