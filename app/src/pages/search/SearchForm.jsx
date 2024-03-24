@@ -308,7 +308,6 @@ export default function SearchForm() {
       ))}
       <div className="flex justify-center mt-4">
                     {MainButton("Search",  "", handleSubmit)}
-                    {MainButton("Cancel", "/searches/team")}
             </div>
       </form>
       
