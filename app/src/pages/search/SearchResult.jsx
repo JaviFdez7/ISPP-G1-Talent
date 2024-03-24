@@ -83,7 +83,7 @@ return (
           {Array.isArray(team.recommendedCandidates) && team.recommendedCandidates.length > 0 ? (
             team.recommendedCandidates.map((candidate, candidateIndex) => (
               <div className="flex justify-center w-full"> 
-                <DropdownComponent key={candidateIndex} name={candidate.github_username} imgSrc={profile}>
+                <DropdownComponent key={candidateIndex} name={candidate.github_username}>
                   <div className="flex flex-col items-center justify-center w-full mr-5 ">
                     <DataTableVertical
                       data={[

@@ -6,9 +6,11 @@ import MainButton from "../../components/mainButton";
 const apiURL = import.meta.env.VITE_BACKEND_URL;
 import axios from 'axios';
 
+
 export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const [numForms, setNumForms] = useState(1);
+  const [numError, setNumError] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState(Array(numForms).fill({
@@ -178,22 +180,29 @@ export default function SearchForm() {
         <label htmlFor="numForms" style={{ color: 'white',
                  marginRight: '10px'  }}>Select number of Candidates: </label>
         <input
-          type="number"
-          id="numForms"
-          name="numForms"
-          min="1"
-          max="5"
-          value={numForms}
-          onChange={(e) => {
-            let value = Number(e.target.value);
-            if (value < 1) {
-              value = 1;
-            } else if (value > 5) {
-              value = 5;
-            }
-            setNumForms(value);
-          }}
-        />
+            type="number"
+            id="numForms"
+            name="numForms"
+            min="1"
+            max="5"
+            value={numForms}
+            onChange={(e) => {
+              setNumForms(Number(e.target.value));
+            }}
+            onBlur={(e) => {
+              let value = Number(e.target.value);
+              if (value < 1) {
+                setNumForms(1);
+                setNumError('The number must be between 1 and 5');
+              } else if (value > 5) {
+                setNumForms(5);
+                setNumError('The number must be between 1 and 5');
+              } else {
+                setNumError('');  
+              }
+            }}
+          />
+         {numError && <p style={{ color: 'orange', marginLeft: '20px' }}>{numError}</p>}
       </div>
       
       <form

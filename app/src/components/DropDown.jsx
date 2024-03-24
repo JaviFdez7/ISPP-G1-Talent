@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function DropdownComponent({ name, imgSrc, children }) {
+export default function DropdownComponent({ name,  children }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -20,10 +20,7 @@ export default function DropdownComponent({ name, imgSrc, children }) {
                     onClick={() => setIsOpen(!isOpen)}
                 >
                     <div className="flex items-center"> 
-                        <img src={imgSrc} className="rounded-full border border-gray-300 mb-4"
-                            style={{ width: "3vw", height: "6vh" }}
-                        />
-                        <span className="ml-2">{name}</span>
+                        <span >{name}</span>
                         <span>{isOpen ? '▲' : '▼'}</span>
                     </div>
                     

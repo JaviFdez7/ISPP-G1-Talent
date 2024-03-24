@@ -16,6 +16,7 @@ export default function Navbar() {
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const { isAuthenticated, logout } = useAuthContext()
+  const currentUserId2 = localStorage.getItem('userId')
 
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
@@ -128,7 +129,7 @@ export default function Navbar() {
             )}
             {userData && getOptsNum("Team Search") !== -1 && (
 					<Link
-						to="/searches/team"
+            to={`/searches/representative/${currentUserId2}`}
 						onMouseEnter={() => move_hoverer(getOptsNum("Team Search"))}
 						onMouseDown={() => move_current(getOptsNum("Team Search"))}
 						className="link-container"

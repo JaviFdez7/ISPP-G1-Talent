@@ -89,7 +89,7 @@ function App() {
 							}
 						/>
 
-            <Route path="/searches/team" element={
+            <Route path="/searches/representative/:representativeId" element={
               <ProtectedRoute roles={['Representative']} >
                 <Search/>
               </ProtectedRoute>}
