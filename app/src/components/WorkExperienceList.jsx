@@ -28,7 +28,6 @@ const WorkExperienceList = ({ experience }) => {
     navigate("/candidate/detail");
     setShowModal(false);
     window.location.reload()
-
   }
 
   function handleCancel() {
@@ -36,15 +35,13 @@ const WorkExperienceList = ({ experience }) => {
     setShowModal(false);
   }
 
-  //console.log(experience.map((item, index) => ( item._id))+ 'idwdwdd')
-
   return (
     <div className='w-9/12 self-center mx-auto' style={{ marginBottom: '3rem', marginTop: '3rem' }}>
       {experience.map((item, index) => (
         <div key={index} className='flex justify-between'>
-          <div className='p-4 rounded-lg bg-black bg-opacity-70 transition-colors duration-300 hover:bg-gray-700 mb-2 border-b border-t border-gray-900 mx-auto w-full' style={{ borderColor: 'yellow' }}>
+          <div className='p-4 rounded-lg transition-colors duration-300 mb-2 border-b border-t mx-auto w-full' style={{ backgroundColor: 'var(--talent-dark-background)', borderColor: 'var(--talent-highlight)', hover: { backgroundColor: 'var(--talent-secondary)' } }}>
             <div className='flex-col relative'>
-              <Link className='block text-white' to={`/candidate/professional-experience/detail`}>
+              <Link className='block text-white' to={`/candidate/professional-experience/detail/${item._id}`}>
                 <div className='flex flex-col lg:flex-row justify-start items-center'>
                   <div className='flex items-center'>
                     <h6 className='text-white py-1 px-2 rounded-lg mb-2' style={{ backgroundColor: 'var(--talent-highlight)' }}>
@@ -57,7 +54,7 @@ const WorkExperienceList = ({ experience }) => {
             </div>
           </div>
           <div className='ml-auto flex'>
-            {MainButton("Update", "/candidate/professional-experience/edit", "")}
+            {MainButton("Update", `/candidate/professional-experience/edit/${item._id}`, "")}
             {SecondaryButton("Delete", "/", () => deleteProffesionalExperience(item._id))}
           </div>
         </div>
@@ -90,8 +87,8 @@ const WorkExperienceList = ({ experience }) => {
               padding: '10px',
               backgroundColor: 'var(--talent-highlight)',
               color: 'white',
-              border: 'none', 
-              borderRadius: '5px', 
+              border: 'none',
+              borderRadius: '5px',
             }}
           >
             Yes
@@ -112,8 +109,8 @@ const WorkExperienceList = ({ experience }) => {
       </Modal>
       <div className="mt-4 flex justify-center">
         <Link to="/candidate/professional-experience/create">
-          <button className="text-white py-2 px-4 rounded" style={{backgroundColor: 'var(--talent-highlight)'}}>
-            Crear nueva experiencia
+          <button className="text-white py-2 px-4 rounded" style={{ backgroundColor: 'var(--talent-highlight)' }}>
+            Create new work experience
           </button>
         </Link>
       </div>

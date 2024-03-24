@@ -4,14 +4,15 @@ import SecondaryButton from '../../components/secondaryButton'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton'
 import Modal from 'react-modal';
+import { useParams } from 'react-router-dom';
 
 export default function CandidateProfessionalExperienceDetail({ }) {
   const talentColor = 'var(--talent-highlight)'
 
   const [experience, setExperience] = useState({})
   const [showModal, setShowModal] = useState(false);
-  const id = localStorage.getItem('experienceId')
   let navigate = useNavigate()
+  const { id } = useParams();
 
   async function getExperienceById() {
     const response = await fetch(
@@ -120,7 +121,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             </div>
             <div className="mt-8 self-center w-full flex flex-row justify-center">
               {SecondaryButton("Back", "/candidate/detail", "")}
-              {MainButton("Update", "/candidate/professional-experience/edit", "")}
+              {MainButton("Update", `/candidate/professional-experience/edit/${experience._id}`, "")}
               {SecondaryButton("Delete", "/", deleteProffesionalExperience)}
             </div>
           </div>
@@ -152,10 +153,10 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             style={{
               marginRight: '10px',
               padding: '10px',
-              backgroundColor: 'var(--talent-highlight)', // Change as needed
-              color: 'white', // Change as needed
-              border: 'none', // Change as needed
-              borderRadius: '5px', // Change as needed
+              backgroundColor: 'var(--talent-highlight)',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px', 
             }}
           >
             Yes
@@ -164,10 +165,10 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             onClick={handleCancel}
             style={{
               padding: '10px',
-              backgroundColor: 'var(--talent-black)', // Change as needed
-              color: 'white', // Change as needed
-              border: 'none', // Change as needed
-              borderRadius: '5px', // Change as needed
+              backgroundColor: 'var(--talent-black)',
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '5px', 
             }}
           >
             No

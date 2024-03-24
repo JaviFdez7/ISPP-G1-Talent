@@ -6,9 +6,12 @@ import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import Swal from 'sweetalert2'
+import { useParams } from 'react-router-dom';
 
 export default function CandidateProfessionalExperienceEdit() {
   const { isAuthenticated } = useAuthContext()
+  const { id } = useParams();
+
   const [form, setform] = useState({
     startDate: '',
     endDate: '',
@@ -35,10 +38,9 @@ export default function CandidateProfessionalExperienceEdit() {
     const fetchExperienceData = async () => {
       try {
         if (isAuthenticated) {
-          const currentexperienceId = localStorage.getItem('experienceId')
-          if (currentexperienceId) {
+          if (id) {
             const response = await axios.get(
-              `${import.meta.env.VITE_BACKEND_URL}/professional-experience/${currentexperienceId}`
+              `${import.meta.env.VITE_BACKEND_URL}/professional-experience/${id}`
             )
             const { startDate, endDate, companyName, professionalArea } = response.data.data;
             setform({
@@ -57,10 +59,8 @@ export default function CandidateProfessionalExperienceEdit() {
     fetchExperienceData()
   }, [isAuthenticated])
 
-  //8)creamos la funcion que se encarga de llamar al metodo de la API REST de editar
   async function editProffesionalExperience(e) {
     e.preventDefault()
-    const currentExperienceId = localStorage.getItem('experienceId')
     const token = localStorage.getItem('access_token')
     const validationErrors = validateForm()
 
@@ -71,7 +71,7 @@ export default function CandidateProfessionalExperienceEdit() {
 
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_BACKEND_URL}/professional-experience/${currentExperienceId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/professional-experience/${id}`,
         form,
         {
           headers: {
@@ -80,7 +80,6 @@ export default function CandidateProfessionalExperienceEdit() {
           },
         }
       )
-      //9)validamos los los campos de los errores
       if (response.status === 404) {
         setErrors(response.data)
         return
