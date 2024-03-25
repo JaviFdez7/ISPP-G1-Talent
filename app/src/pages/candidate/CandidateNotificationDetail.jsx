@@ -46,6 +46,32 @@ export default function CandidateNotificationDetail() {
     fetchNotificationsData();
   }, [isAuthenticated]);
 
+  const deleteNotificationsData = async (notificationId) => {
+    try {
+      if (isAuthenticated) {
+        const currentUserId = localStorage.getItem("userId");
+        const token = localStorage.getItem("access_token");
+        if (currentUserId && token) {
+          const response = await axios.delete(
+            `${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/notification/${notificationId}`,
+            {
+              params: {
+                userId: currentUserId,
+              },
+              headers: {
+                'Authorization': `${token}`,
+              },
+            }
+          );
+          console.log(response.data.data);
+          setNotifications(notifications.filter((n) => n._id !== notificationId));
+        }
+      }
+    } catch (error) {
+      console.log("Error fetching notification data:", error.response.data.message);
+    }
+  }
+
   return (
     <div
       className="flex flex-col justify-center p-10"
@@ -87,7 +113,10 @@ export default function CandidateNotificationDetail() {
                   </p>
                 </div>
                 <div className="w-1/5">
-                  {SecondaryButton("View profile", "/candidate/representative-view/" + n.representativeId)}
+                  {MainButton("View profile", "/candidate/representative-view/" + n.representativeId)}
+                </div>
+                <div className="w-1/5">
+                  {SecondaryButton("Dismiss", "", () => deleteNotificationsData(n._id))}
                 </div>
               </div>)
               ) 
