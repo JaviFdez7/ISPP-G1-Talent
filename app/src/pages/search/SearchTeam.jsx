@@ -128,17 +128,17 @@ return (
                           {header: "Years of Experience", content: candidate.yearsOfExperience},
                         ]}
                       />
+                       <div className="flex justify-center mt-16 mb-0">
+              {MainButton("Delete search", "", () => deleteSearchResult(teamList._id))}
+              <Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
+                View Analysis
+              </Link>
+            </div>  
                     </div>
                   ))}
                 </div>
               )
             })}
-            <div className="flex justify-center mt-16 mb-0">
-              {MainButton("Delete search", "", () => deleteSearchResult(teamList._id))}
-              <Link to="/searches/searchId" className="ml-10" style={{ textDecoration: 'underline' }}>
-                View Analysis
-              </Link>
-            </div>  
           </div>
         </DropdownComponent>
       ))}

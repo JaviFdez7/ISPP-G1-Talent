@@ -101,7 +101,7 @@ return (
                   ]}
                 />
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Link to="/searches/searchId" className="mt-10" style={{ textDecoration: 'underline' }}>
+                  <Link to={`/analysis/${candidate.github_username}`} className="mt-10" style={{ textDecoration: 'underline' }}>
                     View Analysis
                   </Link>
                 </div>

@@ -90,18 +90,14 @@ export default function SearchForm() {
   function onInputChange(e, index) {
     let value;
     if (e.target) {
-      // This is an onChange event from a Select component
       value = Array.isArray(e.target.value)
         ? e.target.value.map(option => option.value)
         : e.target.value;
     } else {
-      // This is an onChange event from a GroupedSelect component
       value = Array.isArray(e)
         ? e.map(option => option.value)
         : e.value;
     }
-  
-    // Prevent users from entering negative numbers in the yearsOfExperience field
     if (e.target?.name === 'yearsOfExperience' && value < 0) {
       value = 0;
     }
@@ -126,11 +122,7 @@ export default function SearchForm() {
       const config = {
           headers: { Authorization: `${token}` }
       };
-  
-      // Convert form object to array
       const formArray = Object.values(form);
-      
-  
       const response = await axios.post(
         apiURL + "/team-creator", formArray, config
       )
@@ -259,13 +251,12 @@ export default function SearchForm() {
                   id="field"
                   name="field"
                   value={fieldOptions.find(option => option.value === form[index]?.field)}
-                  onChange={(selectedOption) => onInputChange({ target: { name: 'field', value: selectedOption } }, index)}
+                  onChange={(selectedOption) => onInputChange({ target: { name: 'field', value: selectedOption.value } }, index)}
                   options={fieldOptions}
                   className="basic-single-select"
                   classNamePrefix="select"
                   menuPortalTarget={document.body}
                   menuPosition={"fixed"}
-                  
                 />
               </div>
 
