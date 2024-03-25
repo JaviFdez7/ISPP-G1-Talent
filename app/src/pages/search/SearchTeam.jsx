@@ -116,7 +116,7 @@ return (
                   />
                   {Array.isArray(team.recommendedCandidates) && team.recommendedCandidates.map((candidate, candidateIndex) => (
                     <div key={candidateIndex}> 
-                      <h6 className="text-2xl font-bold text-center text-white mt-5 mb-5">
+                      <h6 className="text-1xl font-bold text-center text-white mt-5 mb-5">
                         Filtered Candidate {candidateIndex + 1}
                       </h6>
                       <DataTableVertical

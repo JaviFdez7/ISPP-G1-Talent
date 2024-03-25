@@ -69,42 +69,52 @@ return (
 
     <div className="container flex flex-col items-center w-10/12 h-full ">
     
-      {teamData && teamData.profiles.map((team, index) => (
-        <div key={index}>
-          <div className="flex justify-center w-full mt-10">
-            <h6 className="text-3xl font-bold text-center text-white mt-5 mb-5">
-              Search result for Filter {index+1}
+    {teamData && teamData.profiles.map((team, index) => (
+      <DropdownComponent key={index} name={`Search Result ${index + 1}`}>
+        <div className="flex flex-col items-center w-full" key={index}>
+          <div>
+            <h6 className="text-2xl font-bold text-center text-white mt-5 mb-5">
+              Filter Parameters
             </h6>
+            <DataTableVertical
+              data={[
+                {header: "Technologies", content: team.profileRequested.technologies ? team.profileRequested.technologies.join(', ') : ''},
+                {header: "Languages", content: team.profileRequested.languages ? team.profileRequested.languages.join(', ') : ''},
+                {header: "Field", content: team.profileRequested.field ? team.profileRequested.field : ''},
+                {header: "Years of Experience", content: team.profileRequested.yearsOfExperience},
+              ]}
+            />
           </div>
           {Array.isArray(team.recommendedCandidates) && team.recommendedCandidates.length > 0 ? (
             team.recommendedCandidates.map((candidate, candidateIndex) => (
-              <div className="flex justify-center w-full"> 
-                <DropdownComponent key={candidateIndex} name={candidate.github_username}>
-                  <div className="flex flex-col items-center justify-center w-full mr-5 ">
-                    <DataTableVertical
-                      data={[
-                        {header: "Technologies", content: Array.isArray(candidate.technologies) ? candidate.technologies.join(', ') : ''},
-                        {header: "Languages", content: Array.isArray(candidate.languages) ? candidate.languages.join(', ') : ''},
-                        {header: "Field", content: Array.isArray(candidate.field) ? candidate.field.join(', ') : ''},
-                        {header: "Years of Experience", content: candidate.yearsOfExperience},
-                      ]}
-                    />
-                    <div className="flex mt-16 mb-0">
-                      <Link to="/searches/searchId" className="ml-10" style={{ textDecoration: 'underline' }}>
-                        View Analysis
-                      </Link>
-                    </div>  
-                  </div>
-                </DropdownComponent>
+              <div key={candidateIndex}>
+                <h6 className="text-1xl font-bold text-center text-white mt-5 mb-5">
+                  Filtered Candidate {candidateIndex + 1}
+                </h6>
+                <DataTableVertical
+                  data={[
+                    {header: "Github username", content: candidate.github_username },
+                    {header: "Technologies", content: Array.isArray(candidate.technologies) ? candidate.technologies.join(', ') : ''},
+                    {header: "Languages", content: Array.isArray(candidate.languages) ? candidate.languages.join(', ') : ''},
+                    {header: "Field", content: Array.isArray(candidate.field) ? candidate.field.join(', ') : ''},
+                    {header: "Years of Experience", content: candidate.yearsOfExperience},
+                  ]}
+                />
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Link to="/searches/searchId" className="mt-10" style={{ textDecoration: 'underline' }}>
+                    View Analysis
+                  </Link>
+                </div>
               </div>
             ))
           ) : (
             <h6 className="text-2xl font-bold text-center text-white mt-5 mb-5">
-            No results for the search, please try different filters
-          </h6>
+              No results for the search, please try different filters
+            </h6>
           )}
         </div>
-      ))}
+      </DropdownComponent>
+    ))}
       
       <div className="flex justify-center mt-10 mb-10">
         {MainButton("Back to Search", `/searches/search`, "")}
