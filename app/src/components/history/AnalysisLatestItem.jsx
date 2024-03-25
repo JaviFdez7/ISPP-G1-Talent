@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import FavoriteButton from '../../components/history/FavoriteButton.jsx'
-import DeleteHistoryButton from '../../components/history/DeleteHistoryButton.jsx'
 import { handleNetworkError } from '../TokenExpired.jsx'
 import { useNavigate } from 'react-router-dom'
 
-const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
+const AnalysisLatestItem = ({ item, formattedDate, triggerUpdate }) => {
 	const [githubUsername, setGithubUsername] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
 	const apiURL = import.meta.env.VITE_BACKEND_URL
@@ -48,21 +46,10 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 						</div>
 					</div>
 				</Link>
-				<div className='flex items-center justify-end'>
-					<div className='flex mx-2'>
-						<FavoriteButton history={item} />
-					</div>
-					<div className='flex mx-2'>
-						<DeleteHistoryButton
-							history={item}
-							setErrorMessage={setErrorMessage}
-						/>
-					</div>
-				</div>
 			</div>
 			{errorMessage && <div className='text-center text-red-600'>{errorMessage}</div>}
 		</div>
 	)
 }
 
-export default AnalysisHistoryItem
+export default AnalysisLatestItem

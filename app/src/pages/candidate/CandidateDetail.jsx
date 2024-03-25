@@ -9,12 +9,15 @@ import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import SecondaryButton from '../../components/secondaryButton'
 import WorkExperienceList from '../../components/WorkExperienceList';
+import { useNavigate } from 'react-router-dom'
+import { handleNetworkError } from '../../components/TokenExpired'
 
 
 export default function CandidateDetail() {
   const { isAuthenticated } = useAuthContext()
   const [candidate, setCandidate] = useState({})
   const [experience, setExperience] = useState([])
+  const navigate = useNavigate()
 
   React.useEffect(() => {
     const fetchUserData = async () => {
@@ -52,7 +55,7 @@ export default function CandidateDetail() {
           }
         }
       } catch (error) {
-        console.log("Error fetching experience data:", error.response.data.message);
+        handleNetworkError(error,navigate);
       }
     }
     fetchUserData();

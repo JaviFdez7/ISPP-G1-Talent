@@ -37,7 +37,8 @@ export default function RepresentativeDetail() {
 					setUserData(user)
 				}
 			} catch (error) {
-				console.error('Error fetching user data:', error)
+				console.error('Error fetching user data:', error.response.data.errors[0].detail)
+        handleNetworkError(error, navigate)
 			}
 		}
 		fetchUserData()
