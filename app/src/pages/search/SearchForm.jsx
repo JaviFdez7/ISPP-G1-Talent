@@ -14,7 +14,7 @@ export default function SearchForm() {
   const talentColor = "var(--talent-highlight)";
   const [numForms, setNumForms] = useState(1);
   const [numError, setNumError] = useState('');
-  const [error, setError] = useState(false);
+ 
   const [errorMessage, setErrorMessage] = useState('');
   const [form, setForm] = useState(Array(numForms).fill({
     languages: [],
@@ -22,8 +22,12 @@ export default function SearchForm() {
     yearsOfExperience: 0,
     field: "",
   }));
-  let searchId="";
-
+  let numOptions = [
+    { value: 1, label: '1' },
+    { value: 2, label: '2' },
+    { value: 3, label: '3' },
+    { value: 4, label: '4' },
+    { value: 5, label: '5' },];
   const [selectedTechCategory, setSelectedTechCategory] = useState("");
   const relevantTechnologies = {
     "Front-end Frameworks/Libraries": ["react", "vue", "angular", "svelte", "next.js", "nuxt.js", "gatsby", "react-native", "flutter"],
@@ -178,30 +182,17 @@ export default function SearchForm() {
         overflowX: "hidden",
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'50px' }}>
-        <FormTextInput
-          labelFor="numForms"
-          labelText="Select between 1 and 5 candidates to search for:"
-          placeholder="Enter number of forms"
+     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'50px' }}>
+     <label htmlFor="numForms" style={{ color: 'white', marginRight:'5px' }}>Select between 1 and 5 candidates to search for:</label>
+        <Select
+          id="numForms"
           name="numForms"
-          type="number"
-          min="1"
-          max="5"
-          value={numForms}
-          onChange={(e) => {
-            let value = Number(e.target.value);
-            if (value < 1) {
-              setNumForms(1);
-              setNumError('The number must be between 1 and 5');
-            } else if (value > 5) {
-              setNumForms(5);
-              setNumError('The number must be between 1 and 5');
-            } else {
-              setNumForms(value);
-              setNumError('');  
-            }
+          value={options.find(option => option.value === numForms)}
+          onChange={(selectedOption) => {
+            let value = selectedOption ? Number(selectedOption.value) : 0;
+            setNumForms(value);
           }}
-          errors={numError}
+          options={numOptions}
         />
       </div>
       
@@ -272,6 +263,9 @@ export default function SearchForm() {
                   options={fieldOptions}
                   className="basic-single-select"
                   classNamePrefix="select"
+                  menuPortalTarget={document.body}
+                  menuPosition={"fixed"}
+                  
                 />
               </div>
 
