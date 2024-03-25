@@ -15,6 +15,19 @@ const DeleteHistoryButton = ({ history, toggleText = false, setErrorMessage }) =
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("access_token");
         const uri = `/user/${userId}/history/${history._id}`;
+        if (history.favorite) {
+            const favUri = `/user/${userId}/history/${history._id}/favorite`;
+            try {
+                await axios.patch(apiURL + favUri, {}, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                });
+            } catch (error) {
+                handleNetworkError(error, navigate);
+                return;
+            }
+        }
         try {
             const response = await axios.delete(apiURL + uri, {
                 headers: {
