@@ -17,6 +17,7 @@ import CandidateProfessionalExperienceCreate from '../pages/candidate/CandidateP
 import CandidateProfessionalExperienceEdit from '../pages/candidate/CandidateProfessionalExperienceEdit.jsx'
 import CandidateProfessionalExperienceDetail from '../pages/candidate/CandidateProfessionalExperienceDetail.jsx'
 import CandidateSubscription from '../pages/candidate/CandidateSubscription.jsx'
+import CandidateRepresentativeDetail from '../pages/candidate/CandidateRepresentativeDetail.jsx'
 
 //representatives
 import RepresentativeSubscription from '../pages/representative/RepresentativeSubscription.jsx'
@@ -181,12 +182,20 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-
 						<Route
-							path='/candidate/subscription'
+							path='/candidate/professional-experience/edit'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
-									<CandidateSubscription />
+									<CandidateProfessionalExperienceEdit />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/candidate/representative-view/:representativeId'
+							element={
+								<ProtectedRoute roles={['Candidate']}>
+									<CandidateRepresentativeDetail />
 								</ProtectedRoute>
 							}
 						/>
