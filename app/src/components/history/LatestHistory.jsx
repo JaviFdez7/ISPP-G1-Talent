@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import MainButton from '../mainButton'
-import AnalysisHistoryItem from './AnalysisHistoryItem'
+import AnalysisLatestItem from './AnalysisLatestItem'
 
 const LatestHistory = ({ header, data, type = 'analysis' }) => {
 	const paddedDataToShow = data.slice(0, 3)
@@ -27,7 +27,7 @@ const LatestHistory = ({ header, data, type = 'analysis' }) => {
 				</thead>
 				<tbody className='history-table-body'>
 					{paddedDataToShow.map((item, index) => (
-						<AnalysisHistoryItem
+						<AnalysisLatestItem
 							item={item}
 							formattedDate={formatDateTime(item.date)}
 							type='searches'

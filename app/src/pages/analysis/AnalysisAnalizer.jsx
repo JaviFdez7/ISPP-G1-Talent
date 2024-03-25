@@ -6,6 +6,7 @@ import '../../styles/palette.css';
 import mainBackgroundRegisterLogin from "../../images/main-backgroundregisterlogin.jpg";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { handleNetworkError } from "../../components/TokenExpired";
 
 
 export default function Analyzer() {
@@ -92,7 +93,6 @@ export default function Analyzer() {
       const filteredHistory = data.filter(item => item.analysisId === currentAnalysisId);
       return filteredHistory[0];
     } catch (error) {
-      console.error("Error al llamar al endpoint:", error);
       throw error;
     }
   };
@@ -154,7 +154,7 @@ export default function Analyzer() {
 
     } catch (error) {
       setLoadingMessage('Unable to connect to the server. Please try again later.');
-      console.error("An error ocurred while performing analysis: ", error);
+      handleNetworkError(error, navigate);
     }
   }
 

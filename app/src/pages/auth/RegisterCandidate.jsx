@@ -33,6 +33,7 @@ export default function RegisterCandidate() {
     githubUsername,
     candidateSubscription,
   } = form
+  
   const [emailValid, setEmailValid] = useState(true);
   const [loading, setLoading] = useState(false);
 

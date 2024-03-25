@@ -26,7 +26,6 @@ export default function SearchResult() {
           const response = await axios.get(
             `${import.meta.env.VITE_BACKEND_URL}/user`
           );
-          console.log(response.data.data)
           const user = response.data.data.find((user) => user._id === currentUserId);
           setUserData(user);
         }
