@@ -4,11 +4,9 @@ export default function DropdownComponent({ name,  children }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <div className="w-auto h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10  ml-10 mr-10"
+        <div className="w-auto h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10 "
             style={{
                 backgroundColor: "rgba(0, 0, 0, 0.5)",
-                marginLeft: "50",
-                marginRight: "100",
                 borderColor: "orange",
                 borderWidth: "1px",
             }}>
@@ -19,14 +17,14 @@ export default function DropdownComponent({ name,  children }) {
                     style={{ borderBottom: '1px solid orange' , userSelect: 'none'}}
                     onClick={() => setIsOpen(!isOpen)}
                 >
-                    <div className="flex items-center"> 
+                    <div className="flex items-center ml-20 mr-20"> 
                         <span >{name}</span>
                         <span>{isOpen ? '▲' : '▼'}</span>
                     </div>
                     
                 </h2>
                 {isOpen && (
-                    <div className="flex justify-center w-3/4 mb-10">
+                    <div className="flex justify-center w-3/4 mb-10 ml-20 mr-20">
                         {children}
                     </div>
                 )}

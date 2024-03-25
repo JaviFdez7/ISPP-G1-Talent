@@ -3,11 +3,14 @@ import {useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
+import GroupedSelect from "../../components/GroupedSelect";
 const apiURL = import.meta.env.VITE_BACKEND_URL;
 import axios from 'axios';
+import Select from 'react-select';
 
 
 export default function SearchForm() {
+
   const talentColor = "var(--talent-highlight)";
   const [numForms, setNumForms] = useState(1);
   const [numError, setNumError] = useState('');
@@ -18,7 +21,6 @@ export default function SearchForm() {
     technologies: [],
     yearsOfExperience: 0,
     field: "",
-    techCategory: "",
   }));
   let searchId="";
 
@@ -45,6 +47,10 @@ export default function SearchForm() {
     "Monitoring & Logging": ["prometheus", "grafana", "logstash", "kibana", "elk-stack", "datadog", "new-relic"],
     "Other Libraries & Frameworks": ["lodash", "underscore", "moment", "date-fns", "rxjs", "axios", "fetch-api", "socket.io"],
   };
+  const options = Object.entries(relevantTechnologies).map(([label, options]) => ({
+    label,
+    options: options.map(value => ({ value, label: value })),
+  }));
   const LANGUAGE_OPTIONS= {
     js: 'JavaScript', py: 'Python', ts: 'TypeScript', java: 'Java', kt: 'Kotlin', cpp: 'C++',
     c: 'C', cs: 'C#', rb: 'Ruby', go: 'Go', rs: 'Rust', php: 'PHP', ex: 'Elixir', exs: 'Elixir', scala: 'Scala',
@@ -55,11 +61,13 @@ export default function SearchForm() {
     vbs: 'VBScript', asm: 'Assembly', s: 'Assembly', rkt: 'Racket', scm: 'Scheme', lisp: 'Common Lisp',
     lsp: 'Common Lisp', coffee: 'CoffeeScript', tsx: 'TypeScript JSX',  jsx: 'JavaScript JSX'
     };
+  const languageOptions = Object.values(LANGUAGE_OPTIONS).map(option => ({ value: option, label: option }));
 
   const FIELD_OPTIONS = [
     'Web application','Mobile application', 'Frontend', 'DevOps', 'Backend',
     'Operating systems', 'Data science', 'Artificial intelligence', 'Security', 'Other'
   ];
+  const fieldOptions = FIELD_OPTIONS.map(option => ({ value: option, label: option }));
 
   const [errors, setErrors] = useState({});
   {[...Array(numForms)].map((_, index) => {
@@ -76,18 +84,29 @@ export default function SearchForm() {
   let navigate = useNavigate();
 
   function onInputChange(e, index) {
-    let value = e.target.multiple
-      ? Array.from(e.target.selectedOptions, option => option.value)
-      : e.target.value;
- 
-    if (e.target.name === 'yearsOfExperience' && value < 0) {
-      value = 0; 
+    let value;
+    if (e.target) {
+      // This is an onChange event from a Select component
+      value = Array.isArray(e.target.value)
+        ? e.target.value.map(option => option.value)
+        : e.target.value;
+    } else {
+      // This is an onChange event from a GroupedSelect component
+      value = Array.isArray(e)
+        ? e.map(option => option.value)
+        : e.value;
     }
+  
+    // Prevent users from entering negative numbers in the yearsOfExperience field
+    if (e.target?.name === 'yearsOfExperience' && value < 0) {
+      value = 0;
+    }
+  
     setForm(form => {
       const newForm = [...form];
       newForm[index] = {
         ...newForm[index],
-        [e.target.name]: value
+        [e.target ? e.target.name : 'technologies']: value
       };
       return newForm;
     });
@@ -106,13 +125,10 @@ export default function SearchForm() {
   
       // Convert form object to array
       const formArray = Object.values(form);
-      const formArrayWithoutTechCategory = formArray.map(obj => {
-        const { techCategory, ...rest } = obj;
-        return rest;
-      });
+      
   
       const response = await axios.post(
-        apiURL + "/team-creator", formArrayWithoutTechCategory, config
+        apiURL + "/team-creator", formArray, config
       )
       const todosSearches = await axios.get(apiURL + "/team-creator/representative-user/" + representativeId, config);
       const lastSearch = todosSearches.data[todosSearches.data.length - 1];
@@ -137,18 +153,7 @@ export default function SearchForm() {
     }
   }
 
-  function onTechCategoryChange(e, index) {
-    const value = e.target.value;
-  
-    setForm(form => {
-      const newForm = [...form];
-      newForm[index] = {
-        ...newForm[index],
-        techCategory: value
-      };
-      return newForm;
-    });
-  }
+
   
   useEffect(() => {
     const newForms = Array.from({length: numForms}, (_, i) => form[i] || {
@@ -174,55 +179,50 @@ export default function SearchForm() {
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop:'50px' }}>
-        <label htmlFor="numForms" style={{ color: 'white',
-                 marginRight: '10px'  }}>Select number of Candidates: </label>
-        <input
-            type="number"
-            id="numForms"
-            name="numForms"
-            min="1"
-            max="5"
-            value={numForms}
-            onChange={(e) => {
-              setNumForms(Number(e.target.value));
-            }}
-            onBlur={(e) => {
-              let value = Number(e.target.value);
-              if (value < 1) {
-                setNumForms(1);
-                setNumError('The number must be between 1 and 5');
-              } else if (value > 5) {
-                setNumForms(5);
-                setNumError('The number must be between 1 and 5');
-              } else {
-                setNumError('');  
-              }
-            }}
-          />
-         {numError && <p style={{ color: 'orange', marginLeft: '20px' }}>{numError}</p>}
+        <FormTextInput
+          labelFor="numForms"
+          labelText="Select between 1 and 5 candidates to search for:"
+          placeholder="Enter number of forms"
+          name="numForms"
+          type="number"
+          min="1"
+          max="5"
+          value={numForms}
+          onChange={(e) => {
+            let value = Number(e.target.value);
+            if (value < 1) {
+              setNumForms(1);
+              setNumError('The number must be between 1 and 5');
+            } else if (value > 5) {
+              setNumForms(5);
+              setNumError('The number must be between 1 and 5');
+            } else {
+              setNumForms(value);
+              setNumError('');  
+            }
+          }}
+          errors={numError}
+        />
       </div>
       
-      <form
-              onSubmit={(e) => handleSubmit(e)}
-              className="flex flex-col items-center flex-wrap -mx-3"
-            >
+      <form onSubmit={(e) => handleSubmit(e)}  className="flex flex-col items-center flex-wrap -mx-3" >
       {[...Array(numForms)].map((_, index) => (
         <div key={index} style={{ marginTop: "40px" }}>
           
-            <div
-              className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between items-center"
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginTop: "00px",
-                marginBottom: "20px",
-                borderColor: talentColor,
-                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
-                backdropFilter: "blur(8px)",
-                borderWidth: "1px",
-              }}
-            >
+          <div
+            className="w-full h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between items-center"
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              marginLeft: "0px",
+              marginRight: "200px",
+              marginTop: "00px",
+              marginBottom: "20px",
+              borderColor: talentColor,
+              boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
+              backdropFilter: "blur(8px)",
+              borderWidth: "1px",
+            }}
+          >
               <h2
                 className="text-2xl font-bold text-center mb-4 text-white"
                 style={{ marginTop: "-40px", marginBottom: "-10px" }}
@@ -236,77 +236,64 @@ export default function SearchForm() {
                 <p className="text-red-500">{errors.errors[0].detail}</p>
               )}
               
-                <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <div className="w-full px-3 mb-6 md:mb-0" style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Languages</h3>
-                <select
+                <Select
                   id="languages"
                   name="languages"
-                  value={form[index]?.languages}
-                  onChange={(e) => onInputChange(e, index)}
-                  multiple
-                >
-                  <option value="">Select languages</option>
-                  { Object.values(LANGUAGE_OPTIONS).map((option, index) => (
-                    <option key={index} value={option}>{option}</option>
-                  ))}
-                </select>
-                <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technology Category</h3>
-                <select
-                    id="techCategory"
-                    name="techCategory"
-                    value={form[index]?.techCategory}
-                    onChange={(e) => onTechCategoryChange(e, index)}
-                  >
-                  <option value="">Select technology category</option>
-                  {Object.keys(relevantTechnologies).map((category, index) => (
-                    <option key={index} value={category}>{category}</option>
-                  ))}
-                </select>
+                  value={languageOptions.filter(option => form[index]?.languages.includes(option.value))}
+                  onChange={(selectedOptions) => onInputChange({ target: { name: 'languages', value: selectedOptions } }, index)}
+                  options={languageOptions}
+                  isMulti
+                  className="basic-multi-select"
+                  classNamePrefix="select"
+                />
+              </div>
+
+              <div className="w-full px-3 mb-6 md:mb-0" style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Technologies</h3>
-                <select
+                <GroupedSelect
                   id="technologies"
                   name="technologies"
-                  value={form[index]?.technologies}
-                  onChange={(e) => onInputChange(e, index)}
-                  multiple
-                >
-                  <option value="">Select technologies</option>
-                  {form[index]?.techCategory && relevantTechnologies[form[index]?.techCategory].map((tech, index) => (
-                    <option key={index} value={tech}>{tech}</option>
-                  ))}
-                </select>
-                  
+                  value={form[index]?.technologies.map(tech => ({ value: tech, label: tech }))}
+                  onChange={(selectedOptions) => onInputChange(selectedOptions, index)}
+                  options={options}
+                  isMulti
+                />
+              </div>
+
+              <div className="w-full px-3 mb-6 md:mb-0" style={{ marginBottom: '20px' }}>
                 <h3 style={{ fontSize: '0.9rem', color: 'white', fontWeight: 'bold' }}>Field</h3>
-                  <select
-                    id="field"
-                    name="field"
-                    value={form[index]?.field}
-                    onChange={(e) => onInputChange(e, index)}
-                  >
-                    <option value="">Select field</option>
-                    {FIELD_OPTIONS.map((option, index) => (
-                      <option key={index} value={option}>{option}</option>
-                    ))}
-                  </select>
-                  <FormTextInput
-                    labelFor="yearsOfExperience"
-                    labelText="Years of Experience"
-                    placeholder="Enter years of Experience"
-                    name="yearsOfExperience"
-                    type="number"
-                    min="0"
-                    value={form[index]?.yearsOfExperience}
-                    onChange={(e) => onInputChange(e, index)}
-                    errors={errors}
-                  />
-                                    
-                </div>
+                <Select
+                  id="field"
+                  name="field"
+                  value={fieldOptions.find(option => option.value === form[index]?.field)}
+                  onChange={(selectedOption) => onInputChange({ target: { name: 'field', value: selectedOption } }, index)}
+                  options={fieldOptions}
+                  className="basic-single-select"
+                  classNamePrefix="select"
+                />
+              </div>
+
+              <div className="w-full px-3 mb-2 md:mb-0" style={{ marginBottom: '20px' }}>
+                <FormTextInput
+                  labelFor="yearsOfExperience"
+                  labelText="Years of Experience"
+                  placeholder="Enter years of Experience"
+                  name="yearsOfExperience"
+                  type="number"
+                  min="0"
+                  value={form[index]?.yearsOfExperience}
+                  onChange={(e) => onInputChange(e, index)}
+                  errors={errors}
+                />        
+              </div>
             </div>
             
           
         </div>
       ))}
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-2">
                     {MainButton("Search",  "", handleSubmit)}
             </div>
       </form>
