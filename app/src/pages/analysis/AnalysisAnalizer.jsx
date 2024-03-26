@@ -111,9 +111,13 @@ export default function Analyzer() {
     setLoading(true);
 
     try {
-      try {
-        const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`);
-        console.log("existe?******", userResponse.ok);
+      const token = localStorage.getItem("access_token");
+      try { 
+        const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (userResponse.ok) {
           const userData = await userResponse.json();
           updateAnalysisHistory(userData.data._id);
@@ -122,13 +126,13 @@ export default function Analyzer() {
           return;
         }
       } catch (error) {
-        console.log("User analysis not found: ", error);
       }
-
+      
       const response = await fetch(`${ruta}/analysis`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
         },
         body: JSON.stringify({
           username: form.githubUser,

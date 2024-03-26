@@ -37,21 +37,20 @@ export const getNotificationsOfCandidate: any = async (req: Request, res: Respon
 }
 
 export const getNotificationById: any = async (req: Request, res: Response) => {
-	try {
-		const id = req.params.id
-		const data = await NotificationService.getNotificationById(id)
-		ApiResponse.sendSuccess(res, data, 200, {
-			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
-		})
-	} catch (error: any) {
-		ApiResponse.sendError(res, [
-			{
-				title: 'Internal Server Error',
-				detail: error.message,
-			},
-		])
-	}
-}
+  try {
+    const id = req.params.id;
+    const token = req.headers.authorization ?? '';
+    const data = await NotificationService.getNotificationById(id,token);
+    ApiResponse.sendSuccess(res, data, 200, {
+      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
+    });
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: error.message
+    }]);
+  }
+};
 
 export const createNotification: any = async (req: Request, res: Response) => {
 	try {

@@ -41,10 +41,6 @@ export default function CandidateDetail() {
             const response = await axios.get(
               `${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/professional-experiences`,
               {
-                params: {
-                  ...experience,
-                  userId: currentUserId,
-                },
                 headers: {
                   'Content-type': 'application/json',
                   'Authorization': `${token}`,

@@ -29,7 +29,11 @@ export default function AnalysisDashboard() {
 
     async function fetchDataFromEndpoint(analysisEndPoint) {
         try {
-            const response = await axios.get(apiURL + analysisEndPoint);
+            const token = localStorage.getItem("access_token");
+            const config = {
+                headers: { Authorization: `${token}` }
+            };
+            const response = await axios.get(apiURL + analysisEndPoint, config);
             console.log("Response:", response.data.data);
             setError(false);
             return response.data.data;
@@ -37,7 +41,7 @@ export default function AnalysisDashboard() {
             setError(false);
             setErrorMessage('Unable to connect to the server. Please try again later.');
             handleNetworkError(error, navigate);
-  S      }
+      }
     }
 
     async function fetchHistory(currentAnalysisId) {

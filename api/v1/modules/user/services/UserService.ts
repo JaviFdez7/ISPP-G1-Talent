@@ -1,5 +1,5 @@
 import { generateJWT } from '../helpers/handleJWT';
-import { User } from '../models/user';
+import { Candidate, User } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 
 import { getModelForRole } from '../helpers/handleRoles'
@@ -22,8 +22,8 @@ export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
     if (role === 'Candidate') {
-      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
-      data.analisisId=analysis._id;
+      const analysis = await createAnalysis(data?.githubUser,'' ,data?.githubToken);
+      data.analysisId=analysis._id;
     }
     const user = new Model(data);
     await user.save();
@@ -52,7 +52,7 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 
 export const updateUserProfilePicture: any = async (id: any, picture: string) => {
   try {
-    const updatedUser = await User.findByIdAndUpdate(id, { profilePicture: picture }, { new: true });
+    const updatedUser = await Candidate.findByIdAndUpdate(id, { profilePicture: picture }, { new: true });
     return updatedUser;
   } catch (error) {
     console.error('Error updating user profile picture:', error);
