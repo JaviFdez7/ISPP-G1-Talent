@@ -21,6 +21,10 @@ export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
 export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
+    if (role === 'Candidate') {
+      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
+      data.analisisId=analysis._id;
+    }
     const user = new Model(data);
     await user.save();
     return user;
@@ -33,12 +37,7 @@ export const createUser: any = async (data: any, role: string) => {
 export const updateUser: any = async (id: any, data: any, role: string) => {
   try {
     const Model = getModelForRole(role) as typeof User;
-    if (role === 'Candidate') {
-      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
-      data.analysisId = analysis._id;
-    }
-    const { password, profilePicture, ...editableDetails } = data;
-    const updatedUser = await Model.findByIdAndUpdate(id, editableDetails, { new: true });
+    const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
     return updatedUser;
   } catch (error) {
     console.error('Error updating user:', error);

@@ -33,6 +33,12 @@ paths:
           description: The ID of the user to retrieve.
           required: true
           type: string
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
       responses:
         "200":
           description: The user with the specified ID
@@ -49,6 +55,12 @@ paths:
           description: The ID of the user to delete.
           required: true
           type: string
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
       responses:
         "204":
           description: User deleted successfully
@@ -156,9 +168,9 @@ paths:
             $ref: "#/definitions/EditCandidateData"
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication.
       responses:
         "200":
@@ -242,9 +254,9 @@ paths:
             $ref: "#/definitions/EditRepresentativeData"
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication.
       responses:
         "200":
