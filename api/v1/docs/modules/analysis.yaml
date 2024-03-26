@@ -85,6 +85,12 @@ paths:
           schema:
             type: string
           description: The username of the analysis you are looking for.
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication(use to verify notifications).
       responses:
         "200":
           description: The analysis entry with the specified ID
@@ -93,22 +99,6 @@ paths:
               schema:
                 $ref: "#/definitions/Analysis"
    
-    delete:
-      patch:
-      tags:
-      - Analysis
-      summary: Delete an analysis entry by the username
-      description: Delete an existing analysis entry with the provided data.
-      parameters:
-        - in: path
-          name: username
-          required: true
-          schema:
-            type: string
-          description: The username that you are updating.
-      responses:
-        "204":
-          description: Analysis entry deleted successfully
 definitions:
   SearchForAnalysisUser:
     type: object

@@ -2,7 +2,9 @@ import { type AnalysisDocument, AnalysisModel } from '../models/analysis.model';
 import { createNotification } from '../../notification/services/NotificationService';
 import { Candidate, Representative } from '../../user/models/user';
 import { GetUserAnaliseInfo } from './GitHubService';
+import { History } from '../../history/models/history';
 import { verifyJWT } from '../../user/helpers/handleJWT';
+import { createHistory } from '../../history/services/HistoryService';
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
 	try {
@@ -83,8 +85,12 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
           technologies: repo.technologies
         }))
       });
+      const representative = await Representative.findById(verifyJWT(token).sub);
 
       const savedRecord = await userAnalysis.save();
+      if(representative!==null){
+        await createHistory(representative._id,{analysisId:savedRecord._id});
+      }
 
       return savedRecord;
     } else {
@@ -99,7 +105,12 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
           candidateId: candidate._id,
           message: `${(representative as any).companyName} has seen your profile.`
         });
+        const history=await History.findOne({userId:representative._id,analysisId:updatedDocument?._id});
+        if(!history){
+          await createHistory(representative._id,{analysisId:updatedDocument?._id});
+        }
       }
+      
       return updatedDocument;
     }
   } catch (error) {

@@ -19,24 +19,24 @@ export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
 };
 
 export const createUser: any = async (data: any, role: string) => {
-	try {
-		const Model = getModelForRole(role)
-		const user = new Model(data)
-		await user.save()
-		return user
-	} catch (error) {
-		console.error('Error inserting user:', error)
-		throw error
-	}
-}
-
-export const updateUser: any = async (id: any, data: any, role: string) => {
   try {
-    const Model = getModelForRole(role) as typeof User;
+    const Model = getModelForRole(role);
     if (role === 'Candidate') {
       const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
       data.analisisId=analysis._id;
     }
+    const user = new Model(data);
+    await user.save();
+    return user;
+  } catch (error) {
+    console.error('Error inserting user:', error);
+    throw error;
+  }
+};
+
+export const updateUser: any = async (id: any, data: any, role: string) => {
+  try {
+    const Model = getModelForRole(role) as typeof User;
     const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
     return updatedUser;
   } catch (error) {
