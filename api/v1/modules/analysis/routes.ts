@@ -4,8 +4,7 @@ import {
   getAllAnalysis,
   getAnalysisById,
   getAnalysisByGitHubUsername,
-  createAnalysis,
-  deleteAnalysis,
+  createAnalysis
 } from './controllers/AnalysisController';
 import { validateGitHubUserAndApiKey, validateUsername,
    checkValidToken,checkValidTokenAndValidAnalysis,checkValidTokenAndValidGithubUser } from './validators/analysisvalidator'
@@ -16,6 +15,5 @@ router.get('/',getAllAnalysis);
 router.get('/:id',checkValidTokenAndValidAnalysis, getAnalysisById);
 router.get('/github/:username', validateUsername, checkValidTokenAndValidGithubUser,getAnalysisByGitHubUsername);
 router.post('/', validateGitHubUserAndApiKey ,checkValidToken , createAnalysis);
-router.delete('/github/:username',checkValidTokenAndValidGithubUser,deleteAnalysis);
 
 export default router;
