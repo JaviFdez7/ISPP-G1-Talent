@@ -9,6 +9,7 @@ import MainButton from "../../components/mainButton";
 export default function RegisterRepresentative() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
+  const [users, setUsers] = useState([])
   const [form, setForm] = useState({
     username: "",
     corporative_email: "",
@@ -74,6 +75,27 @@ export default function RegisterRepresentative() {
       }
     }
 
+    let valid = true;
+
+    await fetchUsers();
+
+    users.filter((user) => {
+      if (user.email === form.corporative_email) {
+        setErrors({ corporativeMail: "This mail is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    users.filter((user) => {
+      if (user.username === form.username) {
+        setErrors({ username: "This username is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    if (!valid || users.length === 0) {
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -108,8 +130,28 @@ export default function RegisterRepresentative() {
   function getRequiredFieldMessage(fieldName) {
     return `The ${fieldName} field is required`;
   }
+    async function fetchUsers() {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user`,
+          {
+            headers: {
+              'Content-type': 'application/json',
+            },
+          }
+        )
+        setUsers(response.data.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+
+    React.useEffect(() => {
+      fetchUsers();
+    }, []);
 
   async function validateEmail(email) {
+
     const verifaliaUserId = 'ittalentID1111111111111111';
     const verifaliaUserPwd = 'rI8e.gOjdUWfv0';
 
@@ -285,6 +327,10 @@ export default function RegisterRepresentative() {
             />
             {loading && <p className="text-white">Validating email...</p>}
             {!emailValid && <p className="text-red-500">Please use a real email.</p>}
+            {errors.corporativeMail && (
+              <p className="text-red-500">{errors.corporativeMail}</p>
+            )}
+
             <FormTextInput
               labelFor="companyname"
               labelText="Company Name"
