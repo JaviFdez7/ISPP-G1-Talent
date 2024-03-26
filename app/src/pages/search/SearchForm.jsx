@@ -22,13 +22,8 @@ export default function SearchForm() {
     yearsOfExperience: 0,
     field: "",
   }));
-  let numOptions = [
-    { value: 1, label: '1' },
-    { value: 2, label: '2' },
-    { value: 3, label: '3' },
-    { value: 4, label: '4' },
-    { value: 5, label: '5' },];
-  const [selectedTechCategory, setSelectedTechCategory] = useState("");
+  const [numOptions, setNumOptions] = useState([]);
+  
   const relevantTechnologies = {
     "Front-end Frameworks/Libraries": ["react", "vue", "angular", "svelte", "next.js", "nuxt.js", "gatsby", "react-native", "flutter"],
     "State Management": ["redux", "vuex", "mobx", "context-api", "rxjs", "akita", "ngxs"],
@@ -149,6 +144,40 @@ export default function SearchForm() {
     }
   }
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const representativeId = localStorage.getItem("userId");
+        const token = localStorage.getItem("access_token");
+        const config = {
+          headers: { Authorization: `${token}` }
+        };
+        const response = await axios.get(apiURL + "/user/" + representativeId, config);
+        console.log(response.data.data.companySubscription);
+        const subscription = response.data.data.companySubscription.toLowerCase();
+          if (subscription === "basic plan") {
+            setNumOptions([
+              { value: 1, label: '1' },
+              { value: 2, label: '2' },
+              { value: 3, label: '3' }
+            ]);
+          } else {
+            setNumOptions([
+              { value: 1, label: '1' },
+              { value: 2, label: '2' },
+              { value: 3, label: '3' },
+              { value: 4, label: '4' },
+              { value: 5, label: '5' }
+            ]);
+          }
+      } catch (error) {
+        // Handle the error
+      }
+    };
+  
+    fetchUser();
+  }, []);
+
 
   
   useEffect(() => {
@@ -158,12 +187,11 @@ export default function SearchForm() {
       yearsOfExperience: 0,
       field: "",
     });
-
+  
     setForm(newForms);
-  }, [numForms]);
+  }, [numForms, numOptions]);
 
-
-
+  
   return (
     <div
       className="h-screen flex flex-col bg-fixed home-container"
@@ -182,7 +210,14 @@ export default function SearchForm() {
           value={options.find(option => option.value === numForms)}
           onChange={(selectedOption) => {
             let value = selectedOption ? Number(selectedOption.value) : 0;
-            setNumForms(value);
+            setNumForms(prevNumForms => {
+              if (value > numOptions.length) {
+                // If the new value is greater than the number of options, set it to the maximum number of options
+                return numOptions.length;
+              } else {
+                return value;
+              }
+            });
           }}
           options={numOptions}
         />

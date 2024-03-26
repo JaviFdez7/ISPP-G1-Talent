@@ -190,6 +190,14 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+						<Route
+							path='/candidate/subscription'
+							element={
+								<ProtectedRoute roles={['Candidate']}>
+									<CandidateSubscription />
+								</ProtectedRoute>
+							}
+						/>
 						{/*RUTAS REPRESENTANTE */}
 						<Route
 							path='/representative/subscription'
