@@ -71,7 +71,7 @@ const candidateSchema = new Schema({
 
 
   profesionalExperiences: [{type: Schema.Types.ObjectId, ref: 'ProfessionalExperience'}],
-  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: true },
+  analysisId: { type: Schema.Types.ObjectId, ref: 'Analysis', required: false },
 
 });
 
