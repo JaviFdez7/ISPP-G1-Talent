@@ -59,7 +59,8 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
     throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
   }
 };
-export const createAnalysis: any = async (githubUsername: string, token: string, userApikey?: string) => {
+export const createAnalysis: any = async (githubUsername: string,token?: string,  userApikey?: string) => {
+  token=token?? '';
   if (!githubUsername){
     throw new Error('A valid GitHub username was not provided.');
   }
@@ -85,11 +86,14 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
           technologies: repo.technologies
         }))
       });
-      const representative = await Representative.findById(verifyJWT(token).sub);
+      
 
       const savedRecord = await userAnalysis.save();
-      if(representative!==null){
-        await createHistory(representative._id,{analysisId:savedRecord._id});
+      if(token.length>0){
+        const representative = await Representative.findById(verifyJWT(token).sub);
+        if(representative!==null){
+          await createHistory(representative._id,{analysisId:savedRecord._id});
+        }
       }
 
       return savedRecord;
@@ -97,7 +101,8 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
       const filter = { githubUsername };
 
       const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true });
-      const representative = await Representative.findById(verifyJWT(token).sub);
+      if(token.length>0){
+        const representative = await Representative.findById(verifyJWT(token).sub);
       const candidate = await Candidate.findOne({ githubUser: githubUsername });
       if (representative !== null && candidate !== null) {
         await createNotification({
@@ -109,6 +114,7 @@ export const createAnalysis: any = async (githubUsername: string, token: string,
         if(!history){
           await createHistory(representative._id,{analysisId:updatedDocument?._id});
         }
+      }
       }
       
       return updatedDocument;
