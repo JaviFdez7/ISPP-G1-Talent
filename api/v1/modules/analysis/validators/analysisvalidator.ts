@@ -1,6 +1,9 @@
 import { type Request, type Response, type NextFunction } from 'express';
 import { ApiResponse } from '../../../utils/ApiResponse';
 import { verifyJWT } from '../../user/helpers/handleJWT';
+import { Candidate, Representative, User } from '../../user/models/user';
+import { History } from '../../history/models/history';
+import { getAnalysisByGitHubUsername } from '../services/AnalysisService';
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
   const username: string | undefined = req.params.username;
 
@@ -15,6 +18,47 @@ export const validateUsername = (req: Request, res: Response, next: NextFunction
 
   next();
 };
+export const checkValidTokenAndValidAnalysis: any = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+      const token = req.headers.authorization ?? '';
+      const analysisId= req.params.id;
+  
+      if (token.length === 0) {
+          ApiResponse.sendError(res,[{
+              title: 'Internal Server Error',
+              detail:'No token provided.'
+            }])
+            return;
+       
+        }
+      const decodedToken = verifyJWT(token).sub;
+      const user = await User.findById(decodedToken);
+      if(!user){
+        const message = 'Permission denied';
+        ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+      }
+      if(!analysisId){
+        const message = 'Not Found';
+        ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+      }
+      if((user instanceof Candidate && (user as any).analysisId==!analysisId)
+      || (user instanceof Representative && !await History.findOne({analysisId: analysisId,userId:user._id}))){
+        console.log(!await History.findOne({analysisId: analysisId,userId:user._id}));
+        const message = 'Not Found';
+        ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+      }else{
+        next();
+      }
+  } catch (error: any) {
+  
+    ApiResponse.sendError(res,[{
+      title: 'Internal Server Error',
+      detail:error.message
+    }])
+    return;
+  }
+};
+
 export const checkValidToken: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
       const token = req.headers.authorization ?? '';
@@ -27,9 +71,14 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
             return;
        
         }
-        const decodedToken = verifyJWT(token);
-      
-    next();
+      const decodedToken = verifyJWT(token).sub;
+      const representative = await Representative.findById(decodedToken);
+      if(!representative){
+        const message = 'Permission denied';
+        ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+      }else{
+        next();
+      }
   } catch (error: any) {
   
     ApiResponse.sendError(res,[{
@@ -38,7 +87,48 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
     }])
     return;
   }
-}
+};
+
+export const checkValidTokenAndValidGithubUser: any = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+      const token = req.headers.authorization ?? '';
+      const githubUsername= req.params.username;
+  
+      if (token.length === 0) {
+          ApiResponse.sendError(res,[{
+              title: 'Internal Server Error',
+              detail:'No token provided.'
+            }])
+            return;
+       
+        }
+      const decodedToken = verifyJWT(token).sub;
+      const representative = await Representative.findById(decodedToken);
+      if(!representative){
+        const message = 'Permission denied';
+        ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+      }
+      const analysis= await getAnalysisByGitHubUsername(githubUsername);
+      if(!analysis){
+        const message = 'Not Found';
+        ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+      }
+      const history=await History.findOne({userId: verifyJWT(token).sub, analysisId: analysis._id});
+      if(!history){
+        const message = 'Not Found';
+        ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+      }else{
+        next();
+      }
+  } catch (error: any) {
+  
+    ApiResponse.sendError(res,[{
+      title: 'Internal Server Error',
+      detail:error.message
+    }])
+    return;
+  }
+};
 
 export const validateGitHubUserAndApiKey = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const githubUsername: string = req.body.username;
