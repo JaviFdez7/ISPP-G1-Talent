@@ -1,74 +1,78 @@
-import { generateJWT } from '../helpers/handleJWT';
-import { Candidate, User } from '../models/user';
-import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
+import { generateJWT } from '../helpers/handleJWT'
+import { Candidate, User } from '../models/user'
+import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 
 import { getModelForRole } from '../helpers/handleRoles'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
 
-export const getAllUser: any = async () => await User.find({});
+export const getAllUser: any = async () => await User.find({})
 
-export const getUserById: any = async (id: any) => await User.findById(id);
+export const getUserById: any = async (id: any) => await User.findById(id)
 
 export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
-  try {
-    return await ProfessionalExperience.find({ userId });
-  } catch (error) {
-    console.error('Error when obtaining professional experience:', error);
-    throw error;
-  }
-};
+	try {
+		return await ProfessionalExperience.find({ userId })
+	} catch (error) {
+		console.error('Error when obtaining professional experience:', error)
+		throw error
+	}
+}
 
 export const createUser: any = async (data: any, role: string) => {
-  try {
-    const Model = getModelForRole(role);
-    if (role === 'Candidate') {
-      const analysis = await createAnalysis(data?.githubUser,'' ,data?.githubToken);
-      data.analysisId=analysis._id;
-    }
-    const user = new Model(data);
-    await user.save();
-    return user;
-  } catch (error) {
-    console.error('Error inserting user:', error);
-    throw error;
-  }
-};
+	try {
+		const Model = getModelForRole(role)
+		if (role === 'Candidate') {
+			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
+			data.analysisId = analysis._id
+		}
+		const user = new Model(data)
+		await user.save()
+		return user
+	} catch (error) {
+		console.error('Error inserting user:', error)
+		throw error
+	}
+}
 
 export const updateUser: any = async (id: any, data: any, role: string) => {
-  try {
-    const Model = getModelForRole(role) as typeof User;
-    if (role === 'Candidate') {
-      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
-      data.analysisId = analysis._id;
-    }
-    const { password, profilePicture, ...editableDetails } = data;
-    const updatedUser = await Model.findByIdAndUpdate(id, editableDetails, { new: true });
-    return updatedUser;
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw error;
-  }
-};
+	try {
+		const Model = getModelForRole(role) as typeof User
+		if (role === 'Candidate') {
+			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			data.analysisId = analysis._id
+		}
+		const { password, profilePicture, ...editableDetails } = data
+		const updatedUser = await Model.findByIdAndUpdate(id, editableDetails, { new: true })
+		return updatedUser
+	} catch (error) {
+		console.error('Error updating user:', error)
+		throw error
+	}
+}
 
 export const updateUserProfilePicture: any = async (id: any, picture: string) => {
-  try {
-    const updatedUser = await Candidate.findByIdAndUpdate(id, { profilePicture: picture }, { new: true });
-    return updatedUser;
-  } catch (error) {
-    console.error('Error updating user profile picture:', error);
-    throw error;
-  }
-};
+	try {
+		const updatedUser = await Candidate.findByIdAndUpdate(
+			id,
+			{ profilePicture: picture },
+			{ new: true }
+		)
+		return updatedUser
+	} catch (error) {
+		console.error('Error updating user profile picture:', error)
+		throw error
+	}
+}
 
 export const updateUserPassword: any = async (id: any, password: string) => {
-  try {
-    const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true });
-    return updatedUser;
-  } catch (error) {
-    console.error('Error updating user password:', error);
-    throw error;
-  }
-};
+	try {
+		const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true })
+		return updatedUser
+	} catch (error) {
+		console.error('Error updating user password:', error)
+		throw error
+	}
+}
 
 export const deleteUser: any = async (id: any, role: string) => {
 	try {
@@ -94,13 +98,13 @@ export const loginUser: any = async (data: any) => {
 	}
 }
 export default {
-  getAllUser,
-  getUserById,
-  getProfessionalExperiencesByUserId,
-  createUser,
-  updateUser,
-  updateUserProfilePicture,
-  updateUserPassword,
-  deleteUser,
-  loginUser
-};
+	getAllUser,
+	getUserById,
+	getProfessionalExperiencesByUserId,
+	createUser,
+	updateUser,
+	updateUserProfilePicture,
+	updateUserPassword,
+	deleteUser,
+	loginUser,
+}
