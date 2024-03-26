@@ -1,8 +1,8 @@
-import express from 'express';
-import Notification from './routes';
+import express from 'express'
+import Notification from './routes'
 
-const router = express.Router();
+const router = express.Router()
 
-router.use('/user', Notification);
+router.use('/user', Notification)
 
-export default router;
+export default router

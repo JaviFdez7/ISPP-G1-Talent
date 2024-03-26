@@ -110,6 +110,28 @@ export const updateRepresentative: any = async (req: Request, res: Response) => 
   }
 }
 
+export const updateUserProfilePicture: any = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const picture = req.body.profilePicture;
+    const data = await UserService.updateUserProfilePicture(id, picture);
+    ApiResponse.sendSuccess(res, data, 200);
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{ title: 'Internal Server Error', detail: error.message }]);
+  }
+};
+
+export const updateUserPassword: any = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const { password } = req.body;
+    const data = await UserService.updateUserPassword(id, password);
+    ApiResponse.sendSuccess(res, data, 200);
+  } catch (error: any) {
+    ApiResponse.sendError(res, [{ title: 'Internal Server Error', detail: error.message }]);
+  }
+};
+
 export const loginUser: any = async (req: Request, res: Response) => {
   try {
     const data = await UserService.loginUser(req.body);
@@ -145,6 +167,8 @@ export default {
   createRepresentative,
   updateCandidate,
   updateRepresentative,
+  updateUserProfilePicture,
+  updateUserPassword,
   deleteUser,
   loginUser
 };

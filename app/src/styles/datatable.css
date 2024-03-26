@@ -23,12 +23,26 @@
 .datatable-container * th {
     color: white;   
 }
-.datatable-container * td {
+.datatable-cell {
     color: white;
+    height: fit-content;
+    word-break: break-all;
+    align-items: center;
+    justify-content: center;
+    padding-left: 3%;
+    padding-bottom: 3%;
+}
+
+.datatable-cell-small {
+    color: white;
+    height: fit-content;
+    word-break: break-all;
+    align-items: center;
+    justify-content: center;
+    padding-left: 1%;
+    padding-bottom: 1%;
 }
 
 .edit-button {
     background-color: var(--talent-secondary);
-    position: fixed;
-    right: 5%;
 }

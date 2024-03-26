@@ -9,6 +9,7 @@ import MainButton from "../../components/mainButton";
 export default function RegisterRepresentative() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
+  const [users, setUsers] = useState([])
   const [form, setForm] = useState({
     username: "",
     corporative_email: "",
@@ -29,17 +30,22 @@ export default function RegisterRepresentative() {
     password,
     password2,
   } = form;
+  const [emailValid, setEmailValid] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED==='true' || false;
+
   let navigate = useNavigate();
 
   function onInputChange(e) {
     const { name, value, checked } = e.target;
-  
+
     if (name === "termsCheckbox") {
       setIsCheckboxChecked(checked);
     } else {
       setForm(prevForm => ({ ...prevForm, [name]: value }));
     }
-  
+
     setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
   const handleCheckboxChange = (e) => {
@@ -48,6 +54,8 @@ export default function RegisterRepresentative() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setEmailValid(true);
+
     if (!isCheckboxChecked) {
       setErrors({ termsCheckbox: "You must accept the terms and conditions" });
       return;
@@ -55,6 +63,37 @@ export default function RegisterRepresentative() {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      return;
+    }
+    if (enableValidation) {
+      setLoading(true);
+      const isValidEmail = await validateEmail(form.corporative_email);
+      setLoading(false);
+      if (!isValidEmail) {
+        setEmailValid(false);
+        return;
+      }
+    }
+
+    let valid = true;
+
+    await fetchUsers();
+
+    users.filter((user) => {
+      if (user.email === form.corporative_email) {
+        setErrors({ corporativeMail: "This mail is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    users.filter((user) => {
+      if (user.username === form.username) {
+        setErrors({ username: "This username is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    if (!valid || users.length === 0) {
       return;
     }
 
@@ -71,7 +110,7 @@ export default function RegisterRepresentative() {
 
       const userDataFetch = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login", form
-        
+
       );
       setIsCheckboxChecked(false);
       const data = userDataFetch.data.data;
@@ -91,7 +130,71 @@ export default function RegisterRepresentative() {
   function getRequiredFieldMessage(fieldName) {
     return `The ${fieldName} field is required`;
   }
-  
+    async function fetchUsers() {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/user`,
+          {
+            headers: {
+              'Content-type': 'application/json',
+            },
+          }
+        )
+        setUsers(response.data.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+
+    React.useEffect(() => {
+      fetchUsers();
+    }, []);
+
+  async function validateEmail(email) {
+
+    const verifaliaUserId = 'ittalentID1111111111111111';
+    const verifaliaUserPwd = 'rI8e.gOjdUWfv0';
+
+    try {
+      // Enviar solicitud de validación de correo electrónico
+      const response = await axios.post(
+        'https://api.verifalia.com/v2.5/email-validations',
+        {
+          entries: [{ inputData: email }],
+        },
+        {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        }
+      );
+      console.log("response**********", response)
+      const taskId = response.data.overview.id;
+      console.log("TaskID**********", taskId)
+      let taskStatus = 'InProgress';
+      let result = false;
+      while (taskStatus === 'InProgress') {
+        const taskResponse = await axios.get(`https://api.verifalia.com/v2.5/email-validations/${taskId}`, {
+          auth: {
+            username: verifaliaUserId,
+            password: verifaliaUserPwd,
+          },
+        });
+        console.log("taskResponse****", taskResponse)
+        taskStatus = taskResponse.status;
+        result = taskResponse.data.entries.data[0].classification === 'Deliverable';
+        console.log('Estado de la tarea:', taskStatus + " -- " + result);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+
+      return result;
+    } catch (error) {
+      console.error('Error validating email:', error);
+      return false;
+    }
+  }
+
   function validateForm() {
     let errors = {};
 
@@ -111,12 +214,12 @@ export default function RegisterRepresentative() {
     if (!form.corporative_email) {
       errors.corporative_email = getRequiredFieldMessage('corporative email');
     } else if (
-      !/^\w+([.-]?\w+)*@(gmail|hotmail|outlook)\.com$/.test(
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
         form.corporative_email
       )
     ) {
       errors.corporative_email =
-        "The corporative email field must be from Gmail, Outlook, or Hotmail";
+        "The input must be an email";
     }
     if (!form.password) {
       errors.password = getRequiredFieldMessage('password');
@@ -141,6 +244,11 @@ export default function RegisterRepresentative() {
     return errors;
   }
 
+  let mobile = false;
+  if (window.screen.width < 500) {
+    mobile = true;
+  }
+
   return (
     <div
       className="h-screen flex flex-col justify-center bg-fixed home-container"
@@ -151,13 +259,12 @@ export default function RegisterRepresentative() {
       }}
     >
       <div
-        className="w-full max-w-4xl h-100 p-8 m-4 rounded shadow-md flex flex-col justify-between"
+        className="w-10/12 p-6 self-center rounded shadow-md flex flex-col justify-between"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           marginLeft: "auto",
           marginRight: "auto",
-          marginTop: "80px",
-          marginBottom: "20px",
+          marginTop: "50px",
           borderColor: talentColor,
           boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.3)",
           backdropFilter: "blur(8px)",
@@ -171,7 +278,9 @@ export default function RegisterRepresentative() {
           Register as
         </h2>
         <hr className="border-1 w-70 mb-4" style={{ borderColor: talentColor }} />
-        <div className="flex justify-center space-x-4 mb-4">
+        <div className="flex justify-center items-center space-x-4 mb-4"
+          style={{ flexDirection: mobile ? "column" : "row" }}
+        >
           <Link to="/register/candidate">
             <h2
               className="text-2xl text-white hover:text-gray-600 px-6 py-3"
@@ -216,6 +325,12 @@ export default function RegisterRepresentative() {
               errors={errors}
               isMandatory
             />
+            {loading && <p className="text-white">Validating email...</p>}
+            {!emailValid && <p className="text-red-500">Please use a real email.</p>}
+            {errors.corporativeMail && (
+              <p className="text-red-500">{errors.corporativeMail}</p>
+            )}
+
             <FormTextInput
               labelFor="companyname"
               labelText="Company Name"
@@ -297,13 +412,13 @@ export default function RegisterRepresentative() {
                     />
                     <a
                       href="https://tu-enlace-externo.com"
-                      className="text-yellow-500 hover:underline"
+                      className="text-white hover:underline"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       Read the conditions in here
                       <svg
-                        className="h-6 w-6 text-yellow-500 inline-block"
+                        className="h-6 w-6 inline-block"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -324,7 +439,8 @@ export default function RegisterRepresentative() {
               </div>
             </div>
           </div>
-          <div className="flex-row space-x-24 m-auto">
+
+          <div className="flex-row space-x-24 m-auto mt-4">
             <div
               className="flex items-center justify-center h-full"
               style={{ marginTop: "2rem" }}
@@ -340,12 +456,13 @@ export default function RegisterRepresentative() {
                 </Link>
               </p>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 mb-4">
               {MainButton("Register", "/", handleSubmit)}
             </div>
           </div>
         </form>
       </div>
+      <br></br>
     </div>
   );
 }

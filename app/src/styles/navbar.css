@@ -12,7 +12,7 @@
     height: 100%;
     width: 375px;
     position: fixed;
-    z-index: 2;
+    z-index: 3;
     top: 0;
     left: -325px;
     overflow-x: hidden;
@@ -88,54 +88,52 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    bottom: 20px;
-    left: 20px;
-    width: 30%;
+    bottom: 15%;
+    left: 5%;
+    width: 60%;
 }
 
 .profile-pic-container {
     background-color: var(--talent-grey);
     border-radius: 50%;
-    width: 65px;
-    height: 65px;
+    width: 85px;
     display: flex;
     justify-content: center;
 }
 
 .profile-pic {
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    width: 85px;
     align-self: center;
 }
 
 .profile-text {
     color: white;
-    font-size: medium;
+    font-size: 18px;
+    margin-left: 10px;
+    word-break: normal;
 }
 
 .logout {
     position: absolute;
-    bottom: 30px;
-    right: 65px;
-    width: 20%;
+    bottom: 5%;
+    left: 65%;
+    width: 10%;
 }
 
 .logout > img {
-    width: 30px;
-    height: 30px;
+    width: max-content;
 }
 
 .mail {
     position: absolute;
-    bottom: 25px;
-    right: 165px;
-    width: 20%;
+    bottom: 5%;
+    left: 10%;
+    width: 10%;
 }
 
 .mail > img {
-    width: 35px;
-    height: 35px;
+    width: max-content;
 }
 
 .mail-amount {
@@ -144,8 +142,8 @@
     border-radius: 50%;
     background-color: var(--talent-highlight);
     position: absolute;
-    left: -50px;
-    bottom: 0px;
+    left: 15%;
+    bottom: 5%;
     display: flex;
     flex-direction: row;
     justify-content: center;

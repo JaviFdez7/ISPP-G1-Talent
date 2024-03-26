@@ -1,12 +1,11 @@
 import React from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
-import MainButton from "../../components/mainButton.jsx";
 import Select from "../../components/Select.jsx";
 import AnalysisHistoryItem from "../../components/history/AnalysisHistoryItem.jsx";
-
+import { handleNetworkError } from "../../components/TokenExpired";
+import { useNavigate } from "react-router-dom";
 
 export default function AnalysisList() {
     const borderColor = 'var(--talent-highlight)'
@@ -14,6 +13,7 @@ export default function AnalysisList() {
     const [errorMessage, setErrorMessage] = useState('');
     const [filter, setFilter] = useState("All");
     const [triggerUpdate, setTriggerUpdate] = useState(false);
+    let navigate = useNavigate();
 
 
     const apiURL = import.meta.env.VITE_BACKEND_URL;
@@ -23,9 +23,7 @@ export default function AnalysisList() {
             const response = await axios.get(apiURL + analysisEndPoint);
             return response.data.data;
         } catch (error) {
-            setErrorMessage('Unable to connect to the server. Please try again later.');
-            console.error("Error al llamar al endpoint:", error);
-            throw error;
+            handleNetworkError(error, navigate);
         }
     }
 
@@ -42,6 +40,7 @@ export default function AnalysisList() {
         fetchDataFromEndpoint(uri)
             .then(data => {
                 const newArray = data.map(item => item);
+                newArray.sort((a, b) => new Date(b.date) - new Date(a.date));
                 setDataArray(newArray);
             })
             .catch(error => {
@@ -82,7 +81,7 @@ export default function AnalysisList() {
                 <div className="flex justify-between  w-full">
 
 
-                    <div className="w-full max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between mt-10"
+                    <div className="w-10/12 max-w-6xl h-100 p-1 mx-auto rounded shadow-md flex flex-col justify-between mt-10"
                         style={{
                             backgroundColor: "rgba(0, 0, 0, 0.5)",
                             marginLeft: "100",

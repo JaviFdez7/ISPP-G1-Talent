@@ -32,14 +32,11 @@ export default function Home() {
       style={{ backgroundImage: `url(${mainBackground})`, backgroundSize: "cover" }}
     >
       <div className="container mx-auto flex flex-col items-center text-center mt-20">
-        <h1>
+        <h1 className="home-title">
           <span className="blinker">| </span>
           <Typewriter text="Welcome to IT TALENT" delay={100} />
           <br />
         </h1>
-        <br></br>
-        <br></br>
-        <br></br>
         <h2>
           Prepare for a <strong>revolution</strong>
           <br />
@@ -59,6 +56,10 @@ export default function Home() {
             </div>
           )}
 
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
         </div>
       </div>
     </div>
