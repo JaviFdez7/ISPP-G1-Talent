@@ -210,7 +210,7 @@ export default function Navbar() {
                   <h1>{userData ? userData.fullName : " - "}</h1>
                 </div>
               </Link>
-              <Link to="/" className="mail">
+              <Link to="/candidate/notification/detail" className="mail">
                 <img src={mail} />
               </Link>
               {/* TODO code of mail*/}
