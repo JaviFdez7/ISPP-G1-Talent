@@ -8,6 +8,7 @@ import MainButton from "../../components/mainButton";
 
 export default function RegisterCandidate() {
   const talentColor = 'var(--talent-highlight)'
+  const [users, setUsers] = useState([])
   const { login } = useAuthContext()
   const [form, setForm] = useState({
     first_name: '',
@@ -79,6 +80,35 @@ export default function RegisterCandidate() {
       }
     }
 
+    let valid = true;
+
+    await fetchUsers();
+
+    users.filter((user) => {
+      if (user.email === form.email) {
+        setErrors({ email: "This mail is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    users.filter((user) => {
+      if (user.username === form.username) {
+        setErrors({ username: "This username is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    users.filter((user) => {
+      if (user.githubUser === form.githubUsername) {
+        setErrors({ githubUsername: "This github username is already in use" });
+        valid = false;
+        return;
+      }
+    });
+    if (!valid || users.length === 0) {
+      return;
+    }
+
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + '/user/candidate',
@@ -113,6 +143,27 @@ export default function RegisterCandidate() {
   function getRequiredFieldMessage(fieldName) {
     return `The ${fieldName} field is required`
   }
+
+  async function fetchUsers() {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/user`,
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      )
+      setUsers(response.data.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchUsers();
+  }, []);
+
 
   async function validateEmail(email) {
     const verifaliaUserId = 'ittalentID1111111111111111';

@@ -141,8 +141,6 @@ export default function RegisterRepresentative() {
           }
         )
         setUsers(response.data.data);
-        console.log(users);
-        console.log(response);
       } catch (error) {
         console.error('Error fetching users:', error);
       }
