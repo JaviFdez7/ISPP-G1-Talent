@@ -85,6 +85,12 @@ paths:
           schema:
             type: string
           description: The username of the analysis you are looking for.
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication(use to verify notifications).
       responses:
         "200":
           description: The analysis entry with the specified ID
@@ -106,6 +112,12 @@ paths:
           schema:
             type: string
           description: The username that you are updating.
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication(use to verify notifications).
       responses:
         "204":
           description: Analysis entry deleted successfully
