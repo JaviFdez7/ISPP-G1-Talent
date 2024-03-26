@@ -15,10 +15,9 @@ const notificationSchema = new Schema({
     default: Date.now()
   },
 
-  // Marks the request as favourite
-  message: { type: String, required: true },
-  seen:{type:Boolean, required:true,default:false}
-});
+	// Marks the request as favourite
+	message: { type: String, required: true },
+})
 
 const Notification = model('Notification', notificationSchema)
 

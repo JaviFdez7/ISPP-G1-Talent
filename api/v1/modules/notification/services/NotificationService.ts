@@ -10,16 +10,10 @@ export const getAllNotification: any = async () => {
   }
 };
 
-export const getNotificationById: any = async (id: any,token:string) => {
+export const getNotificationById: any = async (id: any) => {
   try {
-    const notification = await Notification.findById(id);
-    if(notification!==null && notification?.seen===false){
-      const readedNotification=await Notification.findByIdAndUpdate(id,{seen:true});
-      return readedNotification;
-    }
-    else{
-      return notification;
-    }
+    const notifications = await Notification.findById(id);
+    return notifications;
   } catch (error) {
     throw new Error(`Unknown error when getting the notification with ID ${id}`);
   }

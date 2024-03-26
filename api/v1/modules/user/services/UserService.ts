@@ -1,5 +1,5 @@
 import { generateJWT } from '../helpers/handleJWT';
-import { Candidate, User } from '../models/user';
+import { User } from '../models/user';
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
 
 import { getModelForRole } from '../helpers/handleRoles'
@@ -22,8 +22,8 @@ export const createUser: any = async (data: any, role: string) => {
   try {
     const Model = getModelForRole(role);
     if (role === 'Candidate') {
-      const analysis = await createAnalysis(data?.githubUser,'' ,data?.githubToken);
-      data.analysisId=analysis._id;
+      const analysis = await createAnalysis(data?.githubUser, data?.githubToken);
+      data.analisisId=analysis._id;
     }
     const user = new Model(data);
     await user.save();
