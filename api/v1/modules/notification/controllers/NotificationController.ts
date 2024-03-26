@@ -35,7 +35,8 @@ export const getNotificationsOfCandidate: any = async (req: Request, res: Respon
 export const getNotificationById: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
-    const data = await NotificationService.getNotificationById(id);
+    const token = req.headers.authorization ?? '';
+    const data = await NotificationService.getNotificationById(id,token);
     ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
