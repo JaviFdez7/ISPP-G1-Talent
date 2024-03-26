@@ -5,16 +5,16 @@ import {
   getAnalysisById,
   getAnalysisByGitHubUsername,
   createAnalysis,
-  deleteAnalysis
+  deleteAnalysis,
 } from './controllers/AnalysisController';
-import {validateGitHubUserAndApiKey, validateUsername} from './validators/analysisvalidator'
+import { validateGitHubUserAndApiKey, validateUsername, checkValidToken } from './validators/analysisvalidator'
 const router = express.Router();
 router.use(express.json());
 // Define routes for the Analysis module
-router.get('/', getAllAnalysis);
-router.get('/:id', getAnalysisById);
-router.get('/github/:username',validateUsername, getAnalysisByGitHubUsername);
-router.post('/', validateGitHubUserAndApiKey,createAnalysis);
-router.delete('/github/:username', deleteAnalysis);
+router.get('/'/*, checkValidToken */,getAllAnalysis);
+router.get('/:id'/*, checkValidToken */, getAnalysisById);
+router.get('/github/:username'/*, checkValidToken */, validateUsername, getAnalysisByGitHubUsername);
+router.post('/', validateGitHubUserAndApiKey/*, checkValidToken */, createAnalysis);
+router.delete('/github/:username'/*, checkValidToken */,deleteAnalysis);
 
 export default router;

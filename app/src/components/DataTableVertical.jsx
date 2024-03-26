@@ -3,8 +3,8 @@ import MainButton from "./mainButton";
 import { Link } from "react-router-dom";
 
 export default function DataTableVertical({ data, editable=false, addLink, editLink }) {
-    const cellHeight = '80px';
-    const minCellWidth = '142px';
+    const cellHeight = '30px';
+    const minCellWidth = '200px';
 
     let button = "";
     if (editable) {
@@ -16,16 +16,16 @@ export default function DataTableVertical({ data, editable=false, addLink, editL
     }
 
     return (
-        <div className="mt-2 datatable-container">
+        <div className="mt-2 mb-2 datatable-container ">
             <table className="w-full  ">
                 <tbody className="datatable-body ">
                     {data.map((item, index) => (
                         <tr key={index}>
                             <th className="datatable-header" style={{ borderTop: '0', height: cellHeight, minWidth: minCellWidth}}>
-                                <div className="datatable-header-text mr-3 ml-3">{item.header}</div>
+                                <div className="datatable-header-text mr-10 ml-10">{item.header}</div>
                             </th>
                             <td className="datatable-cell " style={{height: cellHeight, minWidth: minCellWidth}}>
-                                <div className="flex items-center justify-center mt-5" style={{wordBreak: 'break-word', paddingLeft: "20px", paddingBottom: "20px"}}>
+                                <div className="flex items-center justify-center mt-5 mr-10 " style={{wordBreak: 'break-word', paddingLeft: "20px", paddingBottom: "20px"}}>
                                     {item.content}
                                     {editable && (
                                     <Link to={editLink + "/" + index} className="edit-button">

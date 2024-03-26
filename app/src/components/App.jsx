@@ -14,6 +14,7 @@ import CandidateProfessionalExperienceCreate from '../pages/candidate/CandidateP
 import CandidateProfessionalExperienceEdit from '../pages/candidate/CandidateProfessionalExperienceEdit.jsx'
 import CandidateProfessionalExperienceDetail from '../pages/candidate/CandidateProfessionalExperienceDetail.jsx'
 import CandidateSubscription from '../pages/candidate/CandidateSubscription.jsx'
+import CandidateRepresentativeDetail from '../pages/candidate/CandidateRepresentativeDetail.jsx'
 
 import RepresentativeSubscription from '../pages/representative/RepresentativeSubscription.jsx'
 import RepresentativeDetail from '../pages/representative/RepresentativeDetail.jsx'
@@ -80,36 +81,36 @@ function App() {
 							}
 						/>
 
-						<Route path="/searches/team" element={
-							<ProtectedRoute roles={['Representative']} >
-								<Search />
-							</ProtectedRoute>}
-						/>
-						<Route
-							path="/searches/search"
-							element={
-								<ProtectedRoute roles={['Representative']} >
-									<SearchForm />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/searches/:searchId"
-							element={
-								<ProtectedRoute roles={['Representative']} >
-									<SearchResult />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path="/searches/list"
-							element={
-								<ProtectedRoute roles={['Representative']} >
-									<PlaceHolder pageName="search list" />
-								</ProtectedRoute>
-							}
-						/>
-
+            <Route path="/searches/representative/:representativeId" element={
+              <ProtectedRoute roles={['Representative']} >
+                <Search/>
+              </ProtectedRoute>}
+            />
+             <Route
+              path="/searches/search"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <SearchForm />
+                </ProtectedRoute>
+              }
+            />
+           <Route
+              path="/searches/:searchId"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <SearchResult/>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/searches/list"
+              element={
+                <ProtectedRoute roles={['Representative']} >
+                  <PlaceHolder pageName="search list" />
+                </ProtectedRoute>
+              }
+            />
+   
 
 						{/*Subscription*/}
 						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
@@ -172,12 +173,20 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-
 						<Route
-							path='/candidate/subscription'
+							path='/candidate/professional-experience/edit'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
-									<CandidateSubscription />
+									<CandidateProfessionalExperienceEdit />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/candidate/representative-view/:representativeId'
+							element={
+								<ProtectedRoute roles={['Candidate']}>
+									<CandidateRepresentativeDetail />
 								</ProtectedRoute>
 							}
 						/>

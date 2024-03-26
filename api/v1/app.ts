@@ -1,21 +1,25 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import express, { type Request, type Response } from 'express'
-import { connectToMongoDB } from './db/dbConfig'
-import swaggerUi from 'swagger-ui-express'
-import swaggerJSDoc from 'swagger-jsdoc'
-import AnalysisRouter from './modules/analysis'
-import UserRouter from './modules/user'
-import HistoryRouter from './modules/history'
-import NotificationRouter from './modules/notification'
-import ProfessionalExperienceRouter from './modules/professional-experience'
-import cors from 'cors'
+import express, { type Request, type Response } from 'express';
+import { connectToMongoDB } from './db/dbConfig';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import AnalysisRouter from './modules/analysis';
+import UserRouter from './modules/user';
+import HistoryRouter from './modules/history';
+import NotificationRouter from './modules/notification';
+import ProfessionalExperienceRouter from './modules/professional-experience';
+import TeamCreatorRouter from './modules/team-creator'
+import cors from 'cors';
 
-const app = express()
-const swaggerHost = process.env.HOST ?? 'localhost:3000'
-app.use(express.json())
-app.use(cors())
-//  Routers -----------------------------------------------------
-//  Default
+
+const app = express();
+const swaggerHost = process.env.HOST ?? 'localhost:3000';
+app.use(express.json());
+app.use(cors());
+//Routers -----------------------------------------------------
+
+
+//Default
 app.get('/', (req: Request, res: Response) => {
 	res.send('Welcome to the Talent API! 🚀\n See the documentation at /v1/docs')
 })
@@ -34,11 +38,14 @@ const swaggerSpec = swaggerJSDoc(options)
 app.use(express.json())
 app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 //  Modules Routes ----------------------------------------------
-app.use(AnalysisRouter)
-app.use(UserRouter)
-app.use(HistoryRouter)
-app.use(ProfessionalExperienceRouter)
-app.use(NotificationRouter)
+app.use(AnalysisRouter);
+app.use(UserRouter);
+
+app.use(HistoryRouter);
+app.use(ProfessionalExperienceRouter);
+app.use(TeamCreatorRouter)
+app.use(NotificationRouter);
+
 // Server -------------------------------------------------------
 connectToMongoDB()
 	.then(() => {
