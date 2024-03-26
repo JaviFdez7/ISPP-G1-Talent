@@ -45,6 +45,26 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
   }
 };
 
+export const updateUserProfilePicture: any = async (id: any, picture: string) => {
+  try {
+    const updatedUser = await Candidate.findByIdAndUpdate(id, { profilePicture: picture }, { new: true });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user profile picture:', error);
+    throw error;
+  }
+};
+
+export const updateUserPassword: any = async (id: any, password: string) => {
+  try {
+    const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user password:', error);
+    throw error;
+  }
+};
+
 export const deleteUser: any = async (id: any, role: string) => {
   try {
     const Model = getModelForRole(role) as typeof User;
@@ -74,6 +94,8 @@ export default {
   getProfessionalExperiencesByUserId,
   createUser,
   updateUser,
+  updateUserProfilePicture,
+  updateUserPassword,
   deleteUser,
   loginUser
 };
