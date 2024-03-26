@@ -16,7 +16,8 @@ const notificationSchema = new Schema({
   },
 
   // Marks the request as favourite
-  message: { type: String, required: true }
+  message: { type: String, required: true },
+  seen:{type:Boolean, required:true,default:false}
 });
 
 const Notification = model('Notification', notificationSchema);
