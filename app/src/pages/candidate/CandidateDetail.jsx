@@ -28,7 +28,9 @@ export default function CandidateDetail() {
 					const user = response.data.data.find((user) => user._id === currentUserId)
 					const token = localStorage.getItem('access_token')
 					for (const experienceId of user.profesionalExperiences) {
-						const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${experienceId}`)
+						const response = await axios.get(
+							`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${experienceId}`
+						)
 						experiences.push(response.data.data)
 					}
 					setCandidate(user)
