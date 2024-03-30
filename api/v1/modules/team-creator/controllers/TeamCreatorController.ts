@@ -39,7 +39,6 @@ export const createTeamCreator: any = async (req: Request, res: Response) => {
   try {
     
     const token = req.headers.authorization ?? '';
-    console.log(token)
     const decodedToken = verifyJWT(token);
     const userId = decodedToken.sub;
     const data = await TeamCreatorService.createTeamCreator(req.body,userId);

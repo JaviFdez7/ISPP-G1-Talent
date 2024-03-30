@@ -70,7 +70,6 @@ describe('loginUser Function Tests', function () {
   it('should return 200 and the user data on successful login', async function () {
     const hashedPass = await bcrypt.hash('fake-password', 10)
     const fakeUserId = new mongoose.Types.ObjectId();
-    console.log(hashedPass)
     findOneStub.resolves({ _id: fakeUserId, username: 'fake-user', password: hashedPass })
     checkLoginUserStub.resolves({});
     loginUserStub.resolves({ username: 'fake-user' });

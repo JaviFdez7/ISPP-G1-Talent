@@ -33,7 +33,6 @@ export default function AnalysisDashboard() {
 				headers: { Authorization: `${token}` },
 			}
 			const response = await axios.get(apiURL + analysisEndPoint, config)
-			console.log('Response:', response.data.data)
 			setError(false)
 			return response.data.data
 		} catch (error) {

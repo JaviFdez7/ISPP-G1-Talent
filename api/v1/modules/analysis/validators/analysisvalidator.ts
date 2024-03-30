@@ -43,16 +43,18 @@ export const checkValidTokenAndValidAnalysis: any = async (req: Request, res: Re
       if(!user){
         const message = 'Permission denied';
         ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+        return;
       }
-      if(!analysisId){
+      else if(!analysisId){
         const message = 'Not Found';
         ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+        return;
       }
-      if((user instanceof Candidate && (user as any).analysisId==!analysisId)
+      else if((user instanceof Candidate && (user as any).analysisId==!analysisId)
       || (user instanceof Representative && !await History.findOne({analysisId: analysisId,userId:user._id}))){
-        console.log(!await History.findOne({analysisId: analysisId,userId:user._id}));
         const message = 'Not Found';
         ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+        return;
       }else{
         next();
       }
@@ -83,6 +85,7 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
       if(!representative){
         const message = 'Permission denied';
         ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+        return;
       }else{
         next();
       }
@@ -114,16 +117,19 @@ export const checkValidTokenAndValidGithubUser: any = async (req: Request, res: 
       if(!representative){
         const message = 'Permission denied';
         ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+        return;
       }
       const analysis= await getAnalysisByGitHubUsername(githubUsername);
       if(!analysis){
         const message = 'Not Found';
         ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+        return;
       }
       const history=await History.findOne({userId: verifyJWT(token).sub, analysisId: analysis._id});
       if(!history){
         const message = 'Not Found';
         ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404);
+        return;
       }else{
         next();
       }
@@ -172,6 +178,7 @@ export const validateGitHubUserAndApiKey = async (req: Request, res: Response, n
         title: 'Internal Server Error',
         detail: 'An error occurred while fetching the GitHub user data.'
       }])
+      return;
     }else{
       return next();
     }

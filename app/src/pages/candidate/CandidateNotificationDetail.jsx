@@ -63,7 +63,7 @@ export default function CandidateNotificationDetail() {
               },
             }
           );
-          console.log(response.data.data);
+
           setNotifications(notifications.filter((n) => n._id !== notificationId));
         }
       }

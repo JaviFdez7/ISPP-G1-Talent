@@ -153,7 +153,6 @@ export default function SearchForm() {
           headers: { Authorization: `${token}` }
         };
         const response = await axios.get(apiURL + "/user/" + representativeId, config);
-        console.log(response.data.data.companySubscription);
         const subscription = response.data.data.companySubscription.toLowerCase();
           if (subscription === "basic plan") {
             setNumOptions([

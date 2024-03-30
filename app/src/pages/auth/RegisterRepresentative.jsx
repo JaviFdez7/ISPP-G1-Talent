@@ -78,7 +78,6 @@ export default function RegisterRepresentative() {
     let valid = true;
 
     await fetchUsers();
-    console.log(users);
     users.filter((user) => {
       if (user.email === form.corporative_email) {
         setErrors({ corporativeMail: "This mail is already in use" });
@@ -166,9 +165,7 @@ export default function RegisterRepresentative() {
           },
         }
       );
-      console.log("response**********", response)
       const taskId = response.data.overview.id;
-      console.log("TaskID**********", taskId)
       let taskStatus = 'InProgress';
       let result = false;
       while (taskStatus === 'InProgress') {
@@ -178,10 +175,8 @@ export default function RegisterRepresentative() {
             password: verifaliaUserPwd,
           },
         });
-        console.log("taskResponse****", taskResponse)
         taskStatus = taskResponse.status;
         result = taskResponse.data.entries.data[0].classification === 'Deliverable';
-        console.log('Estado de la tarea:', taskStatus + " -- " + result);
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
 
