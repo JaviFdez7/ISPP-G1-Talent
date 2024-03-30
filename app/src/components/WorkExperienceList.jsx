@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import MainButton from './mainButton';
 import SecondaryButton from './secondaryButton';
@@ -32,7 +32,6 @@ const WorkExperienceList = ({ experience }) => {
     });
     navigate("/candidate/detail");
     setShowModal(false);
-    window.location.reload()
   }
 
   function handleCancel() {

@@ -23,38 +23,22 @@ export default function CandidateDetail() {
 			try {
 				if (isAuthenticated) {
 					const currentUserId = localStorage.getItem('userId')
+					const experiences = []
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
+					const token = localStorage.getItem('access_token')
+					for (const experienceId of user.profesionalExperiences) {
+						const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${experienceId}`)
+						experiences.push(response.data.data)
+					}
 					setCandidate(user)
+					setExperience(experiences)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error)
 			}
 		}
-		const fetchExperienceData = async () => {
-			try {
-				if (isAuthenticated) {
-					const currentUserId = localStorage.getItem('userId')
-					const token = localStorage.getItem('access_token')
-					if (currentUserId && token) {
-						const response = await axios.get(
-							`${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/professional-experiences`,
-							{
-								headers: {
-									'Content-type': 'application/json',
-									Authorization: `${token}`,
-								},
-							}
-						)
-						setExperience(response.data.data)
-					}
-				}
-			} catch (error) {
-				handleNetworkError(error, navigate)
-			}
-		}
 		fetchUserData()
-		fetchExperienceData()
 	}, [isAuthenticated])
 
 	return (

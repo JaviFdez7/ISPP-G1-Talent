@@ -11,6 +11,7 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
     if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     const history = await History.findById(id);

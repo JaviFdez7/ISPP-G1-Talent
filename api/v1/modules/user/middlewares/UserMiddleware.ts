@@ -13,9 +13,11 @@ export const checkGetUserById: any = async (req: Request, res: Response, next: N
     if (!user || user === null) {
       const message = 'User not found';
       ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404);
+      return;
     } else if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
@@ -40,6 +42,7 @@ export const checkGetProfessionalExperienceByUserId: any = async (req: Request, 
     if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id.toString()) {
@@ -69,6 +72,7 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
     if (isMissingFields) {
       const message = 'Missing required fields';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
     }
 
     // Comprobar si el candidato ya existe
@@ -113,6 +117,7 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
     if (isMissingFields) {
       const message = 'Missing required fields';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
     }
 
     // Comprobar si el representante ya existe
@@ -156,12 +161,10 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
     if (!user) {
       const message = 'User not found';
       ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404);
-      return;
     }
      else if (!await compare(data.password, user.password)) {
       const message = 'Invalid password';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
-      return;
     }else{
       next();
     }
