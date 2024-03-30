@@ -5,7 +5,8 @@ import { Candidate, Representative, User } from '../../user/models/user';
 import { History } from '../../history/models/history';
 import { getAnalysisByGitHubUsername } from '../services/AnalysisService';
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
-	const username: string | undefined = req.params.username
+	try{
+    const username: string | undefined = req.params.username
 
   if (!username) {
     ApiResponse.sendError(res, [{
@@ -17,6 +18,12 @@ export const validateUsername = (req: Request, res: Response, next: NextFunction
   }
 
   next();
+  }catch(error: any){
+    ApiResponse.sendError(res, [{
+      title: 'Internal Server Error',
+      detail: 'Username is required.'
+    }])
+  }
 };
 export const checkValidTokenAndValidAnalysis: any = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -131,19 +138,17 @@ export const checkValidTokenAndValidGithubUser: any = async (req: Request, res: 
 };
 
 export const validateGitHubUserAndApiKey = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const githubUsername: string = req.body.username;
-  let user_apikey: string | undefined = req.body.apikey;
-  user_apikey = user_apikey || process.env.GH_TOKEN;
-
-  if (!githubUsername) {
-    ApiResponse.sendError(res, [{
-      title: 'Internal Server Error',
-      detail: 'Username is required.'
-    }])
-    return;
-  }
-
   try {
+    const githubUsername: string = req.body.username;
+    let user_apikey: string | undefined = req.body.apikey;
+    user_apikey = user_apikey || process.env.GH_TOKEN;
+    if(!githubUsername){
+      ApiResponse.sendError(res, [{
+        title: 'Internal Server Error',
+        detail: 'GitHub username is required.'
+      }])
+      return;
+    }
     const response = await fetch(`https://api.github.com/users/${githubUsername}`, {
       headers: {
         Authorization: `token ${user_apikey}`
@@ -157,7 +162,6 @@ export const validateGitHubUserAndApiKey = async (req: Request, res: Response, n
       }])
       return;
     } else if (response.status === 401 || response.status === 403) {
-      res.status(401).send('Invalid API key.');
       ApiResponse.sendError(res, [{
         title: 'Internal Server Error',
         detail: 'Invalid API key'
@@ -168,11 +172,10 @@ export const validateGitHubUserAndApiKey = async (req: Request, res: Response, n
         title: 'Internal Server Error',
         detail: 'An error occurred while fetching the GitHub user data.'
       }])
+    }else{
+      return next();
     }
-
-    return next();
 } catch (error: any) {
-  console.error("Error:", error.message);
   ApiResponse.sendError(res,[{
     title: 'Internal Server Error',
     detail: error.message

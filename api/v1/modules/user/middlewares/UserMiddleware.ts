@@ -79,11 +79,11 @@ export const checkCreateCandidate: any = async (req: Request, res: Response, nex
       const message = 'Username already exists';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
     }
-    if (existingEmail) {
+    else if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
     }
-    if (existingGithubUser) {
+    else if (existingGithubUser) {
       const message = 'User with that GitHub username already exists';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
     } else {
@@ -122,7 +122,7 @@ export const checkCreateRepresentative: any = async (req: Request, res: Response
       const message = 'Username already exists';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
     }
-    if (existingEmail) {
+    else if (existingEmail) {
       const message = 'User with that email already exists';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
     } else {
@@ -149,21 +149,21 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
     if (token.length > 0) {
       const message = 'User already logged in';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
     }
     // Comprobar si el usuario existe
     const user = await User.findOne({ username: data.username });
     if (!user) {
       const message = 'User not found';
       ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404);
-    } else if (user) {
-    // Comprobar si la contraseña es correcta
-    const inputPassword:string=data.password;
-      const checkPassword = await compare(inputPassword, user.password);
-      if (!checkPassword) {
-        const message = 'Invalid password';
-        ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
-      } else
-        next();
+      return;
+    }
+     else if (!await compare(data.password, user.password)) {
+      const message = 'Invalid password';
+      ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
+    }else{
+      next();
     }
   } catch (error: any) {
     ApiResponse.sendError(res, [{
@@ -184,16 +184,28 @@ export const checkUpdateCandidate: any = async (req: Request, res: Response, nex
       ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404);
       return;
     }
-    if (!data) {
+    else if (!data) {
       const message = 'No data to update';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
       return;
     }
-    if (token.length === 0) {
+    else if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
       return;
     }
+    const existingUsername = await User.findOne({ username: data.username ?? '' });
+    const existingEmail = await User.findOne({ email: data.email ?? ''});
+    if (data.username && existingUsername) {
+      const message = 'Username already exists';
+      ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
+    }
+    else if (data.email && existingEmail) {
+      const message = 'User with that email already exists';
+      ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
+    } 
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
       const message = 'Unauthorized';
@@ -224,16 +236,28 @@ export const checkUpdateRepresentative: any = async (req: Request, res: Response
       ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404);
       return;
     }
-    if (!data) {
+    else if (!data) {
       const message = 'No data to update';
       ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
       return;
     }
-    if (token.length === 0) {
+    else if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
       return;
     }
+    const existingUsername = await User.findOne({ username: data.username ?? '' });
+    const existingEmail = await User.findOne({ email: data.email ?? ''});
+    if (data.username && existingUsername) {
+      const message = 'Username already exists';
+      ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
+    }
+    else if (data.email && existingEmail) {
+      const message = 'User with that email already exists';
+      ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400);
+      return;
+    } 
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== id) {
       const message = 'Unauthorized';

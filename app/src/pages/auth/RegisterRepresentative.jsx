@@ -78,7 +78,7 @@ export default function RegisterRepresentative() {
     let valid = true;
 
     await fetchUsers();
-
+    console.log(users);
     users.filter((user) => {
       if (user.email === form.corporative_email) {
         setErrors({ corporativeMail: "This mail is already in use" });
@@ -93,9 +93,6 @@ export default function RegisterRepresentative() {
         return;
       }
     });
-    if (!valid || users.length === 0) {
-      return;
-    }
 
     try {
       const response = await axios.post(

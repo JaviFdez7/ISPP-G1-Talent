@@ -65,8 +65,11 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
               title: 'Internal Server Error',
               detail:'Representative user not exists.'
             }])
+          return;
         }
-      next();
+        else{
+          next();
+        }
     } catch (error: any) {
     
       ApiResponse.sendError(res,[{
@@ -96,7 +99,9 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
       return;
   }
     
+    else{
       next();
+    }
 
     } catch (error: any) {
     

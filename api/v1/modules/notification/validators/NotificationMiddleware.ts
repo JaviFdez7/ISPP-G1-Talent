@@ -10,11 +10,13 @@ export const checkReadingMailbox: any = async (req: Request, res: Response, next
     if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== candidateId) {
       const message = 'Permission denied';
       ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+      return;
     } else
       next();
   } catch (error: any) {
@@ -34,14 +36,17 @@ export const checkReadingOneMail: any = async (req: Request, res: Response, next
     if (token.length === 0) {
       const message = 'No token provided';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
+      return;
     }
     const decodedToken = verifyJWT(token);
     if (decodedToken.sub !== candidateId) {
       const message = 'Permission denied';
       ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401);
+      return;
     } else if (!notification) {
       const message = 'Unknown ID of notification of your mail';
       ApiResponse.sendError(res, [{ title: 'Unknown', detail: message }], 404);
+      return;
     } else
       next();
   } catch (error: any) {

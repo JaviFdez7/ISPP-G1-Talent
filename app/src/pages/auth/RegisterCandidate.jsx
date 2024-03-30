@@ -83,7 +83,6 @@ export default function RegisterCandidate() {
     let valid = true;
 
     await fetchUsers();
-
     users.filter((user) => {
       if (user.email === form.email) {
         setErrors({ email: "This mail is already in use" });
@@ -105,9 +104,7 @@ export default function RegisterCandidate() {
         return;
       }
     });
-    if (!valid || users.length === 0) {
-      return;
-    }
+    
 
     try {
       const response = await axios.post(
