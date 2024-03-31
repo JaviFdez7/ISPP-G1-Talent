@@ -127,7 +127,7 @@ export default function CandidateProfessionalExperienceDetail({ }) {
             <div className="mt-8 self-center w-full flex flex-row justify-center">
               {SecondaryButton("Back", "/candidate/detail", "")}
               {MainButton("Update", `/candidate/professional-experience/edit/${experience._id}`, "")}
-              {SecondaryButton("Delete", "/", deleteProffesionalExperience)}
+              {/*{SecondaryButton("Delete", "/", deleteProffesionalExperience)}*/}
             </div>
           </div>
         </div>

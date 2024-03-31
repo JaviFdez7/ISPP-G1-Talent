@@ -130,9 +130,9 @@ return (
                       />
                        <div className="flex justify-center mt-16 mb-0">
               {MainButton("Delete search", "", () => deleteSearchResult(teamList._id))}
-              <Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
+              {/*<Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
                 View Analysis
-              </Link>
+                      </Link>*/}
             </div>  
                     </div>
                   ))}
