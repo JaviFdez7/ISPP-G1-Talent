@@ -90,7 +90,7 @@ export const checkCreateCandidate: any = async (
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
 			return
 		}
-		const response = await fetch(`https://api.github.com/users/${data.githubUser?? ''}`);
+		const response = await fetch(`https://api.github.com/users/${data.githubUser ?? ''}`)
 
 		if (response.status === 404) {
 			ApiResponse.sendError(res, [
