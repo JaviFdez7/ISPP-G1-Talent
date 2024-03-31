@@ -247,8 +247,9 @@ export const checkUpdateCandidate: any = async (
 				401
 			)
 			return
-		}
-		next()
+		}else{
+      next();
+    }
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -310,8 +311,9 @@ export const checkUpdateRepresentative: any = async (
 				401
 			)
 			return
-		}
-		next()
+		}else{
+      next();
+    }
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -358,8 +360,9 @@ export const checkUpdateUserProfilePicture: any = async (
 				401
 			)
 			return
-		}
-		next()
+		}else{
+      next();
+    }
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -407,7 +410,9 @@ export const checkUpdatePassword: any = async (req: Request, res: Response, next
 		if (data.password) {
 			data.password = await encrypt(data.password)
 		}
-		next()
+		else{
+      next();
+    }
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{

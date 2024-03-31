@@ -16,10 +16,10 @@ export const validateUsername = (req: Request, res: Response, next: NextFunction
 				},
 			])
 
-			return
+			return;
+		}else{
+			next();
 		}
-
-		next()
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -45,7 +45,7 @@ export const checkValidTokenAndValidAnalysis: any = async (
 					detail: 'No token provided.',
 				},
 			])
-			return
+			return;
 		}
 		const decodedToken = verifyJWT(token).sub
 		const user = await User.findById(decodedToken)
@@ -75,7 +75,7 @@ export const checkValidTokenAndValidAnalysis: any = async (
 				detail: error.message,
 			},
 		])
-		return
+		return;
 	}
 }
 
@@ -90,16 +90,16 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
 					detail: 'No token provided.',
 				},
 			])
-			return
+			return;
 		}
 		const decodedToken = verifyJWT(token).sub
 		const representative = await Representative.findById(decodedToken)
 		if (!representative) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
-			return
+			return;
 		} else {
-			next()
+			next();
 		}
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
@@ -128,20 +128,20 @@ export const checkValidTokenAndValidGithubUser: any = async (
 					detail: 'No token provided.',
 				},
 			])
-			return
+			return;
 		}
 		const decodedToken = verifyJWT(token).sub
 		const representative = await Representative.findById(decodedToken)
 		if (!representative) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
-			return
+			return;
 		}
 		const analysis = await getAnalysisByGitHubUsername(githubUsername)
 		if (!analysis) {
 			const message = 'Not Found'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404)
-			return
+			return;
 		}
 		const history = await History.findOne({
 			userId: verifyJWT(token).sub,
@@ -150,7 +150,7 @@ export const checkValidTokenAndValidGithubUser: any = async (
 		if (!history) {
 			const message = 'Not Found'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404)
-			return
+			return;
 		} else {
 			next()
 		}
@@ -181,7 +181,7 @@ export const validateGitHubUserAndApiKey = async (
 					detail: 'GitHub username is required.',
 				},
 			])
-			return
+			return;
 		}
 		const response = await fetch(`https://api.github.com/users/${githubUsername}`, {
 			headers: {
@@ -196,7 +196,7 @@ export const validateGitHubUserAndApiKey = async (
 					detail: 'GitHub username does not exist.',
 				},
 			])
-			return
+			return;
 		} else if (response.status === 401 || response.status === 403) {
 			ApiResponse.sendError(res, [
 				{
@@ -204,7 +204,7 @@ export const validateGitHubUserAndApiKey = async (
 					detail: 'Invalid API key',
 				},
 			])
-			return
+			return;
 		} else if (!response.ok) {
 			ApiResponse.sendError(res, [
 				{
@@ -212,7 +212,7 @@ export const validateGitHubUserAndApiKey = async (
 					detail: 'An error occurred while fetching the GitHub user data.',
 				},
 			])
-			return
+			return;
 		} else {
 			return next()
 		}
@@ -223,6 +223,6 @@ export const validateGitHubUserAndApiKey = async (
 				detail: error.message,
 			},
 		])
-		return
+		return;
 	}
 }

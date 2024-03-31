@@ -17,14 +17,15 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
           }])
           return;
       }
-      next();
+      else{
+        next();
+      }
     } catch (error: any) {
     
       ApiResponse.sendError(res,[{
         title: 'Internal Server Error',
         detail:error.message
       }])
-      return;
     }
   }
   export const checkValidToken: any = async (req: Request, res: Response, next: NextFunction) => {
@@ -39,16 +40,15 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
               return;
          
           }
-          const decodedToken = verifyJWT(token);
-        
-      next();
+        else{
+          next();
+        }
     } catch (error: any) {
     
       ApiResponse.sendError(res,[{
         title: 'Internal Server Error',
         detail:error.message
       }])
-      return;
     }
   }
 
@@ -76,7 +76,6 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
         title: 'Internal Server Error',
         detail:error.message
       }])
-      return;
     }
   }
 
@@ -109,7 +108,6 @@ export const checkTeamCreatorById: any = async (req: Request, res: Response, nex
         title: 'Internal Server Error',
         detail:error.message
       }])
-      return;
     }
   }
 
