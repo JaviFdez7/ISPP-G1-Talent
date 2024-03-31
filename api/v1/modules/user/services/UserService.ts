@@ -21,10 +21,6 @@ export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
 export const createUser: any = async (data: any, role: string) => {
 	try {
 		const Model = getModelForRole(role)
-		if (role === 'Candidate') {
-			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
-			data.analysisId = analysis._id
-		}
 		const user = new Model(data)
 		await user.save()
 		return user

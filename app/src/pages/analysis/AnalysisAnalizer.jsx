@@ -141,11 +141,8 @@ export default function Analyzer() {
 				}),
 			})
 
-			const responseData = await response.json()
-			saveAnalysisHistory(responseData.data._id)
-
 			setLoading(false)
-			if (response.status == 500) {
+			if (response.status == 400) {
 				setErrors({
 					githubUser: (
 						<span style={{ color: 'var(--talent-highlight)', fontSize: '15px' }}>
