@@ -34,7 +34,6 @@ export const createUser: any = async (data: any, role: string) => {
 	}
 }
 
-
 export const updateUser: any = async (id: any, data: any, role: string) => {
 	try {
 		const Model = getModelForRole(role) as typeof User
