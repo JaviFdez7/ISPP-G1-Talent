@@ -1,9 +1,9 @@
 {
-  "compilerOptions": {
-    "target": "es2017",
-    "module": "commonjs",
-    "strict": true,
-    "esModuleInterop": true
-  },
-  "include": ["**/*.ts", "*.ts"],
+	"compilerOptions": {
+		"target": "es2017",
+		"module": "commonjs",
+		"strict": true,
+		"esModuleInterop": true
+	},
+	"include": ["**/*.ts", "**/*.jsx"]
 }

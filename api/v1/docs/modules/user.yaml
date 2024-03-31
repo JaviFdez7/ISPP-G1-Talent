@@ -1,4 +1,4 @@
-swagger: '3.0.0'
+swagger: "3.0.0"
 info:
   title: IT Talent API - User Module
   version: 1.0.0
@@ -9,22 +9,22 @@ paths:
   /user:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get all users
       description: Retrieves a list of all users.
       responses:
-        '200':
+        "200":
           description: A list of users
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/definitions/User'
+                  $ref: "#/definitions/User"
   /user/{id}:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get a user by ID
       description: Retrieves a user by its unique identifier.
       parameters:
@@ -33,14 +33,20 @@ paths:
           description: The ID of the user to retrieve.
           required: true
           type: string
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
       responses:
-        '200':
+        "200":
           description: The user with the specified ID
           schema:
-            $ref: '#/definitions/User'
+            $ref: "#/definitions/User"
     delete:
       tags:
-      - Users Delete
+        - Users
       summary: Delete a user by ID
       description: Deletes a user by its unique identifier.
       parameters:
@@ -49,13 +55,54 @@ paths:
           description: The ID of the user to delete.
           required: true
           type: string
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication.
       responses:
-        '204':
+        "204":
           description: User deleted successfully
+  /user/{id}/password:
+    patch:
+      tags:
+        - Users
+      summary: Update user's password
+      description: Allows a user to update their password.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the user.
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication.
+        - in: body
+          name: password
+          required: true
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                description: The new password for the user.
+      responses:
+        "200":
+          description: Password updated successfully.
+        "401":
+          description: Unauthorized. Token is invalid or missing.
+        "400":
+          description: Bad Request. Missing or invalid new password.
   /user/login:
     post:
       tags:
-        - 'Users Create'
+        - Users
       summary: Log in as a user
       description: Enter in the app as a existing user
       parameters:
@@ -68,7 +115,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/LoginData'
+            $ref: "#/definitions/LoginData"
       responses:
         "200":
           description: Candidate created successfully
@@ -80,14 +127,11 @@ paths:
                   description: Its the token of authentication.
               - name: login
                 schema:
-                  $ref: '#/definitions/User'
-
-              
-
+                  $ref: "#/definitions/User"
   /user/candidate:
     post:
-      tags: 
-        - Users Create
+      tags:
+        - Users-By-Type
       summary: Create a candidate
       description: Create a new user as a candidate
       parameters:
@@ -95,18 +139,18 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CandidateData'
+            $ref: "#/definitions/CandidateData"
       responses:
         "200":
           description: Candidate created successfully
           content:
             application/json:
               schema:
-                $ref: '#/definitions/CandidateData'
+                $ref: "#/definitions/CandidateData"
   /user/candidate/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a candidate
       description: Update the profile of candidate
       parameters:
@@ -121,12 +165,12 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/CandidateData'
+            $ref: "#/definitions/EditCandidateData"
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication.
       responses:
         "200":
@@ -134,12 +178,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/definitions/CandidateData'
-
+                $ref: "#/definitions/EditCandidateData"
+  /user/candidate/{id}/profile-picture:
+    patch:
+      tags:
+        - Users-By-Type
+      summary: Update user's profile picture
+      description: Allows a user to update their profile picture.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: The unique identifier for the user.
+        - in: header
+          name: Authorization
+          required: true
+          schema:
+            type: string
+          description: Bearer token for authentication.
+        - in: body
+          name: profilePicture
+          required: true
+          schema:
+            type: object
+            properties:
+              profilePicture:
+                type: string
+                description: The new profile picture for the user.
+      responses:
+        "200":
+          description: Profile picture updated successfully.
+        "401":
+          description: Unauthorized. Token is invalid or missing.
+        "400":
+          description: Bad Request. Missing or invalid profile picture URL.
   /user/representative:
     post:
       tags:
-        - 'Users Update'
+        - Users-By-Type
       summary: Create a representative
       description: Create a new user as a representative
       parameters:
@@ -147,18 +225,18 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/RepresentativeData'
+            $ref: "#/definitions/RepresentativeData"
       responses:
         "200":
           description: Representative created successfully
           content:
             application/json:
               schema:
-                $ref: '#/definitions/RepresentativeData'  
+                $ref: "#/definitions/RepresentativeData"
   /user/representative/{id}:
     patch:
       tags:
-        - Users Update
+        - Users-By-Type
       summary: Update a representative
       description: Update the profile of representative
       parameters:
@@ -173,12 +251,12 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/RepresentativeData'
+            $ref: "#/definitions/EditRepresentativeData"
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
-            required: true
             description: Its the token of authentication.
       responses:
         "200":
@@ -186,11 +264,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/definitions/RepresentativeData'    
-  /user/{id}/experiences:
+                $ref: "#/definitions/EditRepresentativeData"
+  /user/{id}/professional-experiences:
     get:
       tags:
-      - Users Read
+        - Users
       summary: Get all professional experiences of user
       description: Retrieves a list of professional experiences by the id of user.
       parameters:
@@ -203,150 +281,21 @@ paths:
           description: The unique identifier for the user entry.
         - name: authorization
           in: header
+          required: true
           schema:
             type: string
             required: true
             description: Its the token of authentication.
       responses:
-        '200':
+        "200":
           description: A list of professional experiences of user
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/definitions/ProfessionalExperience'
-  /user/experience:
-    post:
-      tags:
-        - Users Create
-      summary: Create a professional experience
-      description: Create a new professional experience for a candidate
-      parameters:
-        - name: experience
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ProfessionalExperience'
-        - name: authorization
-          in: header
-          schema:
-            type: string
-            required: true
-            description: Its the token of authentication.
-      responses:
-        "200":
-          description: Professional experience created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/ProfessionalExperience'
-  
-  /user/experience/{id}:
-    patch:
-      tags:
-        - Users Update
-      summary: Update a professional experience
-      description: Update a new professional experience for a candidate
-      parameters:
-        - name: experience
-          in: body
-          required: true
-          schema:
-            $ref: '#/definitions/ProfessionalExperience'
-        - name: authorization
-          in: header
-          schema:
-            type: string
-            required: true
-            description: Its the token of authentication.
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: The unique identifier for the professional experience entry.
-      responses:
-        "200":
-          description: Professional experience created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/definitions/ProfessionalExperience' 
-    delete:
-      tags:
-        - Users Delete
-      summary: Delete a professional experience
-      description: Delete a new professional experience for a candidate
-      parameters:
-        - name: authorization
-          in: header
-          schema:
-            type: string
-            required: true
-            description: Its the token of authentication.
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: The unique identifier for the professional experience entry.
-      responses:
-        "204":
-          description: Professional experience delete successfully
+                  $ref: "#/definitions/ProfessionalExperience"
 definitions:
-
-  ProfessionalExperience:
-    type: object
-    required:
-      - startDate
-      - companyName
-      - professionalArea
-      - userId
-    properties:
-      startDate:
-        type: date
-        required: true
-        description: The start date of the experience
-      endDate:
-        type: date
-        description: The end date of the experience
-      companyName:
-        type: string
-        required: true
-        description: The company of the experience
-      professionalArea:
-        type: string
-        required: true
-        enum:
-          - 'Web application'
-          - 'Mobile application'
-          - 'Frontend'
-          - 'DevOps'
-          - 'Backend'
-          - 'Operating systems'
-          - 'Data science'
-          - 'Artificial intelligence'
-          - 'Security'
-          - 'Other'
-        description: The professional area of the experience
-      lifestyle:
-        type: string
-        enum:
-          - 'On-site'
-          - 'Telematic'
-        description: The life style of the user of the user.
-      location:
-        type: string
-        description: The location of the experience
-      userId:
-        type: string
-        format: uuid
-        required: true
-        description: The userId of the experience
-
   RepresentativeData:
     type: object
     required:
@@ -382,14 +331,46 @@ definitions:
       companySubscription:
         type: string
         enum:
-          - 'Basic plan'
-          - 'Pro plan'
-          - 'Custom plan'
+          - "Basic plan"
+          - "Pro plan"
+          - "Custom plan"
         description: The subscription of the company.
       projectSocietyName:
         type: string
         description: The project society name of teh representative.
 
+  EditRepresentativeData:
+    type: object
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      companyName:
+        type: string
+        description: The company name of the representative.
+      companySubscription:
+        type: string
+        enum:
+          - "Basic plan"
+          - "Pro plan"
+          - "Custom plan"
+        description: The subscription of the company.
+      projectSocietyName:
+        type: string
+        description: The project society name of teh representative.
 
   CandidateData:
     type: object
@@ -433,8 +414,8 @@ definitions:
       candidateSubscription:
         type: string
         enum:
-          - 'Basic plan'
-          - 'Pro plan'
+          - "Basic plan"
+          - "Pro plan"
         description: The subscription of the candidate.
       CV:
         type: string
@@ -445,14 +426,59 @@ definitions:
       lifestyle:
         type: string
         enum:
-          - 'On-site'
-          - 'Telematic'
+          - "On-site"
+          - "Telematic"
         description: The life style of the user of the user.
       githubToken:
         type: string
         description: The github token of the user.
-      
-      
+
+  EditCandidateData:
+    type: object
+    properties:
+      username:
+        type: string
+        description: The name of the user.
+      email:
+        type: string
+        format: email
+        description: The email of the user.
+      phone:
+        type: string
+        pattern: '^\+?[1-9]\d{1,14}$'
+        description: The phone of the user.
+      paymentMethods:
+        type: array
+        description: The payment methods of the user.
+        items:
+          type: string
+      fullName:
+        type: string
+        description: The full name of the user.
+      githubUser:
+        type: string
+        description: The github username of the user.
+      candidateSubscription:
+        type: string
+        enum:
+          - "Basic plan"
+          - "Pro plan"
+        description: The subscription of the candidate.
+      CV:
+        type: string
+        description: The CV of the user.
+      residence:
+        type: string
+        description: The residence of the user.
+      lifestyle:
+        type: string
+        enum:
+          - "On-site"
+          - "Telematic"
+        description: The life style of the user of the user.
+      githubToken:
+        type: string
+        description: The github token of the user.
   LoginData:
     type: object
     required:
@@ -488,5 +514,3 @@ definitions:
         description: The payment methods of the user.
         items:
           type: string
-          
-

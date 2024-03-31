@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
-export async function connectToMongoDB() {
-  const mongoUrl = 'mongodb://localhost:27017';
+export async function connectToMongoDB (): Promise<void> {
+  const mongoUrl = process.env.MONGO_URL ?? 'mongodb://localhost:27017';
   const dbName = 'talentdb';
 
   try {
@@ -17,9 +17,10 @@ export async function connectToMongoDB() {
     const dbExists = collections.some((collection) => collection.collectionName === dbName);
 
     // If the database doesn't exist, create it
-    if (!dbExists) {
+    if (!dbExists){
       console.log(`Database ${dbName} created successfully`);
-    } else {
+    }
+    else{
       console.log(`The database ${dbName} already exists`);
     }
 
