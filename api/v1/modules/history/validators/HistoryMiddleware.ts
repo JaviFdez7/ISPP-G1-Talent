@@ -18,15 +18,15 @@ export const checkDeleteHistory: any = async (req: Request, res: Response, next:
 		if (decodedToken.sub !== userId) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
-			return;
+			return
 		} else if (!history) {
 			const message = 'History not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
-			return;
+			return
 		} else if (history.favorite) {
 			const message = 'Cannot delete favorite history'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
-			return;
+			return
 		} else next()
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
