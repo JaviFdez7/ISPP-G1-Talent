@@ -38,6 +38,7 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<Filter
   const qualifiedCandidates: FilteredCandidates[] = [];
 
   candidates.forEach(candidate => {
+    console.log(candidate.analysisId.globalTopLanguages);
     const hasMatchingSkill = candidate.analysisId.globalTopLanguages.some(lang => skillsRequested.languages.includes(lang.language)) || candidate.analysisId.globalTechnologies.some(tech => skillsRequested.technologies.includes(tech));
 
     let totalExperienceYears = 0;
