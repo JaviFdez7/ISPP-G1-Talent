@@ -107,7 +107,8 @@ export default function SearchResult() {
 											className='flex flex-col items-center w-full'
 											key={`${listIndex}-${searchResultCount}`}>
 											<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-												Filter Parameters
+												Filter Parameters {' '}
+																	{index + 1}
 											</h6>
 											<DataTableVertical
 												data={[
@@ -136,77 +137,75 @@ export default function SearchResult() {
 													},
 												]}
 											/>
-											{Array.isArray(team.recommendedCandidates) &&
-												team.recommendedCandidates.map(
-													(candidate, candidateIndex) => (
-														<div key={candidateIndex}>
-															<h6 className='text-1xl font-bold text-center text-white mt-5 mb-5'>
-																Filtered Candidate{' '}
-																{candidateIndex + 1}
-															</h6>
-															<DataTableVertical
-																data={[
-																	{
-																		header: 'Gihub username',
-																		content:
-																			candidate.github_username,
-																	},
-																	{
-																		header: 'Technologies',
-																		content: Array.isArray(
-																			candidate.technologies
-																		)
-																			? candidate.technologies.join(
-																					', '
-																				)
-																			: '',
-																	},
-																	{
-																		header: 'Languages',
-																		content: Array.isArray(
-																			candidate.languages
-																		)
-																			? candidate.languages.join(
-																					', '
-																				)
-																			: '',
-																	},
-																	{
-																		header: 'Field',
-																		content: Array.isArray(
-																			candidate.field
-																		)
-																			? candidate.field.join(
-																					', '
-																				)
-																			: '',
-																	},
-																	{
-																		header: 'Years of Experience',
-																		content:
-																			candidate.yearsOfExperience,
-																	},
-																]}
-															/>
-															<div className='flex justify-center mt-16 mb-0'>
-																{MainButton(
-																	'Delete search',
-																	'',
-																	() =>
-																		deleteSearchResult(
-																			teamList._id
-																		)
-																)}
-																{/*<Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
-                View Analysis
-                      </Link>*/}
+											<div className="flex flex-wrap">
+												{Array.isArray(team.recommendedCandidates) &&
+													team.recommendedCandidates.map(
+														(candidate, candidateIndex) => (
+															<div key={candidateIndex}  className="w-1/3 px-2 ml-10 mr-28">
+																<h6 className='text-1xl font-bold text-center text-white ml-28 mt-5 mb-5'>
+																	Filtered Candidate{' '}
+																	{candidateIndex + 1}
+																</h6>
+																<DataTableVertical
+																	data={[
+																		{
+																			header: 'Gihub username',
+																			content:
+																				candidate.github_username,
+																		},
+																		{
+																			header: 'Technologies',
+																			content: Array.isArray(
+																				candidate.technologies
+																			)
+																				? candidate.technologies.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Languages',
+																			content: Array.isArray(
+																				candidate.languages
+																			)
+																				? candidate.languages.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Field',
+																			content: Array.isArray(
+																				candidate.field
+																			)
+																				? candidate.field.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Years of Experience',
+																			content:
+																				candidate.yearsOfExperience,
+																		},
+																	]}
+																/>
+																<div className='flex justify-center mt-16 mb-0'>
+																	{/*<Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
+					View Analysis
+						</Link>*/									}
+																</div>
 															</div>
-														</div>
-													)
+														)
 												)}
+											</div>
 										</div>
 									)
+									
 								})}
+								<div className='flex justify-center mt-16 mb-0'>
+									{MainButton('Delete search','',	() =>deleteSearchResult(teamList._id))}
+								</div>
 							</div>
 						</DropdownComponent>
 					))}

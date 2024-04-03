@@ -67,9 +67,10 @@ export default function SearchResult() {
 					teamData.profiles.map((team, index) => (
 						<DropdownComponent key={index} name={`Search Result ${index + 1}`}>
 							<div className='flex flex-col items-center w-full' key={index}>
-								<div>
+								<div className='flex flex-col items-center w-full'>
 									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-										Filter Parameters
+										Filter Parameters {' '}
+																	{index + 1}
 									</h6>
 									<DataTableVertical
 										data={[
@@ -98,11 +99,12 @@ export default function SearchResult() {
 										]}
 									/>
 								</div>
+								<div className="flex flex-wrap">
 								{Array.isArray(team.recommendedCandidates) &&
 								team.recommendedCandidates.length > 0 ? (
 									team.recommendedCandidates.map((candidate, candidateIndex) => (
-										<div key={candidateIndex}>
-											<h6 className='text-1xl font-bold text-center text-white mt-5 mb-5'>
+										<div key={candidateIndex}  className="w-1/3 px-2 ml-10 mr-28">
+											<h6 className='text-1xl font-bold text-center text-white  ml-28 mt-5 mb-5'>
 												Filtered Candidate {candidateIndex + 1}
 											</h6>
 											<DataTableVertical
@@ -154,6 +156,7 @@ export default function SearchResult() {
 										No results for the search, please try different filters
 									</h6>
 								)}
+								</div>
 							</div>
 						</DropdownComponent>
 					))}

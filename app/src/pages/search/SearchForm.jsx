@@ -12,6 +12,7 @@ export default function SearchForm() {
 	const talentColor = 'var(--talent-highlight)'
 	const [numForms, setNumForms] = useState(1)
 	const [numError, setNumError] = useState('')
+	const userId = localStorage.getItem('userId')
 
 	const [errorMessage, setErrorMessage] = useState('')
 	const [form, setForm] = useState(
@@ -527,8 +528,9 @@ export default function SearchForm() {
 						</div>
 					</div>
 				))}
-				<div className='flex justify-center mt-2'>
+				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
+					{MainButton('Previous Searches', `/searches/representative/${userId}` )}
 				</div>
 			</form>
 		</div>
