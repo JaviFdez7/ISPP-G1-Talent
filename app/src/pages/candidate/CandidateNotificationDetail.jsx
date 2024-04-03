@@ -19,7 +19,7 @@ export default function CandidateNotificationDetail() {
 
 	React.useEffect(() => {
 		const fetchNotificationsData = async () => {
-			console.log("sddsfdf")
+			console.log('sddsfdf')
 			try {
 				if (isAuthenticated) {
 					const currentUserId = localStorage.getItem('userId')
@@ -59,7 +59,7 @@ export default function CandidateNotificationDetail() {
 
 	const setSeenNotification = async (notificationId) => {
 		try {
-			console.log("esjdsjjkds")
+			console.log('esjdsjjkds')
 			if (isAuthenticated) {
 				const currentUserId = localStorage.getItem('userId')
 				const token = localStorage.getItem('access_token')
@@ -67,15 +67,15 @@ export default function CandidateNotificationDetail() {
 					const response = await axios.patch(
 						`${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/notification/${notificationId}`,
 						{
-							id : notificationId,
-							userId : currentUserId,
+							id: notificationId,
+							userId: currentUserId,
 							seen: true,
 						},
 						{
 							headers: {
 								Authorization: `${token}`,
 								'Content-type': 'application/json',
-							}
+							},
 						}
 					)
 					console.log(response.data)
@@ -113,15 +113,19 @@ export default function CandidateNotificationDetail() {
 	}
 
 	function getNotificationsList(notifications) {
-		let n1  = notifications
-		.filter((n) => !n.seen)
-		.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
-		.map((n) => (<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData}/>))
+		let n1 = notifications
+			.filter((n) => !n.seen)
+			.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
+			.map((n) => (
+				<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData} />
+			))
 
 		let n2 = notifications
 			.filter((n) => n.seen)
 			.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
-			.map((n) => (<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData}/>))
+			.map((n) => (
+				<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData} />
+			))
 
 		return n1.concat(n2)
 	}
@@ -150,11 +154,7 @@ export default function CandidateNotificationDetail() {
 					style={{ overflowY: 'scroll' }}>
 					<DataTable
 						header={''}
-						contentArray={
-							notifications
-								? getNotificationsList(notifications)
-								: []
-						}
+						contentArray={notifications ? getNotificationsList(notifications) : []}
 						editable={false}
 					/>
 				</div>
