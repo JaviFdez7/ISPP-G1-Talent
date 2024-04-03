@@ -17,10 +17,9 @@ export default function TopRepositoriesTable({ analysis }) {
                         </th>
                     </tr>
                     <tr>
-                        <th className="datatable-header">Name</th>
-                        <th className="datatable-header">Languages</th>
-                        <th className="datatable-header">Technologies</th>
-
+                        <th className="datatable-header" style={{ width: '33.33%' }}>Name</th>
+                        <th className="datatable-header" style={{ width: '33.33%' }}>Languages</th>
+                        <th className="datatable-header" style={{ width: '33.33%' }}>Technologies</th>
                     </tr>
                 </thead>
             </table>

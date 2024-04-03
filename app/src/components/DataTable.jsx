@@ -45,41 +45,44 @@ export default function DataTable({
 
     return (
         <div className="mt-2 datatable-container">
-            <table className="w-full  ">
+            <table className="w-full">
                 {head}
-                <tbody className="datatable-body ">
-                    {contentArray.map((item, index) => (
-                    <>
-                        <tr key={index}>
-                            <td className="datatable-cell text-center">
-                                <br></br>
-                                {item}
-                            </td>
-                            {editable && (
-                                <td className="pl-2 pr-2 text-center">
-                                    <br></br>
-                                    <Link to={editLink} className="edit-button"
-                                    onClick={() => localStorage.setItem(idName, idArray[index])}>
-                                        Edit
-                                    </Link>
-                                </td>
-                            )}
-                        </tr>
-                        <tr>
-                            <td>
-                                <hr style={{width: '100%'}}></hr>
-                            </td>
-                            {editable && (
-                                <td>
-                                    <hr style={{width: '105%', transform: 'translateX(-5%)'}}></hr>
-                                </td>
-                            )}
-
-                        </tr>
-                    </>
-                    ))}
-                </tbody>
             </table>
+            <div style={{ overflow: 'auto', maxHeight: '400px' }}>
+                <table className="w-full">
+                    <tbody className="datatable-body">
+                        {contentArray.map((item, index) => (
+                        <>
+                            <tr key={index}>
+                                <td className="datatable-cell text-center">
+                                    <br></br>
+                                    {item}
+                                </td>
+                                {editable && (
+                                    <td className="pl-2 pr-2 text-center">
+                                        <br></br>
+                                        <Link to={editLink} className="edit-button"
+                                        onClick={() => localStorage.setItem(idName, idArray[index])}>
+                                            Edit
+                                        </Link>
+                                    </td>
+                                )}
+                            </tr>
+                            <tr>
+                                <td>
+                                    <hr style={{width: '100%'}}></hr>
+                                </td>
+                                {editable && (
+                                    <td>
+                                        <hr style={{width: '105%', transform: 'translateX(-5%)'}}></hr>
+                                    </td>
+                                )}
+                            </tr>
+                        </>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             {button}
         </div>
     );
