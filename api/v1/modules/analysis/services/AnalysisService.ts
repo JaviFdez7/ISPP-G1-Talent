@@ -16,6 +16,7 @@ export const getAllAnalysis = async (): Promise<any[]> => {
 }
 
 export const getAnalysisById: any = async (id: any, token: string) => {
+  console.log("hosoahs")
   if (!id){
     throw new Error('A valid ID was not provided');
   }
