@@ -20,9 +20,9 @@ export const getAllAnalysis: any = async (req: Request, res: Response) => {
 };
 
 export const getAnalysisById: any = async (req: Request, res: Response) => {
-  console.log("hosoahs")
+ 
   try {
-    console.log("hosoahs")
+
     const id = req.params.id;
     const token = req.headers.authorization ?? '';
     const data = await AnalysisService.getAnalysisById(id, token);
