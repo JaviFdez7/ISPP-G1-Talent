@@ -186,22 +186,34 @@ export default function AnalysisDashboard() {
 									<table className='w-full'>
 										<thead>
 											<tr>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Name
 												</th>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Stars
 												</th>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Forks
 												</th>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Languages
 												</th>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Technologies
 												</th>
-												<th className='datatable-header' style={{ width: '16.66%' }}>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
 													Url
 												</th>
 											</tr>
@@ -211,74 +223,93 @@ export default function AnalysisDashboard() {
 										<table className='w-full'>
 											<tbody className='datatable-body'>
 												{dataArray.topRepositories
-													? dataArray.topRepositories.map((item, index) => (
-														<>
-															<tr key={index} style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
-																<td className='datatable-cell-small  text-center'>
-																	<br></br>
-																	{item.name}
-																</td>
-																<td className='datatable-cell-small text-center'>
-																	<br></br>
-																	{item.stars}
-																</td>
-																<td className='datatable-cell-small text-center'>
-																	<br></br>
-																	{item.forks}
-																</td>
-																<td className='datatable-cell-small text-center'>
-																	<br></br>
-																	{item.languages.join(', ')}
-																</td>
-																<td className='datatable-cell-small text-center'>
-																	<br></br>
-																	{item.technologies.join(', ')}
-																</td>
-																<td className='datatable-cell-small text-center'>
-																	<br></br>
-																	<Link to={item.url}>ICON</Link>
-																</td>
-															</tr>
-															<tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
-																<td>
-																	<hr
+													? dataArray.topRepositories.map(
+															(item, index) => (
+																<>
+																	<tr
+																		key={index}
 																		style={{
+																			display: 'table',
 																			width: '100%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
+																			tableLayout: 'fixed',
+																		}}>
+																		<td className='datatable-cell-small  text-center'>
+																			<br></br>
+																			{item.name}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.stars}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.forks}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.languages.join(
+																				', '
+																			)}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.technologies.join(
+																				', '
+																			)}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			<Link to={item.url}>
+																				ICON
+																			</Link>
+																		</td>
+																	</tr>
+																	<tr
 																		style={{
+																			display: 'table',
 																			width: '100%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '100%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '100%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '100%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '100%',
-																		}}></hr>
-																</td>
-															</tr>
-														</>
-													))
+																			tableLayout: 'fixed',
+																		}}>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																	</tr>
+																</>
+															)
+														)
 													: null}
 											</tbody>
 										</table>
@@ -288,14 +319,17 @@ export default function AnalysisDashboard() {
 							<br></br>
 							<div
 								className='flex w-full justify-around mt-10 mb-10'
-								style={{ marginTop: '20%', flexDirection: mobile ? 'column' : 'row' }}>
+								style={{
+									marginTop: '20%',
+									flexDirection: mobile ? 'column' : 'row',
+								}}>
 								<div className='flex flex-row justify-center pl-20'>
 									{Input({
 										name: 'Repositories Contributes with Commits',
 										value:
 											dataArray && dataArray.contributions
 												? dataArray.contributions
-													.totalRepositoriesContributedWithCommits
+														.totalRepositoriesContributedWithCommits
 												: 0,
 									})}
 								</div>
@@ -305,13 +339,12 @@ export default function AnalysisDashboard() {
 										value:
 											dataArray && dataArray.contributions
 												? dataArray.contributions
-													.totalRepositoriesContributedWithPullRequests
+														.totalRepositoriesContributedWithPullRequests
 												: 0,
 									})}
 								</div>
 							</div>
 							<br></br>
-
 						</>
 					)}
 				</div>
@@ -349,6 +382,6 @@ export default function AnalysisDashboard() {
 					<br></br>
 				</div>
 			</div>
-		</section >
+		</section>
 	)
 }
