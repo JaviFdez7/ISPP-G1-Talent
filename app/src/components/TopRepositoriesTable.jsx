@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 export default function TopRepositoriesTable({ analysis }) {
     const topRepositories = analysis && analysis.topRepositories
@@ -13,7 +12,7 @@ export default function TopRepositoriesTable({ analysis }) {
             <table className="w-full">
                 <thead>
                     <tr>
-                        <th className="datatable-header" colSpan={4} style={{ height: cellHeight }}>
+                        <th className="datatable-header" colSpan={3} style={{ height: cellHeight }}>
                             <div className="datatable-header-text mr-3 ml-3">{header}</div>
                         </th>
                     </tr>
@@ -21,7 +20,6 @@ export default function TopRepositoriesTable({ analysis }) {
                         <th className="datatable-header">Name</th>
                         <th className="datatable-header">Languages</th>
                         <th className="datatable-header">Technologies</th>
-                        <th className="datatable-header">URL</th>
 
                     </tr>
                 </thead>
@@ -32,13 +30,11 @@ export default function TopRepositoriesTable({ analysis }) {
                         {topRepositories.map((repo, index) => (
                             <React.Fragment key={index}>
                                 <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
-                                    <td className="datatable-cell">{repo.name}</td>
-                                    <td className="datatable-cell">{repo.languages.join(', ')}</td>
-                                    <td className="datatable-cell">{repo.technologies.join(', ')}</td>
-                                    <td className="datatable-cell"><Link to={repo.url}>ICON</Link></td>
+                                    <td className="datatable-cell text-center">{repo.name}</td>
+                                    <td className="datatable-cell text-center">{repo.languages.join(', ')}</td>
+                                    <td className="datatable-cell text-center">{repo.technologies.join(', ')}</td>
                                 </tr>
                                 <tr style={{ display: 'table', width: '100%', tableLayout: 'fixed' }}>
-                                    <td><hr style={{ width: '100%' }}></hr></td>
                                     <td><hr style={{ width: '100%' }}></hr></td>
                                     <td><hr style={{ width: '100%' }}></hr></td>
                                     <td><hr style={{ width: '100%' }}></hr></td>

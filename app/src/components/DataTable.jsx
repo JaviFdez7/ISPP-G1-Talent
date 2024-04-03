@@ -51,12 +51,12 @@ export default function DataTable({
                     {contentArray.map((item, index) => (
                     <>
                         <tr key={index}>
-                            <td className="datatable-cell">
+                            <td className="datatable-cell text-center">
                                 <br></br>
                                 {item}
                             </td>
                             {editable && (
-                                <td className="pl-2 pr-2">
+                                <td className="pl-2 pr-2 text-center">
                                     <br></br>
                                     <Link to={editLink} className="edit-button"
                                     onClick={() => localStorage.setItem(idName, idArray[index])}>

@@ -69,7 +69,7 @@ export default function CandidateDetail() {
 			}
 		}
 		fetchDataFromEndpoint()
-	}, [isAuthenticated, candidate]) 
+	}, [isAuthenticated, candidate])
 
 
 	return (
@@ -79,7 +79,7 @@ export default function CandidateDetail() {
 				backgroundImage: `url(${mainBackground})`,
 				backgroundSize: 'cover',
 			}}>
-			<div className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'>
+			<div className='flex flex-row justify-center items-center profile-header w-10/12 mt-20' style={{ marginLeft: '8%' }}>
 				<div className='flex flex-col items-center'>
 					<img
 						src={profile} //[candidate.profilePicture}
@@ -147,7 +147,6 @@ export default function CandidateDetail() {
 						<DataTable header={'Used Tecnologies'} contentArray={tecnologies} />
 						<br></br>
 						<br></br>
-
 						<TopRepositoriesTable analysis={analysis} />
 					</div>
 				</>
