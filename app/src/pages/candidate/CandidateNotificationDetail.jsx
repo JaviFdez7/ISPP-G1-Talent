@@ -10,6 +10,7 @@ import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import MainButton from '../../components/mainButton'
 import SecondaryButton from '../../components/secondaryButton'
+import NotificationListItem from '../../components/NotificationListItem.jsx'
 
 export default function CandidateNotificationDetail() {
 	const [notifications, setNotifications] = useState([])
@@ -18,6 +19,7 @@ export default function CandidateNotificationDetail() {
 
 	React.useEffect(() => {
 		const fetchNotificationsData = async () => {
+			console.log("sddsfdf")
 			try {
 				if (isAuthenticated) {
 					const currentUserId = localStorage.getItem('userId')
@@ -45,6 +47,45 @@ export default function CandidateNotificationDetail() {
 		fetchNotificationsData()
 	}, [isAuthenticated])
 
+	React.useEffect(() => {
+		if (notifications) {
+			notifications.forEach((n) => {
+				if (!n.seen) {
+					setSeenNotification(n._id)
+				}
+			})
+		}
+	}, [notifications])
+
+	const setSeenNotification = async (notificationId) => {
+		try {
+			console.log("esjdsjjkds")
+			if (isAuthenticated) {
+				const currentUserId = localStorage.getItem('userId')
+				const token = localStorage.getItem('access_token')
+				if (currentUserId && token) {
+					const response = await axios.patch(
+						`${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/notification/${notificationId}`,
+						{
+							id : notificationId,
+							userId : currentUserId,
+							seen: true,
+						},
+						{
+							headers: {
+								Authorization: `${token}`,
+								'Content-type': 'application/json',
+							}
+						}
+					)
+					console.log(response.data)
+				}
+			}
+		} catch (error) {
+			console.log('Error fetching notification data:', error.response.data.message)
+		}
+	}
+
 	const deleteNotificationsData = async (notificationId) => {
 		try {
 			if (isAuthenticated) {
@@ -69,6 +110,20 @@ export default function CandidateNotificationDetail() {
 		} catch (error) {
 			console.log('Error fetching notification data:', error.response.data.message)
 		}
+	}
+
+	function getNotificationsList(notifications) {
+		let n1  = notifications
+		.filter((n) => !n.seen)
+		.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
+		.map((n) => (<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData}/>))
+
+		let n2 = notifications
+			.filter((n) => n.seen)
+			.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
+			.map((n) => (<NotificationListItem n={n} deleteNotificationsData={deleteNotificationsData}/>))
+
+		return n1.concat(n2)
 	}
 
 	return (
@@ -97,33 +152,7 @@ export default function CandidateNotificationDetail() {
 						header={''}
 						contentArray={
 							notifications
-								? notifications
-										.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
-										.map((n) => (
-											<div className='flex flex-row'>
-												<div className='w-4/5'>
-													<p className='text-white font-bold'>
-														{n.dateTime.slice(0, 10) +
-															' ' +
-															n.dateTime.slice(11, 19)}
-													</p>
-													<br></br>
-													<p>{n.message}</p>
-												</div>
-												<div className='w-1/5'>
-													{MainButton(
-														'View profile',
-														'/candidate/representative-view/' +
-															n.representativeId
-													)}
-												</div>
-												<div className='w-1/5'>
-													{SecondaryButton('Dismiss', '', () =>
-														deleteNotificationsData(n._id)
-													)}
-												</div>
-											</div>
-										))
+								? getNotificationsList(notifications)
 								: []
 						}
 						editable={false}
