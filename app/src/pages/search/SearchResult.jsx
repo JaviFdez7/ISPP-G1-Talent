@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react'
 import DropdownComponent from '../../components/DropDown.jsx'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton.jsx'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function SearchResult() {
+	let navigate = useNavigate()
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const apiURL = import.meta.env.VITE_BACKEND_URL
@@ -43,6 +45,21 @@ export default function SearchResult() {
 			setError(true)
 		}
 	}
+
+	async function handleClick(candidate)  {
+		try {
+			const token = localStorage.getItem('access_token')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
+			navigate(`/analysis/${candidate.github_username}`);
+		} catch (error) {
+			if (error.response && error.response.status == 404) {
+				navigate(`/analysis/analyze`);
+			}
+		}
+	};
 
 	useEffect(() => {
 		fetchDataFromEndpoint(searchId)
@@ -145,9 +162,9 @@ export default function SearchResult() {
 													justifyContent: 'center',
 													alignItems: 'center',
 												}}>
-												{/*<Link to={`/analysis/${candidate.github_username}`} className="mt-10" style={{ textDecoration: 'underline' }}>
-                    View Analysis
-                </Link>*/}
+												<div className='flex justify-center ml-24 mt-10 mb-4'>
+													{MainButton('View Analysis','',	() => handleClick(candidate))}					
+												</div>
 											</div>
 										</div>
 									))

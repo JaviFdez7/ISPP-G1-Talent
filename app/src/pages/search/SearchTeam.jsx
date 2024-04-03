@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react'
 import DropdownComponent from '../../components/DropDown.jsx'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton.jsx'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 export default function SearchResult() {
+	let navigate = useNavigate()
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const apiURL = import.meta.env.VITE_BACKEND_URL
@@ -51,6 +52,11 @@ export default function SearchResult() {
 		}
 	}
 
+	useEffect(() => {
+		const representativeId = localStorage.getItem('userId')
+		fetchDataFromEndpoint(representativeId)
+	}, [])
+
 	async function deleteDataFromEndpoint(searchId) {
 		try {
 			const token = localStorage.getItem('access_token')
@@ -76,10 +82,22 @@ export default function SearchResult() {
 		setShowModal(false)
 	}
 
-	useEffect(() => {
-		const representativeId = localStorage.getItem('userId')
-		fetchDataFromEndpoint(representativeId)
-	}, [])
+	async function handleClick(candidate)  {
+		try {
+			const token = localStorage.getItem('access_token')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
+			navigate(`/analysis/${candidate.github_username}`);
+		} catch (error) {
+			if (error.response && error.response.status == 404) {
+				navigate(`/analysis/analyze`);
+			}
+		}
+	};
+
+	
 
 	return (
 		<section
@@ -190,10 +208,8 @@ export default function SearchResult() {
 																		},
 																	]}
 																/>
-																<div className='flex justify-center mt-16 mb-0'>
-																	{/*<Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
-					View Analysis
-						</Link>*/									}
+																<div className='flex justify-center ml-24 mt-10 mb-4'>
+																	{MainButton('View Analysis','',	() => handleClick(candidate))}					
 																</div>
 															</div>
 														)
