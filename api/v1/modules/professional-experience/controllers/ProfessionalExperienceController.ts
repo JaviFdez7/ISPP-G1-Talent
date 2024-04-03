@@ -8,11 +8,11 @@ import { Candidate } from '../../user/models/user';
 export const getAllProfessionalExperience: any = async (req: Request, res: Response) => {
   try {
     const data = await ProfessionalExperienceService.getAllProfessionalExperience();
-    ApiResponse.sendSuccess(res, data, 200, {
+    return ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
-    ApiResponse.sendError(res, [{
+    return ApiResponse.sendError(res, [{
       title: 'Internal Server Error',
       detail: error.message
     }]);
@@ -23,11 +23,11 @@ export const getProfessionalExperienceById: any = async (req: Request, res: Resp
   try {
     const id = req.params.id;
     const data = await ProfessionalExperienceService.getProfessionalExperienceById(id);
-    ApiResponse.sendSuccess(res, data, 200, {
+    return ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
-    ApiResponse.sendError(res, [{
+    return ApiResponse.sendError(res, [{
       title: 'Internal Server Error',
       detail: error.message
     }]);
@@ -41,11 +41,11 @@ export const createProfessionalExperience: any = async (req: Request, res: Respo
     await Candidate.findByIdAndUpdate(candidateId, {
       $push: { profesionalExperiences: professionalExperience._id }
     });
-    ApiResponse.sendSuccess(res, professionalExperience, 200, {
+    return ApiResponse.sendSuccess(res, professionalExperience, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
-    ApiResponse.sendError(res, [{
+    return ApiResponse.sendError(res, [{
       title: 'Internal Server Error',
       detail: error.message
     }]);
@@ -56,11 +56,11 @@ export const updateProfessionalExperience: any = async (req: Request, res: Respo
   try {
     const id = req.params.id;
     const data = await ProfessionalExperienceService.updateProfessionalExperience(id, req.body);
-    ApiResponse.sendSuccess(res, data, 200, {
+    return ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
-    ApiResponse.sendError(res, [{
+    return ApiResponse.sendError(res, [{
       title: 'Internal Server Error',
       detail: error.message
     }]);
@@ -71,11 +71,11 @@ export const deleteProfessionalExperience: any = async (req: Request, res: Respo
   try {
     const id = req.params.id;
     const data = await ProfessionalExperienceService.deleteProfessionalExperience(id);
-    ApiResponse.sendSuccess(res, data, 200, {
+    return ApiResponse.sendSuccess(res, data, 200, {
       self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
     });
   } catch (error: any) {
-    ApiResponse.sendError(res, [{
+    return ApiResponse.sendError(res, [{
       title: 'Internal Server Error',
       detail: error.message
     }]);
