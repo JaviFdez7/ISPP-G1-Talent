@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-export default function DropdownComponent({ name,  children }) {
-    const [isOpen, setIsOpen] = useState(false);
+export default function DropdownComponent({ name, children, defaultOpen = false }) {
+    const [isOpen, setIsOpen] = useState(defaultOpen);
 
     return (
         <div className="w-auto h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10 "
@@ -24,7 +24,7 @@ export default function DropdownComponent({ name,  children }) {
                     
                 </h2>
                 {isOpen && (
-                    <div className="flex justify-center w-3/4 mb-10 ml-20 mr-20">
+                    <div className="flex-row justify-center w-auto mb-10 ">
                         {children}
                     </div>
                 )}

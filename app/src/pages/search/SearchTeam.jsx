@@ -151,7 +151,7 @@ export default function SearchResult() {
 				{error && <p>{errorMessage}</p>}
 				{teamData &&
 					teamData.map((teamList, listIndex) => (
-						<DropdownComponent key={listIndex} name={`Search Result ${listIndex + 1}`}>
+						<DropdownComponent key={listIndex} name={`Searched Candidates ${listIndex + 1}`}>
 							<div className='flex flex-col'>
 								{teamList.profiles.map((team, index) => {
 									searchResultCount++
@@ -163,6 +163,7 @@ export default function SearchResult() {
 												Filter Parameters {index + 1}
 											</h6>
 											<DataTableVertical
+												width='w-3/4'
 												data={[
 													{
 														header: 'Technologies',
@@ -189,19 +190,20 @@ export default function SearchResult() {
 													},
 												]}
 											/>
-											<div className='flex flex-wrap'>
+											<div className='flex flex-wrap mt-5'>
 												{Array.isArray(team.recommendedCandidates) &&
 													team.recommendedCandidates.map(
 														(candidate, candidateIndex) => (
 															<div
 																key={candidateIndex}
-																className='w-1/3 px-2 ml-10 mr-28'>
-																<h6 className='text-1xl font-bold text-center text-white ml-28 mt-5 mb-5'>
+																className='w-1/3 px-2 '>
+																<h6 className='text-1xl font-bold text-center text-white mt-5 mb-5'>
 																	Filtered Candidate{' '}
 																	{candidateIndex + 1}
 																</h6>
 
 																<DataTableVertical
+																	width='w-full'
 																	data={[
 																		{
 																			header: 'Gihub username',
@@ -279,7 +281,7 @@ export default function SearchResult() {
 																		},
 																	]}
 																/>
-																<div className='flex justify-center ml-24 mt-10 mb-4'>
+																<div className='flex justify-center  mt-10 mb-4'>
 																	{MainButton(
 																		'View Analysis',
 																		'',

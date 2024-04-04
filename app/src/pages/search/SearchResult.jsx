@@ -126,13 +126,14 @@ export default function SearchResult() {
 			<div className='container flex flex-col items-center w-10/12 h-full '>
 				{teamData &&
 					teamData.profiles.map((team, index) => (
-						<DropdownComponent key={index} name={`Search Result ${index + 1}`}>
+						<DropdownComponent key={index} name={`Searched Candidates ${index + 1}`} defaultOpen={true}>
 							<div className='flex flex-col items-center w-full' key={index}>
 								<div className='flex flex-col items-center w-full'>
 									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
 										Filter Parameters {index + 1}
 									</h6>
 									<DataTableVertical
+									width='w-3/4'
 										data={[
 											{
 												header: 'Technologies',
@@ -166,11 +167,12 @@ export default function SearchResult() {
 											(candidate, candidateIndex) => (
 												<div
 													key={candidateIndex}
-													className='w-1/3 px-2 ml-10 mr-28'>
-													<h6 className='text-1xl font-bold text-center text-white  ml-28 mt-5 mb-5'>
+													className='w-1/3 px-2  '>
+													<h6 className='text-1xl font-bold text-center text-white  mt-5 mb-5'>
 														Filtered Candidate {candidateIndex + 1}
 													</h6>
 													<DataTableVertical
+														width="w-full"
 														data={[
 															{
 																header: 'Github username',

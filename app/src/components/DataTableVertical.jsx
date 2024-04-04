@@ -2,8 +2,8 @@ import React from "react";
 import MainButton from "./mainButton";
 import { Link } from "react-router-dom";
 
-export default function DataTableVertical({ data, editable=false, addLink, editLink }) {
-    const cellHeight = '30px';
+export default function DataTableVertical({ data, editable=false, addLink, editLink, width = '' }) {
+    const cellHeight = '40px';
     const minCellWidth = '200px';
 
     let button = "";
@@ -16,8 +16,9 @@ export default function DataTableVertical({ data, editable=false, addLink, editL
     }
 
     return (
-        <div className="mt-2 mb-2 datatable-container ">
-            <table className="w-full  ">
+         <div className="mt-2 mb-2 datatable-container flex justify-center">
+            <div className={width}>
+            <table className="w-full">
                 <tbody className="datatable-body ">
                     {data.map((item, index) => (
                         <tr key={index}>
@@ -39,6 +40,7 @@ export default function DataTableVertical({ data, editable=false, addLink, editL
                 </tbody>
                 {button}
             </table>
+            </div>
         </div>
     );
 }
