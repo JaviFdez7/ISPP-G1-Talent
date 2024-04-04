@@ -97,7 +97,7 @@ export const createAnalysis: any = async (githubUsername: string,token?: string,
       const candidate = await Candidate.findOne({ githubUser: githubUsername });
       if (representative !== null && candidate !== null) {
         const notification=await Notification.findOne({candidateId:candidate._id,representativeId:representative._id});
-        if(!notification || (notification.seen==true)){
+        if(!notification){
           await createNotification({
             representativeId: representative._id,
             candidateId: candidate._id,
