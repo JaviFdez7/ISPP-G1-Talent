@@ -1,7 +1,7 @@
 import { AnalysisModel, AnalysisDocument } from '../../analysis/models/analysis.model'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { History } from '../../history/models/history'
-import { createHistory,updateHistory } from '../../history/services/HistoryService'
+import { createHistory, updateHistory } from '../../history/services/HistoryService'
 import { Candidate, CandidateDocument } from '../../user/models/user'
 import {
 	ProfileRequested,
@@ -139,33 +139,30 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 	await teamCreator.save()
 
 	for (const { recommendedCandidates } of profiles) {
-        for (const candidate of recommendedCandidates) {
+		for (const candidate of recommendedCandidates) {
 			try {
-			const candidateDocument = await Candidate.findOne({ githubUser: candidate.github_username }).exec() as CandidateDocument | null;
-		
+				const candidateDocument = (await Candidate.findOne({
+					githubUser: candidate.github_username,
+				}).exec()) as CandidateDocument | null
 
-		
-            const analysisId = candidateDocument?.analysisId; 
+				const analysisId = candidateDocument?.analysisId
 
-             
-            const existingHistory = await History.findOne({
-                userId: userId, 
-                analysisId: candidateDocument?._id,
-            }).exec();
-         
-			if (!existingHistory) {
-                
-				await createHistory(userId, {
-                    analysisId: analysisId,
-                    date: new Date(), 
-                    favorite: false, 
-                });
-            } 
-		 } catch (error) {
-                console.error('Error al crear el historial para el análisis:', error);
-               
-            }
-        }
+				const existingHistory = await History.findOne({
+					userId: userId,
+					analysisId: candidateDocument?._id,
+				}).exec()
+
+				if (!existingHistory) {
+					await createHistory(userId, {
+						analysisId: analysisId,
+						date: new Date(),
+						favorite: false,
+					})
+				}
+			} catch (error) {
+				console.error('Error al crear el historial para el análisis:', error)
+			}
+		}
 	}
 }
 export const createTeamCreator: any = async (data: ProfileRequested[], userId: string) => {
