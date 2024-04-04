@@ -10,7 +10,7 @@ export interface RepositoryInfo {
   technologies: string[]
   numberClosedIssues: number
 
-} 
+}  
 export interface LanguagePercentage {
   language: string
   percentage: number
