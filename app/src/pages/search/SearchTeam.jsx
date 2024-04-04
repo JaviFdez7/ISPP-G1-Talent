@@ -10,17 +10,15 @@ import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 export default function SearchResult() {
-
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const [showModal, setShowModal] = useState(false)
 	const [selectedId, setSelectedId] = useState(null)
-	const [analysisData, setAnalysisData] = useState({});
+	const [analysisData, setAnalysisData] = useState({})
 	const [teamData, setTeamData] = useState(null)
 	let searchResultCount = 0
 	let navigate = useNavigate()
-	
 
 	async function fetchDataFromEndpoint(representativeId) {
 		try {
@@ -65,8 +63,14 @@ export default function SearchResult() {
 			const config = {
 				headers: { Authorization: `${token}` },
 			}
-			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
-			setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: response.data }));
+			const response = await axios.get(
+				`${apiURL}/analysis/github/${candidate.github_username}`,
+				config
+			)
+			setAnalysisData((prevState) => ({
+				...prevState,
+				[candidate.github_username]: response.data,
+			}))
 			console.log(response.data)
 			return response.data
 		} catch (error) {
@@ -75,21 +79,24 @@ export default function SearchResult() {
 			throw error
 		}
 	}
-	
+
 	useEffect(() => {
 		if (teamData) {
 			teamData.forEach((teamList) => {
 				teamList.profiles.forEach((team) => {
 					if (Array.isArray(team.recommendedCandidates)) {
 						team.recommendedCandidates.forEach(async (candidate) => {
-							const analysis = await fetchAnalysisFromEndpoint(candidate);
-							setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: analysis }));
-						});
+							const analysis = await fetchAnalysisFromEndpoint(candidate)
+							setAnalysisData((prevState) => ({
+								...prevState,
+								[candidate.github_username]: analysis,
+							}))
+						})
 					}
-				});
-			});
+				})
+			})
 		}
-	}, [teamData]);
+	}, [teamData])
 
 	async function deleteDataFromEndpoint(searchId) {
 		try {
@@ -116,18 +123,16 @@ export default function SearchResult() {
 		setShowModal(false)
 	}
 
-	async function handleClick(candidate)  {
+	async function handleClick(candidate) {
 		try {
 			const response = await fetchAnalysisFromEndpoint(candidate)
-			navigate(`/analysis/${candidate.github_username}`);
+			navigate(`/analysis/${candidate.github_username}`)
 		} catch (error) {
 			if (error.response && error.response.status == 404) {
-				navigate(`/analysis/analyze`);
+				navigate(`/analysis/analyze`)
 			}
 		}
-	};
-
-	
+	}
 
 	return (
 		<section
@@ -155,8 +160,7 @@ export default function SearchResult() {
 											className='flex flex-col items-center w-full'
 											key={`${listIndex}-${searchResultCount}`}>
 											<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-												Filter Parameters {' '}
-																	{index + 1}
+												Filter Parameters {index + 1}
 											</h6>
 											<DataTableVertical
 												data={[
@@ -185,26 +189,56 @@ export default function SearchResult() {
 													},
 												]}
 											/>
-											<div className="flex flex-wrap">
+											<div className='flex flex-wrap'>
 												{Array.isArray(team.recommendedCandidates) &&
 													team.recommendedCandidates.map(
 														(candidate, candidateIndex) => (
-															<div key={candidateIndex}  className="w-1/3 px-2 ml-10 mr-28">
+															<div
+																key={candidateIndex}
+																className='w-1/3 px-2 ml-10 mr-28'>
 																<h6 className='text-1xl font-bold text-center text-white ml-28 mt-5 mb-5'>
 																	Filtered Candidate{' '}
 																	{candidateIndex + 1}
 																</h6>
-																
+
 																<DataTableVertical
 																	data={[
 																		{
 																			header: 'Gihub username',
-																			content:  (
+																			content: (
 																				<>
-																					<div>{candidate.github_username}</div>
-																					{analysisData[candidate.github_username] && analysisData[candidate.github_username].data &&
-																						<img src={analysisData[candidate.github_username].data.avatarUrl} style={{ width: '25px', height: '25px',
-																						 borderRadius: '50%', marginLeft: '5px'  }} />}
+																					<div>
+																						{
+																							candidate.github_username
+																						}
+																					</div>
+																					{analysisData[
+																						candidate
+																							.github_username
+																					] &&
+																						analysisData[
+																							candidate
+																								.github_username
+																						].data && (
+																							<img
+																								src={
+																									analysisData[
+																										candidate
+																											.github_username
+																									]
+																										.data
+																										.avatarUrl
+																								}
+																								style={{
+																									width: '25px',
+																									height: '25px',
+																									borderRadius:
+																										'50%',
+																									marginLeft:
+																										'5px',
+																								}}
+																							/>
+																						)}
 																				</>
 																			),
 																		},
@@ -246,18 +280,23 @@ export default function SearchResult() {
 																	]}
 																/>
 																<div className='flex justify-center ml-24 mt-10 mb-4'>
-																	{MainButton('View Analysis','',	() => handleClick(candidate))}					
+																	{MainButton(
+																		'View Analysis',
+																		'',
+																		() => handleClick(candidate)
+																	)}
 																</div>
 															</div>
 														)
-												)}
+													)}
 											</div>
 										</div>
 									)
-									
 								})}
 								<div className='flex justify-center mt-16 mb-0'>
-									{MainButton('Delete search','',	() =>deleteSearchResult(teamList._id))}
+									{MainButton('Delete search', '', () =>
+										deleteSearchResult(teamList._id)
+									)}
 								</div>
 							</div>
 						</DropdownComponent>

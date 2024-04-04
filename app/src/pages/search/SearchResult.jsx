@@ -13,7 +13,7 @@ export default function SearchResult() {
 	let navigate = useNavigate()
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
-	const [analysisData, setAnalysisData] = useState({});
+	const [analysisData, setAnalysisData] = useState({})
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const { searchId } = useParams()
 
@@ -47,21 +47,23 @@ export default function SearchResult() {
 		}
 	}
 
-	async function handleClick(candidate)  {
+	async function handleClick(candidate) {
 		try {
 			const token = localStorage.getItem('access_token')
 			const config = {
 				headers: { Authorization: `${token}` },
 			}
-			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
-			navigate(`/analysis/${candidate.github_username}`);
+			const response = await axios.get(
+				`${apiURL}/analysis/github/${candidate.github_username}`,
+				config
+			)
+			navigate(`/analysis/${candidate.github_username}`)
 		} catch (error) {
 			if (error.response && error.response.status == 404) {
-				navigate(`/analysis/analyze`);
+				navigate(`/analysis/analyze`)
 			}
 		}
-	};
-
+	}
 
 	async function fetchAnalysisFromEndpoint(candidate) {
 		try {
@@ -69,8 +71,14 @@ export default function SearchResult() {
 			const config = {
 				headers: { Authorization: `${token}` },
 			}
-			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
-			setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: response.data }));
+			const response = await axios.get(
+				`${apiURL}/analysis/github/${candidate.github_username}`,
+				config
+			)
+			setAnalysisData((prevState) => ({
+				...prevState,
+				[candidate.github_username]: response.data,
+			}))
 			console.log(response.data)
 			return response.data
 		} catch (error) {
@@ -79,20 +87,23 @@ export default function SearchResult() {
 			throw error
 		}
 	}
-	
+
 	useEffect(() => {
 		if (teamData && teamData.profiles) {
 			console.log(teamData)
 			teamData.profiles.forEach((team) => {
 				if (Array.isArray(team.recommendedCandidates)) {
 					team.recommendedCandidates.forEach(async (candidate) => {
-						const analysis = await fetchAnalysisFromEndpoint(candidate);
-						setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: analysis }));
-					});
+						const analysis = await fetchAnalysisFromEndpoint(candidate)
+						setAnalysisData((prevState) => ({
+							...prevState,
+							[candidate.github_username]: analysis,
+						}))
+					})
 				}
-			});
+			})
 		}
-	}, [teamData]);
+	}, [teamData])
 
 	useEffect(() => {
 		fetchDataFromEndpoint(searchId)
@@ -119,8 +130,7 @@ export default function SearchResult() {
 							<div className='flex flex-col items-center w-full' key={index}>
 								<div className='flex flex-col items-center w-full'>
 									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-										Filter Parameters {' '}
-																	{index + 1}
+										Filter Parameters {index + 1}
 									</h6>
 									<DataTableVertical
 										data={[
@@ -149,70 +159,110 @@ export default function SearchResult() {
 										]}
 									/>
 								</div>
-								<div className="flex flex-wrap">
-								{Array.isArray(team.recommendedCandidates) &&
-								team.recommendedCandidates.length > 0 ? (
-									team.recommendedCandidates.map((candidate, candidateIndex) => (
-										<div key={candidateIndex}  className="w-1/3 px-2 ml-10 mr-28">
-											<h6 className='text-1xl font-bold text-center text-white  ml-28 mt-5 mb-5'>
-												Filtered Candidate {candidateIndex + 1}
-											</h6>
-											<DataTableVertical
-												data={[
-													{
-														header: 'Github username',
-														content:  (
-															<>
-																<div>{candidate.github_username}</div>
-																{analysisData[candidate.github_username] && analysisData[candidate.github_username].data &&
-																	<img src={analysisData[candidate.github_username].data.avatarUrl} style={{ width: '25px', height: '25px',
-																	 borderRadius: '50%', marginLeft: '5px'  }} />}
-															</>
-														),
-													},
-													{
-														header: 'Technologies',
-														content: Array.isArray(
-															candidate.technologies
-														)
-															? candidate.technologies.join(', ')
-															: '',
-													},
-													{
-														header: 'Languages',
-														content: Array.isArray(candidate.languages)
-															? candidate.languages.join(', ')
-															: '',
-													},
-													{
-														header: 'Field',
-														content: Array.isArray(candidate.field)
-															? candidate.field.join(', ')
-															: '',
-													},
-													{
-														header: 'Years of Experience',
-														content: candidate.yearsOfExperience,
-													},
-												]}
-											/>
-											<div
-												style={{
-													display: 'flex',
-													justifyContent: 'center',
-													alignItems: 'center',
-												}}>
-												<div className='flex justify-center ml-24 mt-10 mb-4'>
-													{MainButton('View Analysis','',	() => handleClick(candidate))}					
+								<div className='flex flex-wrap'>
+									{Array.isArray(team.recommendedCandidates) &&
+									team.recommendedCandidates.length > 0 ? (
+										team.recommendedCandidates.map(
+											(candidate, candidateIndex) => (
+												<div
+													key={candidateIndex}
+													className='w-1/3 px-2 ml-10 mr-28'>
+													<h6 className='text-1xl font-bold text-center text-white  ml-28 mt-5 mb-5'>
+														Filtered Candidate {candidateIndex + 1}
+													</h6>
+													<DataTableVertical
+														data={[
+															{
+																header: 'Github username',
+																content: (
+																	<>
+																		<div>
+																			{
+																				candidate.github_username
+																			}
+																		</div>
+																		{analysisData[
+																			candidate
+																				.github_username
+																		] &&
+																			analysisData[
+																				candidate
+																					.github_username
+																			].data && (
+																				<img
+																					src={
+																						analysisData[
+																							candidate
+																								.github_username
+																						].data
+																							.avatarUrl
+																					}
+																					style={{
+																						width: '25px',
+																						height: '25px',
+																						borderRadius:
+																							'50%',
+																						marginLeft:
+																							'5px',
+																					}}
+																				/>
+																			)}
+																	</>
+																),
+															},
+															{
+																header: 'Technologies',
+																content: Array.isArray(
+																	candidate.technologies
+																)
+																	? candidate.technologies.join(
+																			', '
+																		)
+																	: '',
+															},
+															{
+																header: 'Languages',
+																content: Array.isArray(
+																	candidate.languages
+																)
+																	? candidate.languages.join(', ')
+																	: '',
+															},
+															{
+																header: 'Field',
+																content: Array.isArray(
+																	candidate.field
+																)
+																	? candidate.field.join(', ')
+																	: '',
+															},
+															{
+																header: 'Years of Experience',
+																content:
+																	candidate.yearsOfExperience,
+															},
+														]}
+													/>
+													<div
+														style={{
+															display: 'flex',
+															justifyContent: 'center',
+															alignItems: 'center',
+														}}>
+														<div className='flex justify-center ml-24 mt-10 mb-4'>
+															{MainButton('View Analysis', '', () =>
+																handleClick(candidate)
+															)}
+														</div>
+													</div>
 												</div>
-											</div>
-										</div>
-									))
-								) : (
-									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-										No results for the search, please try different filters
-									</h6>
-								)}
+											)
+										)
+									) : (
+										<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
+											No results for the search, please try different filters
+										</h6>
+									)}
 								</div>
 							</div>
 						</DropdownComponent>
