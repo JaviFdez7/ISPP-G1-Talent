@@ -8,6 +8,8 @@ import {
   createRepresentative,
   updateCandidate,
   updateRepresentative,
+  updateUserProfilePicture,
+  updateUserPassword,
   deleteUser,
   loginUser
 } from './controllers/UserController';
@@ -16,9 +18,11 @@ import {
   checkCreateRepresentative,
   checkUpdateCandidate,
   checkUpdateRepresentative,
+  checkUpdateUserProfilePicture,
+  checkUpdatePassword,
   checkLoginUser,
   checkGetUserById,
-  checkGetProfessionalExperienceByUserId, 
+  checkGetProfessionalExperienceByUserId,
   checkDeleteUser} from './middlewares/UserMiddleware';
 
 const router = express.Router();
@@ -34,6 +38,8 @@ router.post('/representative', checkCreateRepresentative, createRepresentative);
 router.post('/login', checkLoginUser, loginUser);//X
 router.patch('/candidate/:id', checkUpdateCandidate, updateCandidate);//X
 router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentative);//X
+router.patch('/candidate/:id/profile-picture', checkUpdateUserProfilePicture, updateUserProfilePicture);
+router.patch('/:id/password', checkUpdatePassword, updateUserPassword);
 router.delete('/:id', checkDeleteUser, deleteUser);//X
 
 export default router;

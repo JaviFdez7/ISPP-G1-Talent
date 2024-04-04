@@ -1,90 +1,66 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/authContext";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import MainButton from "../../components/mainButton";
+import SecondaryButton from '../../components/secondaryButton'
 import Swal from "sweetalert2";
+import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function CandidateProfessionalExperienceCreate() {
-  const today = new Date();
-  const formattedToday = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-  const { isAuthenticated } = useAuthContext()
 
   const [form, setForm] = useState({
-    startDate: "",
-    endDate: formattedToday,
-    companyName: "",
-    professionalArea: "",
-    userId: localStorage.getItem("userId"),
-  });
+    startDate: '',
+    endDate: '',
+    companyName: '',
+    professionalArea: '',
+    userId: localStorage.getItem('userId'),
+  })
 
-  const [errors, setErrors] = useState({});
-  const { startDate, endDate, companyName, professionalArea, userId } = form;
+  const [errors, setErrors] = useState({})
+  const { startDate, endDate, companyName, professionalArea, userId } = form
 
-  let navigate = useNavigate();
-
-  // React.useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       if (isAuthenticated) {
-  //         const currentUserId = localStorage.getItem("userId");
-  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
-  //         const user = response.data.data.find(user => user._id === currentUserId);
-  //         setForm(prevForm => ({ ...prevForm, ...user }));
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching user data CandidateProfessionalExperienceCreate:", error);
-  //     }
-  //   };
-  //   fetchUserData();
-  // }, [isAuthenticated]);
+  let navigate = useNavigate()
 
   function onInputChange(e) {
-    const { name, value, checked } = e.target;
-    setForm(prevForm => ({ ...prevForm, [name]: value }));
-    setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
-    if (name === 'professionalArea') {
-      setForm(prevForm => ({ ...prevForm, [name]: value }));
-    }
+    const { name, value, checked } = e.target
+    setForm((prevForm) => ({ ...prevForm, [name]: value }))
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: undefined }))
+    if (name === 'professionalArea')
+      setForm((prevForm) => ({ ...prevForm, [name]: value }))
   }
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     const currentUserId = localStorage.getItem('userId')
     const token = localStorage.getItem('access_token')
-    const validationErrors = validateForm();
-    console.log(token);
-    console.log(currentUserId);
-    console.log(form);
-
+    const validationErrors = validateForm()
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
+      setErrors(validationErrors)
+      return
     }
 
     try {
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/professional-experience",
+        import.meta.env.VITE_BACKEND_URL + '/professional-experience',
         {
           ...form,
           userId: currentUserId,
         },
         {
           headers: {
-            'Authorization': `${token}`
-          }
+            Authorization: `${token}`,
+          },
         }
-      );
+      )
       if (response.status === 400 || response.status === 401) {
-        const data = response.data;
-        setErrors(data);
-        return;
+        const data = response.data
+        setErrors(data)
+        return
       }
-      navigate("/candidate/professional-experience/detail");
-
+      navigate('/candidate/detail')
     } catch (error) {
-      console.error("Error creating professional experience:", error);
+      handleNetworkError(error, navigate);
       if (error.response && error.response.status === 400) {
         Swal.fire({
           icon: 'error',
@@ -94,7 +70,8 @@ export default function CandidateProfessionalExperienceCreate() {
           showConfirmButton: false,
         })
         navigate('/login')
-      } if (error.response.data.errors[0].detail.includes("E11000")) {
+      }
+      if (error.response.data.errors[0].detail.includes('E11000')) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
@@ -104,41 +81,58 @@ export default function CandidateProfessionalExperienceCreate() {
         })
         navigate('/candidate/detail')
       }
-
     }
   }
 
   function getRequiredFieldMessage(fieldName) {
-    return `The ${fieldName} field is required`;
+    return `The ${fieldName} field is required`
   }
 
   function validateForm() {
-    let errors = {};
+    let errors = {}
 
-    if (!form.startDate) {
-      errors.startDate = getRequiredFieldMessage('startDate');
-    } else {
-      const startDate = new Date(form.startDate);
-      const endDate = new Date(form.endDate);
-      if (startDate > endDate) {
-        errors.startDate = "Start Date cannot be after the EndDate";
-      }
+    if (!form.startDate)
+      errors.startDate = getRequiredFieldMessage('startDate')
+    else {
+      const startDate = new Date(form.startDate)
+      const endDate = new Date(form.endDate)
+      const currentDate = new Date();
+      if (startDate > endDate)
+        errors.startDate = 'Start Date cannot be after the EndDate'
 
-      const year1970 = new Date('1970-01-01');
-      if (startDate < year1970) {
-        errors.startDate = "Start Date cannot be before 1970";
-      }
+      if (endDate > currentDate)
+        errors.endDate = 'End Date cannot be after the current date';
+
+
+      const year1970 = new Date('1970-01-01')
+      if (startDate < year1970 || endDate < year1970)
+        errors.startDate = 'Start Date cannot be before 1970 or after the current date'
+
     }
-    if (!form.companyName) {
-      errors.companyName = getRequiredFieldMessage('companyName');
-    } else if (form.companyName.length <= 3) {
-      errors.companyName = "The company Name field must have more than 3 characters";
-    }
-    const validProfessionalAreas = ["Web application", "Mobile application", "Frontend", "DevOps", "Backend", "Operating systems", "Data science", "Artificial intelligence", "Security", "Other"];
-    if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea)) {
-      errors.professionalArea = "Invalid professional area";
-    }
-    return errors;
+    if (!form.endDate)
+      errors.endDate = getRequiredFieldMessage('endDate')
+
+    if (!form.companyName)
+      errors.companyName = getRequiredFieldMessage('companyName')
+    else if (form.companyName.length <= 3)
+      errors.companyName = 'The company Name field must have more than 3 characters'
+
+    const validProfessionalAreas = [
+      'Web application',
+      'Mobile application',
+      'Frontend',
+      'DevOps',
+      'Backend',
+      'Operating systems',
+      'Data science',
+      'Artificial intelligence',
+      'Security',
+      'Other',
+    ]
+    if (!form.professionalArea || !validProfessionalAreas.includes(form.professionalArea))
+      errors.professionalArea = 'Invalid professional area'
+
+    return errors
   }
 
   return (
@@ -152,15 +146,9 @@ export default function CandidateProfessionalExperienceCreate() {
       }}
     >
       <div
-        className="h-100 rounded shadow-md flex flex-col justify-between"
+        className="h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4"
         style={{
           backgroundColor: "rgba(0, 0, 0, 0.5)",
-          width: "100%",
-          maxWidth: "48rem",
-          padding: "2rem",
-          margin: "1rem",
-          marginLeft: "auto",
-          marginRight: "auto",
           borderColor: "var(--talent-highlight)",
           borderWidth: "1px",
         }}
@@ -169,40 +157,25 @@ export default function CandidateProfessionalExperienceCreate() {
           <h2
             className="font-bold text-center text-white"
             style={{
-              fontSize: "4rem",
+              fontSize: "2rem",
               marginTop: "2rem",
               marginBottom: "4rem",
             }}
           >
             Add work experience
           </h2>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+          <form className="w-full flex flex-col" onSubmit={(e) => handleSubmit(e)}>
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="StartDate"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 StartDate
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
                   type="date"
-                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
                     width: "100%",
                     padding: "0.5rem 0.75rem",
@@ -218,41 +191,24 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="EndDate"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 EndDate
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
-                  type="text"
-                  className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  type="date"
+                  className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
                     width: "100%",
                     padding: "0.5rem 0.75rem",
                   }}
-                  placeholder="Write your endDate"
                   name="endDate"
                   value={endDate}
                   onChange={(e) => onInputChange(e)}
-                  disabled
                 />
                 {errors.endDate && (
                   <p className="text-red-500 text-xs italic">
@@ -261,29 +217,14 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="CompanyName"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 Company or Project Name
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <input
                   type="text"
                   className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -303,29 +244,14 @@ export default function CandidateProfessionalExperienceCreate() {
                 )}
               </div>
             </div>
-            <div
-              className="flex"
-              style={{
-                marginBottom: "1rem",
-              }}
-            >
+            <div className="w-10/12 flex flex-col mb-4 self-center">
               <label
                 htmlFor="ProfessionalArea"
-                className="block text-lg font-bold text-white self-center"
-                style={{
-                  marginBottom: "1rem",
-                  marginRight: "2rem",
-                  marginLeft: "4rem",
-                }}
+                className="block text-lg font-bold text-white"
               >
                 Professional Area
               </label>
-              <div
-                className="flex-grow"
-                style={{
-                  marginRight: "8rem",
-                }}
-              >
+              <div className="flex-grow">
                 <select
                   className=" leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   style={{
@@ -366,6 +292,7 @@ export default function CandidateProfessionalExperienceCreate() {
           style={{ marginTop: "1rem" }}
         >
           {MainButton("Create", "/", handleSubmit)}
+          {SecondaryButton('Cancel', '/candidate/detail', '')}
         </div>
       </div>
     </div>

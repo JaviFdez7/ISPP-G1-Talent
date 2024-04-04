@@ -11,6 +11,7 @@ import "./styles/buttons.css";
 import "./styles/datatable.css";
 import "./styles/dialogWindow.css";
 import "./styles/history.css";
+import "./styles/analysis.css";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
