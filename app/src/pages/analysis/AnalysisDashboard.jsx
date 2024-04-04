@@ -182,144 +182,169 @@ export default function AnalysisDashboard() {
 							) : (
 								<div
 									className='mt-2 w-11/12 self-center'
-									style={{ backdropFilter: 'blur(8px)', overflow: 'scroll' }}>
+									style={{ backdropFilter: 'blur(8px)', maxHeight: '200px' }}>
 									<table className='w-full'>
 										<thead>
 											<tr>
-												<th className='datatable-header h-16'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Name
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Name
 												</th>
-												<th className='datatable-header'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Stars
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Stars
 												</th>
-												<th className='datatable-header'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Forks
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Forks
 												</th>
-												<th className='datatable-header'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Languages
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Languages
 												</th>
-												<th className='datatable-header'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Technologies
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Technologies
 												</th>
-												<th className='datatable-header'>
-													<div className='datatable-header-text mr-3 ml-3'>
-														Url
-													</div>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Url
 												</th>
 											</tr>
 										</thead>
-
-										<tbody className='datatable-body'>
-											{dataArray.topRepositories
-												? dataArray.topRepositories.map((item, index) => (
-														<>
-															<tr key={index}>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	{item.name}
-																</td>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	{item.stars}
-																</td>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	{item.forks}
-																</td>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	{item.languages.join(', ')}
-																</td>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	{item.technologies.join(', ')}
-																</td>
-																<td className='datatable-cell-small'>
-																	<br></br>
-																	<Link to={item.url}>ICON</Link>
-																</td>
-															</tr>
-															<tr>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-																<td>
-																	<hr
-																		style={{
-																			width: '105%',
-																		}}></hr>
-																</td>
-															</tr>
-														</>
-													))
-												: null}
-										</tbody>
 									</table>
-									<br></br>
-									<div
-										className='flex w-full justify-around mt-10 mb-10'
-										style={{ flexDirection: mobile ? 'column' : 'row' }}>
-										<div className='flex flex-row justify-center pl-20'>
-											{Input({
-												name: 'Repositories Contributes with Commits',
-												value:
-													dataArray && dataArray.contributions
-														? dataArray.contributions
-																.totalRepositoriesContributedWithCommits
-														: 0,
-											})}
-										</div>
-										<div className='flex flex-row justify-center pl-20'>
-											{Input({
-												name: 'Repositories Contributes with Pull Requests',
-												value:
-													dataArray && dataArray.contributions
-														? dataArray.contributions
-																.totalRepositoriesContributedWithPullRequests
-														: 0,
-											})}
-										</div>
+									<div style={{ overflow: 'auto', maxHeight: '450px' }}>
+										<table className='w-full'>
+											<tbody className='datatable-body'>
+												{dataArray.topRepositories
+													? dataArray.topRepositories.map(
+															(item, index) => (
+																<>
+																	<tr
+																		key={index}
+																		style={{
+																			display: 'table',
+																			width: '100%',
+																			tableLayout: 'fixed',
+																		}}>
+																		<td className='datatable-cell-small  text-center'>
+																			<br></br>
+																			{item.name}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.stars}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.forks}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.languages.join(
+																				', '
+																			)}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.technologies.join(
+																				', '
+																			)}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			<Link to={item.url}>
+																				ICON
+																			</Link>
+																		</td>
+																	</tr>
+																	<tr
+																		style={{
+																			display: 'table',
+																			width: '100%',
+																			tableLayout: 'fixed',
+																		}}>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																	</tr>
+																</>
+															)
+														)
+													: null}
+											</tbody>
+										</table>
 									</div>
-									<br></br>
 								</div>
 							)}
+							<br></br>
+							<div
+								className='flex w-full justify-around mt-10 mb-10'
+								style={{
+									marginTop: '20%',
+									flexDirection: mobile ? 'column' : 'row',
+								}}>
+								<div className='flex flex-row justify-center pl-20'>
+									{Input({
+										name: 'Repositories Contributes with Commits',
+										value:
+											dataArray && dataArray.contributions
+												? dataArray.contributions
+														.totalRepositoriesContributedWithCommits
+												: 0,
+									})}
+								</div>
+								<div className='flex flex-row justify-center pl-20'>
+									{Input({
+										name: 'Repositories Contributes with Pull Requests',
+										value:
+											dataArray && dataArray.contributions
+												? dataArray.contributions
+														.totalRepositoriesContributedWithPullRequests
+												: 0,
+									})}
+								</div>
+							</div>
+							<br></br>
 						</>
 					)}
 				</div>
