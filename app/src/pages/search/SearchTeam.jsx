@@ -54,6 +54,11 @@ export default function SearchResult() {
 		}
 	}
 
+	useEffect(() => {
+		const representativeId = localStorage.getItem('userId')
+		fetchDataFromEndpoint(representativeId)
+	}, [])
+
 	async function fetchAnalysisFromEndpoint(candidate) {
 		try {
 			const token = localStorage.getItem('access_token')
@@ -70,11 +75,6 @@ export default function SearchResult() {
 			throw error
 		}
 	}
-
-	useEffect(() => {
-		const representativeId = localStorage.getItem('userId')
-		fetchDataFromEndpoint(representativeId)
-	}, [])
 	
 	useEffect(() => {
 		if (teamData) {

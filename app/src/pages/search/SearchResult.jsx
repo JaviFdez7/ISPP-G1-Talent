@@ -13,6 +13,7 @@ export default function SearchResult() {
 	let navigate = useNavigate()
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
+	const [analysisData, setAnalysisData] = useState({});
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const { searchId } = useParams()
 
@@ -60,6 +61,38 @@ export default function SearchResult() {
 			}
 		}
 	};
+
+
+	async function fetchAnalysisFromEndpoint(candidate) {
+		try {
+			const token = localStorage.getItem('access_token')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
+			setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: response.data }));
+			console.log(response.data)
+			return response.data
+		} catch (error) {
+			setError(true)
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			throw error
+		}
+	}
+	
+	useEffect(() => {
+		if (teamData && teamData.profiles) {
+			console.log(teamData)
+			teamData.profiles.forEach((team) => {
+				if (Array.isArray(team.recommendedCandidates)) {
+					team.recommendedCandidates.forEach(async (candidate) => {
+						const analysis = await fetchAnalysisFromEndpoint(candidate);
+						setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: analysis }));
+					});
+				}
+			});
+		}
+	}, [teamData]);
 
 	useEffect(() => {
 		fetchDataFromEndpoint(searchId)
@@ -128,7 +161,14 @@ export default function SearchResult() {
 												data={[
 													{
 														header: 'Github username',
-														content: candidate.github_username,
+														content:  (
+															<>
+																<div>{candidate.github_username}</div>
+																{analysisData[candidate.github_username] && analysisData[candidate.github_username].data &&
+																	<img src={analysisData[candidate.github_username].data.avatarUrl} style={{ width: '25px', height: '25px',
+																	 borderRadius: '50%', marginLeft: '5px'  }} />}
+															</>
+														),
 													},
 													{
 														header: 'Technologies',
