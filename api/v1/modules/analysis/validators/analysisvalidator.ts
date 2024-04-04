@@ -58,11 +58,11 @@ export const checkValidTokenAndValidAnalysis: any = async (
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404)
 			return
 		} else if (
-			(user instanceof Candidate && (user as any).analysisId == !analysisId) &&
-			(user instanceof Representative &&
-				!(await History.findOne({ analysisId: analysisId, userId: user._id })))
+			user instanceof Candidate &&
+			(user as any).analysisId == !analysisId &&
+			user instanceof Representative &&
+			!(await History.findOne({ analysisId: analysisId, userId: user._id }))
 		) {
-			
 			const message = 'Not Found'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404)
 			return
@@ -194,7 +194,7 @@ export const validateGitHubUserAndApiKey = async (
 
 		if (response.status === 404) {
 			ApiResponse.sendError(res, [
-				{ 
+				{
 					title: 'Internal Server Error',
 					detail: 'GitHub username does not exist.',
 				},
