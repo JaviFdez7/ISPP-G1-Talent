@@ -151,7 +151,9 @@ export default function SearchResult() {
 				{error && <p>{errorMessage}</p>}
 				{teamData &&
 					teamData.map((teamList, listIndex) => (
-						<DropdownComponent key={listIndex} name={`Searched Candidates ${listIndex + 1}`}>
+						<DropdownComponent
+							key={listIndex}
+							name={`Searched Candidates ${listIndex + 1}`}>
 							<div className='flex flex-col'>
 								{teamList.profiles.map((team, index) => {
 									searchResultCount++
