@@ -25,7 +25,7 @@ export default function DataTableVertical({ data, editable=false, addLink, editL
                                 <div className="datatable-header-text mr-10 ml-10">{item.header}</div>
                             </th>
                             <td className="datatable-cell " style={{height: cellHeight, minWidth: minCellWidth}}>
-                                <div className="flex items-center justify-center mt-5 mr-10 " style={{wordBreak: 'break-word', paddingLeft: "20px", paddingBottom: "20px"}}>
+                                <div className="flex items-center justify-center mt-5 mr-10 " style={{wordBreak: 'break-word', paddingLeft: "10px", paddingBottom: "20px"}}>
                                     {item.content}
                                     {editable && (
                                     <Link to={editLink + "/" + index} className="edit-button">

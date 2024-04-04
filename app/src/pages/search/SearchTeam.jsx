@@ -10,15 +10,17 @@ import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 export default function SearchResult() {
-	let navigate = useNavigate()
+
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const [showModal, setShowModal] = useState(false)
 	const [selectedId, setSelectedId] = useState(null)
-	let searchResultCount = 0
-
+	const [analysisData, setAnalysisData] = useState({});
 	const [teamData, setTeamData] = useState(null)
+	let searchResultCount = 0
+	let navigate = useNavigate()
+	
 
 	async function fetchDataFromEndpoint(representativeId) {
 		try {
@@ -52,10 +54,42 @@ export default function SearchResult() {
 		}
 	}
 
+	async function fetchAnalysisFromEndpoint(candidate) {
+		try {
+			const token = localStorage.getItem('access_token')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
+			setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: response.data }));
+			console.log(response.data)
+			return response.data
+		} catch (error) {
+			setError(true)
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			throw error
+		}
+	}
+
 	useEffect(() => {
 		const representativeId = localStorage.getItem('userId')
 		fetchDataFromEndpoint(representativeId)
 	}, [])
+	
+	useEffect(() => {
+		if (teamData) {
+			teamData.forEach((teamList) => {
+				teamList.profiles.forEach((team) => {
+					if (Array.isArray(team.recommendedCandidates)) {
+						team.recommendedCandidates.forEach(async (candidate) => {
+							const analysis = await fetchAnalysisFromEndpoint(candidate);
+							setAnalysisData(prevState => ({ ...prevState, [candidate.github_username]: analysis }));
+						});
+					}
+				});
+			});
+		}
+	}, [teamData]);
 
 	async function deleteDataFromEndpoint(searchId) {
 		try {
@@ -84,11 +118,7 @@ export default function SearchResult() {
 
 	async function handleClick(candidate)  {
 		try {
-			const token = localStorage.getItem('access_token')
-			const config = {
-				headers: { Authorization: `${token}` },
-			}
-			const response = await axios.get(`${apiURL}/analysis/github/${candidate.github_username}`, config)
+			const response = await fetchAnalysisFromEndpoint(candidate)
 			navigate(`/analysis/${candidate.github_username}`);
 		} catch (error) {
 			if (error.response && error.response.status == 404) {
@@ -164,12 +194,19 @@ export default function SearchResult() {
 																	Filtered Candidate{' '}
 																	{candidateIndex + 1}
 																</h6>
+																
 																<DataTableVertical
 																	data={[
 																		{
 																			header: 'Gihub username',
-																			content:
-																				candidate.github_username,
+																			content:  (
+																				<>
+																					<div>{candidate.github_username}</div>
+																					{analysisData[candidate.github_username] && analysisData[candidate.github_username].data &&
+																						<img src={analysisData[candidate.github_username].data.avatarUrl} style={{ width: '25px', height: '25px',
+																						 borderRadius: '50%', marginLeft: '5px'  }} />}
+																				</>
+																			),
 																		},
 																		{
 																			header: 'Technologies',
