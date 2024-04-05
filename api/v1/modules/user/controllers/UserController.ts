@@ -145,8 +145,8 @@ export const updateUserProfilePicture: any = async (req: Request, res: Response)
 export const updateUserPassword: any = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id
-		const { password } = req.body
-		const data = await UserService.updateUserPassword(id, password)
+		const { newPassword } = req.body
+		const data = await UserService.updateUserPassword(id, newPassword)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})

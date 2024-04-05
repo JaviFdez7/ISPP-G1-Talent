@@ -60,9 +60,13 @@ export const updateUserProfilePicture: any = async (id: any, picture: string) =>
 	}
 }
 
-export const updateUserPassword: any = async (id: any, password: string) => {
+export const updateUserPassword: any = async (id: any, newPassword: string) => {
 	try {
-		const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true })
+		const updatedUser = await User.findByIdAndUpdate(
+			id,
+			{ password: newPassword },
+			{ new: true }
+		)
 		return updatedUser
 	} catch (error) {
 		console.error('Error updating user password:', error)
