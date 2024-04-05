@@ -19,7 +19,6 @@ export default function Navbar() {
 	const [nonRead, setNonRead] = useState(0)
 	const [notificationsGuard, setNotificationsGuard] = useState(false)
 	const { isAuthenticated, logout } = useAuthContext()
- 
 
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
