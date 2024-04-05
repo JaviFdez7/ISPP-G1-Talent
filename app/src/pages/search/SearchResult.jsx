@@ -26,7 +26,7 @@ export default function SearchResult() {
 				headers: { Authorization: `${token}` },
 			}
 			const response = await axios.get(apiURL + '/team-creator/' + searchId, config)
-			setTeamData(response.data)
+			setTeamData(response.data.data)
 			setError(false)
 			return response.data
 		} catch (error) {
@@ -260,8 +260,8 @@ export default function SearchResult() {
 															justifyContent: 'center',
 															alignItems: 'center',
 														}}>
-														<div className='flex justify-center ml-24 mt-10 mb-4'
-														style={{ marginLeft: mobile ? '270px' : '' }}>
+														<div className='flex justify-center mt-10 mb-4'
+														>
 															{MainButton('View Analysis', '', () =>
 																handleClick(candidate)
 															)}

@@ -269,7 +269,7 @@ export default function SearchForm() {
 				apiURL + '/team-creator/representative-user/' + representativeId,
 				config
 			)
-			const lastSearch = todosSearches.data[todosSearches.data.length - 1]
+			const lastSearch = todosSearches.data.data[todosSearches.data.	data.length - 1]
 			navigate('/searches/' + lastSearch._id)
 		} catch (error) {
 			if (error.message && error.message.includes('Network Error')) {
@@ -289,6 +289,7 @@ export default function SearchForm() {
 						setErrors({ message: 'An unknown error occurred.' })
 				}
 			} else {
+				
 				setErrors({ message: 'An unknown error occurred.' })
 			}
 		}
