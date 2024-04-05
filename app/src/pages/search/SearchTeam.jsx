@@ -184,13 +184,13 @@ export default function SearchResult() {
 													{
 														header: 'Technologies',
 														content: team.profileRequested.technologies
-															? team.profileRequested.technologies
+															? team.profileRequested.technologies.join(', ')
 															: '',
 													},
 													{
 														header: 'Languages',
 														content: team.profileRequested.languages
-															? team.profileRequested.languages
+															? team.profileRequested.languages.join(', ')
 															: '',
 													},
 													{
