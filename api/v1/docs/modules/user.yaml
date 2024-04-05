@@ -1,516 +1,521 @@
-swagger: "3.0.0"
+swagger: '3.0.0'
 info:
-  title: IT Talent API - User Module
-  version: 1.0.0
+    title: IT Talent API - User Module
+    version: 1.0.0
 basePath: /v1
 schemes:
-  - http
+    - http
 paths:
-  /user:
-    get:
-      tags:
-        - Users
-      summary: Get all users
-      description: Retrieves a list of all users.
-      responses:
-        "200":
-          description: A list of users
-          content:
-            application/json:
-              schema:
+    /user:
+        get:
+            tags:
+                - Users
+            summary: Get all users
+            description: Retrieves a list of all users.
+            responses:
+                '200':
+                    description: A list of users
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/User'
+    /user/{id}:
+        get:
+            tags:
+                - Users
+            summary: Get a user by ID
+            description: Retrieves a user by its unique identifier.
+            parameters:
+                - in: path
+                  name: id
+                  description: The ID of the user to retrieve.
+                  required: true
+                  type: string
+                - name: authorization
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      description: Its the token of authentication.
+            responses:
+                '200':
+                    description: The user with the specified ID
+                    schema:
+                        $ref: '#/definitions/User'
+        delete:
+            tags:
+                - Users
+            summary: Delete a user by ID
+            description: Deletes a user by its unique identifier.
+            parameters:
+                - in: path
+                  name: id
+                  description: The ID of the user to delete.
+                  required: true
+                  type: string
+                - name: authorization
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      description: Its the token of authentication.
+            responses:
+                '204':
+                    description: User deleted successfully
+    /user/{id}/password:
+        patch:
+            tags:
+                - Users
+            summary: Update user's password
+            description: Allows a user to update their password.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                  description: The unique identifier for the user.
+                - in: header
+                  name: Authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Bearer token for authentication.
+                - in: body
+                  name: password
+                  required: true
+                  schema:
+                      $ref: '#/definitions/ChangePasswordData'
+            responses:
+                '200':
+                    description: Password updated successfully.
+                '401':
+                    description: Unauthorized. Token is invalid or missing.
+                '400':
+                    description: Bad Request. Missing or invalid new password.
+    /user/login:
+        post:
+            tags:
+                - Users
+            summary: Log in as a user
+            description: Enter in the app as a existing user
+            parameters:
+                - name: authorization
+                  in: header
+                  schema:
+                      type: string
+                      description: Its the token of authentication.
+                - name: login
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/LoginData'
+            responses:
+                '200':
+                    description: Candidate created successfully
+                    content:
+                        application/json:
+                            - name: authorization
+                              schema:
+                                  type: string
+                                  description: Its the token of authentication.
+                            - name: login
+                              schema:
+                                  $ref: '#/definitions/User'
+    /user/candidate:
+        post:
+            tags:
+                - Users-By-Type
+            summary: Create a candidate
+            description: Create a new user as a candidate
+            parameters:
+                - name: candidate
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/CandidateData'
+            responses:
+                '200':
+                    description: Candidate created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/CandidateData'
+    /user/candidate/{id}:
+        patch:
+            tags:
+                - Users-By-Type
+            summary: Update a candidate
+            description: Update the profile of candidate
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                  description: The unique identifier for the user entry.
+                - name: candidate
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/EditCandidateData'
+                - name: authorization
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      description: Its the token of authentication.
+            responses:
+                '200':
+                    description: Candidate update successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/EditCandidateData'
+    /user/candidate/{id}/profile-picture:
+        patch:
+            tags:
+                - Users-By-Type
+            summary: Update user's profile picture
+            description: Allows a user to update their profile picture.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                  description: The unique identifier for the user.
+                - in: header
+                  name: Authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Bearer token for authentication.
+                - in: body
+                  name: profilePicture
+                  required: true
+                  schema:
+                      type: object
+                      properties:
+                          profilePicture:
+                              type: string
+                              description: The new profile picture for the user.
+            responses:
+                '200':
+                    description: Profile picture updated successfully.
+                '401':
+                    description: Unauthorized. Token is invalid or missing.
+                '400':
+                    description: Bad Request. Missing or invalid profile picture URL.
+    /user/representative:
+        post:
+            tags:
+                - Users-By-Type
+            summary: Create a representative
+            description: Create a new user as a representative
+            parameters:
+                - name: representative
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/RepresentativeData'
+            responses:
+                '200':
+                    description: Representative created successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/RepresentativeData'
+    /user/representative/{id}:
+        patch:
+            tags:
+                - Users-By-Type
+            summary: Update a representative
+            description: Update the profile of representative
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                  description: The unique identifier for the user entry.
+                - name: representative
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/EditRepresentativeData'
+                - name: authorization
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      description: Its the token of authentication.
+            responses:
+                '200':
+                    description: Representative update successfully
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/EditRepresentativeData'
+    /user/{id}/professional-experiences:
+        get:
+            tags:
+                - Users
+            summary: Get all professional experiences of user
+            description: Retrieves a list of professional experiences by the id of user.
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                  description: The unique identifier for the user entry.
+                - name: authorization
+                  in: header
+                  required: true
+                  schema:
+                      type: string
+                      required: true
+                      description: Its the token of authentication.
+            responses:
+                '200':
+                    description: A list of professional experiences of user
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/ProfessionalExperience'
+definitions:
+    RepresentativeData:
+        type: object
+        required:
+            - username
+            - password
+            - email
+            - paymentMethods
+            - companyName
+            - companySubscription
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            password:
+                type: string
+                description: The password of the user.
+            email:
+                type: string
+                format: email
+                description: The email of the user.
+            phone:
+                type: string
+                pattern: '^\+?[1-9]\d{1,14}$'
+                description: The phone of the user.
+            paymentMethods:
                 type: array
+                description: The payment methods of the user.
                 items:
-                  $ref: "#/definitions/User"
-  /user/{id}:
-    get:
-      tags:
-        - Users
-      summary: Get a user by ID
-      description: Retrieves a user by its unique identifier.
-      parameters:
-        - in: path
-          name: id
-          description: The ID of the user to retrieve.
-          required: true
-          type: string
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            description: Its the token of authentication.
-      responses:
-        "200":
-          description: The user with the specified ID
-          schema:
-            $ref: "#/definitions/User"
-    delete:
-      tags:
-        - Users
-      summary: Delete a user by ID
-      description: Deletes a user by its unique identifier.
-      parameters:
-        - in: path
-          name: id
-          description: The ID of the user to delete.
-          required: true
-          type: string
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            description: Its the token of authentication.
-      responses:
-        "204":
-          description: User deleted successfully
-  /user/{id}/password:
-    patch:
-      tags:
-        - Users
-      summary: Update user's password
-      description: Allows a user to update their password.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: The unique identifier for the user.
-        - in: header
-          name: Authorization
-          required: true
-          schema:
-            type: string
-          description: Bearer token for authentication.
-        - in: body
-          name: password
-          required: true
-          schema:
-            type: object
-            properties:
-              password:
+                    type: string
+            companyName:
+                type: string
+                description: The company name of the representative.
+            companySubscription:
+                type: string
+                enum:
+                    - 'Basic plan'
+                    - 'Pro plan'
+                    - 'Custom plan'
+                description: The subscription of the company.
+            projectSocietyName:
+                type: string
+                description: The project society name of teh representative.
+
+    EditRepresentativeData:
+        type: object
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            email:
+                type: string
+                format: email
+                description: The email of the user.
+            phone:
+                type: string
+                pattern: '^\+?[1-9]\d{1,14}$'
+                description: The phone of the user.
+            paymentMethods:
+                type: array
+                description: The payment methods of the user.
+                items:
+                    type: string
+            companyName:
+                type: string
+                description: The company name of the representative.
+            companySubscription:
+                type: string
+                enum:
+                    - 'Basic plan'
+                    - 'Pro plan'
+                    - 'Custom plan'
+                description: The subscription of the company.
+            projectSocietyName:
+                type: string
+                description: The project society name of teh representative.
+
+    CandidateData:
+        type: object
+        required:
+            - username
+            - password
+            - email
+            - paymentMethods
+            - fullName
+            - githubUser
+            - candidateSubscription
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            password:
+                type: string
+                description: The password of the user.
+            email:
+                type: string
+                format: email
+                description: The email of the user.
+            phone:
+                type: string
+                pattern: '^\+?[1-9]\d{1,14}$'
+                description: The phone of the user.
+            paymentMethods:
+                type: array
+                description: The payment methods of the user.
+                items:
+                    type: string
+            fullName:
+                type: string
+                description: The full name of the user.
+            githubUser:
+                type: string
+                description: The github username of the user.
+            profilePicture:
+                type: string
+                description: The profile picture of the user.
+            candidateSubscription:
+                type: string
+                enum:
+                    - 'Basic plan'
+                    - 'Pro plan'
+                description: The subscription of the candidate.
+            CV:
+                type: string
+                description: The CV of the user.
+            residence:
+                type: string
+                description: The residence of the user.
+            lifestyle:
+                type: string
+                enum:
+                    - 'On-site'
+                    - 'Telematic'
+                description: The life style of the user of the user.
+            githubToken:
+                type: string
+                description: The github token of the user.
+
+    EditCandidateData:
+        type: object
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            email:
+                type: string
+                format: email
+                description: The email of the user.
+            phone:
+                type: string
+                pattern: '^\+?[1-9]\d{1,14}$'
+                description: The phone of the user.
+            paymentMethods:
+                type: array
+                description: The payment methods of the user.
+                items:
+                    type: string
+            fullName:
+                type: string
+                description: The full name of the user.
+            githubUser:
+                type: string
+                description: The github username of the user.
+            candidateSubscription:
+                type: string
+                enum:
+                    - 'Basic plan'
+                    - 'Pro plan'
+                description: The subscription of the candidate.
+            CV:
+                type: string
+                description: The CV of the user.
+            residence:
+                type: string
+                description: The residence of the user.
+            lifestyle:
+                type: string
+                enum:
+                    - 'On-site'
+                    - 'Telematic'
+                description: The life style of the user of the user.
+            githubToken:
+                type: string
+                description: The github token of the user.
+    LoginData:
+        type: object
+        required:
+            - username
+            - password
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            password:
+                type: string
+                description: The password of the user.
+    User:
+        type: object
+        required:
+            - username
+            - password
+            - email
+            - phone
+        properties:
+            username:
+                type: string
+                description: The name of the user.
+            password:
+                type: string
+                description: The password of the user.
+            email:
+                type: string
+                format: email
+                description: The email of the user.
+            paymentMethods:
+                type: array
+                description: The payment methods of the user.
+                items:
+                    type: string
+    ChangePasswordData:
+        type: object
+        properties:
+            oldPassword:
+                type: string
+                description: The old password for the user.
+            newPassword:
                 type: string
                 description: The new password for the user.
-      responses:
-        "200":
-          description: Password updated successfully.
-        "401":
-          description: Unauthorized. Token is invalid or missing.
-        "400":
-          description: Bad Request. Missing or invalid new password.
-  /user/login:
-    post:
-      tags:
-        - Users
-      summary: Log in as a user
-      description: Enter in the app as a existing user
-      parameters:
-        - name: authorization
-          in: header
-          schema:
-            type: string
-            description: Its the token of authentication.
-        - name: login
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/LoginData"
-      responses:
-        "200":
-          description: Candidate created successfully
-          content:
-            application/json:
-              - name: authorization
-                schema:
-                  type: string
-                  description: Its the token of authentication.
-              - name: login
-                schema:
-                  $ref: "#/definitions/User"
-  /user/candidate:
-    post:
-      tags:
-        - Users-By-Type
-      summary: Create a candidate
-      description: Create a new user as a candidate
-      parameters:
-        - name: candidate
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/CandidateData"
-      responses:
-        "200":
-          description: Candidate created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/CandidateData"
-  /user/candidate/{id}:
-    patch:
-      tags:
-        - Users-By-Type
-      summary: Update a candidate
-      description: Update the profile of candidate
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: The unique identifier for the user entry.
-        - name: candidate
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/EditCandidateData"
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            description: Its the token of authentication.
-      responses:
-        "200":
-          description: Candidate update successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/EditCandidateData"
-  /user/candidate/{id}/profile-picture:
-    patch:
-      tags:
-        - Users-By-Type
-      summary: Update user's profile picture
-      description: Allows a user to update their profile picture.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-          description: The unique identifier for the user.
-        - in: header
-          name: Authorization
-          required: true
-          schema:
-            type: string
-          description: Bearer token for authentication.
-        - in: body
-          name: profilePicture
-          required: true
-          schema:
-            type: object
-            properties:
-              profilePicture:
-                type: string
-                description: The new profile picture for the user.
-      responses:
-        "200":
-          description: Profile picture updated successfully.
-        "401":
-          description: Unauthorized. Token is invalid or missing.
-        "400":
-          description: Bad Request. Missing or invalid profile picture URL.
-  /user/representative:
-    post:
-      tags:
-        - Users-By-Type
-      summary: Create a representative
-      description: Create a new user as a representative
-      parameters:
-        - name: representative
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/RepresentativeData"
-      responses:
-        "200":
-          description: Representative created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/RepresentativeData"
-  /user/representative/{id}:
-    patch:
-      tags:
-        - Users-By-Type
-      summary: Update a representative
-      description: Update the profile of representative
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: The unique identifier for the user entry.
-        - name: representative
-          in: body
-          required: true
-          schema:
-            $ref: "#/definitions/EditRepresentativeData"
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            description: Its the token of authentication.
-      responses:
-        "200":
-          description: Representative update successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/definitions/EditRepresentativeData"
-  /user/{id}/professional-experiences:
-    get:
-      tags:
-        - Users
-      summary: Get all professional experiences of user
-      description: Retrieves a list of professional experiences by the id of user.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          schema:
-            type: string
-            format: uuid
-          description: The unique identifier for the user entry.
-        - name: authorization
-          in: header
-          required: true
-          schema:
-            type: string
-            required: true
-            description: Its the token of authentication.
-      responses:
-        "200":
-          description: A list of professional experiences of user
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/definitions/ProfessionalExperience"
-definitions:
-  RepresentativeData:
-    type: object
-    required:
-      - username
-      - password
-      - email
-      - paymentMethods
-      - companyName
-      - companySubscription
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      password:
-        type: string
-        description: The password of the user.
-      email:
-        type: string
-        format: email
-        description: The email of the user.
-      phone:
-        type: string
-        pattern: '^\+?[1-9]\d{1,14}$'
-        description: The phone of the user.
-      paymentMethods:
-        type: array
-        description: The payment methods of the user.
-        items:
-          type: string
-      companyName:
-        type: string
-        description: The company name of the representative.
-      companySubscription:
-        type: string
-        enum:
-          - "Basic plan"
-          - "Pro plan"
-          - "Custom plan"
-        description: The subscription of the company.
-      projectSocietyName:
-        type: string
-        description: The project society name of teh representative.
-
-  EditRepresentativeData:
-    type: object
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      email:
-        type: string
-        format: email
-        description: The email of the user.
-      phone:
-        type: string
-        pattern: '^\+?[1-9]\d{1,14}$'
-        description: The phone of the user.
-      paymentMethods:
-        type: array
-        description: The payment methods of the user.
-        items:
-          type: string
-      companyName:
-        type: string
-        description: The company name of the representative.
-      companySubscription:
-        type: string
-        enum:
-          - "Basic plan"
-          - "Pro plan"
-          - "Custom plan"
-        description: The subscription of the company.
-      projectSocietyName:
-        type: string
-        description: The project society name of teh representative.
-
-  CandidateData:
-    type: object
-    required:
-      - username
-      - password
-      - email
-      - paymentMethods
-      - fullName
-      - githubUser
-      - candidateSubscription
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      password:
-        type: string
-        description: The password of the user.
-      email:
-        type: string
-        format: email
-        description: The email of the user.
-      phone:
-        type: string
-        pattern: '^\+?[1-9]\d{1,14}$'
-        description: The phone of the user.
-      paymentMethods:
-        type: array
-        description: The payment methods of the user.
-        items:
-          type: string
-      fullName:
-        type: string
-        description: The full name of the user.
-      githubUser:
-        type: string
-        description: The github username of the user.
-      profilePicture:
-        type: string
-        description: The profile picture of the user.
-      candidateSubscription:
-        type: string
-        enum:
-          - "Basic plan"
-          - "Pro plan"
-        description: The subscription of the candidate.
-      CV:
-        type: string
-        description: The CV of the user.
-      residence:
-        type: string
-        description: The residence of the user.
-      lifestyle:
-        type: string
-        enum:
-          - "On-site"
-          - "Telematic"
-        description: The life style of the user of the user.
-      githubToken:
-        type: string
-        description: The github token of the user.
-
-  EditCandidateData:
-    type: object
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      email:
-        type: string
-        format: email
-        description: The email of the user.
-      phone:
-        type: string
-        pattern: '^\+?[1-9]\d{1,14}$'
-        description: The phone of the user.
-      paymentMethods:
-        type: array
-        description: The payment methods of the user.
-        items:
-          type: string
-      fullName:
-        type: string
-        description: The full name of the user.
-      githubUser:
-        type: string
-        description: The github username of the user.
-      candidateSubscription:
-        type: string
-        enum:
-          - "Basic plan"
-          - "Pro plan"
-        description: The subscription of the candidate.
-      CV:
-        type: string
-        description: The CV of the user.
-      residence:
-        type: string
-        description: The residence of the user.
-      lifestyle:
-        type: string
-        enum:
-          - "On-site"
-          - "Telematic"
-        description: The life style of the user of the user.
-      githubToken:
-        type: string
-        description: The github token of the user.
-  LoginData:
-    type: object
-    required:
-      - username
-      - password
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      password:
-        type: string
-        description: The password of the user.
-  User:
-    type: object
-    required:
-      - username
-      - password
-      - email
-      - phone
-    properties:
-      username:
-        type: string
-        description: The name of the user.
-      password:
-        type: string
-        description: The password of the user.
-      email:
-        type: string
-        format: email
-        description: The email of the user.
-      paymentMethods:
-        type: array
-        description: The payment methods of the user.
-        items:
-          type: string

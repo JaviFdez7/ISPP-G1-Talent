@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import DropdownComponent from '../../components/DropDown.jsx'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton.jsx'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 export default function SearchResult() {
@@ -15,9 +15,10 @@ export default function SearchResult() {
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const [showModal, setShowModal] = useState(false)
 	const [selectedId, setSelectedId] = useState(null)
-	let searchResultCount = 0
-
+	const [analysisData, setAnalysisData] = useState({})
 	const [teamData, setTeamData] = useState(null)
+	let searchResultCount = 0
+	let navigate = useNavigate()
 
 	async function fetchDataFromEndpoint(representativeId) {
 		try {
@@ -29,7 +30,7 @@ export default function SearchResult() {
 				apiURL + '/team-creator/representative-user/' + representativeId,
 				config
 			)
-			setTeamData(response.data)
+			setTeamData(response.data.data)
 			setError(false)
 			return response.data
 		} catch (error) {
@@ -50,6 +51,51 @@ export default function SearchResult() {
 			throw error
 		}
 	}
+
+	useEffect(() => {
+		const representativeId = localStorage.getItem('userId')
+		fetchDataFromEndpoint(representativeId)
+	}, [])
+
+	async function fetchAnalysisFromEndpoint(candidate) {
+		try {
+			const token = localStorage.getItem('access_token')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			const response = await axios.get(
+				`${apiURL}/analysis/github/${candidate.github_username}`,
+				config
+			)
+			setAnalysisData((prevState) => ({
+				...prevState,
+				[candidate.github_username]: response.data,
+			}))
+			return response.data
+		} catch (error) {
+			setError(true)
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			throw error
+		}
+	}
+
+	useEffect(() => {
+		if (teamData) {
+			teamData.forEach((teamList) => {
+				teamList.profiles.forEach((team) => {
+					if (Array.isArray(team.recommendedCandidates)) {
+						team.recommendedCandidates.forEach(async (candidate) => {
+							const analysis = await fetchAnalysisFromEndpoint(candidate)
+							setAnalysisData((prevState) => ({
+								...prevState,
+								[candidate.github_username]: analysis,
+							}))
+						})
+					}
+				})
+			})
+		}
+	}, [teamData])
 
 	async function deleteDataFromEndpoint(searchId) {
 		try {
@@ -76,9 +122,28 @@ export default function SearchResult() {
 		setShowModal(false)
 	}
 
+	async function handleClick(candidate) {
+		try {
+			const response = await fetchAnalysisFromEndpoint(candidate)
+			navigate(`/analysis/${candidate.github_username}`)
+		} catch (error) {
+			if (error.response && error.response.status == 404) {
+				navigate(`/analysis/analyze`)
+			}
+		}
+	}
+
+	const [mobile, setMobile] = useState(window.screen.width < 500)
+
 	useEffect(() => {
-		const representativeId = localStorage.getItem('userId')
-		fetchDataFromEndpoint(representativeId)
+		const handleResize = () => {
+			setMobile(window.screen.width < 500)
+		}
+
+		window.addEventListener('resize', handleResize)
+		return () => {
+			window.removeEventListener('resize', handleResize)
+		}
 	}, [])
 
 	return (
@@ -98,7 +163,9 @@ export default function SearchResult() {
 				{error && <p>{errorMessage}</p>}
 				{teamData &&
 					teamData.map((teamList, listIndex) => (
-						<DropdownComponent key={listIndex} name={`Search Result ${listIndex + 1}`}>
+						<DropdownComponent
+							key={listIndex}
+							name={`Searched Candidate ${listIndex + 1}`}>
 							<div className='flex flex-col'>
 								{teamList.profiles.map((team, index) => {
 									searchResultCount++
@@ -107,20 +174,25 @@ export default function SearchResult() {
 											className='flex flex-col items-center w-full'
 											key={`${listIndex}-${searchResultCount}`}>
 											<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
-												Filter Parameters
+												Filter Parameters {index + 1}
 											</h6>
 											<DataTableVertical
+												width='w-3/4'
 												data={[
 													{
 														header: 'Technologies',
 														content: team.profileRequested.technologies
-															? team.profileRequested.technologies
+															? team.profileRequested.technologies.join(
+																	', '
+																)
 															: '',
 													},
 													{
 														header: 'Languages',
 														content: team.profileRequested.languages
-															? team.profileRequested.languages
+															? team.profileRequested.languages.join(
+																	', '
+																)
 															: '',
 													},
 													{
@@ -136,77 +208,134 @@ export default function SearchResult() {
 													},
 												]}
 											/>
-											{Array.isArray(team.recommendedCandidates) &&
-												team.recommendedCandidates.map(
-													(candidate, candidateIndex) => (
-														<div key={candidateIndex}>
-															<h6 className='text-1xl font-bold text-center text-white mt-5 mb-5'>
-																Filtered Candidate{' '}
-																{candidateIndex + 1}
-															</h6>
-															<DataTableVertical
-																data={[
-																	{
-																		header: 'Gihub username',
-																		content:
-																			candidate.github_username,
-																	},
-																	{
-																		header: 'Technologies',
-																		content: Array.isArray(
-																			candidate.technologies
-																		)
-																			? candidate.technologies.join(
-																					', '
-																				)
+											<div
+												className='flex flex-wrap mt-5'
+												style={{
+													flexDirection: mobile ? 'column' : 'row',
+												}}>
+												{Array.isArray(team.recommendedCandidates) &&
+													team.recommendedCandidates.map(
+														(candidate, candidateIndex) => (
+															<div
+																key={candidateIndex}
+																className='w-1/3 px-2 '>
+																<h6
+																	className='text-1xl font-bold text-center text-white mt-5 mb-5'
+																	style={{
+																		marginLeft: mobile
+																			? '140px'
 																			: '',
-																	},
-																	{
-																		header: 'Languages',
-																		content: Array.isArray(
-																			candidate.languages
-																		)
-																			? candidate.languages.join(
-																					', '
-																				)
+																		width: 'calc(100% )',
+																	}}>
+																	Filtered Candidate{' '}
+																	{candidateIndex + 1}
+																</h6>
+
+																<DataTableVertical
+																	width='w-full'
+																	data={[
+																		{
+																			header: 'Gihub username',
+																			content: (
+																				<>
+																					<div>
+																						{
+																							candidate.github_username
+																						}
+																					</div>
+																					{analysisData[
+																						candidate
+																							.github_username
+																					] &&
+																						analysisData[
+																							candidate
+																								.github_username
+																						].data && (
+																							<img
+																								src={
+																									analysisData[
+																										candidate
+																											.github_username
+																									]
+																										.data
+																										.avatarUrl
+																								}
+																								style={{
+																									width: '25px',
+																									height: '25px',
+																									borderRadius:
+																										'50%',
+																									marginLeft:
+																										'5px',
+																								}}
+																							/>
+																						)}
+																				</>
+																			),
+																		},
+																		{
+																			header: 'Technologies',
+																			content: Array.isArray(
+																				candidate.technologies
+																			)
+																				? candidate.technologies.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Languages',
+																			content: Array.isArray(
+																				candidate.languages
+																			)
+																				? candidate.languages.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Field',
+																			content: Array.isArray(
+																				candidate.field
+																			)
+																				? candidate.field.join(
+																						', '
+																					)
+																				: '',
+																		},
+																		{
+																			header: 'Years of Experience',
+																			content:
+																				candidate.yearsOfExperience,
+																		},
+																	]}
+																/>
+																<div
+																	className='flex justify-center  mt-10 mb-4'
+																	style={{
+																		marginLeft: mobile
+																			? '140px'
 																			: '',
-																	},
-																	{
-																		header: 'Field',
-																		content: Array.isArray(
-																			candidate.field
-																		)
-																			? candidate.field.join(
-																					', '
-																				)
-																			: '',
-																	},
-																	{
-																		header: 'Years of Experience',
-																		content:
-																			candidate.yearsOfExperience,
-																	},
-																]}
-															/>
-															<div className='flex justify-center mt-16 mb-0'>
-																{MainButton(
-																	'Delete search',
-																	'',
-																	() =>
-																		deleteSearchResult(
-																			teamList._id
-																		)
-																)}
-																{/*<Link to={`/analysis/${candidate.github_username}`} className="ml-10" style={{ textDecoration: 'underline' }}>
-                View Analysis
-                      </Link>*/}
+																		width: 'calc(100% )',
+																	}}>
+																	{MainButton(
+																		'View Analysis',
+																		'',
+																		() => handleClick(candidate)
+																	)}
+																</div>
 															</div>
-														</div>
-													)
-												)}
+														)
+													)}
+											</div>
 										</div>
 									)
 								})}
+								<div className='flex justify-center mt-16 mb-0'>
+									{MainButton('Delete search', '', () =>
+										deleteSearchResult(teamList._id)
+									)}
+								</div>
 							</div>
 						</DropdownComponent>
 					))}

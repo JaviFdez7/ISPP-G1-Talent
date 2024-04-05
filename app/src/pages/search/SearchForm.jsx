@@ -12,6 +12,7 @@ export default function SearchForm() {
 	const talentColor = 'var(--talent-highlight)'
 	const [numForms, setNumForms] = useState(1)
 	const [numError, setNumError] = useState('')
+	const userId = localStorage.getItem('userId')
 
 	const [errorMessage, setErrorMessage] = useState('')
 	const [form, setForm] = useState(
@@ -268,7 +269,7 @@ export default function SearchForm() {
 				apiURL + '/team-creator/representative-user/' + representativeId,
 				config
 			)
-			const lastSearch = todosSearches.data[todosSearches.data.length - 1]
+			const lastSearch = todosSearches.data.data[todosSearches.data.data.length - 1]
 			navigate('/searches/' + lastSearch._id)
 		} catch (error) {
 			if (error.message && error.message.includes('Network Error')) {
@@ -343,7 +344,7 @@ export default function SearchForm() {
 
 	return (
 		<div
-			className='h-screen flex flex-col bg-fixed home-container'
+			className='min-h-screen flex flex-col bg-fixed home-container'
 			style={{
 				backgroundImage: `url(${mainBackgroundRegisterLogin})`,
 				backgroundSize: 'cover',
@@ -527,8 +528,9 @@ export default function SearchForm() {
 						</div>
 					</div>
 				))}
-				<div className='flex justify-center mt-2'>
+				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
+					{MainButton('Previous Searches', `/searches/representative/${userId}`)}
 				</div>
 			</form>
 		</div>

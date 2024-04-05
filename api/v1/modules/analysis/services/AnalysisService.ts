@@ -17,9 +17,9 @@ export const getAllAnalysis = async (): Promise<any[]> => {
 }
 
 export const getAnalysisById: any = async (id: any, token: string) => {
-  if (!id){
-    throw new Error('A valid ID was not provided');
-  }
+	if (!id) {
+		throw new Error('A valid ID was not provided')
+	}
 
   try {
     const analysis = await AnalysisModel.findById(id);
@@ -35,61 +35,66 @@ export const getAnalysisById: any = async (id: any, token: string) => {
   }
 };
 export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
-  if (!githubUsername){
-    throw new Error('A valid GitHub username was not provided.');
-  }
+	if (!githubUsername) {
+		throw new Error('A valid GitHub username was not provided.')
+	}
 
-  try {
-    const analysis = await AnalysisModel.findOne({ githubUsername });
-    if (!analysis){
-      throw new Error(`Analysis for the GitHub user: ${githubUsername} was not found`);
-    }
+	try {
+		const analysis = await AnalysisModel.findOne({ githubUsername })
+		if (!analysis) {
+			throw new Error(`Analysis for the GitHub user: ${githubUsername} was not found`)
+		}
 
-    return analysis;
-  } catch (error: any) {
-    throw new Error(`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`);
-  }
-};
-export const createAnalysis: any = async (githubUsername: string,token?: string,  userApikey?: string) => {
-  token=token?? '';
-  if (!githubUsername){
-    throw new Error('A valid GitHub username was not provided.');
-  }
+		return analysis
+	} catch (error: any) {
+		throw new Error(
+			`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`
+		)
+	}
+}
+export const createAnalysis: any = async (
+	githubUsername: string,
+	token?: string,
+	userApikey?: string
+) => {
+	token = token ?? ''
+	if (!githubUsername) {
+		throw new Error('A valid GitHub username was not provided.')
+	}
 
-  try {
-    const analysis = await AnalysisModel.findOne({ githubUsername });
-    const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey);
-    if (!analysis) {
-      const userAnalysis = new AnalysisModel({
-        githubUsername: userInfo.githubUsername,
-        avatarUrl: userInfo.avatarUrl,
-        followers: userInfo.followers,
-        globalIssuesClosed: userInfo.globalIssuesClosed,
-        contributions: userInfo.contributions,
-        globalTopLanguages: userInfo.globalTopLanguages,
-        globalTechnologies: userInfo.globalTechnologies,
-        topRepositories: userInfo.topRepositories.map(repo => ({
-          name: repo.name,
-          url: repo.url,
-          stars: repo.stars,
-          forks: repo.forks,
-          languages: repo.languages,
-          technologies: repo.technologies
-        }))
-      });
-      
+	try {
+		const analysis = await AnalysisModel.findOne({ githubUsername })
+		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)
+		if (!analysis) {
+			const userAnalysis = new AnalysisModel({
+				githubUsername: userInfo.githubUsername,
+				avatarUrl: userInfo.avatarUrl,
+				followers: userInfo.followers,
+				globalIssuesClosed: userInfo.globalIssuesClosed,
+				contributions: userInfo.contributions,
+				globalTopLanguages: userInfo.globalTopLanguages,
+				globalTechnologies: userInfo.globalTechnologies,
+				topRepositories: userInfo.topRepositories.map((repo) => ({
+					name: repo.name,
+					url: repo.url,
+					stars: repo.stars,
+					forks: repo.forks,
+					languages: repo.languages,
+					technologies: repo.technologies,
+				})),
+			})
 
-      const savedRecord = await userAnalysis.save();
-      if(token.length>0){
-        const representative = await Representative.findById(verifyJWT(token).sub);
-        if(representative!==null){
-          await createHistory(representative._id,{analysisId:savedRecord._id});
-        }
-      }
+			const savedRecord = await userAnalysis.save()
+			if (token.length > 0) {
+				const representative = await Representative.findById(verifyJWT(token).sub)
+				if (representative !== null) {
+					await createHistory(representative._id, { analysisId: savedRecord._id })
+				}
+			}
 
-      return savedRecord;
-    } else {
-      const filter = { githubUsername };
+			return savedRecord
+		} else {
+			const filter = { githubUsername }
 
       const updatedDocument = await AnalysisModel.findOneAndUpdate(filter, userInfo, { new: true, omitUndefined: true });
       if(token.length>0){
@@ -122,21 +127,23 @@ export const createAnalysis: any = async (githubUsername: string,token?: string,
 };
 
 export const deleteAnalysis: any = async (githubUsername: string) => {
-  if (!githubUsername){
-    throw new Error('A valid GitHub username was not provided.');
-  }
+	if (!githubUsername) {
+		throw new Error('A valid GitHub username was not provided.')
+	}
 
-  try {
-    const deletedAnalysis = await AnalysisModel.findOneAndDelete({ githubUsername });
+	try {
+		const deletedAnalysis = await AnalysisModel.findOneAndDelete({ githubUsername })
 
-    if (!deletedAnalysis) throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`);
+		if (!deletedAnalysis)
+			throw new Error(`No analysis was found for the GitHub user: ${githubUsername}`)
 
-    return deletedAnalysis;
-  } catch (error: any) {
-    if (error instanceof Error) throw new Error(`Error when deleting the analysis by username: ${error.message}`);
-    else throw new Error('Unknown error when deleting the analysis by username.');
-  }
-};
+		return deletedAnalysis
+	} catch (error: any) {
+		if (error instanceof Error)
+			throw new Error(`Error when deleting the analysis by username: ${error.message}`)
+		else throw new Error('Unknown error when deleting the analysis by username.')
+	}
+}
 
 export default {
 	getAllAnalysis,
