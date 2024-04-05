@@ -133,20 +133,18 @@ export default function SearchResult() {
 		}
 	}
 
-
-	const [mobile, setMobile] = useState(window.screen.width < 500);
+	const [mobile, setMobile] = useState(window.screen.width < 500)
 
 	useEffect(() => {
 		const handleResize = () => {
-			setMobile(window.screen.width < 500);
-		};
-	
-		window.addEventListener('resize', handleResize);
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
+			setMobile(window.screen.width < 500)
+		}
 
+		window.addEventListener('resize', handleResize)
+		return () => {
+			window.removeEventListener('resize', handleResize)
+		}
+	}, [])
 
 	return (
 		<section
@@ -184,13 +182,17 @@ export default function SearchResult() {
 													{
 														header: 'Technologies',
 														content: team.profileRequested.technologies
-															? team.profileRequested.technologies.join(', ')
+															? team.profileRequested.technologies.join(
+																	', '
+																)
 															: '',
 													},
 													{
 														header: 'Languages',
 														content: team.profileRequested.languages
-															? team.profileRequested.languages.join(', ')
+															? team.profileRequested.languages.join(
+																	', '
+																)
 															: '',
 													},
 													{
@@ -206,21 +208,30 @@ export default function SearchResult() {
 													},
 												]}
 											/>
-											<div className='flex flex-wrap mt-5' 
-											style={{ flexDirection: mobile ? 'column' : 'row' }}>
+											<div
+												className='flex flex-wrap mt-5'
+												style={{
+													flexDirection: mobile ? 'column' : 'row',
+												}}>
 												{Array.isArray(team.recommendedCandidates) &&
 													team.recommendedCandidates.map(
 														(candidate, candidateIndex) => (
 															<div
 																key={candidateIndex}
 																className='w-1/3 px-2 '>
-																<h6 className='text-1xl font-bold text-center text-white mt-5 mb-5'
-																	style={{ marginLeft: mobile ? '140px' : '' ,width: 'calc(100% )' }}>
-																	Filtered Candidate{' '}{candidateIndex + 1}
+																<h6
+																	className='text-1xl font-bold text-center text-white mt-5 mb-5'
+																	style={{
+																		marginLeft: mobile
+																			? '140px'
+																			: '',
+																		width: 'calc(100% )',
+																	}}>
+																	Filtered Candidate{' '}
+																	{candidateIndex + 1}
 																</h6>
 
 																<DataTableVertical
-																	
 																	width='w-full'
 																	data={[
 																		{
@@ -299,8 +310,14 @@ export default function SearchResult() {
 																		},
 																	]}
 																/>
-																<div className='flex justify-center  mt-10 mb-4'
-																style={{ marginLeft: mobile ? '140px' : '' ,width: 'calc(100% )' }}>
+																<div
+																	className='flex justify-center  mt-10 mb-4'
+																	style={{
+																		marginLeft: mobile
+																			? '140px'
+																			: '',
+																		width: 'calc(100% )',
+																	}}>
 																	{MainButton(
 																		'View Analysis',
 																		'',
