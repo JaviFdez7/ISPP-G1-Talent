@@ -79,7 +79,6 @@ export default function SearchResult() {
 				...prevState,
 				[candidate.github_username]: response.data,
 			}))
-			console.log(response.data)
 			return response.data
 		} catch (error) {
 			setError(true)
@@ -90,7 +89,6 @@ export default function SearchResult() {
 
 	useEffect(() => {
 		if (teamData && teamData.profiles) {
-			console.log(teamData)
 			teamData.profiles.forEach((team) => {
 				if (Array.isArray(team.recommendedCandidates)) {
 					team.recommendedCandidates.forEach(async (candidate) => {
@@ -109,11 +107,20 @@ export default function SearchResult() {
 		fetchDataFromEndpoint(searchId)
 	}, [searchId])
 
+
+
+	const [mobile, setMobile] = useState(window.screen.width < 500);
+
 	useEffect(() => {
-		if (error) {
-			console.log(errorMessage)
-		}
-	}, [error, errorMessage])
+		const handleResize = () => {
+			setMobile(window.screen.width < 500);
+		};
+	
+		window.addEventListener('resize', handleResize);
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
 
 	return (
 		<section
@@ -126,17 +133,14 @@ export default function SearchResult() {
 			<div className='container flex flex-col items-center w-10/12 h-full '>
 				{teamData &&
 					teamData.profiles.map((team, index) => (
-						<DropdownComponent
-							key={index}
-							name={`Searched Candidates ${index + 1}`}
-							defaultOpen={true}>
+						<DropdownComponent key={index} name={`Searched Candidates ${index + 1}`} defaultOpen={true}>
 							<div className='flex flex-col items-center w-full' key={index}>
 								<div className='flex flex-col items-center w-full'>
 									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
 										Filter Parameters {index + 1}
 									</h6>
 									<DataTableVertical
-										width='w-3/4'
+									width='w-3/4'
 										data={[
 											{
 												header: 'Technologies',
@@ -163,17 +167,21 @@ export default function SearchResult() {
 										]}
 									/>
 								</div>
-								<div className='flex flex-wrap'>
+								<div className='flex flex-wrap'
+								style={{ flexDirection: mobile ? 'column' : 'row' }}>
 									{Array.isArray(team.recommendedCandidates) &&
 									team.recommendedCandidates.length > 0 ? (
 										team.recommendedCandidates.map(
 											(candidate, candidateIndex) => (
-												<div key={candidateIndex} className='w-1/3 px-2  '>
-													<h6 className='text-1xl font-bold text-center text-white  mt-5 mb-5'>
+												<div
+													key={candidateIndex}
+													className='w-1/3 px-2  '>
+													<h6 className='text-1xl font-bold text-center text-white  mt-5 mb-5'
+													style={{ marginLeft: mobile ? '140px' : '' ,width: 'calc(100% )' }}>
 														Filtered Candidate {candidateIndex + 1}
 													</h6>
 													<DataTableVertical
-														width='w-full'
+														width="w-full"
 														data={[
 															{
 																header: 'Github username',
@@ -252,7 +260,8 @@ export default function SearchResult() {
 															justifyContent: 'center',
 															alignItems: 'center',
 														}}>
-														<div className='flex justify-center ml-24 mt-10 mb-4'>
+														<div className='flex justify-center ml-24 mt-10 mb-4'
+														style={{ marginLeft: mobile ? '270px' : '' }}>
 															{MainButton('View Analysis', '', () =>
 																handleClick(candidate)
 															)}

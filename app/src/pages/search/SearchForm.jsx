@@ -344,7 +344,7 @@ export default function SearchForm() {
 
 	return (
 		<div
-			className='h-screen flex flex-col bg-fixed home-container'
+			className='min-h-screen flex flex-col bg-fixed home-container'
 			style={{
 				backgroundImage: `url(${mainBackgroundRegisterLogin})`,
 				backgroundSize: 'cover',
