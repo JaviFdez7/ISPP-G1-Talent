@@ -133,7 +133,7 @@ export default function SearchResult() {
 			<div className='container flex flex-col items-center w-10/12 h-full '>
 				{teamData &&
 					teamData.profiles.map((team, index) => (
-						<DropdownComponent key={index} name={`Searched Candidates ${index + 1}`} defaultOpen={true}>
+						<DropdownComponent key={index} name={`Searched Candidate ${index + 1}`} defaultOpen={true}>
 							<div className='flex flex-col items-center w-full' key={index}>
 								<div className='flex flex-col items-center w-full'>
 									<h6 className='text-2xl font-bold text-center text-white mt-5 mb-5'>
