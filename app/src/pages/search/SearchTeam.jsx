@@ -30,7 +30,7 @@ export default function SearchResult() {
 				apiURL + '/team-creator/representative-user/' + representativeId,
 				config
 			)
-			setTeamData(response.data)
+			setTeamData(response.data.data)
 			setError(false)
 			return response.data
 		} catch (error) {

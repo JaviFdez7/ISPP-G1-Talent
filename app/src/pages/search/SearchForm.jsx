@@ -269,7 +269,7 @@ export default function SearchForm() {
 				apiURL + '/team-creator/representative-user/' + representativeId,
 				config
 			)
-			const lastSearch = todosSearches.data[todosSearches.data.length - 1]
+			const lastSearch = todosSearches.data.data[todosSearches.data.data.length - 1]
 			navigate('/searches/' + lastSearch._id)
 		} catch (error) {
 			if (error.message && error.message.includes('Network Error')) {
@@ -530,7 +530,7 @@ export default function SearchForm() {
 				))}
 				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
-					{MainButton('Previous Searches', `/searches/representative/${userId}` )}
+					{MainButton('Previous Searches', `/searches/representative/${userId}`)}
 				</div>
 			</form>
 		</div>
