@@ -123,7 +123,12 @@ export const checkDeleteProfessionalExperience: any = async (req: Request, res: 
       return;
     }
     const decodedToken = verifyJWT(token);
-    const candidate = await Candidate.findOne({ _id: req.body.userId, profesionalExperiences: experience._id });
+    if (!decodedToken.sub) {
+      ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: 'Invalid token payload' }], 401);
+      return;
+    }
+    const userId = decodedToken.sub.toString();
+    const candidate = await Candidate.findOne({ _id: userId, profesionalExperiences: experience._id });
     if (decodedToken.sub !== candidate?._id.toString()) {
       const message = 'Incorrect token';
       ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401);
