@@ -11,6 +11,7 @@ const mongoUrl = process.env.MONGO_URL ?? 'mongodb://localhost:27017';
 const dbName = 'talentdb_test';
 
 //FUNCIONES---------------------------
+//TODO - Realizar conexión efectiva con base de datos de prueba
 async function createTestDatabase() {
     try {
         // Verificar si ya hay una conexión abierta
