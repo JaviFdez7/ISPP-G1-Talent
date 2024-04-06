@@ -491,9 +491,7 @@ export default function AnalysisDashboard() {
 										<h6 className='text-2xl font-bold text-center text-white '>
 											Working experiences
 										</h6>
-										<br />
-										<br></br>
-										<div className='flex justify-between items-center'>
+										<div className='flex justify-between items-center w-full'>
 											<WorkExperienceListNoButtons experience={experience} />
 										</div>
 										<br></br>

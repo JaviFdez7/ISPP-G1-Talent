@@ -23,7 +23,7 @@ const WorkExperienceList = ({ experience }) => {
 			className='w-9/12 self-center mx-auto'
 			style={{ marginBottom: '3rem', marginTop: '3rem' }}>
 			{experience.map((item, index) => (
-				<div key={index} className='flex justify-between'>
+				<div key={index} className='flex justify-between m-2'>
 					<div
 						className='p-4 rounded-lg transition-colors duration-300 mb-2 border-b border-t mx-auto w-full'
 						style={{

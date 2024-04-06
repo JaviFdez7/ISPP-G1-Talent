@@ -27,9 +27,9 @@ export default function Input({name="", value="", editable=false, placeholder=""
             <div className="input-container-name" style={{width: n_width}}>
               <h5>{name + (isMandatory ? " *" : "")}</h5>
             </div>
-            <div className="input-container-value" style={{width: v_width}}>
-              <input id={"input-"+name} disabled={!editable} onFocus={expand} placeholder={placeholder} onChange={onChange} name={formName} value={value} isMandatory={isMandatory} errors={errors} type={type}></input>
-              <hr className="input-value-highlighter" id={"input-value-highlighter-"+name}></hr>
+            <div className="input-container-value" style={{ width: v_width }}>
+                <input id={"input-"+ name} style={{ marginLeft: '10px' }} disabled={!editable} onFocus={expand} placeholder={placeholder} onChange={onChange} name={formName} value={value} isMandatory={isMandatory} errors={errors} type={type}></input>
+                <hr className="input-value-highlighter" id={"input-value-highlighter-"+name}></hr>
             </div>
         </div>
     );
