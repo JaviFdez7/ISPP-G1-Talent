@@ -95,7 +95,7 @@ export default function AnalysisDashboard() {
 
 	async function fetchCandidatesFromAnalysis() {
 		try {
-			const response = await axios.get(apiURL + '/user' )
+			const response = await axios.get(apiURL + '/user')
 			setError(false)
 			return response.data.data
 		} catch (error) {
@@ -123,14 +123,13 @@ export default function AnalysisDashboard() {
 		}
 	}
 
-
 	useEffect(() => {
 		if (dataArray && dataArray._id) {
 			fetchCandidatesFromAnalysis()
 				.then((data) => {
-					const candidato = data.find(i => i.analysisId == dataArray._id);
-					if(candidato!=null){
-						fetchExperienceFromCandidate(candidato);
+					const candidato = data.find((i) => i.analysisId == dataArray._id)
+					if (candidato != null) {
+						fetchExperienceFromCandidate(candidato)
 						setCandidate(candidato)
 					}
 				})
@@ -139,8 +138,6 @@ export default function AnalysisDashboard() {
 				})
 		}
 	}, [dataArray])
-
-
 
 	return (
 		<section
@@ -168,42 +165,48 @@ export default function AnalysisDashboard() {
 					</h6>
 					<br></br>
 					<div className='analysis-profile'>
-					<img
-						src={candidate && candidate.profilePicture ? candidate.profilePicture : dataArray.avatarUrl}
-						alt='Imagen'
-						className='analysis-profile-img'
-						style={{ position: 'relative', left: '0%', zIndex: '1' }}
-					/>
+						<img
+							src={
+								candidate && candidate.profilePicture
+									? candidate.profilePicture
+									: dataArray.avatarUrl
+							}
+							alt='Imagen'
+							className='analysis-profile-img'
+							style={{ position: 'relative', left: '0%', zIndex: '1' }}
+						/>
 
 						<div className='analysis-profile-text'>
-							
-								<div className='analysis-profile-textcell-main'>
-									<h2>{dataArray.githubUsername}</h2>
-								</div>
-								<div className='analysis-profile-textcell'>
-									{Input({
-										name: 'Followers',
-										value: dataArray.followers,
-										width: '300px',
-									})}
-								</div>
-								<div className='analysis-profile-textcell'>
-									{Input({
-										name: 'Commits',
-										value:
-											dataArray && dataArray.contributions
-												? dataArray.contributions.totalCommits
-												: 0,
-										width: '300px',
-									})}
-								</div>
-								<div className='analysis-profile-textcell'>
-									{Input({
-										name: 'Pull Requests',
-										value: dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0,
-										width: '300px',
-									})}
-								</div>
+							<div className='analysis-profile-textcell-main'>
+								<h2>{dataArray.githubUsername}</h2>
+							</div>
+							<div className='analysis-profile-textcell'>
+								{Input({
+									name: 'Followers',
+									value: dataArray.followers,
+									width: '300px',
+								})}
+							</div>
+							<div className='analysis-profile-textcell'>
+								{Input({
+									name: 'Commits',
+									value:
+										dataArray && dataArray.contributions
+											? dataArray.contributions.totalCommits
+											: 0,
+									width: '300px',
+								})}
+							</div>
+							<div className='analysis-profile-textcell'>
+								{Input({
+									name: 'Pull Requests',
+									value:
+										dataArray && dataArray.contributions
+											? dataArray.contributions.totalPullRequests
+											: 0,
+									width: '300px',
+								})}
+							</div>
 						</div>
 					</div>
 					<br></br>
@@ -261,7 +264,6 @@ export default function AnalysisDashboard() {
 													style={{ width: '16.66%' }}>
 													Technologies
 												</th>
-												
 											</tr>
 										</thead>
 									</table>
@@ -303,7 +305,6 @@ export default function AnalysisDashboard() {
 																				', '
 																			)}
 																		</td>
-																		
 																	</tr>
 																	<tr
 																		style={{
@@ -422,8 +423,8 @@ export default function AnalysisDashboard() {
 					)}
 					<br></br>
 				</div>
-				
-				{candidate && candidate.email &&(
+
+				{candidate && candidate.email && (
 					<div
 						className='w-full flex justify-center items-center p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
 						style={{
@@ -443,7 +444,7 @@ export default function AnalysisDashboard() {
 										<h6 className='text-3xl font-bold text-center text-white mt-5 mb-5  '>
 											Candidate Information
 										</h6>
-										<br/>
+										<br />
 										<br></br>
 										<div className='w-1/3 justify-center overflow-auto w-full max-w-full'>
 											<DataTableVertical
@@ -454,7 +455,11 @@ export default function AnalysisDashboard() {
 													},
 													{
 														header: 'Phone',
-														content: candidate.phone && candidate.phone.trim() !== '' ? candidate.phone : 'N/A',
+														content:
+															candidate.phone &&
+															candidate.phone.trim() !== ''
+																? candidate.phone
+																: 'N/A',
 													},
 												]}
 												topCell={'Contact Information'}
@@ -471,19 +476,25 @@ export default function AnalysisDashboard() {
 										<h6 className='text-2xl font-bold text-center text-white '>
 											Working experiences
 										</h6>
-										<br/>
+										<br />
 										<br></br>
 										{experience.map((exp, index) => (
-											<div key={index} className="overflow-auto w-full max-w-full ">
+											<div
+												key={index}
+												className='overflow-auto w-full max-w-full '>
 												<DataTableVertical
 													data={[
 														{
 															header: 'Start Date',
-															content: new Date(exp.startDate).toLocaleDateString('en-GB'),
+															content: new Date(
+																exp.startDate
+															).toLocaleDateString('en-GB'),
 														},
 														{
 															header: 'End Date',
-															content: new Date(exp.endDate).toLocaleDateString('en-GB'),
+															content: new Date(
+																exp.endDate
+															).toLocaleDateString('en-GB'),
 														},
 														{
 															header: 'Area',
@@ -501,7 +512,6 @@ export default function AnalysisDashboard() {
 						)}
 					</div>
 				)}
-
 			</div>
 		</section>
 	)
