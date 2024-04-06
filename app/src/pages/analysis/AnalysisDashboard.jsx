@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
 import axios from 'axios'
-
+import DataTableVertical from '../../components/DataTableVertical.jsx'
 import DataTable from '../../components/DataTable.jsx'
 import Input from '../../components/Input.jsx'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
@@ -10,6 +10,7 @@ import MainButton from '../../components/mainButton.jsx'
 import FavoriteButton from '../../components/history/FavoriteButton.jsx'
 import { handleNetworkError } from '../../components/TokenExpired'
 import { useNavigate } from 'react-router-dom'
+import WorkExperienceList from '../../components/WorkExperienceList'
 
 export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
@@ -24,6 +25,8 @@ export default function AnalysisDashboard() {
 	const navigate = useNavigate()
 
 	const [dataArray, setDataArray] = useState([])
+	const [candidate, setCandidate] = useState([])
+	const [experience, setExperience] = useState([])
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 
 	async function fetchDataFromEndpoint(analysisEndPoint) {
@@ -90,6 +93,55 @@ export default function AnalysisDashboard() {
 		mobile = true
 	}
 
+	async function fetchCandidatesFromAnalysis() {
+		try {
+			const response = await axios.get(apiURL + '/user' )
+			setError(false)
+			return response.data.data
+		} catch (error) {
+			setError(false)
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			handleNetworkError(error, navigate)
+		}
+	}
+
+	async function fetchExperienceFromCandidate(currentCandidate) {
+		try {
+			const experiences = []
+			for (const experienceId of currentCandidate.profesionalExperiences) {
+				const response = await axios.get(
+					`${import.meta.env.VITE_BACKEND_URL}/professional-experience/${experienceId}`
+				)
+				experiences.push(response.data.data)
+			}
+			setError(false)
+			setExperience(experiences)
+		} catch (error) {
+			setError(false)
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			handleNetworkError(error, navigate)
+		}
+	}
+
+
+	useEffect(() => {
+		if (dataArray && dataArray._id) {
+			fetchCandidatesFromAnalysis()
+				.then((data) => {
+					const candidato = data.find(i => i.analysisId == dataArray._id);
+					if(candidato!=null){
+						fetchExperienceFromCandidate(candidato);
+						setCandidate(candidato)
+					}
+				})
+				.catch((error) => {
+					console.error('Error fetching data:', error)
+				})
+		}
+	}, [dataArray])
+
+
+
 	return (
 		<section
 			className='text-white flex flex-row justify-center bg-fixed'
@@ -116,44 +168,42 @@ export default function AnalysisDashboard() {
 					</h6>
 					<br></br>
 					<div className='analysis-profile'>
-						<img
-							src={dataArray.avatarUrl}
-							alt='Imagen'
-							className='analysis-profile-img'
-							style={{ position: 'relative', left: '0%', zIndex: '1' }}
-						/>
+					<img
+						src={candidate && candidate.profilePicture ? candidate.profilePicture : dataArray.avatarUrl}
+						alt='Imagen'
+						className='analysis-profile-img'
+						style={{ position: 'relative', left: '0%', zIndex: '1' }}
+					/>
 
 						<div className='analysis-profile-text'>
-							<div className='analysis-profile-textcell-main'>
-								<h2>{dataArray.githubUsername}</h2>
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Followers',
-									value: dataArray.followers,
-									width: '300px',
-								})}
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Commits',
-									value:
-										dataArray && dataArray.contributions
-											? dataArray.contributions.totalCommits
-											: 0,
-									width: '300px',
-								})}
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Pull Requests',
-									value:
-										dataArray && dataArray.contributions
-											? dataArray.contributions.totalPullRequests
-											: 0,
-									width: '300px',
-								})}
-							</div>
+							
+								<div className='analysis-profile-textcell-main'>
+									<h2>{dataArray.githubUsername}</h2>
+								</div>
+								<div className='analysis-profile-textcell'>
+									{Input({
+										name: 'Followers',
+										value: dataArray.followers,
+										width: '300px',
+									})}
+								</div>
+								<div className='analysis-profile-textcell'>
+									{Input({
+										name: 'Commits',
+										value:
+											dataArray && dataArray.contributions
+												? dataArray.contributions.totalCommits
+												: 0,
+										width: '300px',
+									})}
+								</div>
+								<div className='analysis-profile-textcell'>
+									{Input({
+										name: 'Pull Requests',
+										value: dataArray && dataArray.contributions ? dataArray.contributions.totalPullRequests : 0,
+										width: '300px',
+									})}
+								</div>
 						</div>
 					</div>
 					<br></br>
@@ -381,6 +431,86 @@ export default function AnalysisDashboard() {
 					)}
 					<br></br>
 				</div>
+				
+				{candidate && candidate.email &&(
+					<div
+						className='w-full flex justify-center items-center p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+						style={{
+							backgroundColor: 'rgba(0, 0, 0, 0.5)',
+							marginLeft: '100',
+							marginRight: '100',
+							borderColor: borderColor,
+							borderWidth: '1px',
+						}}>
+						{errorMessage ? (
+							<div className='text-center text-white'>{errorMessage}</div>
+						) : (
+							<>
+								{candidate.email ? (
+									<>
+										<br />
+										<h6 className='text-3xl font-bold text-center text-white mt-5 mb-5  '>
+											Candidate Information
+										</h6>
+										<br/>
+										<br></br>
+										<div className='w-1/3 justify-center overflow-auto w-full max-w-full'>
+											<DataTableVertical
+												data={[
+													{
+														header: 'Email',
+														content: candidate.email,
+													},
+													{
+														header: 'Phone',
+														content: candidate.phone && candidate.phone.trim() !== '' ? candidate.phone : 'N/A',
+													},
+												]}
+												topCell={'Contact Information'}
+											/>
+										</div>
+										<br></br>
+									</>
+								) : null}
+
+								<br />
+								{experience && experience.length > 0 ? (
+									<>
+										<br />
+										<h6 className='text-2xl font-bold text-center text-white '>
+											Working experiences
+										</h6>
+										<br/>
+										<br></br>
+										{experience.map((exp, index) => (
+											<div key={index} className="overflow-auto w-full max-w-full ">
+												<DataTableVertical
+													data={[
+														{
+															header: 'Start Date',
+															content: new Date(exp.startDate).toLocaleDateString('en-GB'),
+														},
+														{
+															header: 'End Date',
+															content: new Date(exp.endDate).toLocaleDateString('en-GB'),
+														},
+														{
+															header: 'Area',
+															content: exp.professionalArea,
+														},
+													]}
+													topCell={exp.companyName}
+												/>
+											</div>
+										))}
+										<br></br>
+									</>
+								) : null}
+							</>
+						)}
+					</div>
+				)}
+
 			</div>
 		</section>
 	)
