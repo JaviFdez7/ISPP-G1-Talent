@@ -13,7 +13,7 @@
 // Theshold for duration of entire script - fails test if script lasts longer than X (in ms)
 var ScriptTimeout = 180000;
 // Script-wide timeout for all wait and waitAndFind functions (in ms)
-var DefaultTimeout = 30000;
+var DefaultTimeout = 5000;
 // Change to any User Agent you want to use.
 // Leave as "default" or empty to use the Synthetics default.
 var UserAgent = "default";
@@ -38,8 +38,9 @@ if (UserAgent && UserAgent.trim().length !== 0 && UserAgent !== 'default') {
 // Get browser capabilities and do nothing with it, so that we start with a then-able command
 
 
-(async function () {
+export async function testCandidateRegister() {
     try {
+        console.log(1, "\n----------Test Candidate Register-------------\n");
         // Paso 1
         console.log(1, "http://localhost:7134/");
         await driver.get("http://localhost:7134/");
@@ -136,11 +137,11 @@ if (UserAgent && UserAgent.trim().length !== 0 && UserAgent !== 'default') {
         el = await driver.findElement(By.xpath("//div[@id='root']/div/div[2]/div/form/div[3]/div[2]/div/button/div/h4"));
         await el.click();
 
-        const currentUrl = await driver.getCurrentUrl();
-        const expected_url = "http://localhost:7134/candidate/detail"
-        if (!currentUrl.includes(expected_url)) {
-            throw new Error(`La URL actual (${currentUrl}) no coincide con la esperada. Se esperaba (${expected_url}).`);
-        }
+        const expectedUrl = "http://localhost:7134/candidate/detail";
+        await driver.wait(async () => {
+            const currentUrl = await driver.getCurrentUrl();
+            return currentUrl.includes(expectedUrl);
+        }, DefaultTimeout, `La URL actual no coincide con la esperada. Se esperaba ${expectedUrl}`);
 
         // Éxito
         console.log('Browser script execution SUCCEEDED.');
@@ -152,6 +153,6 @@ if (UserAgent && UserAgent.trim().length !== 0 && UserAgent !== 'default') {
         // Finalización de la prueba
         await driver.quit();
     }
-})();
+};
 
 
