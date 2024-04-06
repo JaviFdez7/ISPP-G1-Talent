@@ -1,10 +1,10 @@
-import { encrypt, compare } from '../helpers/handleBcrypt';
-import { verifyJWT } from '../helpers/handleJWT';
-import { Candidate, Representative, User } from '../models/user';
-import { ProfessionalExperience } from '../../professional-experience/models/professional-experience';
-import e, { type Request, type Response, type NextFunction } from 'express';
-import { ApiResponse } from '../../../utils/ApiResponse';
-import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription';
+import { encrypt, compare } from '../helpers/handleBcrypt'
+import { verifyJWT } from '../helpers/handleJWT'
+import { Candidate, Representative, User } from '../models/user'
+import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
+import e, { type Request, type Response, type NextFunction } from 'express'
+import { ApiResponse } from '../../../utils/ApiResponse'
+import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription'
 
 export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -79,11 +79,7 @@ export const checkCreateCandidate: any = async (
 	try {
 		const data = req.body
 		const isMissingFields: boolean =
-			!data.username ||
-			!data.email ||
-			!data.fullName ||
-			!data.password ||
-			!data.githubUser
+			!data.username || !data.email || !data.fullName || !data.password || !data.githubUser
 		// Comprobar si faltan campos requeridos en el candidato
 		if (isMissingFields) {
 			const message = 'Missing required fields'
@@ -259,13 +255,21 @@ export const checkUpdateCandidate: any = async (
 				401
 			)
 			return
-		} 
-		const subscription=await CandidateSubscription.findById((user as any).subscriptionId);
-		if(!subscription || (subscription as any).remainingUpdates<=0){
-		  const message = 'You cant update your profile until next month';
-		  ApiResponse.sendError(res, [{
-			title: 'Bad Request', detail: message}], 400);
-		  return;
+		}
+		const subscription = await CandidateSubscription.findById((user as any).subscriptionId)
+		if (!subscription || (subscription as any).remainingUpdates <= 0) {
+			const message = 'You cant update your profile until next month'
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
+			return
 		} else {
 			next()
 		}

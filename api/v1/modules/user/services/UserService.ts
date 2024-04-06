@@ -1,10 +1,13 @@
 import { generateJWT } from '../helpers/handleJWT'
 import { Candidate, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
-import { getModelForRole } from '../helpers/handleRoles';
-import { createAnalysis } from '../../analysis/services/AnalysisService';
-import { createSubscriptions, getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService';
-import { CandidateSubscription } from '../../subscriptions/models/subscription';
+import { getModelForRole } from '../helpers/handleRoles'
+import { createAnalysis } from '../../analysis/services/AnalysisService'
+import {
+	createSubscriptions,
+	getSubscriptionsByUserId,
+} from '../../subscriptions/services/SubscriptionsService'
+import { CandidateSubscription } from '../../subscriptions/models/subscription'
 
 export const getAllUser: any = async () => await User.find({})
 
@@ -20,41 +23,44 @@ export const getProfessionalExperiencesByUserId: any = async (userId: any) => {
 }
 
 export const createUser: any = async (data: any, role: string) => {
-  try {
-    const Model = getModelForRole(role);
-    if(role ==='Candidate'){
-      const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
-      data.analysisId= analysis._id;
-    }
-    const subscription = await createSubscriptions(role);
-    data.subscriptionId = subscription._id;
-    const user = new Model(data);
-    await user.save();
-    return user;
-  } catch (error) {
-    console.error('Error inserting user:', error);
-    throw error;
-  }
-};
+	try {
+		const Model = getModelForRole(role)
+		if (role === 'Candidate') {
+			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			data.analysisId = analysis._id
+		}
+		const subscription = await createSubscriptions(role)
+		data.subscriptionId = subscription._id
+		const user = new Model(data)
+		await user.save()
+		return user
+	} catch (error) {
+		console.error('Error inserting user:', error)
+		throw error
+	}
+}
 
 export const updateUser: any = async (id: any, data: any, role: string) => {
 	try {
-	  const Model = getModelForRole(role) as typeof User;
-	  if(role ==='Candidate'){
-		const analysis=await createAnalysis(data?.githubUser,data?.githubToken);
-		data.analysisId=analysis._id;
-  
-		const actualSubscription= await getSubscriptionsByUserId(id);
-		actualSubscription.remainingUpdates--;
-		await CandidateSubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
-	  }
-	  const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true });
-	  return updatedUser;
+		const Model = getModelForRole(role) as typeof User
+		if (role === 'Candidate') {
+			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			data.analysisId = analysis._id
+
+			const actualSubscription = await getSubscriptionsByUserId(id)
+			actualSubscription.remainingUpdates--
+			await CandidateSubscription.findByIdAndUpdate(
+				actualSubscription._id,
+				actualSubscription
+			)
+		}
+		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
+		return updatedUser
 	} catch (error) {
-	  console.error('Error updating user:', error);
-	  throw error;
+		console.error('Error updating user:', error)
+		throw error
 	}
-};
+}
 
 export const updateUserProfilePicture: any = async (id: any, picture: string) => {
 	try {
