@@ -140,36 +140,36 @@ export default function AnalysisDashboard() {
 		}
 	}, [dataArray])
 
-	let imgSrc;
-	console.log(candidate, 'candidate1');
+	let imgSrc
+	console.log(candidate, 'candidate1')
 	if (candidate && Object.keys(candidate).length > 0) {
-		console.log(candidate, 'candidateeeeeeeeeeeeeeee');
+		console.log(candidate, 'candidateeeeeeeeeeeeeeee')
 		if (candidate.profilePicture) {
-			imgSrc = candidate.profilePicture;
+			imgSrc = candidate.profilePicture
 		} else {
-			imgSrc = profile;
+			imgSrc = profile
 		}
 	} else {
-		imgSrc = dataArray.avatarUrl;
+		imgSrc = dataArray.avatarUrl
 	}
 
-	let data = [];
+	let data = []
 
-if (candidate) {
-    if (candidate.email) {
-        data.push({
-            header: 'Email',
-            content: candidate.email,
-        });
-    }
+	if (candidate) {
+		if (candidate.email) {
+			data.push({
+				header: 'Email',
+				content: candidate.email,
+			})
+		}
 
-    if (candidate.phone) {
-        data.push({
-            header: 'Phone',
-            content: candidate.phone
-        });
-    }
-}
+		if (candidate.phone) {
+			data.push({
+				header: 'Phone',
+				content: candidate.phone,
+			})
+		}
+	}
 
 	return (
 		<section
