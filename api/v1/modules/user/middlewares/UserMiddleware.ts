@@ -396,7 +396,7 @@ export const checkUpdateUserProfilePicture: any = async (
 export const checkUpdatePassword: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const id = req.params.id.toString()
-		const data = req.body
+		const { oldPassword, newPassword } = req.body
 		const token = req.headers.authorization ?? ''
 		if (token.length === 0) {
 			const message = 'No token provided'
@@ -427,11 +427,36 @@ export const checkUpdatePassword: any = async (req: Request, res: Response, next
 			)
 			return
 		}
-		if (data.password) {
-			data.password = await encrypt(data.password)
-		} else {
-			next()
+		const user = await User.findById(id)
+		if (!user) {
+			return ApiResponse.sendError(
+				res,
+				[{ title: 'Not Found', detail: 'User not found' }],
+				404
+			)
 		}
+		const isOldPasswordCorrect = await comparePasswords(oldPassword, user.password)
+		if (!isOldPasswordCorrect) {
+			return ApiResponse.sendError(
+				res,
+				[{ title: 'Unauthorized', detail: 'Old password is incorrect' }],
+				401
+			)
+		}
+		if (oldPassword === newPassword) {
+			return ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: 'New password cannot be the same as old password',
+					},
+				],
+				400
+			)
+		}
+		req.body.newPassword = await encrypt(newPassword)
+		next()
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -440,6 +465,10 @@ export const checkUpdatePassword: any = async (req: Request, res: Response, next
 			},
 		])
 	}
+}
+
+const comparePasswords = async (providedPassword: any, storedPassword: any) => {
+	return compare(providedPassword, storedPassword)
 }
 
 // Comprobar si el usuario existe
