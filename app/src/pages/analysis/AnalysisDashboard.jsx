@@ -261,11 +261,7 @@ export default function AnalysisDashboard() {
 													style={{ width: '16.66%' }}>
 													Technologies
 												</th>
-												<th
-													className='datatable-header'
-													style={{ width: '16.66%' }}>
-													Url
-												</th>
+												
 											</tr>
 										</thead>
 									</table>
@@ -307,12 +303,7 @@ export default function AnalysisDashboard() {
 																				', '
 																			)}
 																		</td>
-																		<td className='datatable-cell-small text-center'>
-																			<br></br>
-																			<Link to={item.url}>
-																				ICON
-																			</Link>
-																		</td>
+																		
 																	</tr>
 																	<tr
 																		style={{
