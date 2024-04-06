@@ -83,8 +83,7 @@ export const checkCreateCandidate: any = async (
 			!data.email ||
 			!data.fullName ||
 			!data.password ||
-			!data.githubUser ||
-			!data.candidateSubscription
+			!data.githubUser
 		// Comprobar si faltan campos requeridos en el candidato
 		if (isMissingFields) {
 			const message = 'Missing required fields'
