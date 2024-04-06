@@ -10,7 +10,8 @@ import MainButton from '../../components/mainButton.jsx'
 import FavoriteButton from '../../components/history/FavoriteButton.jsx'
 import { handleNetworkError } from '../../components/TokenExpired'
 import { useNavigate } from 'react-router-dom'
-import WorkExperienceList from '../../components/WorkExperienceList'
+import profile from '../../images/profile.jpg'
+import WorkExperienceListNoButtons from '../../components/WorkExperienceListNoButtons'
 
 export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
@@ -25,7 +26,7 @@ export default function AnalysisDashboard() {
 	const navigate = useNavigate()
 
 	const [dataArray, setDataArray] = useState([])
-	const [candidate, setCandidate] = useState([])
+	const [candidate, setCandidate] = useState()
 	const [experience, setExperience] = useState([])
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 
@@ -139,6 +140,37 @@ export default function AnalysisDashboard() {
 		}
 	}, [dataArray])
 
+	let imgSrc;
+	console.log(candidate, 'candidate1');
+	if (candidate && Object.keys(candidate).length > 0) {
+		console.log(candidate, 'candidateeeeeeeeeeeeeeee');
+		if (candidate.profilePicture) {
+			imgSrc = candidate.profilePicture;
+		} else {
+			imgSrc = profile;
+		}
+	} else {
+		imgSrc = dataArray.avatarUrl;
+	}
+
+	let data = [];
+
+if (candidate) {
+    if (candidate.email) {
+        data.push({
+            header: 'Email',
+            content: candidate.email,
+        });
+    }
+
+    if (candidate.phone) {
+        data.push({
+            header: 'Phone',
+            content: candidate.phone
+        });
+    }
+}
+
 	return (
 		<section
 			className='text-white flex flex-row justify-center bg-fixed'
@@ -147,7 +179,7 @@ export default function AnalysisDashboard() {
 				backgroundSize: 'cover',
 			}}>
 			<div className='fixed top-6 left-0 mb-4 ml-6' style={{ zIndex: '2' }}>
-				{MainButton('Go back', `/analysis/list`, '')}
+				{MainButton('Analysis History', `/analysis/list`, '')}
 			</div>
 
 			<div className='container flex flex-col items-center w-10/12 h-full'>
@@ -166,11 +198,7 @@ export default function AnalysisDashboard() {
 					<br></br>
 					<div className='analysis-profile'>
 						<img
-							src={
-								candidate && candidate.profilePicture
-									? candidate.profilePicture
-									: dataArray.avatarUrl
-							}
+							src={imgSrc}
 							alt='Imagen'
 							className='analysis-profile-img'
 							style={{ position: 'relative', left: '0%', zIndex: '1' }}
@@ -448,20 +476,7 @@ export default function AnalysisDashboard() {
 										<br></br>
 										<div className='w-1/3 justify-center overflow-auto w-full max-w-full'>
 											<DataTableVertical
-												data={[
-													{
-														header: 'Email',
-														content: candidate.email,
-													},
-													{
-														header: 'Phone',
-														content:
-															candidate.phone &&
-															candidate.phone.trim() !== ''
-																? candidate.phone
-																: 'N/A',
-													},
-												]}
+												data={data}
 												topCell={'Contact Information'}
 											/>
 										</div>
@@ -478,33 +493,9 @@ export default function AnalysisDashboard() {
 										</h6>
 										<br />
 										<br></br>
-										{experience.map((exp, index) => (
-											<div
-												key={index}
-												className='overflow-auto w-full max-w-full '>
-												<DataTableVertical
-													data={[
-														{
-															header: 'Start Date',
-															content: new Date(
-																exp.startDate
-															).toLocaleDateString('en-GB'),
-														},
-														{
-															header: 'End Date',
-															content: new Date(
-																exp.endDate
-															).toLocaleDateString('en-GB'),
-														},
-														{
-															header: 'Area',
-															content: exp.professionalArea,
-														},
-													]}
-													topCell={exp.companyName}
-												/>
-											</div>
-										))}
+										<div className='flex justify-between items-center'>
+											<WorkExperienceListNoButtons experience={experience} />
+										</div>
 										<br></br>
 									</>
 								) : null}
