@@ -36,6 +36,7 @@ const userSchema = new Schema({
   username: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
+  profilePicture: String,
   phone: String,
   paymentMethods: [String]
 }, { discriminatorKey: 'role' });
@@ -44,6 +45,7 @@ const User = model('User', userSchema);
 const Analysis = model("Analysis",analysisSchema)
 const representativeSchema = new Schema({
 	companyName: { type: String, required: true },
+  profilePicture: String,
 	companySubscription: {
 		type: String,
 		required: true,

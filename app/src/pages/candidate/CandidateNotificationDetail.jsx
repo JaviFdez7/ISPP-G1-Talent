@@ -68,15 +68,15 @@ export default function CandidateNotificationDetail() {
 					const response = await axios.patch(
 						`${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/notification/${notificationId}`,
 						{
-							id : notificationId,
-							userId : currentUserId,
+							id: notificationId,
+							userId: currentUserId,
 							seen: true,
 						},
 						{
 							headers: {
 								Authorization: `${token}`,
 								'Content-type': 'application/json',
-							}
+							},
 						}
 					)
 					console.log(response.data)
@@ -114,15 +114,15 @@ export default function CandidateNotificationDetail() {
 	}
 
 	function getNotificationsList(notifications) {
-		let n1  = notifications
-		.filter((n) => !n.seen)
-		.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
-		.map((n) => (<NotificationListItem n={n} deleteNotification={deleteNotification}/>))
+		let n1 = notifications
+			.filter((n) => !n.seen)
+			.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
+			.map((n) => <NotificationListItem n={n} deleteNotification={deleteNotification} />)
 
 		let n2 = notifications
 			.filter((n) => n.seen)
 			.sort((a, b) => b.dateTime.localeCompare(a.dateTime))
-			.map((n) => (<NotificationListItem n={n} deleteNotification={deleteNotification}/>))
+			.map((n) => <NotificationListItem n={n} deleteNotification={deleteNotification} />)
 
 		return n1.concat(n2)
 	}
@@ -156,65 +156,60 @@ export default function CandidateNotificationDetail() {
 					style={{ overflowY: 'scroll' }}>
 					<DataTable
 						header={''}
-						contentArray={
-							notifications
-								? getNotificationsList(notifications)
-								: []
-						}
+						contentArray={notifications ? getNotificationsList(notifications) : []}
 						editable={false}
 					/>
 				</div>
 				<Modal
-				isOpen={showModal}
-				onRequestClose={() => setShowModal(false)}
-				contentLabel='Delete Confirmation'
-				style={{
-					content: {
-						width: '40%',
-						height: '20%',
-						margin: 'auto',
-						display: 'flex',
-						flexDirection: 'column',
-						justifyContent: 'center',
-						alignItems: 'center',
-						backgroundColor: 'var(--talent-secondary)',
-						borderRadius: '10px',
-						color: 'white',
-					},
-				}}>
-				<h2 style={{ marginBottom: '3%' }}>
-					Are you sure you want to delete this professional experience?
-				</h2>
-				<div>
-					<button
-						onClick={() => {
-							deleteNotificationsData(selectedId);
-							setShowModal(false); }
-						}
-						style={{
-							marginRight: '10px',
-							padding: '10px',
-							backgroundColor: 'var(--talent-highlight)',
+					isOpen={showModal}
+					onRequestClose={() => setShowModal(false)}
+					contentLabel='Delete Confirmation'
+					style={{
+						content: {
+							width: '40%',
+							height: '20%',
+							margin: 'auto',
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							alignItems: 'center',
+							backgroundColor: 'var(--talent-secondary)',
+							borderRadius: '10px',
 							color: 'white',
-							border: 'none',
-							borderRadius: '5px',
-						}}>
-						Yes
-					</button>
-					<button
-						onClick={() => setShowModal(false)}
-						style={{
-							padding: '10px',
-							backgroundColor: 'var(--talent-black)',
-							color: 'white',
-							border: 'none',
-							borderRadius: '5px',
-						}}>
-						No
-					</button>
-				</div>
-			</Modal>
-
+						},
+					}}>
+					<h2 style={{ marginBottom: '3%' }}>
+						Are you sure you want to delete this professional experience?
+					</h2>
+					<div>
+						<button
+							onClick={() => {
+								deleteNotificationsData(selectedId)
+								setShowModal(false)
+							}}
+							style={{
+								marginRight: '10px',
+								padding: '10px',
+								backgroundColor: 'var(--talent-highlight)',
+								color: 'white',
+								border: 'none',
+								borderRadius: '5px',
+							}}>
+							Yes
+						</button>
+						<button
+							onClick={() => setShowModal(false)}
+							style={{
+								padding: '10px',
+								backgroundColor: 'var(--talent-black)',
+								color: 'white',
+								border: 'none',
+								borderRadius: '5px',
+							}}>
+							No
+						</button>
+					</div>
+				</Modal>
 			</div>
 		</div>
 	)
