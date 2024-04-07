@@ -1,4 +1,5 @@
 import { ProfessionalExperience } from '../models/professional-experience';
+import { Candidate } from '../../user/models/user';
 
 export const getAllProfessionalExperience: any = async () => await ProfessionalExperience.find({});
 
@@ -28,6 +29,10 @@ export const updateProfessionalExperience: any = async (id: any, data: any) => {
 export const deleteProfessionalExperience: any = async (id: any) => {
   try {
     await ProfessionalExperience.findByIdAndDelete(id);
+    await Candidate.updateMany(
+      { profesionalExperiences: id },
+      { $pull: { profesionalExperiences: id } }
+    );
     return 'Professional experience deleted successfully.';
   } catch (error) {
     console.error('Error deleting professional experience', error)

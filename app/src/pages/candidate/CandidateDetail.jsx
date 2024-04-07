@@ -11,18 +11,19 @@ import SecondaryButton from '../../components/secondaryButton'
 import WorkExperienceList from '../../components/WorkExperienceList'
 import TopRepositoriesTable from '../../components/TopRepositoriesTable'
 
-
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
 	const [experience, setExperience] = useState([])
 	const [analysis, setAnalysis] = useState(null)
-	const languages = analysis && analysis.globalTopLanguages
-		? analysis.globalTopLanguages.map((item) => item.language)
-		: []
-	const tecnologies = analysis && analysis.globalTechnologies
-		? analysis.globalTechnologies.map((item) => item)
-		: []
+	const languages =
+		analysis && analysis.globalTopLanguages
+			? analysis.globalTopLanguages.map((item) => item.language)
+			: []
+	const tecnologies =
+		analysis && analysis.globalTechnologies
+			? analysis.globalTechnologies.map((item) => item)
+			: []
 
 	React.useEffect(() => {
 		const fetchUserData = async () => {
@@ -55,12 +56,14 @@ export default function CandidateDetail() {
 				if (candidate && candidate.analysisId) {
 					const analysisId = candidate.analysisId
 					const token = localStorage.getItem('access_token')
-					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/analysis/${analysisId}`,
+					const response = await axios.get(
+						`${import.meta.env.VITE_BACKEND_URL}/analysis/${analysisId}`,
 						{
 							headers: {
 								Authorization: `${token}`,
 							},
-						})
+						}
+					)
 					setAnalysis(response.data.data)
 					return response.data.data
 				}
@@ -71,7 +74,6 @@ export default function CandidateDetail() {
 		fetchDataFromEndpoint()
 	}, [isAuthenticated, candidate])
 
-
 	return (
 		<div
 			className='flex flex-col bg-fixed'
@@ -79,7 +81,9 @@ export default function CandidateDetail() {
 				backgroundImage: `url(${mainBackground})`,
 				backgroundSize: 'cover',
 			}}>
-			<div className='flex flex-row justify-center items-center profile-header w-10/12 mt-20' style={{ marginLeft: '8%' }}>
+			<div
+				className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'
+				style={{ marginLeft: '8%' }}>
 				<div className='flex flex-col items-center'>
 					<img
 						src={candidate && candidate.profilePicture ? candidate.profilePicture : profile}
@@ -138,10 +142,7 @@ export default function CandidateDetail() {
 			<div className='flex flex-col w-8/12 self-center'>
 				<>
 					<div className='flex flex-col items-center w-8/12 self-center'>
-						<DataTable
-							header={'Top 5 Used Languages'}
-							contentArray={languages}
-						/>
+						<DataTable header={'Top 5 Used Languages'} contentArray={languages} />
 						<div className='mr-20 '></div>
 						<br></br>
 						<br></br>
@@ -152,7 +153,6 @@ export default function CandidateDetail() {
 					</div>
 				</>
 				<br></br>
-
 			</div>
 			<h3 className='profile-title'>Work experience</h3>
 			<hr className='w-5/12 self-center'></hr>
