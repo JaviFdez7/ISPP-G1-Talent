@@ -48,7 +48,7 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 
 export const updateUserProfilePicture: any = async (id: any, picture: string) => {
 	try {
-		const updatedUser = await Candidate.findByIdAndUpdate(
+		const updatedUser = await User.findByIdAndUpdate(
 			id,
 			{ profilePicture: picture },
 			{ new: true }

@@ -12,11 +12,15 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import Logout from './swat/logout'
 
+import { useLocation } from 'react-router-dom';
+
+
 export default function Navbar() {
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const { isAuthenticated, logout } = useAuthContext()
   const currentUserId2 = localStorage.getItem('userId')
+  const location = useLocation();
 
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
@@ -56,7 +60,7 @@ export default function Navbar() {
 			}
 		}
 		fetchUserData()
-	}, [isAuthenticated])
+	}, [isAuthenticated, location.pathname])
 
 	function move_hoverer(n) {
 		let t = 130
