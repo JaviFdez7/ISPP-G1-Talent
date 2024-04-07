@@ -86,9 +86,18 @@ export default function CandidateDetail() {
 				style={{ marginLeft: '8%' }}>
 				<div className='flex flex-col items-center'>
 					<img
-						src={candidate && candidate.profilePicture ? candidate.profilePicture : profile}
+						src={
+							candidate && candidate.profilePicture
+								? candidate.profilePicture
+								: profile
+						}
 						className='rounded-full border border-gray-300 profile-img'
-						style={{ objectFit: 'cover', objectPosition: 'center', width: '300px', height: '300px' }}
+						style={{
+							objectFit: 'cover',
+							objectPosition: 'center',
+							width: '300px',
+							height: '300px',
+						}}
 					/>
 				</div>
 				<div className='flex flex-col mt-10 w-fit'>
@@ -129,7 +138,13 @@ export default function CandidateDetail() {
 								? candidate.address
 								: ' Seville, Spain '}
 						</div>
-						<div className='mt-8 self-center'>{SecondaryButton('Update', `/candidate/detail/edit/${candidate._id}`, '')}</div>
+						<div className='mt-8 self-center'>
+							{SecondaryButton(
+								'Update',
+								`/candidate/detail/edit/${candidate._id}`,
+								''
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

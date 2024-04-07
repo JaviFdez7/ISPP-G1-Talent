@@ -12,8 +12,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import Logout from './swat/logout'
 
-import { useLocation } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom'
 
 export default function Navbar() {
 	const [expanded, setExpanded] = useState(false)
@@ -22,8 +21,8 @@ export default function Navbar() {
 	const [nonRead, setNonRead] = useState(0)
 	const [notificationsGuard, setNotificationsGuard] = useState(false)
 	const { isAuthenticated, logout } = useAuthContext()
-  const currentUserId2 = localStorage.getItem('userId')
-  const location = useLocation();
+	const currentUserId2 = localStorage.getItem('userId')
+	const location = useLocation()
 
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
