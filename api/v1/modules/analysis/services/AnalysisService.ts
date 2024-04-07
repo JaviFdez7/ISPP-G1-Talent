@@ -63,9 +63,11 @@ export const createAnalysis: any = async (
 		throw new Error('A valid GitHub username was not provided.')
 	}
 	try {
-		const actualSubscription= await getSubscriptionsByUserId(verifyJWT(token).sub);
-    	actualSubscription.remainingSearches--;
-    	await CompanySubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
+		if(token.length>0){
+			const actualSubscription= await getSubscriptionsByUserId(verifyJWT(token).sub);
+			actualSubscription.remainingSearches--;
+			await CompanySubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
+		}
 		const analysis = await AnalysisModel.findOne({ githubUsername })
 		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)
 		if (!analysis) {
