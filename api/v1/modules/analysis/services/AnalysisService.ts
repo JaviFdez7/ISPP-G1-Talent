@@ -1,5 +1,9 @@
 import { type AnalysisDocument, AnalysisModel } from '../models/analysis.model'
-import { createNotification } from '../../notification/services/NotificationService'
+import {
+	createNotification,
+	updateNotification,
+} from '../../notification/services/NotificationService'
+import { Notification } from '../../notification/models/notification'
 import { Candidate, Representative } from '../../user/models/user'
 import { GetUserAnaliseInfo } from './GitHubService'
 import { History } from '../../history/models/history'
@@ -24,16 +28,6 @@ export const getAnalysisById: any = async (id: any, token: string) => {
 		const analysis = await AnalysisModel.findById(id)
 		if (!analysis) {
 			throw new Error(`Analysis with the ID: ${id} was not found`)
-		}
-
-		const representative = await Representative.findById(verifyJWT(token).sub)
-		const candidate = await Candidate.findOne({ githubUser: analysis.githubUsername })
-		if (representative !== null && candidate !== null) {
-			await createNotification({
-				representativeId: representative._id,
-				candidateId: candidate._id,
-				message: `${(representative as any).companyName} has seen your profile.`,
-			})
 		}
 		return analysis
 	} catch (error: any) {
@@ -112,11 +106,19 @@ export const createAnalysis: any = async (
 				const representative = await Representative.findById(verifyJWT(token).sub)
 				const candidate = await Candidate.findOne({ githubUser: githubUsername })
 				if (representative !== null && candidate !== null) {
-					await createNotification({
-						representativeId: representative._id,
+					const notification = await Notification.findOne({
 						candidateId: candidate._id,
-						message: `${(representative as any).companyName} has seen your profile.`,
+						representativeId: representative._id,
 					})
+					if (!notification) {
+						await createNotification({
+							representativeId: representative._id,
+							candidateId: candidate._id,
+							message: `${(representative as any).companyName} has seen your profile.`,
+						})
+					} else {
+						await updateNotification(notification._id, { dateTime: Date.now() })
+					}
 					const history = await History.findOne({
 						userId: representative._id,
 						analysisId: updatedDocument?._id,
