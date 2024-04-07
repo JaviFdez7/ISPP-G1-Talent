@@ -141,11 +141,18 @@ export default function RepresentativeDetailEdit() {
 
 
   const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => (
-    <div className="flex flex-col items-center" >
+    <div className="flex flex-col items-center space-y-4" >
       <img
-        src={profilePicture}
-        className="rounded-full border" style={{ width: "15vw", height: "25vh" }}
-      />
+				src={profilePicture}
+				className='rounded-full border border-gray-300 profile-img'
+						style={{
+							objectFit: 'cover',
+							objectPosition: 'center',
+							width: '230px',
+							height: '230px',
+							marginLeft: '90px',
+						}}
+			/>
       <label htmlFor="profilePicture" className="btn text-white">
         Change profile photo
       </label>
@@ -196,18 +203,17 @@ export default function RepresentativeDetailEdit() {
         height: "100vh",
         backgroundAttachment: "fixed",
         backgroundImage: `url(${mainBackground})`,
-        backgroundSize: "cover",
-        backgroundSize: "100% 100%",
+        backgroundSize: "cover"
       }}
     >
       <div
-        className="rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4 "
-        style={{
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-          borderColor: "var(--talent-highlight)",
-          borderWidth: "1px",
-          width: '83.3333%',
-        }}
+       className="h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4"
+       style={{
+         backgroundColor: "rgba(0, 0, 0, 0.5)",
+         borderColor: "var(--talent-highlight)",
+         borderWidth: "1px",
+         width: '83.3333%'
+       }}
       >
         <div>
           <h2

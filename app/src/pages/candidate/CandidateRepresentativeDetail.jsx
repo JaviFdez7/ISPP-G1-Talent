@@ -43,8 +43,9 @@ export default function RepresentativeDetail() {
       <div className="flex flex-row justify-center items-center profile-header w-10/12 mt-20">
         <div className="flex flex-col items-center">
           <img
-            src={profile} //[candidate.profilePicture}
-            className="rounded-full border border-gray-300 profile-img"
+            src={userData && userData.profilePicture ? userData.profilePicture : profile} //[candidate.profilePicture}
+            className='rounded-full border border-gray-300 profile-img'
+            style={{ objectFit: 'cover', objectPosition: 'center', width: '300px', height: '300px' }}
           />
         </div>
         <div className="flex flex-col mt-10 w-fit">

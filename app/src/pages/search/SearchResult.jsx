@@ -175,7 +175,10 @@ export default function SearchResult() {
 									team.recommendedCandidates.length > 0 ? (
 										team.recommendedCandidates.map(
 											(candidate, candidateIndex) => (
-												<div key={candidateIndex} className='w-1/3 px-2  '>
+												<div key={candidateIndex} className='w-1/3 px-2 mb-4 ' style={{
+													marginLeft: mobile ? '140px' : '',
+													width: 'calc(100% )',
+												}}>
 													<h6
 														className='text-1xl font-bold text-center text-white  mt-5 mb-5'
 														style={{

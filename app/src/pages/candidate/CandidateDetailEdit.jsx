@@ -159,10 +159,17 @@ export default function CandidateDetailEdit() {
 
 
 	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => (
-		<div className="flex flex-col items-center" >
+		<div className="flex flex-col items-center space-y-4" >
 			<img
 				src={profilePicture}
-				className="rounded-full border" style={{ width: "15vw", height: "25vh" }}
+				className='rounded-full border border-gray-300 profile-img'
+						style={{
+							objectFit: 'cover',
+							objectPosition: 'center',
+							width: '230px',
+							height: '230px',
+							marginLeft: '90px',
+						}}
 			/>
 			<label htmlFor="profilePicture" className="btn text-white">
 				Change profile photo
