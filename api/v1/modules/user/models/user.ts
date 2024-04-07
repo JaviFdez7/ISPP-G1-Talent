@@ -47,11 +47,6 @@ const Analysis = model("Analysis",analysisSchema)
 const representativeSchema = new Schema({
 	companyName: { type: String, required: true },
   profilePicture: String,
-	companySubscription: {
-		type: String,
-		required: true,
-		enum: Object.values(CompanySubscription),
-	},
 	projectSocietyName: String,
 })
 
