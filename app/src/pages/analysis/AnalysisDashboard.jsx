@@ -201,11 +201,15 @@ export default function AnalysisDashboard() {
 							src={imgSrc}
 							alt='Imagen'
 							className='analysis-profile-img'
-							style={{ position: 'relative', left: '0%', zIndex: '1' ,
-							objectFit: 'cover',
-							objectPosition: 'center',
-							width: '300px',
-							height: '300px',}}
+							style={{
+								position: 'relative',
+								left: '0%',
+								zIndex: '1',
+								objectFit: 'cover',
+								objectPosition: 'center',
+								width: '300px',
+								height: '300px',
+							}}
 						/>
 
 						<div className='analysis-profile-text'>
