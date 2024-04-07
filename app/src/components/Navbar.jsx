@@ -12,10 +12,17 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import Logout from './swat/logout'
 
+import { useLocation } from 'react-router-dom'
+
 export default function Navbar() {
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
+	const [notifications, setNotifications] = useState(0)
+	const [nonRead, setNonRead] = useState(0)
+	const [notificationsGuard, setNotificationsGuard] = useState(false)
 	const { isAuthenticated, logout } = useAuthContext()
+	const currentUserId2 = localStorage.getItem('userId')
+	const location = useLocation()
 
 	const opts = [
 		{ Information: 0, Settings: 1 }, //Not logged
@@ -46,6 +53,32 @@ export default function Navbar() {
 		return res
 	}
 
+	async function fetchNotificationsData() {
+		try {
+			if (isAuthenticated && userData && userData.role === 'Candidate') {
+				const currentUserId = localStorage.getItem('userId')
+				const token = localStorage.getItem('access_token')
+				if (currentUserId && token) {
+					const response = await axios.get(
+						`${import.meta.env.VITE_BACKEND_URL}/user/${currentUserId}/notification`,
+						{
+							params: {
+								userId: currentUserId,
+							},
+							headers: {
+								'Content-type': 'application/json',
+								Authorization: `${token}`,
+							},
+						}
+					)
+					setNotifications(response.data.data)
+				}
+			}
+		} catch (error) {
+			console.log('Error fetching notification data:', error.response.data.message)
+		}
+	}
+
 	let navigate = useNavigate()
 
 	useEffect(() => {
@@ -62,7 +95,33 @@ export default function Navbar() {
 			}
 		}
 		fetchUserData()
-	}, [isAuthenticated])
+	}, [isAuthenticated, location.pathname])
+
+	useEffect(() => {
+		if (isAuthenticated && userData && userData.role === 'Candidate') {
+			fetchNotificationsData()
+			if (notificationsGuard) {
+				setNotificationsGuard(false)
+				setInterval(fetchNotificationsData, 60000)
+			} else {
+				setNotificationsGuard(true)
+			}
+		}
+	}, [userData])
+
+	useEffect(() => {
+		if (!notifications) {
+			return
+		}
+
+		let num = 0
+		notifications.forEach((n) => {
+			if (!n.seen) {
+				num += 1
+			}
+		})
+		setNonRead(num)
+	}, [notifications])
 
 	function move_hoverer(n) {
 		let t = 130
@@ -133,7 +192,7 @@ export default function Navbar() {
 					)}
 					{userData && getOptsNum('Team Search') !== -1 && (
 						<Link
-							to={`/searches/search`}
+							to={`/searches/representative/${currentUserId2}`}
 							onMouseEnter={() => move_hoverer(getOptsNum('Team Search'))}
 							onMouseDown={() => move_current(getOptsNum('Team Search'))}
 							className='link-container'>
@@ -214,9 +273,8 @@ export default function Navbar() {
 							<Link to='/candidate/notification/detail' className='mail'>
 								<img src={mail} />
 							</Link>
-							{/* TODO code of mail*/}
 							<div className='mail-amount'>
-								<span>1</span>
+								<span>{nonRead}</span>
 							</div>
 							<button
 								onClick={() => Logout(logout, navigate, userData.role)}

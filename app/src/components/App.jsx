@@ -35,6 +35,8 @@ import AnalysisDashboard from '../pages/analysis/AnalysisDashboard.jsx'
 import AnalysisAnalizer from '../pages/analysis/AnalysisAnalizer.jsx'
 import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 
+import ChangePassword from '../pages/ChangePassword.jsx'
+
 function App() {
 	return (
 		<div>
@@ -81,41 +83,49 @@ function App() {
 							}
 						/>
 
-            <Route path="/searches/representative/:representativeId" element={
-              <ProtectedRoute roles={['Representative']} >
-                <Search/>
-              </ProtectedRoute>}
-            />
-             <Route
-              path="/searches/search"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchForm />
-                </ProtectedRoute>
-              }
-            />
-           <Route
-              path="/searches/:searchId"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchResult/>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/searches/list"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <PlaceHolder pageName="search list" />
-                </ProtectedRoute>
-              }
-            />
-   
+						<Route path="/searches/representative/:representativeId" element={
+							<ProtectedRoute roles={['Representative']} >
+								<Search />
+							</ProtectedRoute>}
+						/>
+						<Route
+							path="/searches/search"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<SearchForm />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/searches/:searchId"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<SearchResult />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/searches/list"
+							element={
+								<ProtectedRoute roles={['Representative']} >
+									<PlaceHolder pageName="search list" />
+								</ProtectedRoute>
+							}
+						/>
+
 
 						{/*Subscription*/}
 						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
 						{/*<Route path="/pricing" element={<Pricing />} />*/}
 
+						<Route
+							path='/candidate/:id/password'
+							element={
+								<ProtectedRoute roles={['Candidate']}>
+									<ChangePassword />
+								</ProtectedRoute>
+							}
+						/>
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
@@ -126,7 +136,7 @@ function App() {
 							}
 						/>
 						<Route
-							path='/candidate/detail/edit'
+							path='/candidate/detail/edit/:id'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
 									<CandidateDetailEdit />
@@ -216,13 +226,22 @@ function App() {
 							}
 						/>
 						<Route
-							path='/representative/detail/edit'
+							path='/representative/detail/edit/:id'
 							element={
 								<ProtectedRoute roles={['Representative']}>
 									<RepresentativeDetailEdit />
 								</ProtectedRoute>
 							}
 						/>
+						<Route
+							path='/representative/:id/password'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<ChangePassword />
+								</ProtectedRoute>
+							}
+						/>
+
 					</Routes>
 				</Router>
 			</AuthContextProvider>

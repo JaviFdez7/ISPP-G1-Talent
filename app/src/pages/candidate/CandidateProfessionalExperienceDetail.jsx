@@ -47,7 +47,6 @@ export default function CandidateProfessionalExperienceDetail({}) {
 	}
 
 	function handleCancel() {
-		navigate('/candidate/detail')
 		setShowModal(false)
 	}
 
@@ -143,7 +142,7 @@ export default function CandidateProfessionalExperienceDetail({}) {
 								`/candidate/professional-experience/edit/${experience._id}`,
 								''
 							)}
-							{/*{SecondaryButton("Delete", "/", deleteProffesionalExperience)}*/}
+							{SecondaryButton("Delete", "/", deleteProffesionalExperience)}
 						</div>
 					</div>
 				</div>

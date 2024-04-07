@@ -8,6 +8,7 @@ export default function DataTableVertical({
 	addLink,
 	editLink,
 	width = '',
+	topCell = null,
 }) {
 	const cellHeight = '40px'
 	const minCellWidth = '200px'
@@ -26,10 +27,25 @@ export default function DataTableVertical({
 			<div className={width}>
 				<table className='w-full'>
 					<tbody className='datatable-body '>
+						{topCell && (
+							<tr>
+								<td
+									colSpan={2}
+									className='datatable-cell'
+									style={{
+										backgroundColor: 'var(--talent-highlight-background)',
+										textAlign: 'center',
+										height: cellHeight,
+										minWidth: minCellWidth,
+									}}>
+									{topCell}
+								</td>
+							</tr>
+						)}
 						{data.map((item, index) => (
 							<tr key={index}>
 								<th
-									className='datatable-header'
+									className='datatable-header '
 									style={{
 										borderTop: '0',
 										height: cellHeight,
@@ -45,7 +61,7 @@ export default function DataTableVertical({
 									<div
 										className='flex items-center justify-center mt-5 mr-10 '
 										style={{
-											wordBreak: 'break-word',
+											wordBreak: 'normal',
 											paddingLeft: '10px',
 											paddingBottom: '20px',
 										}}>
