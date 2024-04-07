@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { Candidate, Representative, User } from '../../user/models/user'
-import { CompanySubscription } from '../../subscriptions/models/subscription';
+import { CompanySubscription } from '../../subscriptions/models/subscription'
 import { History } from '../../history/models/history'
 import { getAnalysisByGitHubUsername } from '../services/AnalysisService'
 import { Condition, ObjectId } from 'mongoose'
@@ -134,7 +134,7 @@ export const checkValidTokenAndValidGithubUser: any = async (
 			return
 		}
 		const decodedToken = verifyJWT(token).sub
-		const representative = await Representative.findOne({_id:decodedToken})
+		const representative = await Representative.findOne({ _id: decodedToken })
 		if (!representative) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
@@ -170,7 +170,11 @@ export const checkValidTokenAndValidGithubUser: any = async (
 	}
 }
 
-export const validateGitHubUserAndApiKey = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const validateGitHubUserAndApiKey = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
 	try {
 		const githubUsername: string = req.body.username
 		let user_apikey: string | undefined = req.body.apikey
