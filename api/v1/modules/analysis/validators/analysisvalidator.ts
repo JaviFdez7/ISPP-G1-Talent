@@ -4,6 +4,7 @@ import { verifyJWT } from '../../user/helpers/handleJWT'
 import { Candidate, Representative, User } from '../../user/models/user'
 import { History } from '../../history/models/history'
 import { getAnalysisByGitHubUsername } from '../services/AnalysisService'
+import { Condition, ObjectId } from 'mongoose'
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		const username: string | undefined = req.params.username
@@ -145,7 +146,7 @@ export const checkValidTokenAndValidGithubUser: any = async (
 			return
 		}
 		const history = await History.findOne({
-			userId: verifyJWT(token).sub,
+			userId: verifyJWT(token).sub as Condition<ObjectId>,
 			analysisId: analysis._id,
 		})
 		console.log(analysis._id)
