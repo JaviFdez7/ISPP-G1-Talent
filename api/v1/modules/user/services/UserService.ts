@@ -26,7 +26,7 @@ export const createUser: any = async (data: any, role: string) => {
 	try {
 		const Model = getModelForRole(role)
 		if (role === 'Candidate') {
-			const analysis = await createAnalysis(data?.githubUser,'',data?.githubToken)
+			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
 			data.analysisId = analysis._id
 		}
 		const subscription = await createSubscriptions(role)
