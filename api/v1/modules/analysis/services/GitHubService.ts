@@ -273,7 +273,6 @@ function processGitHubUserInfo (result: any, languagesSorted: LanguagePercentage
 }
 
 export async function GetUserAnaliseInfo (githubUsername: string, apikey?: string): Promise<AnalysisDocument> {
-  console.log("log desde github service getUserAnaliseInfo: ", process.env.GH_TOKEN)
   const queryUserInfo = `query {
     user(login: "${githubUsername}") {
       login
@@ -352,9 +351,8 @@ export async function GetUserAnaliseInfo (githubUsername: string, apikey?: strin
     `;
 
   try {
-    console.log(apikey)
-    console.log(GITHUB_APIKEY)
-    const effectiveApiKey = apikey || GITHUB_APIKEY;
+    // ULTIMA CONDICION PARA COSA DE TESTING
+    const effectiveApiKey = apikey || GITHUB_APIKEY || process.env.GH_TOKEN;
 
     const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
     const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
