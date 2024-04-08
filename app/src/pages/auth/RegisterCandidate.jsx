@@ -162,27 +162,29 @@ export default function RegisterCandidate() {
 			method: 'GET',
 			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
 			params: {
-				email: email
+				email: email,
 			},
 			headers: {
 				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
-				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com'
-			}
-		};
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			const response = await axios.request(options);
+			const response = await axios.request(options)
 			if (response.data.status === 'valid') {
-				return true;
+				return true
 			} else {
-				return false;
+				return false
 			}
 		} catch (error) {
 			if (error.response && error.response.status === 402) {
-				console.error("Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.");
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
 				return true
 			}
-			console.error(error);
+			console.error(error)
 		}
 	}
 
@@ -217,10 +219,15 @@ export default function RegisterCandidate() {
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
 		}
-		if (form.phone_number && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(form.phone_number)) {
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
 			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
 			errors.phone_number =
-				"The phone field must be a valid Spanish phone number or a valid American phone number";
+				'The phone field must be a valid Spanish phone number or a valid American phone number'
 		}
 		return errors
 	}
