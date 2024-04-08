@@ -363,7 +363,7 @@ export async function GetUserAnaliseInfo (githubUsername: string, apikey?: strin
     const userAnalysis: AnalysisDocument = processGitHubUserInfo(result, languagesUsed);
  
     return userAnalysis
-  } catch (error) {
+  } catch (error) { 
     console.error('Error:', error);
     throw error;
   }

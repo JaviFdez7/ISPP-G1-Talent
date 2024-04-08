@@ -56,7 +56,7 @@ describe('Create correctly an analysis as a candidate',function(){
         }catch(error:any){
             console.log(error)
         }
-    })
+    }) 
     
     it('should be an analysis of the new user', async function(){
         try{

@@ -73,3 +73,4 @@ export const analysisSchema = new Schema<AnalysisDocument>(
 
 export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema)
  
+ 
