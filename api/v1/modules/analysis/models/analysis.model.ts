@@ -73,8 +73,3 @@ export const analysisSchema = new Schema<AnalysisDocument>(
 
 export const AnalysisModel = model<AnalysisDocument>('Analysis', analysisSchema)
 
-run().catch((err) => console.log(err))
-
-async function run() {
-	console.log('Running database')
-}
