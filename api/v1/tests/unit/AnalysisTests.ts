@@ -72,3 +72,4 @@ describe('Create correctly an analysis as a candidate',function(){
 
     
 });
+ 

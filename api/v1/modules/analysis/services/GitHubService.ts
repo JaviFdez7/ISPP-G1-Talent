@@ -361,7 +361,7 @@ export async function GetUserAnaliseInfo (githubUsername: string, apikey?: strin
     const languagesUsed = getTopLanguagesPullRequest(languagesResult);
 
     const userAnalysis: AnalysisDocument = processGitHubUserInfo(result, languagesUsed);
-
+ 
     return userAnalysis
   } catch (error) {
     console.error('Error:', error);
