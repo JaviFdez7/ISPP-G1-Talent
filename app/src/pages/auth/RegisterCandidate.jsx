@@ -162,27 +162,29 @@ export default function RegisterCandidate() {
 			method: 'GET',
 			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
 			params: {
-				email: email
+				email: email,
 			},
 			headers: {
 				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
-				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com'
-			}
-		};
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			const response = await axios.request(options);
+			const response = await axios.request(options)
 			if (response.data.status === 'valid') {
-				return true;
+				return true
 			} else {
-				return false;
+				return false
 			}
 		} catch (error) {
 			if (error.response && error.response.status === 402) {
-				console.error("Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.");
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
 				return true
 			}
-			console.error(error);
+			console.error(error)
 		}
 	}
 
