@@ -13,7 +13,10 @@ import {
 	TeamCreator,
 } from '../models/TeamCreatorModel'
 import mongoose from 'mongoose'
-import { createNotification, updateNotification } from '../../notification/services/NotificationService'
+import {
+	createNotification,
+	updateNotification,
+} from '../../notification/services/NotificationService'
 
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 	const languagesSet = new Set<string>()
@@ -150,7 +153,8 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 				if (representative !== null && candidateDocument !== null) {
 					const notification = await Notification.findOne({
 						candidateId: (candidateDocument as any)._id,
-						representativeId: representative._id,})
+						representativeId: representative._id,
+					})
 					if (!notification) {
 						await createNotification({
 							representativeId: representative._id,
