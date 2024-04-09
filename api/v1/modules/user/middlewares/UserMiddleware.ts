@@ -2,8 +2,9 @@ import { encrypt, compare } from '../helpers/handleBcrypt'
 import { verifyJWT } from '../helpers/handleJWT'
 import { Candidate, Representative, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
-import { type Request, type Response, type NextFunction } from 'express'
+import e, { type Request, type Response, type NextFunction } from 'express'
 import { ApiResponse } from '../../../utils/ApiResponse'
+import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription'
 import { ObjectId } from 'mongodb';
 
 interface IRepresentative {
@@ -85,12 +86,7 @@ export const checkCreateCandidate: any = async (
 	try {
 		const data = req.body
 		const isMissingFields: boolean =
-			!data.username ||
-			!data.email ||
-			!data.fullName ||
-			!data.password ||
-			!data.githubUser ||
-			!data.candidateSubscription
+			!data.username || !data.email || !data.fullName || !data.password || !data.githubUser
 		// Comprobar si faltan campos requeridos en el candidato
 		if (isMissingFields) {
 			const message = 'Missing required fields'
@@ -170,7 +166,8 @@ export const checkCreateRepresentative: any = async (
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
 		} else {
 			// Encriptar la contraseña
-			data.password = await encrypt(data.password)
+			const inputPassword: string = data.password
+			data.password = await encrypt(inputPassword)
 			next()
 		}
 	} catch (error: any) {
@@ -254,6 +251,21 @@ export const checkUpdateCandidate: any = async (
 				401
 			)
 			return
+		}
+		const subscription = await CandidateSubscription.findById((user as any).subscriptionId)
+		if (!subscription || (subscription as any).remainingUpdates <= 0) {
+			const message = 'You cant update your profile until next month'
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
+			return
 		} else {
 			if ('email' in data || 'username' in data) {
 				if (data.email && data.email !== user.email) {
@@ -283,6 +295,7 @@ export const checkUpdateCandidate: any = async (
 // Comprobar si el usuario existe
 // Comprobar si hay datos para actualizar
 // Comprobar si el token es correcto
+// Encriptar la contraseña si se ha actualizado
 export const checkUpdateRepresentative: any = async (
 	req: Request,
 	res: Response,
