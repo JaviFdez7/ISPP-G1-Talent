@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose' 
+import mongoose, { mongo } from 'mongoose'
 import {
 	AnalysisDocument,
 	AnalysisModel,
