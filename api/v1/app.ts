@@ -13,13 +13,11 @@ import TeamCreatorRouter from './modules/team-creator';
 import PaymentRouter from './modules/payment';
 import cors from 'cors';
 
-
-const app = express();
-const swaggerHost = process.env.HOST ?? 'localhost:3000';
-app.use(express.json());
-app.use(cors());
+const app = express()
+const swaggerHost = process.env.HOST ?? 'localhost:3000'
+app.use(express.json())
+app.use(cors())
 //Routers -----------------------------------------------------
-
 
 //Default
 app.get('/', (req: Request, res: Response) => {
@@ -40,8 +38,8 @@ const swaggerSpec = swaggerJSDoc(options)
 app.use(express.json())
 app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 //  Modules Routes ----------------------------------------------
-app.use(AnalysisRouter);
-app.use(UserRouter);
+app.use(AnalysisRouter)
+app.use(UserRouter)
 app.use(HistoryRouter)
 app.use(ProfessionalExperienceRouter)
 app.use(SubscriptionRouter)

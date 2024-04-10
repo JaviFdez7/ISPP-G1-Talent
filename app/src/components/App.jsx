@@ -24,9 +24,9 @@ import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
-import Search from "../pages/search/SearchTeam.jsx";
-import SearchForm from "../pages/search/SearchForm.jsx";
-import SearchResult from "../pages/search/SearchResult.jsx";
+import Search from '../pages/search/SearchTeam.jsx'
+import SearchForm from '../pages/search/SearchForm.jsx'
+import SearchResult from '../pages/search/SearchResult.jsx'
 
 import Login from '../pages/auth/Login.jsx'
 import RegisterCandidate from '../pages/auth/RegisterCandidate.jsx'
@@ -89,36 +89,38 @@ function App() {
 							}
 						/>
 
-						<Route path="/searches/representative/:representativeId" element={
-							<ProtectedRoute roles={['Representative']} >
-								<Search />
-							</ProtectedRoute>}
+						<Route
+							path='/searches/representative/:representativeId'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<Search />
+								</ProtectedRoute>
+							}
 						/>
 						<Route
-							path="/searches/search"
+							path='/searches/search'
 							element={
-								<ProtectedRoute roles={['Representative']} >
+								<ProtectedRoute roles={['Representative']}>
 									<SearchForm />
 								</ProtectedRoute>
 							}
 						/>
 						<Route
-							path="/searches/:searchId"
+							path='/searches/:searchId'
 							element={
-								<ProtectedRoute roles={['Representative']} >
+								<ProtectedRoute roles={['Representative']}>
 									<SearchResult />
 								</ProtectedRoute>
 							}
 						/>
 						<Route
-							path="/searches/list"
+							path='/searches/list'
 							element={
-								<ProtectedRoute roles={['Representative']} >
-									<PlaceHolder pageName="search list" />
+								<ProtectedRoute roles={['Representative']}>
+									<PlaceHolder pageName='search list' />
 								</ProtectedRoute>
 							}
 						/>
-
 
 						{/*Subscription*/}
 						<Route
@@ -255,7 +257,6 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-
 					</Routes>
 				</Router>
 			</AuthContextProvider>

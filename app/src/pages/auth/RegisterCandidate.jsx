@@ -229,10 +229,15 @@ export default function RegisterCandidate() {
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
 		}
-		if (form.phone_number && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(form.phone_number)) {
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
 			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
 			errors.phone_number =
-				"The phone field must be a valid Spanish phone number or a valid American phone number";
+				'The phone field must be a valid Spanish phone number or a valid American phone number'
 		}
 		return errors
 	}
