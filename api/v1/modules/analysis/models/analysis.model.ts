@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, Types, model } from 'mongoose'
 // 1. Create an interface representing a document in MongoDB.
 export interface RepositoryInfo {
 	name: string
@@ -16,6 +16,7 @@ export interface LanguagePercentage {
 }
 
 export interface AnalysisDocument {
+	_id? : Types.ObjectId
 	githubUsername: string
 	avatarUrl: string
 	followers: number

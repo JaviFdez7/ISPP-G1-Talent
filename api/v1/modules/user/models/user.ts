@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose'
+import mongoose, { mongo } from 'mongoose' 
 import {
 	AnalysisDocument,
 	AnalysisModel,
@@ -48,9 +48,9 @@ const userSchema = new Schema(
 	},
 	{ discriminatorKey: 'role' }
 )
-
-const User = model('User', userSchema)
 const Analysis = model('Analysis', analysisSchema)
+const User = model('User', userSchema)
+
 const representativeSchema = new Schema({
 	companyName: { type: String, required: true },
 	profilePicture: String,

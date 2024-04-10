@@ -165,11 +165,11 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 						await updateNotification(notification._id, { dateTime: Date.now() })
 					}
 				}
-				const analysisId = candidateDocument?.analysisId
+				const analysisId = candidateDocument?.analysisId._id
 
 				const existingHistory = await History.findOne({
 					userId: userId,
-					analysisId: candidateDocument?._id,
+					analysisId: analysisId,
 				}).exec()
 
 				if (!existingHistory) {
