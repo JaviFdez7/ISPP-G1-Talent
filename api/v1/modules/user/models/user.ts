@@ -76,4 +76,4 @@ const candidateSchema = new Schema({
 const Representative = User.discriminator('Representative', representativeSchema)
 const Candidate = User.discriminator('Candidate', candidateSchema)
 
-export { User, Representative, Candidate, LifeStyle }
+export { User, Representative, Candidate, LifeStyle, CompanySubscription, CandidateSubscription }
