@@ -1,9 +1,12 @@
 import { type Request, type Response, type NextFunction } from 'express'
+import dotenv from 'dotenv'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { Candidate, Representative, User } from '../../user/models/user'
+import { CompanySubscription } from '../../subscriptions/models/subscription'
 import { History } from '../../history/models/history'
 import { getAnalysisByGitHubUsername } from '../services/AnalysisService'
+import { Condition, ObjectId } from 'mongoose'
 export const validateUsername = (req: Request, res: Response, next: NextFunction): void => {
 	try {
 		const username: string | undefined = req.params.username
@@ -37,7 +40,6 @@ export const checkValidTokenAndValidAnalysis: any = async (
 	try {
 		const token = req.headers.authorization ?? ''
 		const analysisId = req.params.id
-
 		if (token.length === 0) {
 			ApiResponse.sendError(res, [
 				{
@@ -132,7 +134,7 @@ export const checkValidTokenAndValidGithubUser: any = async (
 			return
 		}
 		const decodedToken = verifyJWT(token).sub
-		const representative = await Representative.findById(decodedToken)
+		const representative = await Representative.findOne({ _id: decodedToken })
 		if (!representative) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
@@ -145,7 +147,7 @@ export const checkValidTokenAndValidGithubUser: any = async (
 			return
 		}
 		const history = await History.findOne({
-			userId: verifyJWT(token).sub,
+			userId: verifyJWT(token).sub as Condition<ObjectId>,
 			analysisId: analysis._id,
 		})
 		console.log(analysis._id)

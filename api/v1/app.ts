@@ -8,6 +8,7 @@ import UserRouter from './modules/user';
 import HistoryRouter from './modules/history';
 import NotificationRouter from './modules/notification';
 import ProfessionalExperienceRouter from './modules/professional-experience';
+import SubscriptionRouter from './modules/subscriptions';
 import TeamCreatorRouter from './modules/team-creator'
 import cors from 'cors';
 
@@ -40,9 +41,9 @@ app.use('/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 //  Modules Routes ----------------------------------------------
 app.use(AnalysisRouter);
 app.use(UserRouter);
-
-app.use(HistoryRouter);
-app.use(ProfessionalExperienceRouter);
+app.use(HistoryRouter)
+app.use(ProfessionalExperienceRouter)
+app.use(SubscriptionRouter)
 app.use(TeamCreatorRouter)
 app.use(NotificationRouter);
 

@@ -130,7 +130,6 @@ export default function RegisterCandidate() {
 			navigate('/candidate/detail')
 		} catch (error) {
 			if (error.response.status === 409 || error.response.status === 400) {
-				// set the status code properly
 				setErrors(error.response.data)
 				return
 			}
@@ -162,7 +161,6 @@ export default function RegisterCandidate() {
 		const verifaliaUserPwd = 'rI8e.gOjdUWfv0'
 
 		try {
-			// Enviar solicitud de validación de correo electrónico
 			const response = await axios.post(
 				'https://api.verifalia.com/v2.5/email-validations',
 				{
@@ -231,8 +229,10 @@ export default function RegisterCandidate() {
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
 		}
-		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-			errors.phone_number = 'A phone number must consist of 9 digits exclusively'
+		if (form.phone_number && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(form.phone_number)) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
+			errors.phone_number =
+				"The phone field must be a valid Spanish phone number or a valid American phone number";
 		}
 		return errors
 	}

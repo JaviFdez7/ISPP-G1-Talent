@@ -73,16 +73,6 @@ const WorkExperienceList = ({ experience }) => {
 							</Link>
 						</div>
 					</div>
-					<div className='ml-auto flex'>
-						{MainButton(
-							'Update',
-							`/candidate/professional-experience/edit/${item._id}`,
-							''
-						)}
-						{SecondaryButton('Delete', '/', () =>
-							deleteProffesionalExperience(item._id)
-						)}
-					</div>
 				</div>
 			))}
 			<Modal

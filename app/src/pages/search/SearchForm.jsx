@@ -369,7 +369,6 @@ export default function SearchForm() {
 						let value = selectedOption ? Number(selectedOption.value) : 0
 						setNumForms((prevNumForms) => {
 							if (value > numOptions.length) {
-								// If the new value is greater than the number of options, set it to the maximum number of options
 								return numOptions.length
 							} else {
 								return value
