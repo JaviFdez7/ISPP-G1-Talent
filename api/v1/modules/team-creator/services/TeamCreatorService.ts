@@ -2,7 +2,8 @@ import { AnalysisModel, AnalysisDocument } from '../../analysis/models/analysis.
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { History } from '../../history/models/history'
 import { createHistory, updateHistory } from '../../history/services/HistoryService'
-import { Candidate, CandidateDocument } from '../../user/models/user'
+import { Notification } from '../../notification/models/notification'
+import { Candidate, CandidateDocument, Representative } from '../../user/models/user'
 import {
 	ProfileRequested,
 	SkillRequested,
@@ -12,6 +13,10 @@ import {
 	TeamCreator,
 } from '../models/TeamCreatorModel'
 import mongoose from 'mongoose'
+import {
+	createNotification,
+	updateNotification,
+} from '../../notification/services/NotificationService'
 
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 	const languagesSet = new Set<string>()
@@ -144,7 +149,22 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 				const candidateDocument = (await Candidate.findOne({
 					githubUser: candidate.github_username,
 				}).exec()) as CandidateDocument | null
-
+				const representative = await Representative.findById(userId)
+				if (representative !== null && candidateDocument !== null) {
+					const notification = await Notification.findOne({
+						candidateId: (candidateDocument as any)._id,
+						representativeId: representative._id,
+					})
+					if (!notification) {
+						await createNotification({
+							representativeId: representative._id,
+							candidateId: (candidateDocument as any)._id,
+							message: `${(representative as any).companyName} has seen your profile.`,
+						})
+					} else {
+						await updateNotification(notification._id, { dateTime: Date.now() })
+					}
+				}
 				const analysisId = candidateDocument?.analysisId
 
 				const existingHistory = await History.findOne({
