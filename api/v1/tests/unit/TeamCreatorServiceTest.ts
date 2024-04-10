@@ -5,9 +5,13 @@ import { createUser, getAllUser } from '../../modules/user/services/UserService'
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 import { createProfessionalExperience,getAllProfessionalExperience} from '../../modules/professional-experience/services/ProfessionalExperienceService';
-import { createTeamCreator, getAllTeamCreatorOfRepresentative } from '../../modules/team-creator/services/TeamCreatorService';
-dotenv.config({ path: path.resolve(__dirname, '') });
+import { createTeamCreator, deleteTeamCreator, getAllTeamCreatorOfRepresentative, getTeamCreatorById } from '../../modules/team-creator/services/TeamCreatorService';
+import { getHistoryFromUser } from '../../modules/history/services/HistoryService';
+import { Candidate, CandidateDocument } from '../../modules/user/models/user';
+import { History } from '../../modules/history/models/history';
+import { TeamCreator } from '../../modules/team-creator/models/TeamCreatorModel';
 
+dotenv.config({ path: path.resolve(__dirname, '') });
 
 //1º Crear 1 representante genérico
 //1º Crear 2 candidatos genéricos
@@ -17,7 +21,21 @@ dotenv.config({ path: path.resolve(__dirname, '') });
 
 describe('Create correctly a team as a representative', function() {
     let representativeId: any
-    beforeEach( async function(){
+    const teamData= [
+        {
+            languages: [
+                "Java" 
+            ],
+            technologies: [
+                "react" 
+            ],
+            yearsOfExperience: 0,
+            field: "string" 
+        }
+    ];
+
+    //INIT
+    before(async function(){
         try{
             const representativeData= {
                 username: "representative", 
@@ -33,7 +51,7 @@ describe('Create correctly a team as a representative', function() {
             };
             const representative=await createUser(representativeData,'Representative')
             representativeId=representative._id
-            const githubUsers=['rwieruch','motero2k','RubenCasal']
+            const githubUsers=['andresdominguezruiz','motero2k','RubenCasal']
             const applications=['Web application','Backend','Frontend']
             for(let i=0;i<3;i++){
                 const userData = {
@@ -69,7 +87,7 @@ describe('Create correctly a team as a representative', function() {
         }
     })
 
-    afterEach(async function(){
+    after(async function(){
         try{
             //VACIAR DB 
             const collections = mongoose.connection.collections;
@@ -91,31 +109,67 @@ describe('Create correctly a team as a representative', function() {
             assert.strictEqual(experiences.length,3)
         }catch(error:any){
             console.log(error)
+            
         }
     })
 
-    it('should create a team with one of the candidate', async function (){
+    it('T1-should create a team and add some new histories to the history of the representative', async function (){
         try{
-            const teamData= [
-                {
-                    languages: [
-                        "Java" // Mapeado directamente de tu input
-                    ],
-                    technologies: [
-                        "react" 
-                    ],
-                    yearsOfExperience: 0,
-                    field: "string" 
-                }
-            ];
-            await createTeamCreator(teamData,representativeId)
+            
             const teams=await getAllTeamCreatorOfRepresentative(representativeId)
-            assert.strictEqual(teams.length,1)
-            assert.strictEqual(teams[0].profiles.length,1)
+            const history=await getHistoryFromUser(representativeId)
+            assert.strictEqual(history.length,0)
+            assert.strictEqual(teams.length,0)
+
+            await createTeamCreator(teamData,representativeId)
+            console.log(representativeId)
+
+            const newTeams=await getAllTeamCreatorOfRepresentative(representativeId)
+            const newHistory=await getHistoryFromUser(representativeId)
+            assert.strictEqual(newTeams.length,1)
+            assert.strictEqual(newTeams[0].profiles.length,1)
+            assert.strictEqual(newHistory.length,newTeams[0].profiles[0].recommendedCandidates.length)
         }catch(error:any){
             console.log(error)
         }
         
     })
+    it('T2,T9-After create a team, the representative'
+    +' should be able to read the analysis of the candidates', async function (){
+        try{
+            const readableTeam=await TeamCreator.findOne({userId:representativeId})
+            const sameTeam=await getTeamCreatorById((readableTeam as any)._id)
+            assert.strictEqual((readableTeam as any)._id,sameTeam._id)
+            for(var i=0;i<(readableTeam as any).profiles[0].recommendedCandidates.length;i++){
+                const candidate=(readableTeam as any).profiles[0].recommendedCandidates[i]
+                const candidateDocument = (await Candidate.findOne({
+					githubUser: candidate.github_username,
+				}).exec()) as CandidateDocument | null
+                console.log(candidateDocument)
+                const history=await History.findOne({
+                    userId:representativeId,
+                    analysisId:(candidateDocument as any).analysisId
+                })
+                assert.notEqual(history,null)
+            }
+        }catch(error:any){
+            console.log(error)
+        }
+        
+    })
+    it('T13-Should be able to delete the team', async function (){
+        try{
+            const readableTeam=await TeamCreator.findOne({userId:representativeId})
+            const sameTeam=await getTeamCreatorById((readableTeam as any)._id)
+            await deleteTeamCreator(sameTeam._id)
+            
+            const otherTeams=await getTeamCreatorById(sameTeam._id)
+            assert.strictEqual(otherTeams,null)
+        }catch(error:any){
+            console.log(error)
+        }
+        
+    })
+
 
 })
