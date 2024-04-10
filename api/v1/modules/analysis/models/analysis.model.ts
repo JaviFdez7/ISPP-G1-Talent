@@ -16,7 +16,7 @@ export interface LanguagePercentage {
 }
 
 export interface AnalysisDocument {
-	_id? : Types.ObjectId
+	_id?: Types.ObjectId
 	githubUsername: string
 	avatarUrl: string
 	followers: number
