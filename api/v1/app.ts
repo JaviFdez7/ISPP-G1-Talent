@@ -9,7 +9,8 @@ import HistoryRouter from './modules/history';
 import NotificationRouter from './modules/notification';
 import ProfessionalExperienceRouter from './modules/professional-experience';
 import SubscriptionRouter from './modules/subscriptions';
-import TeamCreatorRouter from './modules/team-creator'
+import TeamCreatorRouter from './modules/team-creator';
+import PaymentRouter from './modules/payment';
 import cors from 'cors';
 
 
@@ -46,6 +47,7 @@ app.use(ProfessionalExperienceRouter)
 app.use(SubscriptionRouter)
 app.use(TeamCreatorRouter)
 app.use(NotificationRouter);
+app.use(PaymentRouter);
 
 // Server -------------------------------------------------------
 connectToMongoDB()
