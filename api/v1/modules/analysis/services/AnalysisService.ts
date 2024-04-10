@@ -1,5 +1,8 @@
 import { type AnalysisDocument, AnalysisModel } from '../models/analysis.model'
-import { createNotification, updateNotification } from '../../notification/services/NotificationService'
+import {
+	createNotification,
+	updateNotification,
+} from '../../notification/services/NotificationService'
 import { Candidate, Representative } from '../../user/models/user'
 import { GetUserAnaliseInfo } from './GitHubService'
 import { History } from '../../history/models/history'
@@ -51,22 +54,22 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
 			`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`
 		)
 	}
-};
+}
 
 export const createAnalysis: any = async (
 	githubUsername: string,
 	token?: string,
-	userApikey?: string 
-	) => {
+	userApikey?: string
+) => {
 	token = token ?? ''
 	if (!githubUsername) {
 		throw new Error('A valid GitHub username was not provided.')
 	}
 	try {
-		if(token.length>0){
-			const actualSubscription= await getSubscriptionsByUserId(verifyJWT(token).sub);
-			actualSubscription.remainingSearches--;
-			await CompanySubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
+		if (token.length > 0) {
+			const actualSubscription = await getSubscriptionsByUserId(verifyJWT(token).sub)
+			actualSubscription.remainingSearches--
+			await CompanySubscription.findByIdAndUpdate(actualSubscription._id, actualSubscription)
 		}
 		const analysis = await AnalysisModel.findOne({ githubUsername })
 		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)

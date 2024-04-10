@@ -142,7 +142,7 @@ export default function CandidateProfessionalExperienceDetail({}) {
 								`/candidate/professional-experience/edit/${experience._id}`,
 								''
 							)}
-							{SecondaryButton("Delete", "/", deleteProffesionalExperience)}
+							{SecondaryButton('Delete', '/', deleteProffesionalExperience)}
 						</div>
 					</div>
 				</div>

@@ -5,13 +5,13 @@ import { ProfessionalExperience } from '../../professional-experience/models/pro
 import e, { type Request, type Response, type NextFunction } from 'express'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription'
-import { ObjectId } from 'mongodb';
+import { ObjectId } from 'mongodb'
 
 interface IRepresentative {
-	_id: ObjectId;
-	email: string;
-	username: string;
-  }
+	_id: ObjectId
+	email: string
+	username: string
+}
 
 export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -269,15 +269,15 @@ export const checkUpdateCandidate: any = async (
 		} else {
 			if ('email' in data || 'username' in data) {
 				if (data.email && data.email !== user.email) {
-					const message = 'Email does not match the current one';
-					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403);
-					return;
+					const message = 'Email does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
 				}
 
 				if (data.username && data.username !== user.username) {
-					const message = 'Username does not match the current one';
-					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403);
-					return;
+					const message = 'Username does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
 				}
 			}
 			next()
@@ -336,15 +336,15 @@ export const checkUpdateRepresentative: any = async (
 		} else {
 			if ('email' in data || 'username' in data) {
 				if (data.email && data.email !== user.email) {
-					const message = 'Email does not match the current one';
-					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403);
-					return;
+					const message = 'Email does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
 				}
 
 				if (data.username && data.username !== user.username) {
-					const message = 'Username does not match the current one';
-					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403);
-					return;
+					const message = 'Username does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
 				}
 			}
 			next()
