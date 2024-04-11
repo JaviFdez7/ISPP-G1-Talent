@@ -1,8 +1,8 @@
-import express from 'express';
-import Subscriptions from './routes';
+import express from 'express'
+import Subscriptions from './routes'
 
-const router = express.Router();
+const router = express.Router()
 
-router.use('/subscriptions', Subscriptions);
+router.use('/subscriptions', Subscriptions)
 
-export default router;
+export default router
