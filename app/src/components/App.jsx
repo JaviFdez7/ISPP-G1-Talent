@@ -37,6 +37,8 @@ import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 
 import ChangePassword from '../pages/ChangePassword.jsx'
 
+import PaymentScreen from '../pages/payment/PaymentScreen.jsx'
+
 function App() {
 	return (
 		<div>
@@ -118,7 +120,14 @@ function App() {
 
 						{/*Subscription*/}
 						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
-						{/*<Route path="/pricing" element={<Pricing />} />*/}
+						<Route
+							path='/payments/:subscriptionPlan'
+							element={
+								<ProtectedRoute roles={['Candidate', 'Representative']}>
+									<PaymentScreen />
+								</ProtectedRoute>
+							}
+						/>
 
 						<Route
 							path='/candidate/:id/password'
