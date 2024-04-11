@@ -357,7 +357,7 @@ definitions:
             companyName:
                 type: string
                 description: The company name of the representative.
-            companySubscription:
+            subscriptionType:
                 type: string
                 enum:
                     - 'Basic plan'
