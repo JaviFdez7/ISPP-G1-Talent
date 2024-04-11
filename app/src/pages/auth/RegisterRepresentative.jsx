@@ -65,15 +65,6 @@ export default function RegisterRepresentative() {
 			setErrors(validationErrors)
 			return
 		}
-		if (enableValidation) {
-			setLoading(true)
-			const isValidEmail = await validateEmail(form.corporative_email)
-			setLoading(false)
-			if (!isValidEmail) {
-				setEmailValid(false)
-				return
-			}
-		}
 
 		let valid = true
 
@@ -92,6 +83,17 @@ export default function RegisterRepresentative() {
 				return
 			}
 		})
+
+		//email validation API
+		if (enableValidation) {
+			setLoading(true)
+			const isValidEmail = await validateEmail(form.corporative_email)
+			setLoading(false)
+			if (!isValidEmail) {
+				setEmailValid(false)
+				return
+			}
+		}
 
 		try {
 			const response = await axios.post(
@@ -144,48 +146,36 @@ export default function RegisterRepresentative() {
 	}, [])
 
 	async function validateEmail(email) {
-		const verifaliaUserId = 'ittalentID1111111111111111'
-		const verifaliaUserPwd = 'rI8e.gOjdUWfv0'
+		const options = {
+			method: 'GET',
+			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
+			params: {
+				email: email,
+			},
+			headers: {
+				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			// Enviar solicitud de validación de correo electrónico
-			const response = await axios.post(
-				'https://api.verifalia.com/v2.5/email-validations',
-				{
-					entries: [{ inputData: email }],
-				},
-				{
-					auth: {
-						username: verifaliaUserId,
-						password: verifaliaUserPwd,
-					},
-				}
-			)
-			const taskId = response.data.overview.id
-			let taskStatus = 'InProgress'
-			let result = false
-			while (taskStatus === 'InProgress') {
-				const taskResponse = await axios.get(
-					`https://api.verifalia.com/v2.5/email-validations/${taskId}`,
-					{
-						auth: {
-							username: verifaliaUserId,
-							password: verifaliaUserPwd,
-						},
-					}
-				)
-				taskStatus = taskResponse.status
-				result = taskResponse.data.entries.data[0].classification === 'Deliverable'
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+			const response = await axios.request(options)
+			if (response.data.status === 'valid') {
+				return true
+			} else {
+				return false
 			}
-
-			return result
 		} catch (error) {
-			console.error('Error validating email:', error)
+			if (error.response && error.response.status === 402) {
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
+				return true
+			}
+			console.error(error)
 			return false
 		}
 	}
-
 	function validateForm() {
 		let errors = {}
 
