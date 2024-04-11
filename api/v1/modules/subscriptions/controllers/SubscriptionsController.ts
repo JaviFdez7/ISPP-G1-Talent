@@ -36,7 +36,6 @@ export const getSubscriptionsByUserId: any = async (req: Request, res: Response)
 		])
 	}
 }
-
 export const updateSubscriptionByUserId: any = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.userId

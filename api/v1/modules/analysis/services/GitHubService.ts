@@ -351,7 +351,8 @@ export async function GetUserAnaliseInfo (githubUsername: string, apikey?: strin
     `;
 
   try {
-    const effectiveApiKey = apikey || GITHUB_APIKEY;
+    // ULTIMA CONDICION PARA COSA DE TESTING
+    const effectiveApiKey = apikey || GITHUB_APIKEY || process.env.GH_TOKEN;
 
     const languagesResult = await GQLPaginator(languagesQuery, effectiveApiKey, 'github-v1.0.0');
     const result: any = await GQLPaginator(queryUserInfo, effectiveApiKey, 'github-v1.0.0');
