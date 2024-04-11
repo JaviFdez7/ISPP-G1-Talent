@@ -33,20 +33,6 @@ export const getSubscriptionsByUserId: any = async (req: Request, res: Response)
   }
 };
 
-export const createSubscriptions: any = async (req: Request, res: Response) => {
-  try {
-    const data = await SubscriptionsService.createSubscriptions(req.body);
-    ApiResponse.sendSuccess(res, data, 200, {
-      self: `${req.protocol}://${req.get('host')}${req.originalUrl}`
-    });
-  } catch (error: any) {
-    ApiResponse.sendError(res, [{
-      title: 'Internal Server Error',
-      detail: error.message
-    }]);
-  }
-};
-
 export const updateSubscriptionByUserId: any = async (req: Request, res: Response) => {
   try {
     const id = req.params.userId;
@@ -65,6 +51,5 @@ export const updateSubscriptionByUserId: any = async (req: Request, res: Respons
 export default {
   getAllSubscriptions,
   getSubscriptionsByUserId,
-  createSubscriptions,
   updateSubscriptionByUserId
 };
