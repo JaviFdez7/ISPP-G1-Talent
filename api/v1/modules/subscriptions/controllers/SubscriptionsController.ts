@@ -56,5 +56,5 @@ export const updateSubscriptionByUserId: any = async (req: Request, res: Respons
 export default {
 	getAllSubscriptions,
 	getSubscriptionsByUserId,
-	updateSubscriptionByUserId
+	updateSubscriptionByUserId,
 }
