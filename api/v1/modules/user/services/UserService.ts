@@ -4,7 +4,8 @@ import { ProfessionalExperience } from '../../professional-experience/models/pro
 import { getModelForRole } from '../helpers/handleRoles'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
 import {
-	createSubscriptions,
+	createRepresentativeSubscriptions,
+	createCandidateSubscriptions,
 	getSubscriptionsByUserId,
 } from '../../subscriptions/services/SubscriptionsService'
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
@@ -29,8 +30,16 @@ export const createUser: any = async (data: any, role: string) => {
 			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
 			data.analysisId = analysis._id
 		}
-		const subscription = await createSubscriptions(role)
-		data.subscriptionId = subscription._id
+		if (role === 'Representative') {
+			if (!data.subscriptionType) {
+				throw new Error('Subscription type is required for company users')
+			}
+			const subscription = await createRepresentativeSubscriptions(data.subscriptionType)
+			data.subscriptionId = subscription._id
+		} else if (role === 'Candidate') {
+			const subscription = await createCandidateSubscriptions()
+			data.subscriptionId = subscription._id
+		}
 		const user = new Model(data)
 		await user.save()
 		return user
