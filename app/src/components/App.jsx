@@ -123,13 +123,21 @@ function App() {
 						/>
 
 						{/*Subscription*/}
+<<<<<<< HEAD
+=======
+						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
+>>>>>>> 6df7fca (feat: Add payment screen with temporary implementation)
 						<Route
 							path='/payments/:subscriptionPlan'
 							element={
 								<ProtectedRoute roles={['Candidate', 'Representative']}>
+<<<<<<< HEAD
 									<Elements stripe={stripePromise}>
 										<PaymentScreen />
 									</Elements>
+=======
+									<PaymentScreen />
+>>>>>>> 6df7fca (feat: Add payment screen with temporary implementation)
 								</ProtectedRoute>
 							}
 						/>
