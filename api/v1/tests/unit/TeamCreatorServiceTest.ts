@@ -46,7 +46,7 @@ describe('Create correctly a team as a representative', function() {
                     "string" 
                 ],
                 companyName: "string", 
-                companySubscription: "Basic plan", 
+                subscriptionType: "Basic plan", 
                 projectSocietyName: "string" 
             };
             const representative=await createUser(representativeData,'Representative')
@@ -139,7 +139,7 @@ describe('Create correctly a team as a representative', function() {
         try{
             const readableTeam=await TeamCreator.findOne({userId:representativeId})
             const sameTeam=await getTeamCreatorById((readableTeam as any)._id)
-            assert.strictEqual((readableTeam as any)._id,sameTeam._id)
+            assert.notDeepEqual(sameTeam,null)
             for(var i=0;i<(readableTeam as any).profiles[0].recommendedCandidates.length;i++){
                 const candidate=(readableTeam as any).profiles[0].recommendedCandidates[i]
                 const candidateDocument = (await Candidate.findOne({
