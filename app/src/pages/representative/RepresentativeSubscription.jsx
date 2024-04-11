@@ -70,7 +70,7 @@ export default function RepresentativeSubscription() {
                   </p>
                 ))}
                 <Link
-                  to={`/payments/${suscription.name}/${suscription.price}`}
+                  to={`/payments/${suscription.name}`}
                   className={`flex items-center mt-auto border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded ${
                     suscription.name == "standar"
                       ? "bg-indigo-400 text-white hover:bg-indigo-600"
