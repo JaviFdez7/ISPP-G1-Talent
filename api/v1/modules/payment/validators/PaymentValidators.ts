@@ -10,7 +10,7 @@ import { Candidate, CandidateSubscription, CompanySubscription, Representative }
 export const validatePayment = async (req: Request, res: Response, next: NextFunction): Promise<void>  => {
     const subscriptionPlan = req.body.subscriptionPlan
 	const price = req.body.price
-	const payment_method = req.body.payment_method
+	const paymentMethod = req.body.paymentMethod
 
 	const token = req.headers.authorization ?? ''
 	const decodedToken = verifyJWT(token)
