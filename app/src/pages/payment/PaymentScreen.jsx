@@ -13,22 +13,13 @@ export default function PaymentScreen() {
     const { isRepresentative } = useAuthContext();
     const [price, setPrice] = useState(9.99);
     const [form, setForm] = useState({
-<<<<<<< HEAD
-=======
-        username: '',
-        password: '',
->>>>>>> ab65706 (feat: Add payment screen with temporary implementation)
         cardNumber: '',
         expiryDate: '',
         cvv: '',
         nameOnCard: ''
     });
     const [errors, setErrors] = useState({});
-<<<<<<< HEAD
     const {cardNumber, expiryDate, cvv, nameOnCard } = form;
-=======
-    const { username, password, cardNumber, expiryDate, cvv, nameOnCard } = form;
->>>>>>> ab65706 (feat: Add payment screen with temporary implementation)
     let navigate = useNavigate();
     const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
     const prices = {
@@ -42,15 +33,9 @@ export default function PaymentScreen() {
     }
 
     useEffect(() => {
-<<<<<<< HEAD
         if (subscriptionPlan === "Basic plan") {
             setPrice(prices.representative.basic)
         } else if (isRepresentative && subscriptionPlan === "Advanced plan") {
-=======
-        if (subscriptionPlan === "Basic") {
-            setPrice(prices.representative.basic)
-        } else if (isRepresentative && subscriptionPlan === "Advanced") {
->>>>>>> ab65706 (feat: Add payment screen with temporary implementation)
             setPrice(prices.representative.advanced)
         } else {
             setPrice(prices.candidate.advanced)
@@ -71,14 +56,6 @@ export default function PaymentScreen() {
             setErrors(validationErrors);
             return;
         }
-<<<<<<< HEAD
-        const stripe = await stripePromise;
-=======
-        // Obtener la instancia de Stripe
-        const stripe = await stripePromise;
-
-        // Crear un token de tarjeta de crédito con los datos del formulario
->>>>>>> ab65706 (feat: Add payment screen with temporary implementation)
         const { paymentMethod, error } = await stripe.createPaymentMethod({
             type: 'card',
             card: {
