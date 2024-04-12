@@ -10,7 +10,7 @@ const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 export const makePayment: any = async (req: Request, res: Response) => {
 	const subscriptionPlan = req.body.subscriptionPlan
 	const price = req.body.price
-	const payment_method = req.body.payment_method
+	const paymentMethod = req.body.paymentMethod
 
 	const token = req.headers.authorization ?? ''
 	const decodedToken = verifyJWT(token)
@@ -22,7 +22,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 		const paymentIntent = await stripe.paymentIntents.create({
 			amount: price * 100,
 			currency: "eur",
-			payment_method: payment_method,
+			payment_method: paymentMethod,
 			description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
 			confirm: true,
 			automatic_payment_methods: {
