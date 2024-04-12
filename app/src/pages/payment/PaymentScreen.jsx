@@ -13,15 +13,13 @@ export default function PaymentScreen() {
     const { isRepresentative } = useAuthContext();
     const [price, setPrice] = useState(9.99);
     const [form, setForm] = useState({
-        username: '',
-        password: '',
         cardNumber: '',
         expiryDate: '',
         cvv: '',
         nameOnCard: ''
     });
     const [errors, setErrors] = useState({});
-    const { username, password, cardNumber, expiryDate, cvv, nameOnCard } = form;
+    const {cardNumber, expiryDate, cvv, nameOnCard } = form;
     let navigate = useNavigate();
     const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
     const prices = {
@@ -35,9 +33,9 @@ export default function PaymentScreen() {
     }
 
     useEffect(() => {
-        if (subscriptionPlan === "Basic") {
+        if (subscriptionPlan === "Basic plan") {
             setPrice(prices.representative.basic)
-        } else if (isRepresentative && subscriptionPlan === "Advanced") {
+        } else if (isRepresentative && subscriptionPlan === "Advanced plan") {
             setPrice(prices.representative.advanced)
         } else {
             setPrice(prices.candidate.advanced)
@@ -58,10 +56,7 @@ export default function PaymentScreen() {
             setErrors(validationErrors);
             return;
         }
-        // Obtener la instancia de Stripe
         const stripe = await stripePromise;
-
-        // Crear un token de tarjeta de crédito con los datos del formulario
         const { paymentMethod, error } = await stripe.createPaymentMethod({
             type: 'card',
             card: {
@@ -84,17 +79,14 @@ export default function PaymentScreen() {
 
     async function confirmPurchase(paymentMethod) {
         try {
-            // Enviar el token de tarjeta de crédito al backend junto con otros datos del formulario
             const response = await axios.post(
                 import.meta.env.VITE_BACKEND_URL + '/payment',
                 {
-                    //TODO: Actualizar nombres para matchear el endpoint
                     price: price,
-                    payment_method: paymentMethod.id,
-                    subscription_plan: subscriptionPlan
+                    paymentMethod: paymentMethod.id,
+                    subscriptionPlan: subscriptionPlan
                 }
             );
-
             console.log(response.data.data)
             navigate("/")
         } catch (error) {
@@ -111,13 +103,6 @@ export default function PaymentScreen() {
 
     function validateForm() {
         let errors = {};
-
-        if (!form.username) {
-            errors.username = 'The username is required';
-        }
-        if (!form.password) {
-            errors.password = 'The password is required';
-        }
         if (!form.nameOnCard) {
             errors.nameOnCard = 'Name on card is required';
         }
@@ -180,42 +165,6 @@ export default function PaymentScreen() {
                         Change to {subscriptionPlan} for <p style={{ color: "var(--talent-highlight)" }}>{price}$</p>
                     </h2>
                     <form onSubmit={(e) => handleSubmit(e)}>
-                        <div
-                            className="flex"
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            <Input
-                                name='Username'
-                                value={username}
-                                editable={true}
-                                placeholder='Enter Username'
-                                onChange={(e) => onInputChange(e)}
-                                formName='username'
-                                width='80%'
-                                isMandatory={true}
-                                type='text'
-                            />
-                        </div>
-                        <div
-                            className="flex"
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            <Input
-                                name='Password'
-                                value={password}
-                                editable={true}
-                                placeholder='Enter Password'
-                                onChange={(e) => onInputChange(e)}
-                                formName='password'
-                                width='80%'
-                                isMandatory={true}
-                                type='password'
-                            />
-                        </div>
                         <div
                             className="flex"
                             style={{
