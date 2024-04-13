@@ -79,7 +79,6 @@ export default function CandidateNotificationDetail() {
 							},
 						}
 					)
-					console.log(response.data)
 				}
 			}
 		} catch (error) {

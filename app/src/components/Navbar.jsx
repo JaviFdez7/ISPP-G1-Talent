@@ -253,7 +253,7 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '110%',
+											width: '90%',
 											height: '110%',
 										}}
 									/>
@@ -288,7 +288,7 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '110%',
+											width: '90%',
 											height: '110%',
 										}}
 									/>
