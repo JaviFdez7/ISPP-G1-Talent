@@ -243,7 +243,21 @@ export default function Navbar() {
 						<div>
 							<Link to='/representative/detail' className='profile-container'>
 								<div className='profile-pic-container'>
-									<img src={profile} className='profile-pic' />
+									<img
+										src={
+											userData && userData.profilePicture
+												? userData.profilePicture
+												: profile
+										}
+										className='profile-pic'
+										style={{
+											objectFit: 'cover',
+											objectPosition: 'center',
+											width: '110%',
+											height: '110%',
+										}}
+									/>
+
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.username : ' - '}</h1>
@@ -264,7 +278,21 @@ export default function Navbar() {
 						<div>
 							<Link to='/candidate/detail' className='profile-container'>
 								<div className='profile-pic-container'>
-									<img src={profile} className='profile-pic' />
+									<img
+										src={
+											userData && userData.profilePicture
+												? userData.profilePicture
+												: profile
+										}
+										className='profile-pic'
+										style={{
+											objectFit: 'cover',
+											objectPosition: 'center',
+											width: '110%',
+											height: '110%',
+										}}
+									/>
+
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.fullName : ' - '}</h1>
