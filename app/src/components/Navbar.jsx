@@ -253,10 +253,18 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
+<<<<<<< HEAD
 											width: '90%',
 											height: '110%',
 										}}
 									/>
+=======
+											width: '110%',
+											height: '110%',
+										}}
+									/>
+
+>>>>>>> 8f8cc7a (feat: Refactored password validation logic in RegisterCandidate and RegisterRepresentative components)
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.username : ' - '}</h1>
@@ -287,10 +295,18 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
+<<<<<<< HEAD
 											width: '90%',
 											height: '110%',
 										}}
 									/>
+=======
+											width: '110%',
+											height: '110%',
+										}}
+									/>
+
+>>>>>>> 8f8cc7a (feat: Refactored password validation logic in RegisterCandidate and RegisterRepresentative components)
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.fullName : ' - '}</h1>
