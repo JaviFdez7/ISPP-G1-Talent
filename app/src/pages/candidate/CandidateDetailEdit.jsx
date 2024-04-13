@@ -109,7 +109,7 @@ export default function CandidateDetailEdit() {
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
-				'Error when getting the analysis by ID: jwt expired'
+					'Error when getting the analysis by ID: jwt expired'
 			) {
 				Swal.fire({
 					icon: 'error',
@@ -117,22 +117,23 @@ export default function CandidateDetailEdit() {
 					text: 'Please login again to continue',
 					timer: 1500,
 					showConfirmButton: false,
-					background: "var(--talent-secondary)",
-					color: "white",
-					confirmButtonColor: "var(--talent-highlight)",
-
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
 				})
 				navigate('/login')
-			}else if(error.response.data.errors[0].detail="You cant update your profile until next month"){
+			} else if (
+				(error.response.data.errors[0].detail =
+					'You cant update your profile until next month')
+			) {
 				Swal.fire({
 					icon: 'error',
 					title: 'You can not update your profile until next month',
 					timer: 1500,
 					showConfirmButton: false,
-					background: "var(--talent-secondary)",
-					color: "white",
-					confirmButtonColor: "var(--talent-highlight)",
-		  
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
 				})
 			}
 		}
@@ -217,7 +218,7 @@ export default function CandidateDetailEdit() {
 		return res !== null
 	}
 	function isValidImageURL(url) {
-		return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
 	}
 
 	return (
@@ -237,7 +238,6 @@ export default function CandidateDetailEdit() {
 					borderWidth: '1px',
 					width: '83.3333%',
 					overflowY: 'scroll',
-
 				}}>
 				<div>
 					<h2
