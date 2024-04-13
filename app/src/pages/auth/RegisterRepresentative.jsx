@@ -14,7 +14,7 @@ export default function RegisterRepresentative() {
 		username: '',
 		corporative_email: '',
 		company_name: '',
-		companySubscription: 'Basic plan',
+		subscriptionType: 'Basic plan',
 		password: '',
 		password2: '',
 	})
@@ -24,7 +24,7 @@ export default function RegisterRepresentative() {
 		username,
 		corporative_email,
 		company_name,
-		companySubscription,
+		subscriptionType,
 		phone_number,
 		projectSocietyName,
 		password,

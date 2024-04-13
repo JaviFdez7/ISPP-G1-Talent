@@ -192,7 +192,7 @@ export default function Navbar() {
 					)}
 					{userData && getOptsNum('Team Search') !== -1 && (
 						<Link
-							to={`/searches/representative/${currentUserId2}`}
+							to={`/searches/search`}
 							onMouseEnter={() => move_hoverer(getOptsNum('Team Search'))}
 							onMouseDown={() => move_current(getOptsNum('Team Search'))}
 							className='link-container'>

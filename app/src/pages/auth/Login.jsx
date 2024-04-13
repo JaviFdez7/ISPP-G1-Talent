@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import MainButton from "../../components/mainButton.jsx";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
@@ -7,7 +7,7 @@ import { useAuthContext } from "../../context/authContext";
 
 export default function Login() {
   const { login } = useAuthContext();
-
+  const apiURL = import.meta.env.VITE_BACKEND_URL
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -22,6 +22,19 @@ export default function Login() {
     setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
 
+  const fetchSubscription = async (data) => {
+    try {
+      const config = {
+        headers: { Authorization: `${data.token}` },
+      }
+      const response = await axios.get(apiURL + '/subscriptions/' + data.user._id, config)
+      return response.data.data.subtype; // Devuelve la respuesta
+    } catch (error) {
+      console.error(error); // Muestra el error
+      throw error; // Lanza el error
+    }
+  }
+  
   async function handleSubmit(e) {
     e.preventDefault();
     const validationErrors = validateForm();
@@ -33,10 +46,12 @@ export default function Login() {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/user/login",
         form
-        
       );
       const data = response.data.data;
-      login(data.token, data.user.role, data.user._id);
+      const subscriptionType = await fetchSubscription(data); // Pasa data como argumento
+      
+      
+      login(data.token, data.user.role, data.user._id, subscriptionType); // Usa subscriptionType aquí
       if (data.user.role === "Candidate") {
         navigate("/candidate/detail");
       } else if (data.user.role === "Representative") {
@@ -65,6 +80,7 @@ export default function Login() {
     }
     return errors;
   }
+
 
   return (
     <div
