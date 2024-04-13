@@ -38,6 +38,10 @@ import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 import ChangePassword from '../pages/ChangePassword.jsx'
 
 import PaymentScreen from '../pages/payment/PaymentScreen.jsx'
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
 
 function App() {
 	return (
@@ -122,7 +126,9 @@ function App() {
 							path='/payments/:subscriptionPlan'
 							element={
 								<ProtectedRoute roles={['Candidate', 'Representative']}>
-									<PaymentScreen />
+									<Elements stripe={stripePromise}>
+										<PaymentScreen />
+									</Elements>
 								</ProtectedRoute>
 							}
 						/>

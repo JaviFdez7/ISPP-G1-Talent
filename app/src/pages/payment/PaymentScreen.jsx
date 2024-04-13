@@ -4,80 +4,60 @@ import MainButton from "../../components/mainButton.jsx";
 import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import { useAuthContext } from "../../context/authContext";
-import { loadStripe } from '@stripe/stripe-js';
-import Input from "../../components/Input.jsx";
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import Purchase from '../../components/swat/Purchase.js'
 
 export default function PaymentScreen() {
     const { subscriptionPlan } = useParams();
     const { isRepresentative } = useAuthContext();
     const [price, setPrice] = useState(9.99);
-    const [form, setForm] = useState({
-        cardNumber: '',
-        expiryDate: '',
-        cvv: '',
-        nameOnCard: ''
-    });
     const [errors, setErrors] = useState({});
-    const {cardNumber, expiryDate, cvv, nameOnCard } = form;
     let navigate = useNavigate();
-    const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+
+    const stripe = useStripe();
+    const elements = useElements();
+
     const prices = {
         candidate: {
-            advanced: 9.99
+            pro: 9.99
         },
         representative: {
             basic: 29.99,
-            advanced: 79.99
+            pro: 79.99
         }
     }
+    
 
     useEffect(() => {
         if (subscriptionPlan === "Basic plan") {
             setPrice(prices.representative.basic)
-        } else if (isRepresentative && subscriptionPlan === "Advanced plan") {
-            setPrice(prices.representative.advanced)
+        } else if (isRepresentative && subscriptionPlan === "Pro plan") {
+            setPrice(prices.representative.pro)
         } else {
-            setPrice(prices.candidate.advanced)
+            setPrice(prices.candidate.pro)
         }
     }, [])
 
 
-    function onInputChange(e) {
-        const { name, value } = e.target;
-        setForm(prevForm => ({ ...prevForm, [name]: value }));
-        setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
-    }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const validationErrors = validateForm();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-        const stripe = await stripePromise;
         const { paymentMethod, error } = await stripe.createPaymentMethod({
             type: 'card',
-            card: {
-                number: cardNumber,
-                exp_month: expiryDate.split('/')[0],
-                exp_year: expiryDate.split('/')[1],
-                cvc: cvv,
-                name: nameOnCard
-            }
+            card: elements.getElement(CardElement),
         });
-
+        console.log("ELEMENTS*********",elements.getElement(CardElement),)
         if (error) {
             console.error(error);
             setErrors({ stripe: error.message });
         } else {
-            const role = "Representative" ? isRepresentative : "Candidate";
-            Purchase(confirmPurchase, navigate, role, paymentMethod)
+            const role = isRepresentative ? "Representative" : "Candidate";
+            Purchase(confirmPurchase, navigate, role, paymentMethod, subscriptionPlan)
         }
     }
 
     async function confirmPurchase(paymentMethod) {
+        const token = localStorage.getItem("access_token")
         try {
             const response = await axios.post(
                 import.meta.env.VITE_BACKEND_URL + '/payment',
@@ -85,49 +65,26 @@ export default function PaymentScreen() {
                     price: price,
                     paymentMethod: paymentMethod.id,
                     subscriptionPlan: subscriptionPlan
+                },
+                {
+                    headers: {
+                        'Authorization': `${token}`,
+                    }
                 }
             );
-            console.log(response.data.data)
-            navigate("/")
+            console.log("RESPUESTA******",response.data.data)
+            return true
         } catch (error) {
             if (error.response && error.response.status === 401) {
                 setErrors(error.response.data);
-                return;
             } else if (error.response && error.response.status === 404) {
                 setErrors(error.response.data);
-                return;
             }
             console.error(error);
+            return false
         }
     }
 
-    function validateForm() {
-        let errors = {};
-        if (!form.nameOnCard) {
-            errors.nameOnCard = 'Name on card is required';
-        }
-        if (!form.cardNumber) {
-            errors.cardNumber = 'Card number is required';
-        } else if (!/^\d{16}$/.test(form.cardNumber)) {
-            errors.cardNumber = 'Card number must be a 16-digit number';
-        }
-        if (!form.expiryDate) {
-            errors.expiryDate = 'Expiration date is required';
-        } else {
-            const today = new Date();
-            const [month, year] = form.expiryDate.split('/');
-            const expiryDate = new Date(`20${year}`, month - 1, 1); // Assuming year is in YY format
-            if (expiryDate <= today) {
-                errors.expiryDate = 'Expiration date must be in the future';
-            }
-        }
-        if (!form.cvv) {
-            errors.cvv = 'CVV is required';
-        } else if (!/^\d{3}$/.test(form.cvv)) {
-            errors.cvv = 'CVV must be a 3-digit number';
-        }
-        return errors;
-    }
 
     return (
         <div
@@ -164,84 +121,31 @@ export default function PaymentScreen() {
                     >
                         Change to {subscriptionPlan} for <p style={{ color: "var(--talent-highlight)" }}>{price}$</p>
                     </h2>
+
                     <form onSubmit={(e) => handleSubmit(e)}>
-                        <div
-                            className="flex"
-                            style={{
-                                marginBottom: "1rem",
+                        <CardElement
+                            options={{
+                                style: {
+                                    base: {
+                                        color: '#fff', // Color del texto
+                                        fontSize: '16px', // Tamaño de fuente
+                                        '::placeholder': {
+                                            color: '#aab7c4', // Color del marcador de posición
+                                        },
+                                    },
+                                    invalid: {
+                                        color: '#ff0000', // Color del texto en caso de error
+                                    },
+                                    hidePostalCode: true,
+                                    iconStyle: 'solid',
+                                },
                             }}
-                        >
-                            <Input
-                                name='Name on card'
-                                value={nameOnCard}
-                                editable={true}
-                                placeholder='Enter the name on your credit card'
-                                onChange={(e) => onInputChange(e)}
-                                formName='nameOnCard'
-                                width='80%'
-                                isMandatory={true}
-                                type='text'
-                            />
-                        </div>
-                        <div
-                            className="flex"
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            <Input
-                                name='Card number'
-                                value={cardNumber}
-                                editable={true}
-                                placeholder='Enter your credit card number'
-                                onChange={(e) => onInputChange(e)}
-                                formName='cardNumber'
-                                width='80%'
-                                isMandatory={true}
-                                type='password'
-                            />
-                        </div>
-                        <div
-                            className="flex"
-                            style={{
-                                marginBottom: "1rem",
-                            }}
-                        >
-                            <Input
-                                name='Expiration date'
-                                value={expiryDate}
-                                editable={true}
-                                placeholder='Enter the expiration date on your credit card'
-                                onChange={(e) => onInputChange(e)}
-                                formName='expiryDate'
-                                width='80%'
-                                isMandatory={true}
-                                type='date'
-                            />
-                        </div>
-                        <div
-                            className="flex items-center"
-                            style={{
-                                alignContent: "center",
-                            }}
-                        >
-                            <Input
-                                name='CVV'
-                                value={cvv}
-                                editable={true}
-                                placeholder='CVV'
-                                onChange={(e) => onInputChange(e)}
-                                formName='cvv'
-                                width='80%'
-                                isMandatory={true}
-                                type='password'
-                            />
-                        </div>
-                        {
-                            errors.errors && errors.errors[0] && errors.errors[0].detail && (
-                                <p className="text-red-500">{errors.errors[0].detail}</p>
-                            )
-                        }
+                            autoComplete="off"
+                        />
+                        
+                        {errors.stripe && (
+                            <h4 className="text-red-600">{errors.stripe}</h4>
+                        )}
                         <div
                             className="flex justify-center items-center"
                             style={{ marginTop: "3rem" }}

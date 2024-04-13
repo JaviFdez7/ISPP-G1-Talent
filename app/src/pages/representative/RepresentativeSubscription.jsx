@@ -10,7 +10,7 @@ export default function RepresentativeSubscription() {
       description: ["25 searches", "3 members per search", "Basic filters"],
     },
     {
-      name: "Advanced plan",
+      name: "Pro plan",
       price: "79.99€",
       description: [
         "150 searches",
@@ -21,7 +21,7 @@ export default function RepresentativeSubscription() {
       ],
     },
     {
-      name: "Personal",
+      name: "Custom",
       price: "Custom",
       description: ["Custom", "Custom", "Custom", "Custom", "Custom"],
     },

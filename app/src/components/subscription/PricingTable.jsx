@@ -7,7 +7,7 @@ import { useAuthContext } from "../../context/authContext";
 
 const PricingTable = ({ suscription }) => {
   const { isRepresentative } = useAuthContext();
-  const [popular, setPopular] = useState("Advance");
+  const [popular, setPopular] = useState("Pro");
   const [isCurrentPlan, setIsCurrentPlan] = useState("Basic");
   const apiURL = import.meta.env.VITE_BACKEND_URL
   const navigate = useNavigate()
@@ -61,7 +61,7 @@ const PricingTable = ({ suscription }) => {
       let mostPopularPlan = '';
       let maxCount = 0;
       for (const plan in plans) {
-        if (plans[plan] > maxCount || (plans[plan] === maxCount && plan === 'Advance plan')) {
+        if (plans[plan] > maxCount || (plans[plan] === maxCount && plan === 'Pro plan')) {
           mostPopularPlan = plan;
           maxCount = plans[plan];
         }
@@ -108,13 +108,13 @@ const PricingTable = ({ suscription }) => {
           </p>
         ))}
         <Link
-          to={!isCurrentPlan ? suscription.name === "Personal" ? "/support" : `/payments/${suscription.name}` :  "#"}
+          to={!isCurrentPlan ? suscription.name === "Custom" ? "/support" : `/payments/${suscription.name}` :  "#"}
           className={`flex items-center mt-auto border-0 py-2 px-4 w-full focus:outline-non rounded ${!isCurrentPlan
             ? "bg-gray-200 text-gray-600 hover:bg-gray-500"
             : "text-gray-800 bg-gray-400"
             }`}
         >
-          {!isCurrentPlan ? suscription.name === "Personal" ? "Contact us" : "Subscribe" : "Acquired"}
+          {!isCurrentPlan ? suscription.name === "Custom" ? "Contact us" : "Subscribe" : "Acquired"}
           <svg
             fill="none"
             stroke="currentColor"

@@ -15,7 +15,7 @@ export default function CandidateSubscription() {
       ],
     },
     {
-      name: "Advanced plan",
+      name: "Pro plan",
       price: "9.99€",
       description: [
         "All basic functions",
