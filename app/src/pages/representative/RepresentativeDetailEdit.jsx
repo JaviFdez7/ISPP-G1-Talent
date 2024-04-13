@@ -184,8 +184,12 @@ export default function RepresentativeDetailEdit() {
 			errors.companyName =
 				'The company name field must have be between 2 and 50 characters long'
 		}
-		if (userData.projectSocietyName && !userData.projectSocietyName.length <= 3) {
-			errors.projectSocietyName = 'The username field must be more than 3 characters'
+		if (
+			userData.projectSocietyName &&
+			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 50)
+		) {
+			errors.projectSocietyName =
+				'The Project Society Name must be between 2 and 50 characters long'
 		}
 		if (
 			userData.phone &&
@@ -216,6 +220,8 @@ export default function RepresentativeDetailEdit() {
 					borderColor: 'var(--talent-highlight)',
 					borderWidth: '1px',
 					width: '83.3333%',
+					overflowY: 'scroll',
+
 				}}>
 				<div>
 					<h2

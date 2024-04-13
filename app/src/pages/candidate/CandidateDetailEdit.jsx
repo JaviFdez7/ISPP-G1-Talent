@@ -105,11 +105,10 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating user:', error.response)
 			if (
 				error.response.status === 400 ||
 				error.response.data.errors[0].detail ===
-					'Error when getting the analysis by ID: jwt expired'
+				'Error when getting the analysis by ID: jwt expired'
 			) {
 				Swal.fire({
 					icon: 'error',
@@ -125,7 +124,7 @@ export default function CandidateDetailEdit() {
 
 	const handleProfilePictureChange = (e) => {
 		const url = e.target.value
-		if (url && isValidURL(url)) {
+		if (url && isValidURL(url) && isValidImageURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
 			console.log('profilePicture after url input:', profilePicture)
 		} else {
@@ -201,6 +200,9 @@ export default function CandidateDetailEdit() {
 		)
 		return res !== null
 	}
+	function isValidImageURL(url) {
+		return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+	}
 
 	return (
 		<div
@@ -218,6 +220,8 @@ export default function CandidateDetailEdit() {
 					borderColor: 'var(--talent-highlight)',
 					borderWidth: '1px',
 					width: '83.3333%',
+					overflowY: 'scroll',
+
 				}}>
 				<div>
 					<h2

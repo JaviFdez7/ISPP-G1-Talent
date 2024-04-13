@@ -84,6 +84,8 @@ export default function ChangePassword() {
 		let errors = {}
 		if (!form.oldPassword) {
 			errors.oldPassword = getRequiredFieldMessage('oldPassword')
+		} else if (form.oldPassword.length < 8 || form.oldPassword.length > 20) {
+			errors.password = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.oldPassword == form.newPassword) {
 			errors.newPassword = 'Passwords match the old password'
 		}
@@ -103,17 +105,18 @@ export default function ChangePassword() {
 				msOverflowY: 'scroll',
 			}}>
 			<div
-				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
+				className="rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4 "
 				style={{
-					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
-					borderWidth: '1px',
-					width: '83.3333%',
+					backgroundColor: "rgba(0, 0, 0, 0.5)",
+					borderColor: "var(--talent-highlight)",
+					borderWidth: "1px",
+					width: '50%',
+					marginTop:'10%',
 				}}>
 				<div className='flex flex-row justify-center'>
 					<div
 						className='flex flex-col items-center mt-10'
-						style={{ width: '41.6667%', padding: '4rem' }}>
+						style={{ width: '90%', marginTop:'10%'}}>
 						<h2
 							className='font-bold text-center text-white'
 							style={{

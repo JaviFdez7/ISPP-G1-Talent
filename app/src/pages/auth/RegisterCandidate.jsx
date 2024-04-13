@@ -207,6 +207,8 @@ export default function RegisterCandidate() {
 		}
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
+		} else if (form.password.length < 8 || form.password.length > 20) {
+			errors.password = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Passwords do not match'
 		}
