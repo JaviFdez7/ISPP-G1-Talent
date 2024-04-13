@@ -31,23 +31,25 @@ export function AuthContextProvider({ children }) {
   const [role, setRole] = useState(getInitialRole);
   const { isCandidate, isRepresentative } = role;
 
-  const login = useCallback(function (token, userType, userId) {
+  const login = useCallback(function (token, userType, userId, subscriptionType) {
     const role = {
       isCandidate: userType === "Candidate",
       isRepresentative: userType === "Representative",
     };
-
+  
     localStorage.setItem("access_token", token);
     localStorage.setItem("role", JSON.stringify(role));
     localStorage.setItem("userId", userId);
+    localStorage.setItem("subscriptionType", subscriptionType); // Añadido
     setIsAuthenticated(true);
     setRole(role);
   }, []);
-
+  
   const logout = useCallback(function () {
     localStorage.removeItem("access_token");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
+    localStorage.removeItem("subscriptionType"); // Añadido
     setIsAuthenticated(false);
     setRole({ isCandidate: false, isRepresentative: false });
   }, []);

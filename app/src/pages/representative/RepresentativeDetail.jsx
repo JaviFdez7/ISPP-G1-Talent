@@ -76,7 +76,7 @@ export default function RepresentativeDetail() {
 		}))
 	}
 
-	console.log('dededede' + userData.profilePicture)
+
 	return (
 		<div
 			className='flex flex-col'
