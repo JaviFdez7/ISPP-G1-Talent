@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
+import mainBackground from '../../images/main-background.jpg'
 import MainButton from '../../components/mainButton'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
@@ -94,7 +94,7 @@ export default function CandidateProfessionalExperienceEdit() {
         setErrors(response.data)
         return
       }
-      navigate('/candidate/detail')
+      navigate(`/candidate/professional-experience/detail/${id}`)
       Swal.fire({
         icon: 'success',
         title: 'Professional Experience updated successfully',
@@ -163,7 +163,7 @@ export default function CandidateProfessionalExperienceEdit() {
       style={{
         height: "100vh",
         backgroundAttachment: "fixed",
-        backgroundImage: `url(${mainBackgroundRegisterLogin})`,
+        backgroundImage: `url(${mainBackground})`,
         backgroundSize: "cover",
       }}
     >
@@ -184,7 +184,7 @@ export default function CandidateProfessionalExperienceEdit() {
               marginBottom: "4rem",
             }}
           >
-            Add work experience
+            Update work experience
           </h2>
           <form className="w-full flex flex-col" onSubmit={(e) => editProffesionalExperience(e)}>
             <div className="w-10/12 flex flex-col mb-4 self-center">
@@ -310,7 +310,7 @@ export default function CandidateProfessionalExperienceEdit() {
           <p className="text-red-500">{errors.errors[0].detail}</p>
         )}
         <div className='flex align-center justify-center'>
-          {MainButton('Update', '/candidate/detail', editProffesionalExperience)}
+          {MainButton('Update', `/professional-experience/${id}/`, editProffesionalExperience)}
           {SecondaryButton('Cancel', '/candidate/detail', '')}
         </div>
       </div>
