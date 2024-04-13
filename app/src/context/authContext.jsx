@@ -60,10 +60,11 @@ export function AuthContextProvider({ children }) {
       isCandidate: userType === "Candidate",
       isRepresentative: userType === "Representative",
     };
-
+  
     localStorage.setItem("access_token", token);
     localStorage.setItem("role", JSON.stringify(role));
     localStorage.setItem("userId", userId);
+    localStorage.setItem("subscriptionType", subscriptionType); // Añadido
     setIsAuthenticated(true);
     setRole(role);
     fetchSubscription();
@@ -73,6 +74,7 @@ export function AuthContextProvider({ children }) {
     localStorage.removeItem("access_token");
     localStorage.removeItem("role");
     localStorage.removeItem("userId");
+    localStorage.removeItem("subscriptionType"); // Añadido
     setIsAuthenticated(false);
     setRole({ isCandidate: false, isRepresentative: false });
     setSubscription(null); // Establece subscription a null
