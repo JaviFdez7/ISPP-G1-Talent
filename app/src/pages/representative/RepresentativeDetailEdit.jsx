@@ -101,7 +101,10 @@ export default function RepresentativeDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			if (error.response.status === 400) {
+			if (error.response.status === 401 ||
+				error.response.data.errors[0].detail ===
+				'Error when getting the analysis by ID: jwt expired'
+			) {
 				Swal.fire({
 					icon: 'error',
 					title: 'Token expired',
@@ -118,7 +121,6 @@ export default function RepresentativeDetailEdit() {
 		const url = e.target.value
 		if (url && isValidURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
-			console.log('profilePicture after url input:', profilePicture)
 		} else {
 			Swal.fire({
 				icon: 'error',

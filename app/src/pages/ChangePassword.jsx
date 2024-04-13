@@ -48,7 +48,6 @@ export default function ChangePassword() {
 					},
 				}
 			)
-			console.log('yeddsdsah ' + response)
 			if (response.status === 404) {
 				setErrors(response.data)
 				return

@@ -40,7 +40,6 @@ export default function CandidateDetailEdit() {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === id)
 					setUserData(user)
-					console.log(user)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error)
@@ -105,19 +104,39 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
+			console.error('Error updating user:', error)
+
 			if (
-				error.response.status === 400 ||
+				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
 				'Error when getting the analysis by ID: jwt expired'
 			) {
+				console.log('Invalid URL')
+				console.log('Error:', token)
+
 				Swal.fire({
 					icon: 'error',
 					title: 'Token expired',
 					text: 'Please login again to continue',
 					timer: 1500,
 					showConfirmButton: false,
+					background: "var(--talent-secondary)",
+					color: "white",
+					confirmButtonColor: "var(--talent-highlight)",
+
 				})
 				navigate('/login')
+			}else if(error.response.data.errors[0].detail="You cant update your profile until next month"){
+				Swal.fire({
+					icon: 'error',
+					title: 'You cant update your profile until next month',
+					timer: 1500,
+					showConfirmButton: false,
+					background: "var(--talent-secondary)",
+					color: "white",
+					confirmButtonColor: "var(--talent-highlight)",
+		  
+				})
 			}
 		}
 	}
@@ -126,7 +145,6 @@ export default function CandidateDetailEdit() {
 		const url = e.target.value
 		if (url && isValidURL(url) && isValidImageURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
-			console.log('profilePicture after url input:', profilePicture)
 		} else {
 			Swal.fire({
 				icon: 'error',
