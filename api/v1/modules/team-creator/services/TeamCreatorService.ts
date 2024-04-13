@@ -17,6 +17,7 @@ import {
 	createNotification,
 	updateNotification,
 } from '../../notification/services/NotificationService'
+import { getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService'
 
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 	const languagesSet = new Set<string>()
@@ -190,6 +191,13 @@ export const createTeamCreator: any = async (data: ProfileRequested[], userId: s
 	const filteredcandidates: FilteredCandidates[] = await filterCandidates(skills)
 	const selectCandidates: ProfileMap = selectBestCandidates(filteredcandidates, data)
 	await saveTeamCreator(userId, selectCandidates)
+	try{
+		const subscription=await getSubscriptionsByUserId(userId)
+		subscription.remainingSearches-=data.length
+		await subscription.save()
+	}catch(error: any){
+		console.log(error)
+	}
 }
 export const getAllTeamCreatorOfRepresentative: any = async (id: any) => {
 	try {
