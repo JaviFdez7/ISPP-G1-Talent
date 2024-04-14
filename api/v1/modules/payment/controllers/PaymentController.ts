@@ -9,7 +9,7 @@ const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
 export const makePayment: any = async (req: Request, res: Response) => {
 	const subscriptionPlan = req.body.subscriptionPlan
-	const price = req.body.price
+	const price = req.body.price * 100
 	const paymentMethod = req.body.paymentMethod
 
 	const token = req.headers.authorization ?? ''
@@ -20,7 +20,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 
 	try {
 		const paymentIntent = await stripe.paymentIntents.create({
-			amount: price,
+			amount: price.toFixed(2),
 			currency: "eur",
 			payment_method: paymentMethod,
 			description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
@@ -29,9 +29,9 @@ export const makePayment: any = async (req: Request, res: Response) => {
 				enabled: true,
 				allow_redirects: 'never'
 			},
-			
+
 		  });
-			 
+
 		switch(paymentIntent.status) {
 			case "succeeded": {
 				const data = await createSubscriptions(role);
@@ -46,7 +46,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 					detail: "An error ocurred while processing the payment, check your card permissions",
 				},
 			])
-		} 
+		}
 		default: {
 			return ApiResponse.sendError(res, [
 				{
@@ -56,7 +56,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 			])
 		}
 		}
-		
+
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
