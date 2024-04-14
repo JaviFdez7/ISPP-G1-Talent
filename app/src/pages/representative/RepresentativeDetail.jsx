@@ -84,18 +84,23 @@ export default function RepresentativeDetail() {
 
 	return (
 		<div
-			className='flex flex-col'
+			className='flex flex-col bg-fixed'
 			style={{
 				backgroundImage: `url(${mainBackground})`,
 				backgroundSize: 'cover',
 				overflowY: 'scroll',
 				height: '100vh',
+
 			}}>
-			<div className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'>
+			<div
+				className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'
+				style={{ marginLeft: '8%' }}>
 				<div className='flex flex-col items-center'>
 					<img
 						src={
-							userData && userData.profilePicture ? userData.profilePicture : profile
+							userData && userData.profilePicture
+								? userData.profilePicture
+								: profile
 						}
 						className='rounded-full border border-gray-300 profile-img'
 						style={{
