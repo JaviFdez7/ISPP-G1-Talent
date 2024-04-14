@@ -199,11 +199,15 @@ export default function RegisterRepresentative() {
 		}
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
+		} else if (form.password.length < 8 || form.password.length > 20) {
+			errors.password = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Password do not match'
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password field must be between 8 and 20 characters'
 		}
 		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
 			errors.phone_number = 'A phone number must consist of 9 digits exclusively'
