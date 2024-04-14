@@ -20,7 +20,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 
 	try {
 		const paymentIntent = await stripe.paymentIntents.create({
-			amount: price.toFixed(2),
+			amount: Math.round(price.toFixed(2)),
 			currency: "eur",
 			payment_method: paymentMethod,
 			description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
