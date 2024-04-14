@@ -10,6 +10,10 @@ import { useAuthContext } from '../../context/authContext'
 import SecondaryButton from '../../components/secondaryButton'
 import WorkExperienceList from '../../components/WorkExperienceList'
 import TopRepositoriesTable from '../../components/TopRepositoriesTable'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
+import Modal from 'react-modal'
+
 
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
@@ -18,6 +22,8 @@ export default function CandidateDetail() {
 	const [analysis, setAnalysis] = useState(null)
 	const [apikey, setApiKey] = useState('')
 	const [errors, setErrors] = useState({})
+	let navigate = useNavigate()
+	const [showModal, setShowModal] = useState(false)
 
 	const languages =
 		analysis && analysis.globalTopLanguages
@@ -32,18 +38,18 @@ export default function CandidateDetail() {
 		try {
 			const body = apikey ? { apikey: apikey } : {}
 			const token = localStorage.getItem('access_token')
+			const url = `${import.meta.env.VITE_BACKEND_URL}/analysis/${candidate._id}`
 			const response = await axios.patch(
-				`${import.meta.env.VITE_BACKEND_URL}/analysis/${candidate._id}`,
-				body,
+				url,
+				{body},
 				{
 					headers: {
+						'Content-type': 'application/json',
 						Authorization: token,
 					},
 				}
 			)
-			console.log('response222', response)
-			console.log('response11111111111', response.data)
-
+			setAnalysis(response.data.data)
 			if (response.status === 404) {
 				setErrors(response.data)
 				return
@@ -56,11 +62,6 @@ export default function CandidateDetail() {
 				setErrors(response.data)
 				return
 			}
-			if (!response.ok) {
-				setErrors(response.data)
-				return
-			}
-			setAnalysis(response.data.data)
 			navigate('/candidate/detail')
 			Swal.fire({
 				icon: 'success',
@@ -71,10 +72,32 @@ export default function CandidateDetail() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating analysis:', error)
-			console.error('Error updating analysis:', error.response.data.errors[0].detail)
+			if (error.response.data.errors[0].detail === 'You cant update your analysis,not enough tokens') {
+				Swal.fire({
+					icon: 'warning',
+					title: 'You have no updates left. Please wait until next month or upgrade to Advanced.',
+					showConfirmButton: true,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+					confirmButtonColor: 'var(--talent-highlight)',
+				})
+			}
+			setErrors(error.response.data)
+		} finally {
+			setShowModal(false)
 		}
+
 	}
+	const handleConfirm = () => {
+		setShowModal(false)
+		updateAnalysis()
+	}
+
+	function handleCancel() {
+		setShowModal(false)
+	}
+
 
 	function onInputChange(e) {
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -135,7 +158,6 @@ export default function CandidateDetail() {
 	}, [isAuthenticated, candidate])
 
 
-	
 	return (
 		<div
 			className='flex flex-col bg-fixed'
@@ -228,16 +250,17 @@ export default function CandidateDetail() {
 					onChange: (e) => onInputChange(e),
 					formName: 'apikey',
 				})}
+
 			</div>
 			{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-					<p className='text-red-500' style={{marginLeft:"22%"}}>{errors.errors[0].detail}</p>
-				)}
-
+				<p className='text-red-500' style={{ marginLeft: "22%" }}>{errors.errors[0].detail}</p>
+			)}
 			<div className='mt-8 self-center'>
 				{SecondaryButton(
 					'Update Developer',
-					``, updateAnalysis)}
+					'', () => setShowModal(true))}
 			</div>
+
 			<br></br>
 			<h3 className='profile-title'>Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
@@ -268,6 +291,53 @@ export default function CandidateDetail() {
 			</div>
 			<br></br>
 			<br></br>
+			<Modal
+				isOpen={showModal}
+				onRequestClose={handleCancel}
+				contentLabel='Update Confirmation'
+				style={{
+					content: {
+						width: '40%',
+						height: '20%',
+						margin: 'auto',
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
+						backgroundColor: 'var(--talent-secondary)',
+						borderRadius: '10px',
+						color: 'white',
+					},
+				}}>
+				<h2 style={{ marginBottom: '3%' }}>
+					Are you sure you want to update your Developer info?
+				</h2>
+				<div>
+					<button
+						onClick={handleConfirm} // Llama a handleConfirm cuando se hace clic en "Yes"
+						style={{
+							marginRight: '10px',
+							padding: '10px',
+							backgroundColor: 'var(--talent-highlight)',
+							color: 'white',
+							border: 'none',
+							borderRadius: '5px',
+						}}>
+						Yes
+					</button>
+					<button
+						onClick={handleCancel}
+						style={{
+							padding: '10px',
+							backgroundColor: 'var(--talent-black)',
+							color: 'white',
+							border: 'none',
+							borderRadius: '5px',
+						}}>
+						No
+					</button>
+				</div>
+			</Modal>
 		</div>
 	)
 }
