@@ -106,11 +106,11 @@ export default function ChangePassword() {
 				msOverflowY: 'scroll',
 			}}>
 			<div
-				className="rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4 "
+				className='rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4 '
 				style={{
-					backgroundColor: "rgba(0, 0, 0, 0.5)",
-					borderColor: "var(--talent-highlight)",
-					borderWidth: "1px",
+					backgroundColor: 'rgba(0, 0, 0, 0.5)',
+					borderColor: 'var(--talent-highlight)',
+					borderWidth: '1px',
 					width: '40%',
 					marginTop: '10%',
 				}}>
@@ -161,7 +161,9 @@ export default function ChangePassword() {
 								errors.errors[0].detail && (
 									<p className='text-red-500'>{errors.errors[0].detail}</p>
 								)}
-							<div className='flex align-center justify-center' style={{ marginTop:"17%"}}>
+							<div
+								className='flex align-center justify-center'
+								style={{ marginTop: '17%' }}>
 								{MainButton('Update', '/', handleChangePassword)}
 								{SecondaryButton('Cancel', '/', '')}
 							</div>

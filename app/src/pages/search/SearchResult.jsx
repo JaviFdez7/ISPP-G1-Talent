@@ -177,17 +177,10 @@ export default function SearchResult() {
 											(candidate, candidateIndex) => (
 												<div
 													key={candidateIndex}
-													className='w-1/3 px-2 mb-4 '
-													style={{
-														marginLeft: mobile ? '140px' : '',
-														width: 'calc(100% )',
-													}}>
+													className={mobile ? 'w-full px-2' : 'w-1/3 px-2'}>
 													<h6
 														className='text-1xl font-bold text-center text-white  mt-5 mb-5'
-														style={{
-															marginLeft: mobile ? '140px' : '',
-															width: 'calc(100% )',
-														}}>
+														>
 														Filtered Candidate {candidateIndex + 1}
 													</h6>
 													<DataTableVertical

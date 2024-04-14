@@ -47,17 +47,19 @@ export default function RegisterCandidate() {
 	let navigate = useNavigate()
 	useEffect(() => {
 		if (loadingRegister) {
-			setLoadingMessageRegister(Swal.fire({
-				icon: 'info',
-				title: 'Please wait',
-				text: 'Registration in progress. This might take some time.',
-				showConfirmButton: true,
-				confirmButtonColor: 'var(--talent-highlight)',
-				allowOutsideClick: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 4000,
-			}))
+			setLoadingMessageRegister(
+				Swal.fire({
+					icon: 'info',
+					title: 'Please wait',
+					text: 'Registration in progress. This might take some time.',
+					showConfirmButton: true,
+					confirmButtonColor: 'var(--talent-highlight)',
+					allowOutsideClick: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 4000,
+				})
+			)
 		} else {
 			setLoadingMessageRegister('')
 		}
