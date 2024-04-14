@@ -123,7 +123,6 @@ function App() {
 						/>
 
 						{/*Subscription*/}
-						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
 						<Route
 							path='/payments/:subscriptionPlan'
 							element={
