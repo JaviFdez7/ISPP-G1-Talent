@@ -240,8 +240,8 @@ export const validateUpdateData = async (
 	next: NextFunction
 ): Promise<void> => {
 	try {
-		const user= await getUserById(req.params.userId)
-		if(!user || (user as any).githubUser===null){
+		const user = await getUserById(req.params.userId)
+		if (!user || (user as any).githubUser === null) {
 			const message = 'UserId incorrect'
 			ApiResponse.sendError(
 				res,
@@ -314,7 +314,7 @@ export const validateUpdateData = async (
 export const checkCandidateToken: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const token = req.headers.authorization ?? ''
-		const userId=req.params.userId
+		const userId = req.params.userId
 
 		if (token.length === 0) {
 			ApiResponse.sendError(res, [
@@ -327,7 +327,7 @@ export const checkCandidateToken: any = async (req: Request, res: Response, next
 		}
 		const decodedToken = verifyJWT(token).sub
 		const candidate = await Candidate.findById(decodedToken)
-		if (!candidate || decodedToken!==userId) {
+		if (!candidate || decodedToken !== userId) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)
 			return
@@ -345,7 +345,11 @@ export const checkCandidateToken: any = async (req: Request, res: Response, next
 	}
 }
 
-export const checkSubscriptionState: any = async (req: Request, res: Response, next: NextFunction) => {
+export const checkSubscriptionState: any = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	try {
 		const token = req.headers.authorization ?? ''
 
@@ -359,52 +363,51 @@ export const checkSubscriptionState: any = async (req: Request, res: Response, n
 			return
 		}
 		const decodedToken = verifyJWT(token).sub
-		const user= await getUserById(decodedToken)
-		const companySubscription= await CompanySubscription.findById(user.subscriptionId)
-		const candidateSubscription= await CandidateSubscription.findById(user.subscriptionId)
-		if(companySubscription===null && candidateSubscription===null){
+		const user = await getUserById(decodedToken)
+		const companySubscription = await CompanySubscription.findById(user.subscriptionId)
+		const candidateSubscription = await CandidateSubscription.findById(user.subscriptionId)
+		if (companySubscription === null && candidateSubscription === null) {
 			const message = 'You arent subscribed'
 			ApiResponse.sendError(
-					res,
-					[
-						{
-							title: 'Bad Request',
-							detail: message,
-						},
-					],
-					400
-				)
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
 			return
 		}
-		if(companySubscription && (companySubscription as any).remainingSearches<1){
+		if (companySubscription && (companySubscription as any).remainingSearches < 1) {
 			const message = 'You cant search, not enough tokens'
 			ApiResponse.sendError(
-					res,
-					[
-						{
-							title: 'Forbidden',
-							detail: message,
-						},
-					],
-					403
-				)
+				res,
+				[
+					{
+						title: 'Forbidden',
+						detail: message,
+					},
+				],
+				403
+			)
 			return
-		}else if(candidateSubscription && (candidateSubscription as any).remainingUpdates<1){
+		} else if (candidateSubscription && (candidateSubscription as any).remainingUpdates < 1) {
 			const message = 'You cant update your analysis,not enough tokens'
 			ApiResponse.sendError(
-					res,
-					[
-						{
-							title: 'Forbidden',
-							detail: message,
-						},
-					],
-					403
-				)
+				res,
+				[
+					{
+						title: 'Forbidden',
+						detail: message,
+					},
+				],
+				403
+			)
 			return
 		}
 		next()
-
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -415,5 +418,3 @@ export const checkSubscriptionState: any = async (req: Request, res: Response, n
 		return
 	}
 }
-
-

@@ -60,7 +60,7 @@ export const getAnalysisByGitHubUsername: any = async (req: Request, res: Respon
 
 export const updateAnalysisProfile: any = async (req: Request, res: Response) => {
 	try {
-		const candidate=await getUserById(req.params.userId)
+		const candidate = await getUserById(req.params.userId)
 		const githubUsername = candidate.githubUser
 		const userApikey = req.body.apikey
 		const token = req.headers.authorization ?? ''
