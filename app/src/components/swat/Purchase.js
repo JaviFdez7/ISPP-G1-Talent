@@ -14,7 +14,7 @@ const Purchase = (confirmPurchase, navigate, role, paymentMethod, subscriptionPl
     if (result.isConfirmed) {
       confirmPurchase(paymentMethod)
         .then((response) => {
-          navigate("/");
+          navigate(role === "Representative" ? "/representative/detail" : "/candidate/detail");
           if (!response) {
             Swal.fire({
               title: "An error occurred, please try again later",
