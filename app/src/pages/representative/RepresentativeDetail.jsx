@@ -58,11 +58,10 @@ export default function RepresentativeDetail() {
 			} catch (error) {
 				console.error('Error fetching history data:', error.response.data.errors[0].detail)
 				if (
-					
 					error.response.data.errors[0].detail ===
 					'Error when getting the analysis by ID: jwt expired'
 				) {
-				console.error('Error fetching history data:', error)
+					console.error('Error fetching history data:', error)
 				}
 			}
 		}

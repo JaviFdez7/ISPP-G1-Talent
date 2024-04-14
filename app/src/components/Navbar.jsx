@@ -257,7 +257,6 @@ export default function Navbar() {
 											height: '110%',
 										}}
 									/>
-
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.username : ' - '}</h1>
@@ -292,7 +291,6 @@ export default function Navbar() {
 											height: '110%',
 										}}
 									/>
-
 								</div>
 								<div className='profile-text'>
 									<h1>{userData ? userData.fullName : ' - '}</h1>
