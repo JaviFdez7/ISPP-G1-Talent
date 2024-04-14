@@ -14,7 +14,6 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
-
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
@@ -41,7 +40,7 @@ export default function CandidateDetail() {
 			const url = `${import.meta.env.VITE_BACKEND_URL}/analysis/${candidate._id}`
 			const response = await axios.patch(
 				url,
-				{body},
+				{ body },
 				{
 					headers: {
 						'Content-type': 'application/json',
@@ -72,7 +71,10 @@ export default function CandidateDetail() {
 				timer: 1500,
 			})
 		} catch (error) {
-			if (error.response.data.errors[0].detail === 'You cant update your analysis,not enough tokens') {
+			if (
+				error.response.data.errors[0].detail ===
+				'You cant update your analysis,not enough tokens'
+			) {
 				Swal.fire({
 					icon: 'warning',
 					title: 'You have no updates left. Please wait until next month or upgrade to Advanced.',
@@ -87,7 +89,6 @@ export default function CandidateDetail() {
 		} finally {
 			setShowModal(false)
 		}
-
 	}
 	const handleConfirm = () => {
 		setShowModal(false)
@@ -97,7 +98,6 @@ export default function CandidateDetail() {
 	function handleCancel() {
 		setShowModal(false)
 	}
-
 
 	function onInputChange(e) {
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -156,7 +156,6 @@ export default function CandidateDetail() {
 		}
 		fetchDataFromEndpoint()
 	}, [isAuthenticated, candidate])
-
 
 	return (
 		<div
@@ -241,7 +240,7 @@ export default function CandidateDetail() {
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
 			<br></br>
-			<div className='input-analysis-container' style={{ marginLeft: "20%" }}>
+			<div className='input-analysis-container' style={{ marginLeft: '20%' }}>
 				{Input({
 					name: 'Apikey (OPTIONAL)',
 					value: apikey,
@@ -250,15 +249,14 @@ export default function CandidateDetail() {
 					onChange: (e) => onInputChange(e),
 					formName: 'apikey',
 				})}
-
 			</div>
 			{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-				<p className='text-red-500' style={{ marginLeft: "22%" }}>{errors.errors[0].detail}</p>
+				<p className='text-red-500' style={{ marginLeft: '22%' }}>
+					{errors.errors[0].detail}
+				</p>
 			)}
 			<div className='mt-8 self-center'>
-				{SecondaryButton(
-					'Update Developer',
-					'', () => setShowModal(true))}
+				{SecondaryButton('Update Developer', '', () => setShowModal(true))}
 			</div>
 
 			<br></br>
