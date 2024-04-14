@@ -84,12 +84,14 @@ export default function ChangePassword() {
 		if (!form.oldPassword) {
 			errors.oldPassword = getRequiredFieldMessage('oldPassword')
 		} else if (form.oldPassword.length < 8 || form.oldPassword.length > 20) {
-			errors.password = 'The passwords fields must be between 8 and 20 characters'
+			errors.oldPassword = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.oldPassword == form.newPassword) {
 			errors.newPassword = 'Passwords match the old password'
 		}
 		if (!form.newPassword) {
 			errors.newPassword = getRequiredFieldMessage('newPassword')
+		} else if (form.newPassword.length < 8 || form.newPassword.length > 20) {
+			errors.newPassword = 'The passwords fields must be between 8 and 20 characters'
 		}
 		return errors
 	}
@@ -109,19 +111,19 @@ export default function ChangePassword() {
 					backgroundColor: "rgba(0, 0, 0, 0.5)",
 					borderColor: "var(--talent-highlight)",
 					borderWidth: "1px",
-					width: '50%',
-					marginTop:'10%',
+					width: '40%',
+					marginTop: '10%',
 				}}>
 				<div className='flex flex-row justify-center'>
 					<div
 						className='flex flex-col items-center mt-10'
-						style={{ width: '90%', marginTop:'10%'}}>
+						style={{ width: '90%', marginTop: '-5%' }}>
 						<h2
 							className='font-bold text-center text-white'
 							style={{
 								fontSize: '2rem',
-								marginTop: '2rem',
-								marginBottom: '4rem',
+								marginTop: '5%',
+								marginBottom: '10%',
 							}}>
 							Change password
 						</h2>
@@ -159,7 +161,7 @@ export default function ChangePassword() {
 								errors.errors[0].detail && (
 									<p className='text-red-500'>{errors.errors[0].detail}</p>
 								)}
-							<div className='flex align-center justify-center'>
+							<div className='flex align-center justify-center' style={{ marginTop:"17%"}}>
 								{MainButton('Update', '/', handleChangePassword)}
 								{SecondaryButton('Cancel', '/', '')}
 							</div>

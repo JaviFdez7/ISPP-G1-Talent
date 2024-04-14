@@ -205,6 +205,8 @@ export default function RegisterRepresentative() {
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password field must be between 8 and 20 characters'
 		}
 		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
 			errors.phone_number = 'A phone number must consist of 9 digits exclusively'

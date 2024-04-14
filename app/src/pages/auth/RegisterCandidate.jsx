@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import axios from 'axios'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
+import Swal from 'sweetalert2'
 
 export default function RegisterCandidate() {
 	const talentColor = 'var(--talent-highlight)'
 	const [users, setUsers] = useState([])
+
 	const { login } = useAuthContext()
 	const [form, setForm] = useState({
 		first_name: '',
@@ -37,10 +39,29 @@ export default function RegisterCandidate() {
 
 	const [emailValid, setEmailValid] = useState(true)
 	const [loading, setLoading] = useState(false)
+	const [loadingRegister, setLoadingRegister] = useState(false)
+	const [loadingMessageRegister, setLoadingMessageRegister] = useState('')
 
 	const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED === 'true' || false
 
 	let navigate = useNavigate()
+	useEffect(() => {
+		if (loadingRegister) {
+			setLoadingMessageRegister(Swal.fire({
+				icon: 'info',
+				title: 'Please wait',
+				text: 'Registration in progress. This might take some time.',
+				showConfirmButton: true,
+				confirmButtonColor: 'var(--talent-highlight)',
+				allowOutsideClick: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 4000,
+			}))
+		} else {
+			setLoadingMessageRegister('')
+		}
+	}, [loadingRegister])
 
 	function onInputChange(e) {
 		const { name, value, checked } = e.target
@@ -106,6 +127,7 @@ export default function RegisterCandidate() {
 			}
 		}
 
+		setLoadingRegister(true)
 		try {
 			const response = await axios.post(
 				import.meta.env.VITE_BACKEND_URL + '/user/candidate',
@@ -128,6 +150,7 @@ export default function RegisterCandidate() {
 			setIsCheckboxChecked(false)
 			const data = userDataFetch.data.data
 			login(data.token, data.user.role, data.user._id)
+			setLoadingMessageRegister('')
 			navigate('/candidate/detail')
 		} catch (error) {
 			if (error.response.status === 409 || error.response.status === 400) {
@@ -208,12 +231,14 @@ export default function RegisterCandidate() {
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
 		} else if (form.password.length < 8 || form.password.length > 20) {
-			errors.password = 'The passwords fields must be between 8 and 20 characters'
+			errors.password = 'The password fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Passwords do not match'
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password fields must be between 8 and 20 characters'
 		}
 		if (!form.githubUsername) {
 			errors.githubUsername = getRequiredFieldMessage('github username')
