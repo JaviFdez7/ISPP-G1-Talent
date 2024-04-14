@@ -104,8 +104,6 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating user:', error)
-
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===

@@ -57,7 +57,7 @@ export default function RegisterCandidate() {
 					allowOutsideClick: false,
 					background: 'var(--talent-secondary)',
 					color: 'white',
-					timer: 4000,
+					timer: 5000,
 				})
 			)
 		} else {

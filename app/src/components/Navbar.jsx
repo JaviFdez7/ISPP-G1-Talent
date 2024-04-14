@@ -275,7 +275,7 @@ export default function Navbar() {
 					) : (
 						// Mostrar contenido para usuario autenticado pero no representante
 						<div>
-							<Link to='/candidate/detail' className='profile-container'>
+							<Link to='/candidate/detail' className='profile-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<div className='profile-pic-container'>
 									<img
 										src={
@@ -287,13 +287,15 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '90%',
-											height: '110%',
+											width: '100px', // Cambia esto al ancho deseado
+											height: '80px', // Cambia esto a la altura deseada
 										}}
 									/>
 								</div>
-								<div className='profile-text'>
-									<h1>{userData ? userData.fullName : ' - '}</h1>
+								<div className='profile-text' style={{ flex: 1, marginLeft: '10px', maxWidth: 'calc(100% - 110px)' }}>
+									<h1 style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+										{userData ? userData.fullName : ' - '}
+									</h1>
 								</div>
 							</Link>
 							<Link to='/candidate/notification/detail' className='mail'>
