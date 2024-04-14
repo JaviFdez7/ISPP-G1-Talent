@@ -101,9 +101,10 @@ export default function RepresentativeDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			if (error.response.status === 401 ||
+			if (
+				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
-				'Error when getting the analysis by ID: jwt expired'
+					'Error when getting the analysis by ID: jwt expired'
 			) {
 				Swal.fire({
 					icon: 'error',
@@ -224,7 +225,6 @@ export default function RepresentativeDetailEdit() {
 					borderWidth: '1px',
 					width: '83.3333%',
 					overflowY: 'scroll',
-
 				}}>
 				<div>
 					<h2
