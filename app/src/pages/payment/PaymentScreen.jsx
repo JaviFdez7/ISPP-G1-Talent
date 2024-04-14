@@ -19,6 +19,7 @@ export default function PaymentScreen() {
 
     const prices = {
         candidate: {
+            basic: 0,
             pro: 9.99
         },
         representative: {
@@ -26,13 +27,14 @@ export default function PaymentScreen() {
             pro: 79.99
         }
     }
-    
 
     useEffect(() => {
-        if (subscriptionPlan === "Basic plan") {
+        if (isRepresentative && subscriptionPlan === "Basic plan") {
             setPrice(prices.representative.basic)
         } else if (isRepresentative && subscriptionPlan === "Pro plan") {
             setPrice(prices.representative.pro)
+        } else if (!isRepresentative && subscriptionPlan === "Basic plan"){
+            setPrice(prices.candidate.basic)
         } else {
             setPrice(prices.candidate.pro)
         }
@@ -46,7 +48,6 @@ export default function PaymentScreen() {
             type: 'card',
             card: elements.getElement(CardElement),
         });
-        console.log("ELEMENTS*********",elements.getElement(CardElement),)
         if (error) {
             console.error(error);
             setErrors({ stripe: error.message });
@@ -58,11 +59,13 @@ export default function PaymentScreen() {
 
     async function confirmPurchase(paymentMethod) {
         const token = localStorage.getItem("access_token")
+        const priceInCents = Math.round(price * 100);
+        console.log(priceInCents);
         try {
             const response = await axios.post(
                 import.meta.env.VITE_BACKEND_URL + '/payment',
                 {
-                    price: price,
+                    price: priceInCents,
                     paymentMethod: paymentMethod.id,
                     subscriptionPlan: subscriptionPlan
                 },
@@ -72,7 +75,6 @@ export default function PaymentScreen() {
                     }
                 }
             );
-            console.log("RESPUESTA******",response.data.data)
             return true
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -119,10 +121,10 @@ export default function PaymentScreen() {
                             marginBottom: "4rem",
                         }}
                     >
-                        Change to {subscriptionPlan} for <p style={{ color: "var(--talent-highlight)" }}>{price}$</p>
+                        Change to {subscriptionPlan} for <p style={{ color: "var(--talent-highlight)" }}>{price !== 0 ? (price + "$") : ("Free")}</p>
                     </h2>
-
                     <form onSubmit={(e) => handleSubmit(e)}>
+                        {}
                         <CardElement
                             options={{
                                 style: {
@@ -142,7 +144,7 @@ export default function PaymentScreen() {
                             }}
                             autoComplete="off"
                         />
-                        
+
                         {errors.stripe && (
                             <h4 className="text-red-600">{errors.stripe}</h4>
                         )}

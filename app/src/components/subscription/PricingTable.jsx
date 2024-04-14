@@ -8,7 +8,7 @@ import { useAuthContext } from "../../context/authContext";
 const PricingTable = ({ suscription }) => {
   const { isRepresentative } = useAuthContext();
   const [popular, setPopular] = useState("Pro");
-  const [isCurrentPlan, setIsCurrentPlan] = useState("Basic");
+  const [isCurrentPlan, setIsCurrentPlan] = useState(false);
   const apiURL = import.meta.env.VITE_BACKEND_URL
   const navigate = useNavigate()
 
@@ -19,7 +19,7 @@ const PricingTable = ({ suscription }) => {
 
   async function getCurrentPlan() {
     const userId = localStorage.getItem("userId")
-    const uri = `/user/${userId}`
+    const uri = `/subscriptions/${userId}`
     const token = localStorage.getItem('access_token')
     try {
       const response = await axios.get(apiURL + uri, {
@@ -27,12 +27,7 @@ const PricingTable = ({ suscription }) => {
           Authorization: `${token}`,
         },
       })
-      let plan = ""
-      if (isRepresentative) {
-        plan = response.data.data.companySubscription
-      } else {
-        plan = response.data.data.candidateSubscription
-      }
+      const plan = response.data.data.subtype
       setIsCurrentPlan(plan === suscription.name)
       return plan
     } catch (error) {
@@ -41,16 +36,15 @@ const PricingTable = ({ suscription }) => {
   }
 
   async function getPopularPlan() {
-    const uri = `/user`
+    const uri = `/subscriptions`
     try {
       const response = await axios.get(apiURL + uri)
-      const users = response.data.data;
+      const subscriptions = response.data.data;
 
       let plans = {};
-      const filteredUsers = isRepresentative ? users.filter(user => user.role === 'Representative') : users.filter(user => user.role === 'Candidate');
-      const suscriptionField = isRepresentative ? 'companySubscription' : 'candidateSubscription';
-      filteredUsers.forEach(user => {
-        const plan = user[suscriptionField];
+      const filteredSubscriptions = isRepresentative ? subscriptions.filter( subscription => subscription.type === 'CompanySubscription') : subscriptions.filter(subscription => subscription.type === 'CandidateSubscription');
+      filteredSubscriptions.forEach(subscription => {
+        const plan = subscription.subtype;
         if (plan in plans) {
           plans[plan]++;
         } else {
@@ -72,6 +66,7 @@ const PricingTable = ({ suscription }) => {
       return mostPopularPlan;
     } catch (error) {
       handleNetworkError(error, navigate)
+      console.error(error)
     }
   }
 
