@@ -33,7 +33,7 @@ export default function PaymentScreen() {
             setPrice(prices.representative.basic)
         } else if (isRepresentative && subscriptionPlan === "Pro plan") {
             setPrice(prices.representative.pro)
-        } else if (!isRepresentative && subscriptionPlan === "Basic plan"){
+        } else if (!isRepresentative && subscriptionPlan === "Basic plan") {
             setPrice(prices.candidate.basic)
         } else {
             setPrice(prices.candidate.pro)
@@ -44,46 +44,54 @@ export default function PaymentScreen() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const { paymentMethod, error } = await stripe.createPaymentMethod({
-            type: 'card',
-            card: elements.getElement(CardElement),
-        });
-        if (error) {
-            console.error(error);
-            setErrors({ stripe: error.message });
+        if (price !== 0) {
+            const { paymentMethod, error } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: elements.getElement(CardElement),
+            });
+            if (error) {
+                console.error(error);
+                setErrors({ stripe: error.message });
+            } else {
+                const role = isRepresentative ? "Representative" : "Candidate";
+                Purchase(confirmPurchase, navigate, role, paymentMethod, subscriptionPlan)
+            }
         } else {
             const role = isRepresentative ? "Representative" : "Candidate";
-            Purchase(confirmPurchase, navigate, role, paymentMethod, subscriptionPlan)
+            Purchase(confirmPurchase, navigate, role, null, subscriptionPlan)
         }
     }
 
     async function confirmPurchase(paymentMethod) {
-        const token = localStorage.getItem("access_token")
-        const priceInCents = Math.round(price * 100);
-        console.log(priceInCents);
-        try {
-            const response = await axios.post(
-                import.meta.env.VITE_BACKEND_URL + '/payment',
-                {
-                    price: priceInCents,
-                    paymentMethod: paymentMethod.id,
-                    subscriptionPlan: subscriptionPlan
-                },
-                {
-                    headers: {
-                        'Authorization': `${token}`,
+        if (paymentMethod) {
+            const token = localStorage.getItem("access_token")
+            try {
+                const response = await axios.post(
+                    import.meta.env.VITE_BACKEND_URL + '/payment',
+                    {
+                        price: price,
+                        paymentMethod: paymentMethod.id,
+                        subscriptionPlan: subscriptionPlan
+                    },
+                    {
+                        headers: {
+                            'Authorization': `${token}`,
+                        }
                     }
+                );
+                return true
+            } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    setErrors(error.response.data);
+                } else if (error.response && error.response.status === 404) {
+                    setErrors(error.response.data);
                 }
-            );
-            return true
-        } catch (error) {
-            if (error.response && error.response.status === 401) {
-                setErrors(error.response.data);
-            } else if (error.response && error.response.status === 404) {
-                setErrors(error.response.data);
+                console.error(error);
+                return false
             }
-            console.error(error);
-            return false
+        } else {
+            console.log("free plan")
+            return true
         }
     }
 
@@ -124,27 +132,35 @@ export default function PaymentScreen() {
                         Change to {subscriptionPlan} for <p style={{ color: "var(--talent-highlight)" }}>{price !== 0 ? (price + "$") : ("Free")}</p>
                     </h2>
                     <form onSubmit={(e) => handleSubmit(e)}>
-                        {}
-                        <CardElement
-                            options={{
-                                style: {
-                                    base: {
-                                        color: '#fff', // Color del texto
-                                        fontSize: '16px', // Tamaño de fuente
-                                        '::placeholder': {
-                                            color: '#aab7c4', // Color del marcador de posición
+                        {price !== 0 ? (
+                            <CardElement
+                                options={{
+                                    style: {
+                                        base: {
+                                            color: '#fff', // Color del texto
+                                            fontSize: '16px', // Tamaño de fuente
+                                            '::placeholder': {
+                                                color: '#aab7c4', // Color del marcador de posición
+                                            },
                                         },
+                                        invalid: {
+                                            color: '#ff0000', // Color del texto en caso de error
+                                        },
+                                        hidePostalCode: true,
+                                        iconStyle: 'solid',
                                     },
-                                    invalid: {
-                                        color: '#ff0000', // Color del texto en caso de error
-                                    },
-                                    hidePostalCode: true,
-                                    iconStyle: 'solid',
-                                },
-                            }}
-                            autoComplete="off"
-                        />
+                                }}
+                                autoComplete="off"
+                            />
 
+                        ) : (
+                            <div
+                                className="flex justify-center items-center"
+                                style={{ marginTop: "3rem", marginBottom: "3rem" }}
+                            >
+                                <p className="text-white">Downgrade your plan for free.</p>
+                            </div>
+                        )}
                         {errors.stripe && (
                             <h4 className="text-red-600">{errors.stripe}</h4>
                         )}
@@ -152,7 +168,7 @@ export default function PaymentScreen() {
                             className="flex justify-center items-center"
                             style={{ marginTop: "3rem" }}
                         >
-                            {MainButton("Purchase", "/", handleSubmit)}
+                            {MainButton(price === 0 ? "Change plan" : "Purchase", "/", handleSubmit)}
                         </div>
                     </form>
                 </div >
