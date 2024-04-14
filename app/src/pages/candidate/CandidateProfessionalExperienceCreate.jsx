@@ -68,6 +68,10 @@ export default function CandidateProfessionalExperienceCreate() {
           text: 'Please login again to continue',
           timer: 1500,
           showConfirmButton: false,
+          background: "var(--talent-secondary)",
+          color: "white",
+          confirmButtonColor: "var(--talent-highlight)",
+
         })
         navigate('/login')
       }

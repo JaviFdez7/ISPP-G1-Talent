@@ -141,9 +141,7 @@ export default function AnalysisDashboard() {
 	}, [dataArray])
 
 	let imgSrc
-	console.log(candidate, 'candidate1')
 	if (candidate && Object.keys(candidate).length > 0) {
-		console.log(candidate, 'candidateeeeeeeeeeeeeeee')
 		if (candidate.profilePicture) {
 			imgSrc = candidate.profilePicture
 		} else {

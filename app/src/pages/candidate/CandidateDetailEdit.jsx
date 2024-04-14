@@ -40,7 +40,6 @@ export default function CandidateDetailEdit() {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === id)
 					setUserData(user)
-					console.log(user)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error)
@@ -105,9 +104,10 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating user:', error.response)
+			console.error('Error updating user:', error)
+
 			if (
-				error.response.status === 400 ||
+				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
 					'Error when getting the analysis by ID: jwt expired'
 			) {
@@ -117,25 +117,41 @@ export default function CandidateDetailEdit() {
 					text: 'Please login again to continue',
 					timer: 1500,
 					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
 				})
 				navigate('/login')
+			} else if (
+				(error.response.data.errors[0].detail =
+					'You cant update your profile until next month')
+			) {
+				Swal.fire({
+					icon: 'error',
+					title: 'You can not update your profile until next month',
+					timer: 1500,
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
+				})
 			}
 		}
 	}
 
 	const handleProfilePictureChange = (e) => {
 		const url = e.target.value
-		if (url && isValidURL(url)) {
+		if (url && isValidURL(url) && isValidImageURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
-			console.log('profilePicture after url input:', profilePicture)
 		} else {
 			Swal.fire({
 				icon: 'error',
 				title: 'Invalid URL',
+				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
-				timer: 1500,
+				timer: 2000,
 			})
 		}
 	}
@@ -201,6 +217,9 @@ export default function CandidateDetailEdit() {
 		)
 		return res !== null
 	}
+	function isValidImageURL(url) {
+		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
+	}
 
 	return (
 		<div
@@ -218,6 +237,7 @@ export default function CandidateDetailEdit() {
 					borderColor: 'var(--talent-highlight)',
 					borderWidth: '1px',
 					width: '83.3333%',
+					overflowY: 'scroll',
 				}}>
 				<div>
 					<h2
