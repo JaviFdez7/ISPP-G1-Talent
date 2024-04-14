@@ -3,7 +3,6 @@ import { type Request, type Response } from 'express'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { getUserById } from '../../user/services/UserService';
-import {CompanySubscription, CandidateSubscription} from '../../user/models/user';
 import { updateSubscriptions } from '../../subscriptions/services/SubscriptionsService';
 const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
