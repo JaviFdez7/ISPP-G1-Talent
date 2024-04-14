@@ -4,7 +4,7 @@ import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { getUserById } from '../../user/services/UserService';
 import {CompanySubscription, CandidateSubscription} from '../../user/models/user';
-import { createSubscriptions } from '../../subscriptions/services/SubscriptionsService';
+import { updateSubscriptions } from '../../subscriptions/services/SubscriptionsService';
 const stripe = require('stripe')(process.env.STRIPE_API_KEY);
 
 export const makePayment: any = async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ export const makePayment: any = async (req: Request, res: Response) => {
 
 		switch(paymentIntent.status) {
 			case "succeeded": {
-				const data = await createSubscriptions(role);
+				const data = await updateSubscriptions(userId, subscriptionPlan);
 				return ApiResponse.sendSuccess(res, data, 200, {
 					self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
 				})
