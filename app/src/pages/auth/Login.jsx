@@ -21,19 +21,6 @@ export default function Login() {
     setForm(prevForm => ({ ...prevForm, [name]: value }));
     setErrors(prevErrors => ({ ...prevErrors, [name]: undefined }));
   }
-
-  const fetchSubscription = async (data) => {
-    try {
-      const config = {
-        headers: { Authorization: `${data.token}` },
-      }
-      const response = await axios.get(apiURL + '/subscriptions/' + data.user._id, config)
-      return response.data.data.subtype; // Devuelve la respuesta
-    } catch (error) {
-      console.error(error); // Muestra el error
-      throw error; // Lanza el error
-    }
-  }
   
   async function handleSubmit(e) {
     e.preventDefault();
@@ -48,10 +35,9 @@ export default function Login() {
         form
       );
       const data = response.data.data;
-      const subscriptionType = await fetchSubscription(data); // Pasa data como argumento
       
       
-      login(data.token, data.user.role, data.user._id, subscriptionType); // Usa subscriptionType aquí
+      login(data.token, data.user.role, data.user._id); 
       if (data.user.role === "Candidate") {
         navigate("/candidate/detail");
       } else if (data.user.role === "Representative") {
