@@ -72,6 +72,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/definitions/Analysis"
+  /analysis/{userId}:
+    patch:
+      tags:
+      - Analysis
+      summary: Update your analysis profile as a Candidate
+      description: Update your analysis profile as a Candidate
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: The unique identifier for the Candidate.
+        - name: authorization
+          in: header
+          required: true
+          schema:
+            type: string
+            description: Its the token of authentication(use to verify notifications).
+        - name: analysis
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/OnlyApiKey"
+      responses:
+        "200":
+          description: The analysis entry with the specified ID
+          content:
+            application/json:
+              schema:
+                $ref: "#/definitions/Analysis"
   /analysis/github/{username}:
     get:
       tags:
@@ -108,6 +140,12 @@ definitions:
       username:
         type: string
         description: The username that you are searching for.
+  OnlyApiKey:
+    type: object
+    properties:
+      apikey:
+        type: string
+        description: Optional API key for authentication.
   CreationAnalysisUser:
     type: object
     required:
