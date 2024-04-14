@@ -68,10 +68,10 @@ export const createAnalysis: any = async (
 	try {
 		if (token.length > 0) {
 			const actualSubscription = await getSubscriptionsByUserId(verifyJWT(token).sub)
-			if(actualSubscription instanceof CompanySubscription){
-				(actualSubscription as any).remainingSearches--
-			}else if(actualSubscription instanceof CandidateSubscription){
-				(actualSubscription as any).remainingUpdates--
+			if (actualSubscription instanceof CompanySubscription) {
+				;(actualSubscription as any).remainingSearches--
+			} else if (actualSubscription instanceof CandidateSubscription) {
+				;(actualSubscription as any).remainingUpdates--
 			}
 			await actualSubscription.save()
 		}
