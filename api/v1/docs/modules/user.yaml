@@ -300,7 +300,6 @@ definitions:
             - email
             - paymentMethods
             - companyName
-            - companySubscription
         properties:
             username:
                 type: string
@@ -324,13 +323,6 @@ definitions:
             companyName:
                 type: string
                 description: The company name of the representative.
-            companySubscription:
-                type: string
-                enum:
-                    - 'Basic plan'
-                    - 'Pro plan'
-                    - 'Custom plan'
-                description: The subscription of the company.
             projectSocietyName:
                 type: string
                 description: The project society name of teh representative.
