@@ -120,7 +120,6 @@ export default function CandidateDetail() {
 		setShowModal(false)
 	}
 
-
 	function onInputChange(e) {
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
 		setApiKey({
@@ -268,14 +267,14 @@ export default function CandidateDetail() {
 					style={{
 						marginBottom: "1rem",
 						width: '100%',
-						maxWidth: '600px', 
+						maxWidth: '600px',
 					}}
 				>
 					<input
 						type="password"
 						className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
 						style={{
-							width: "100%", 
+							width: "100%",
 							padding: "0.5rem 0.75rem",
 						}}
 						placeholder="Enter your Apikey of your Username of GitHub"
