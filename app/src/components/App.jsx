@@ -38,10 +38,10 @@ import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 import ChangePassword from '../pages/ChangePassword.jsx'
 
 import PaymentScreen from '../pages/payment/PaymentScreen.jsx'
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
 function App() {
 	return (
@@ -51,41 +51,65 @@ function App() {
 					<Navbar />
 					<Routes>
 						{/*RUTAS PUBLICAS */}
-						<Route index element={
-							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
-								<Home />
-							</ProtectedRoute>}
-						 />
-
-						<Route path='/support' element={
-							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true} checkSubscription = {false}>
-								<Support />
-							</ProtectedRoute>} 
-						/>
-
-						<Route path='/settings' element={
-							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
-								<Settings /> 	
-							</ProtectedRoute>} 
-						/>
-
-						<Route path='/login' element={
-							<ProtectedRoute  allowUnauthenticated={true}>
-								<Login />
-							</ProtectedRoute>} 
-						/>
-
-						<Route path='/register/candidate' element={
-							<ProtectedRoute  allowUnauthenticated={true}>
-								<RegisterCandidate />
-							</ProtectedRoute>}
+						<Route
+							index
+							element={
+								<ProtectedRoute
+									roles={['Representative', 'Candidate']}
+									allowUnauthenticated={true}>
+									<Home />
+								</ProtectedRoute>
+							}
 						/>
 
 						<Route
-							path='/register/representative'	element={
-							<ProtectedRoute  allowUnauthenticated={true}>
-								<RegisterRepresentative />
-							</ProtectedRoute>}
+							path='/support'
+							element={
+								<ProtectedRoute
+									roles={['Representative', 'Candidate']}
+									allowUnauthenticated={true}
+									checkSubscription={false}>
+									<Support />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/settings'
+							element={
+								<ProtectedRoute
+									roles={['Representative', 'Candidate']}
+									allowUnauthenticated={true}>
+									<Settings />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/login'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<Login />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/register/candidate'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<RegisterCandidate />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/register/representative'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<RegisterRepresentative />
+								</ProtectedRoute>
+							}
 						/>
 						{/*RUTAS PRIVADAS */}
 						{/*Analysis*/}
@@ -153,7 +177,9 @@ function App() {
 						<Route
 							path='/payments/:subscriptionPlan'
 							element={
-								<ProtectedRoute roles={['Candidate', 'Representative']} checkSubscription={ false}>
+								<ProtectedRoute
+									roles={['Candidate', 'Representative']}
+									checkSubscription={false}>
 									<Elements stripe={stripePromise}>
 										<PaymentScreen />
 									</Elements>
@@ -255,7 +281,9 @@ function App() {
 						<Route
 							path='/representative/subscription'
 							element={
-								<ProtectedRoute roles={['Representative']} checkSubscription = {false}>
+								<ProtectedRoute
+									roles={['Representative']}
+									checkSubscription={false}>
 									<RepresentativeSubscription />
 								</ProtectedRoute>
 							}
