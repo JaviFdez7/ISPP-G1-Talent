@@ -18,4 +18,13 @@ const historySchema = new Schema({
 
 const History = model('History', historySchema);
 
-export { History }
+const teamCreatorHistorySchema = new Schema({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  teamCreatorId: { type: Schema.Types.ObjectId, ref: 'TeamCreator', required: true },
+  date: { type: Date, required: true },
+  favorite: { type: Boolean, required: true }
+});
+
+const TeamCreatorHistory = model('TeamCreatorHistory', teamCreatorHistorySchema);
+
+export { History, TeamCreatorHistory }
