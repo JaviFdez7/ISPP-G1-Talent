@@ -107,7 +107,7 @@ export default function CandidateDetailEdit() {
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
-				'Error when getting the analysis by ID: jwt expired'
+					'Error when getting the analysis by ID: jwt expired'
 			) {
 				console.log('Invalid URL')
 				console.log('Error:', token)

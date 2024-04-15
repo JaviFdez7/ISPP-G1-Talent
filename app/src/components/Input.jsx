@@ -39,7 +39,12 @@ export default function Input({
 			className='input-container'
 			style={{ width: width, flexDirection: col ? 'column' : 'row' }}>
 			<div className='input-container-name' style={{ width: n_width }}>
-				<h5 style={{ display: "inline" }}>{name} <p style={{ color: "var(--talent-highlight)", display: "inline", margin: 0 }}>{(isMandatory ? '*' : '')}</p></h5>
+				<h5 style={{ display: 'inline' }}>
+					{name}{' '}
+					<p style={{ color: 'var(--talent-highlight)', display: 'inline', margin: 0 }}>
+						{isMandatory ? '*' : ''}
+					</p>
+				</h5>
 			</div>
 			<div className='input-container-value' style={{ width: v_width }}>
 				<input
