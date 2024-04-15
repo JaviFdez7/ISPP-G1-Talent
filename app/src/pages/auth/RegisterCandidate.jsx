@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/authContext";
-import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
+import React, { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { useAuthContext } from "../../context/authContext"
+import mainBackgroundRegisterLogin from "../../images/main-background2.jpg"
 import axios from "axios";
-import FormTextInput from "../../components/FormTextInput";
-import MainButton from "../../components/mainButton";
-import SecondaryButton from "../../components/secondaryButton";
+import FormTextInput from "../../components/FormTextInput"
+import MainButton from "../../components/mainButton"
+import SecondaryButton from "../../components/secondaryButton"
 
 const TermsAndConditions = ({ handleClose, handleAccept }) => {
   return (
