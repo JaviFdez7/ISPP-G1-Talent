@@ -25,8 +25,8 @@ export default function Navbar() {
 	const location = useLocation()
 
 	const opts = [
-		{ Information: 0, Settings: 1 }, //Not logged
-		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 }, //Candidate
+		{ Information: 0, Settings: 1 },
+		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 },
 		{
 			Trends: 0,
 			'My analysis': 1,
@@ -34,11 +34,11 @@ export default function Navbar() {
 			Subscription: 3,
 			Information: 4,
 			Settings: 5,
-		}, //Representative
+		},
 	]
 
 	function getOptsNum(key) {
-		let optsTemplate = 0 //Change for every case
+		let optsTemplate = 0
 		if (isAuthenticated && userData && userData.role === 'Candidate') {
 			optsTemplate = 1
 		}
@@ -239,7 +239,6 @@ export default function Navbar() {
 				</>
 				{isAuthenticated &&
 					(userData && userData.role == 'Representative' ? (
-						// Mostrar contenido para representante
 						<div>
 							<Link to='/representative/detail' className='profile-container'>
 								<div className='profile-pic-container'>
@@ -269,11 +268,9 @@ export default function Navbar() {
 								onClick={() => Logout(logout, navigate, userData.role)}
 								className='logout'>
 								<img src={logoutIcon} />
-								{/* TODO code of petitions left*/}
 							</button>
 						</div>
 					) : (
-						// Mostrar contenido para usuario autenticado pero no representante
 						<div>
 							<Link to='/candidate/detail' className='profile-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<div className='profile-pic-container'>
@@ -287,8 +284,8 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '100px', // Cambia esto al ancho deseado
-											height: '80px', // Cambia esto a la altura deseada
+											widthper: '80px',
+											height: '80px',
 										}}
 									/>
 								</div>

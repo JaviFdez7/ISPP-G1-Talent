@@ -14,7 +14,6 @@ import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
-
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
@@ -33,6 +32,31 @@ export default function CandidateDetail() {
 		analysis && analysis.globalTechnologies
 			? analysis.globalTechnologies.map((item) => item)
 			: []
+	async function getSubscription(userId) {
+		try {
+			if (isAuthenticated) {
+				const token = localStorage.getItem('access_token')
+				if (userId && token) {
+					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${userId}`,
+						{
+							params: {
+								userId: userId,
+							},
+							headers: {
+								'Content-type': 'application/json',
+								Authorization: `${token}`,
+							},
+						}
+					)
+					const subscription = response.data.data;
+					const remainingUpdates = subscription.remainingUpdates;
+					return remainingUpdates;
+				}
+			}
+		} catch (error) {
+			console.log('Error fetching notification data:', error.response.data.message)
+		}
+	}
 
 	const updateAnalysis = async () => {
 		try {
@@ -41,7 +65,7 @@ export default function CandidateDetail() {
 			const url = `${import.meta.env.VITE_BACKEND_URL}/analysis/${candidate._id}`
 			const response = await axios.patch(
 				url,
-				{body},
+				{ body },
 				{
 					headers: {
 						'Content-type': 'application/json',
@@ -65,17 +89,17 @@ export default function CandidateDetail() {
 			navigate('/candidate/detail')
 			Swal.fire({
 				icon: 'success',
-				title: 'Candidate updated successfully',
+				title: `Candidate updated successfully, you have ${await getSubscription(candidate._id)} update left.`,
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
 				timer: 1500,
 			})
 		} catch (error) {
-			if (error.response.data.errors[0].detail === 'You cant update your analysis,not enough tokens') {
+			if (!candidate.subscriptionId || await getSubscription(candidate._id) <= 0) {
 				Swal.fire({
 					icon: 'warning',
-					title: 'You have no updates left. Please wait until next month or upgrade to Advanced.',
+					title: `You have reached your update limit for the ${candidate.subscriptionId.subtype} plan.`,
 					showConfirmButton: true,
 					background: 'var(--talent-secondary)',
 					color: 'white',
@@ -83,11 +107,9 @@ export default function CandidateDetail() {
 					confirmButtonColor: 'var(--talent-highlight)',
 				})
 			}
-			setErrors(error.response.data)
 		} finally {
 			setShowModal(false)
 		}
-
 	}
 	const handleConfirm = () => {
 		setShowModal(false)
@@ -156,7 +178,6 @@ export default function CandidateDetail() {
 		}
 		fetchDataFromEndpoint()
 	}, [isAuthenticated, candidate])
-
 
 	return (
 		<div
@@ -241,30 +262,45 @@ export default function CandidateDetail() {
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
 			<br></br>
-			<div className='input-analysis-container' style={{ marginLeft: "20%" }}>
-				{Input({
-					name: 'Apikey (OPTIONAL)',
-					value: apikey,
-					editable: true,
-					placeholder: 'Enter your apikey of your Username of GitHub',
-					onChange: (e) => onInputChange(e),
-					formName: 'apikey',
-				})}
-
+			<div className='input-analysis-container' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				<div
+					className="flex"
+					style={{
+						marginBottom: "1rem",
+						width: '100%',
+						maxWidth: '600px', 
+					}}
+				>
+					<input
+						type="password"
+						className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+						style={{
+							width: "100%", 
+							padding: "0.5rem 0.75rem",
+						}}
+						placeholder="Enter your Apikey of your Username of GitHub"
+						name="apikey"
+						value={apikey.apikey}
+						onChange={(e) => onInputChange(e)}
+					/>
+					{errors.apikey && (
+						<p className="text-red-500 text-xs italic">
+							{errors.apikey}
+						</p>
+					)}
+				</div>
+				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
+					<p className='text-red-500'>{errors.errors[0].detail}</p>
+				)}
+				<div className='mt-8'>
+					{SecondaryButton(
+						'Update Developer',
+						'', () => setShowModal(true))}
+				</div>
 			</div>
-			{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
-				<p className='text-red-500' style={{ marginLeft: "22%" }}>{errors.errors[0].detail}</p>
-			)}
-			<div className='mt-8 self-center'>
-				{SecondaryButton(
-					'Update Developer',
-					'', () => setShowModal(true))}
-			</div>
-
 			<br></br>
 			<h3 className='profile-title'>Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
-			<br></br>
 			<br></br>
 			<br></br>
 			<div className='flex flex-col w-8/12 self-center'>
@@ -314,7 +350,7 @@ export default function CandidateDetail() {
 				</h2>
 				<div>
 					<button
-						onClick={handleConfirm} // Llama a handleConfirm cuando se hace clic en "Yes"
+						onClick={handleConfirm}
 						style={{
 							marginRight: '10px',
 							padding: '10px',
