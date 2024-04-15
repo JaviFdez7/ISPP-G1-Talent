@@ -15,8 +15,7 @@ import Logout from './swat/logout'
 import { useLocation } from 'react-router-dom'
 
 export default function Navbar() {
-	
-	const { subscription: authSubscription } = useAuthContext();
+	const { subscription: authSubscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const [notifications, setNotifications] = useState(0)
@@ -155,10 +154,10 @@ export default function Navbar() {
 			? '/representative/subscription'
 			: '/candidate/subscription'
 		: '/login'
-	if(authSubscription){
-	if (authSubscription === "No subscription") {
-		return null;
-	  }
+	if (authSubscription) {
+		if (authSubscription === 'No subscription') {
+			return null
+		}
 	}
 	return (
 		<div className='sidenav' id='sidenav'>
