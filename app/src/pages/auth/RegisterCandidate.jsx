@@ -8,9 +8,32 @@ import MainButton from "../../components/mainButton";
 // Componente de términos y condiciones
 const TermsAndConditions = ({ handleClose }) => {
   return (
-    <div className="terms-and-conditions">
-      <p style={{ color: "white" }}>Estos son los términos y condiciones.</p>
-      <button onClick={handleClose} style={{ color: "white" }}>Cerrar</button>
+    <div className="modal" style={{
+      display: "block",
+      position: "fixed",
+      zIndex: 1,
+      left: 0,
+      top: 0,
+      width: "100%",
+      height: "100%",
+      backgroundColor: "rgba(0,0,0,0.5)",
+    }}>
+      <div className="modal-content" style={{
+    backgroundColor: "#2d2d2d",
+    margin: "15% auto",
+    padding: "20px",
+    border: "1px solid #888",
+    width: "80%",
+    maxWidth: "600px",
+  }}>
+        <span className="close" onClick={handleClose} style={{
+    color: "#aaa",
+    float: "right",
+    fontSize: "28px",
+    fontWeight: "bold",
+  }}>&times;</span>
+        <p style={{ color: "white" }}>Estos son los términos y condiciones.</p>
+      </div>
     </div>
   );
 };
