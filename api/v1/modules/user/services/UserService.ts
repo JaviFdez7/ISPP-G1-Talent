@@ -28,16 +28,12 @@ export const createUser: any = async (data: any, role: string) => {
 		const Model = getModelForRole(role)
 		if (role === 'Candidate') {
 			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
+			const subscription = await createCandidateSubscriptions()
 			data.analysisId = analysis._id
+			data.subscriptionId = subscription._id
 		}
 		if (role === 'Representative') {
-			if (!data.subscriptionType) {
-				throw new Error('Subscription type is required for company users')
-			}
-			const subscription = await createRepresentativeSubscriptions(data.subscriptionType)
-			data.subscriptionId = subscription._id
-		} else if (role === 'Candidate') {
-			const subscription = await createCandidateSubscriptions()
+			const subscription = await createRepresentativeSubscriptions()
 			data.subscriptionId = subscription._id
 		}
 		const user = new Model(data)
