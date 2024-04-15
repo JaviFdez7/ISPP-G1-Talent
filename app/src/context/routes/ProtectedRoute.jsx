@@ -36,7 +36,6 @@ export default function ProtectedRoute({ children, roles, allowUnauthenticated =
 
   useEffect(() => {
     if (checkSubscription && subscription) {
-      console.log("subscription", subscription);
       if (subscription === "No subscription" && location.pathname !== "/representative/subscription") {
         navigate("/representative/subscription");
       }

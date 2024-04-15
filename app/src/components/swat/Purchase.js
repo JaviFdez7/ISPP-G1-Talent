@@ -14,8 +14,6 @@ const Purchase = (confirmPurchase, navigate, role, paymentMethod, subscriptionPl
     if (result.isConfirmed) {
       confirmPurchase(paymentMethod)
         .then((response) => {
-          navigate(role === "Representative" ? "/representative/detail" : "/candidate/detail");
-          console.log(response)
           if (!response) {
             Swal.fire({
               title: "An error occurred, please try again later",
@@ -31,6 +29,9 @@ const Purchase = (confirmPurchase, navigate, role, paymentMethod, subscriptionPl
               background: "var(--talent-secondary)",
               color: "white",
               confirmButtonColor: "var(--talent-highlight)",
+            }).then(() => {
+              navigate(role === "Representative" ? "/representative/detail" : "/candidate/detail");
+              window.location.reload();
             });
           }
         })
