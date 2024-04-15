@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
+import SecondaryButton from '../../components/secondaryButton'
 import GroupedSelect from '../../components/GroupedSelect'
 const apiURL = import.meta.env.VITE_BACKEND_URL
 import axios from 'axios'
@@ -333,6 +334,7 @@ export default function SearchForm() {
 		setForm(newForms)
 	}, [numForms, numOptions])
 
+	
 	return (
 		<div
 			className='min-h-screen flex flex-col bg-fixed home-container'
@@ -521,6 +523,7 @@ export default function SearchForm() {
 				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
 					{MainButton('Previous Searches', `/searches/representative/${userId}`)}
+					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>
 			</form>
 		</div>
