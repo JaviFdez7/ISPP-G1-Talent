@@ -1,52 +1,52 @@
 {
-    "name": "it-talent-backend",
-    "version": "1.0.0",
-    "description": "",
-    "scripts": {
-        "start": "ts-node app.ts || node app.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "npx tsc"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/JaviFdez7/ISPP-G1-Talent.git"
-    },
-    "author": "Javier Fernández Castillo, Rubén Casal Ferrero, Andrés Domínguez Ruiz, Alberto Domínguez-Adame Ruiz, Carlos Bermejo Soria, Daniel Gallardo Martos, Ismael Herrera Ramírez, Mario Izquierdo Lavado, Fernando José Mateos Gómez, Alejandro José Merino Palma, Francisco Jesús Montero Martínez, Rocío López Moyano, Manuel Otero Barbasán, Francisco David Vilaplana de Trías, Carlos Zarzuela Reina",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/JaviFdez7/ISPP-G1-Talent/issues"
-    },
-    "homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
-    "dependencies": {
-        "@types/cors": "^2.8.17",
-        "@types/express": "^4.17.21",
-        "@types/mongoose": "^5.11.97",
-        "bcryptjs": "^2.4.3",
-        "cors": "^2.8.5",
-        "dotenv": "^16.4.5",
-        "express": "^4.18.3",
-        "gql-paginator": "^2.2.0",
-        "inquirer": "^9.2.15",
-        "jsonwebtoken": "^9.0.2",
-        "mocha": "^10.3.0",
-        "mongodb": "^6.3.0",
-        "mongoose": "^8.2.0",
-        "node-fetch": "^3.3.2",
-        "swagger-jsdoc": "^6.2.8",
-        "swagger-ui-express": "^5.0.0",
-        "ts-node": "^10.9.2",
-        "yamljs": "^0.3.0"
-    },
-    "devDependencies": {
-        "@types/bcryptjs": "^2.4.6",
-        "@types/jsonwebtoken": "^9.0.5",
-        "@types/mock-require": "^2.0.3",
-        "@types/swagger-jsdoc": "^6.0.4",
-        "@types/swagger-ui-express": "^4.1.6",
-        "@types/yamljs": "^0.2.34",
-        "mock-require": "^3.0.3",
-        "ts-node": "^10.9.2",
-        "ts-node-dev": "^2.0.0",
-        "typescript": "^5.3.3"
-    }
+	"name": "it-talent-backend",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"start": "ts-node app.ts || node app.js",
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "npx tsc"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JaviFdez7/ISPP-G1-Talent.git"
+	},
+	"author": "Javier Fernández Castillo, Rubén Casal Ferrero, Andrés Domínguez Ruiz, Alberto Domínguez-Adame Ruiz, Carlos Bermejo Soria, Daniel Gallardo Martos, Ismael Herrera Ramírez, Mario Izquierdo Lavado, Fernando José Mateos Gómez, Alejandro José Merino Palma, Francisco Jesús Montero Martínez, Rocío López Moyano, Manuel Otero Barbasán, Francisco David Vilaplana de Trías, Carlos Zarzuela Reina",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/JaviFdez7/ISPP-G1-Talent/issues"
+	},
+	"homepage": "https://github.com/JaviFdez7/ISPP-G1-Talent#readme",
+	"dependencies": {
+		"@types/cors": "^2.8.17",
+		"@types/express": "^4.17.21",
+		"@types/mongoose": "^5.11.97",
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
+		"express": "^4.18.3",
+		"gql-paginator": "^2.2.0",
+		"inquirer": "^9.2.15",
+		"jsonwebtoken": "^9.0.2",
+		"mocha": "^10.3.0",
+		"mongodb": "^6.3.0",
+		"mongoose": "^8.2.0",
+		"node-fetch": "^3.3.2",
+		"swagger-jsdoc": "^6.2.8",
+		"swagger-ui-express": "^5.0.0",
+		"ts-node": "^10.9.2",
+		"yamljs": "^0.3.0"
+	},
+	"devDependencies": {
+		"@types/bcryptjs": "^2.4.6",
+		"@types/jsonwebtoken": "^9.0.5",
+		"@types/mock-require": "^2.0.3",
+		"@types/swagger-jsdoc": "^6.0.4",
+		"@types/swagger-ui-express": "^4.1.6",
+		"@types/yamljs": "^0.2.34",
+		"mock-require": "^3.0.3",
+		"ts-node": "^10.9.2",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.3.3"
+	}
 }

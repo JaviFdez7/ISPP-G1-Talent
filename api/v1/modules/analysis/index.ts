@@ -3,7 +3,7 @@ import Analysis from './routes';
 
 const router = express.Router();
 
-//This is the initial url of Analysis
+// This is the initial url of Analysis
 router.use('/analysis', Analysis);
 
 export default router;

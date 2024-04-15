@@ -1,7 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
+function isValidInput(input) {
+  const validPattern = /^[a-zA-Z0-9-_]+$/;
+  return validPattern.test(input);
+}
+
 function createModule(moduleName, apiVersion = "v1") {
+  if (!isValidInput(moduleName) || !isValidInput(apiVersion)) {
+    throw new Error('Invalid input provided');
+  }
   const modulePath = path.join(__dirname, apiVersion, "modules", moduleName);
   const camelModuleName = _snakeToCamel(moduleName, true);
   const CamelModuleName = _capitalizeFirstLetter(camelModuleName);
