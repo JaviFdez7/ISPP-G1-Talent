@@ -155,8 +155,6 @@ export default function Navbar() {
 			? '/representative/subscription'
 			: '/candidate/subscription'
 		: '/login'
-
-		console.log('subscriptionType', authSubscription)
 	if(authSubscription){
 	if (authSubscription === "No subscription") {
 		return null;

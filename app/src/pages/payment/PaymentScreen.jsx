@@ -80,7 +80,6 @@ export default function PaymentScreen() {
                     }
                 );
             } else {
-                console.log("Payment method es", paymentMethod)
                 const response = await axios.post(
                     import.meta.env.VITE_BACKEND_URL + '/payment',
                     {
@@ -94,7 +93,6 @@ export default function PaymentScreen() {
                         }
                     }
                 );
-                console.log("Se ha ejecutado la response", response)
             }
 
             return true
@@ -104,7 +102,6 @@ export default function PaymentScreen() {
             } else if (error.response && error.response.status === 404) {
                 setErrors(error.response.data);
             }
-            console.error(error);
             return false
         }
     }
