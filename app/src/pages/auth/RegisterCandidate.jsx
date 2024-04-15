@@ -5,6 +5,7 @@ import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
+import SecondaryButton from "../../components/secondaryButton";
 // Componente de términos y condiciones
 const TermsAndConditions = ({ handleClose }) => {
   return (
@@ -19,23 +20,25 @@ const TermsAndConditions = ({ handleClose }) => {
       backgroundColor: "rgba(0,0,0,0.5)",
     }}>
       <div className="modal-content" style={{
-    backgroundColor: "#2d2d2d",
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
     margin: "15% auto",
     padding: "20px",
-    border: "1px solid #888",
+    border: "1px solid var(--talent-highlight)",
     width: "80%",
     maxWidth: "600px",
   }}>
-        <button className="close" onClick={handleClose} style={{
-          color: "#aaa",
-          float: "right",
-          fontSize: "28px",
-          fontWeight: "bold",
-        }}>&times;</button>
         <div className="terms-container" style={{ overflowY: "scroll", scrollbarWidth: "5%", scrollbarColor: "red", maxHeight: "50vh" }}>
           <p style={{ color: "white" }}>
             Aquí va el contenido de los términos y condiciones.
           </p>
+          <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: '20px'
+            }}>
+            {SecondaryButton('Cancel', '', handleClose)}
+            {MainButton('Accept', '', handleClose)}
+          </div>
         </div>
       </div>
     </div>
