@@ -5,7 +5,15 @@ import mainBackgroundRegisterLogin from "../../images/main-background2.jpg";
 import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
-
+// Componente de términos y condiciones
+const TermsAndConditions = ({ handleClose }) => {
+  return (
+    <div className="terms-and-conditions">
+      <p style={{ color: "white" }}>Estos son los términos y condiciones.</p>
+      <button onClick={handleClose} style={{ color: "white" }}>Cerrar</button>
+    </div>
+  );
+};
 export default function RegisterCandidate() {
   const talentColor = "var(--talent-highlight)";
   const { login } = useAuthContext();
@@ -20,6 +28,15 @@ export default function RegisterCandidate() {
     github_username: "",
     candidateSubscription: "Basic plan",
   });
+  const [showModal, setShowModal] = useState(false);
+
+  const showModalHandler = () => {
+    setShowModal(true);
+  };
+
+  const hideModalHandler = () => {
+    setShowModal(false);
+  };
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [errors, setErrors] = useState({});
   const {
@@ -356,6 +373,9 @@ export default function RegisterCandidate() {
             </div>
           </div>
         </form>
+        
+        <button style={{ color: "white" }} onClick={showModalHandler}>Mostrar Términos y Condiciones</button>
+        {showModal && <TermsAndConditions handleClose={hideModalHandler} />}
       </div>
     </div>
   );
