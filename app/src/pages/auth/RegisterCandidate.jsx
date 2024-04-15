@@ -6,7 +6,7 @@ import axios from "axios";
 import FormTextInput from "../../components/FormTextInput";
 import MainButton from "../../components/mainButton";
 import SecondaryButton from "../../components/secondaryButton";
-// Componente de términos y condiciones
+
 const TermsAndConditions = ({ handleClose, handleAccept }) => {
   return (
     <div className="modal" style={{
