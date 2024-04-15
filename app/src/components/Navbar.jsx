@@ -276,7 +276,10 @@ export default function Navbar() {
 						</div>
 					) : (
 						<div>
-							<Link to='/candidate/detail' className='profile-container' style={{ display: 'flex', justifyContent: 'space-between' }}>
+							<Link
+								to='/candidate/detail'
+								className='profile-container'
+								style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<div className='profile-pic-container'>
 									<img
 										src={
@@ -293,8 +296,19 @@ export default function Navbar() {
 										}}
 									/>
 								</div>
-								<div className='profile-text' style={{ flex: 1, marginLeft: '10px', maxWidth: 'calc(100% - 110px)' }}>
-									<h1 style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+								<div
+									className='profile-text'
+									style={{
+										flex: 1,
+										marginLeft: '10px',
+										maxWidth: 'calc(100% - 110px)',
+									}}>
+									<h1
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
 										{userData ? userData.fullName : ' - '}
 									</h1>
 								</div>
