@@ -31,6 +31,7 @@ const PricingTable = ({ suscription }) => {
       setIsCurrentPlan(plan === suscription.name)
       return plan
     } catch (error) {
+      console.error(error)
       handleNetworkError(error, navigate)
     }
   }

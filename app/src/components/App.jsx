@@ -51,14 +51,41 @@ function App() {
 					<Navbar />
 					<Routes>
 						{/*RUTAS PUBLICAS */}
-						<Route index element={<Home />} />
-						<Route path='/support' element={<Support />} />
-						<Route path='/settings' element={<Settings />} />
-						<Route path='/login' element={<Login />} />
-						<Route path='/register/candidate' element={<RegisterCandidate />} />
+						<Route index element={
+							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
+								<Home />
+							</ProtectedRoute>}
+						 />
+
+						<Route path='/support' element={
+							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
+								<Support />
+							</ProtectedRoute>} 
+						/>
+
+						<Route path='/settings' element={
+							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
+								<Settings /> 	
+							</ProtectedRoute>} 
+						/>
+
+						<Route path='/login' element={
+							<ProtectedRoute  allowUnauthenticated={true}>
+								<Login />
+							</ProtectedRoute>} 
+						/>
+
+						<Route path='/register/candidate' element={
+							<ProtectedRoute  allowUnauthenticated={true}>
+								<RegisterCandidate />
+							</ProtectedRoute>}
+						/>
+
 						<Route
-							path='/register/representative'
-							element={<RegisterRepresentative />}
+							path='/register/representative'	element={
+							<ProtectedRoute  allowUnauthenticated={true}>
+								<RegisterRepresentative />
+							</ProtectedRoute>}
 						/>
 						{/*RUTAS PRIVADAS */}
 						{/*Analysis*/}
@@ -126,7 +153,7 @@ function App() {
 						<Route
 							path='/payments/:subscriptionPlan'
 							element={
-								<ProtectedRoute roles={['Candidate', 'Representative']}>
+								<ProtectedRoute roles={['Candidate', 'Representative']} checkSubscription={ false}>
 									<Elements stripe={stripePromise}>
 										<PaymentScreen />
 									</Elements>
