@@ -18,42 +18,49 @@ export const makePayment: any = async (req: Request, res: Response) => {
 	const role = user.role
 
 	try {
-		const paymentIntent = await stripe.paymentIntents.create({
-			amount: Math.round(parseFloat(price.toFixed(2))),
-			currency: "eur",
-			payment_method: paymentMethod,
-			description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
-			confirm: true,
-			automatic_payment_methods: {
-				enabled: true,
-				allow_redirects: 'never'
-			},
-
-		  });
-
-		switch(paymentIntent.status) {
-			case "succeeded": {
-				const data = await updateSubscriptions(userId, subscriptionPlan);
-				return ApiResponse.sendSuccess(res, data, 200, {
-					self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
-				})
-		}
-		case "canceled": {
-			return ApiResponse.sendError(res, [
-				{
-					title: 'Payment cancelled',
-					detail: "An error ocurred while processing the payment, check your card permissions",
+		if (price !== 0 && paymentMethod !== "No payment method") {
+			const paymentIntent = await stripe.paymentIntents.create({
+				amount: Math.round(parseFloat(price.toFixed(2))),
+				currency: "eur",
+				payment_method: paymentMethod,
+				description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
+				confirm: true,
+				automatic_payment_methods: {
+					enabled: true,
+					allow_redirects: 'never'
 				},
-			])
-		}
-		default: {
-			return ApiResponse.sendError(res, [
-				{
-					title: 'Payment stopped',
-					detail: "An error ocurred while processing the payment. Aditional steps required",
-				},
-			])
-		}
+
+			});
+
+			switch (paymentIntent.status) {
+				case "succeeded": {
+					const data = await updateSubscriptions(userId, subscriptionPlan);
+					return ApiResponse.sendSuccess(res, data, 200, {
+						self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+					})
+				}
+				case "canceled": {
+					return ApiResponse.sendError(res, [
+						{
+							title: 'Payment cancelled',
+							detail: "An error ocurred while processing the payment, check your card permissions",
+						},
+					])
+				}
+				default: {
+					return ApiResponse.sendError(res, [
+						{
+							title: 'Payment stopped',
+							detail: "An error ocurred while processing the payment. Aditional steps required",
+						},
+					])
+				}
+			}
+		} else {
+			const data = await updateSubscriptions(userId, subscriptionPlan);
+			return ApiResponse.sendSuccess(res, data, 200, {
+				self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
+			})
 		}
 	} catch (error: any) {
 		ApiResponse.sendError(res, [

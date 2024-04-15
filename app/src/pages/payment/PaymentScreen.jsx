@@ -63,9 +63,9 @@ export default function PaymentScreen() {
     }
 
     async function confirmPurchase(paymentMethod) {
-        if (paymentMethod) {
-            const token = localStorage.getItem("access_token")
-            try {
+        const token = localStorage.getItem("access_token")
+        try {
+            if (paymentMethod) {
                 const response = await axios.post(
                     import.meta.env.VITE_BACKEND_URL + '/payment',
                     {
@@ -79,19 +79,33 @@ export default function PaymentScreen() {
                         }
                     }
                 );
-                return true
-            } catch (error) {
-                if (error.response && error.response.status === 401) {
-                    setErrors(error.response.data);
-                } else if (error.response && error.response.status === 404) {
-                    setErrors(error.response.data);
-                }
-                console.error(error);
-                return false
+            } else {
+                console.log("Payment method es", paymentMethod)
+                const response = await axios.post(
+                    import.meta.env.VITE_BACKEND_URL + '/payment',
+                    {
+                        price: price,
+                        paymentMethod: "No payment method",
+                        subscriptionPlan: subscriptionPlan
+                    },
+                    {
+                        headers: {
+                            'Authorization': `${token}`,
+                        }
+                    }
+                );
+                console.log("Se ha ejecutado la response", response)
             }
-        } else {
-            console.log("free plan")
+
             return true
+        } catch (error) {
+            if (error.response && error.response.status === 401) {
+                setErrors(error.response.data);
+            } else if (error.response && error.response.status === 404) {
+                setErrors(error.response.data);
+            }
+            console.error(error);
+            return false
         }
     }
 
