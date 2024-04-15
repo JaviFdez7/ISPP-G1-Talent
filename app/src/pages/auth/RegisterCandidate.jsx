@@ -27,12 +27,16 @@ const TermsAndConditions = ({ handleClose }) => {
     maxWidth: "600px",
   }}>
         <button className="close" onClick={handleClose} style={{
-    color: "#aaa",
-    float: "right",
-    fontSize: "28px",
-    fontWeight: "bold",
-  }}>&times;</button>
-        <p style={{ color: "white" }}>Estos son los términos y condiciones.</p>
+          color: "#aaa",
+          float: "right",
+          fontSize: "28px",
+          fontWeight: "bold",
+        }}>&times;</button>
+        <div className="terms-container" style={{ overflowY: "scroll", scrollbarWidth: "5%", scrollbarColor: "red", maxHeight: "50vh" }}>
+          <p style={{ color: "white" }}>
+            Aquí va el contenido de los términos y condiciones.
+          </p>
+        </div>
       </div>
     </div>
   );
