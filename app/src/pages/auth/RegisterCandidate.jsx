@@ -26,12 +26,12 @@ const TermsAndConditions = ({ handleClose }) => {
     width: "80%",
     maxWidth: "600px",
   }}>
-        <span className="close" onClick={handleClose} style={{
+        <button className="close" onClick={handleClose} style={{
     color: "#aaa",
     float: "right",
     fontSize: "28px",
     fontWeight: "bold",
-  }}>&times;</span>
+  }}>&times;</button>
         <p style={{ color: "white" }}>Estos son los términos y condiciones.</p>
       </div>
     </div>
