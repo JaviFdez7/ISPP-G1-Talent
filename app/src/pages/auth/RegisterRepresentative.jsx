@@ -101,7 +101,6 @@ export default function RegisterRepresentative() {
 					email: form.corporative_email,
 					companyName: form.company_name,
 					phone: form.phone_number,
-					companySubscription: form.companySubscription
 				}
 			)
 
