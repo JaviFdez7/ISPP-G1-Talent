@@ -48,6 +48,7 @@
 		"react-select": "^5.8.0",
 		"sinon": "^17.0.1",
 		"start-backend": "^1.0.1",
+		"stripe": "^14.25.0",
 		"swagger-jsdoc": "^6.2.8",
 		"swagger-ui-express": "^5.0.0",
 		"sweetalert2": "^11.10.7"

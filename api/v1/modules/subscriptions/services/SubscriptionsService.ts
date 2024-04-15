@@ -4,8 +4,9 @@ import {
 	CompanySubscription,
 	CandidateSubscriptionTypes,
 	CompanySubscriptionTypes,
+	Subscription,
 } from '../models/subscription'
-import { Subscription } from '../models/subscription'
+
 // Default service functions
 export const getAllSubscriptions: any = async () => {
 	try {
@@ -19,9 +20,8 @@ export const getAllSubscriptions: any = async () => {
 export const getSubscriptionsByUserId: any = async (userId: any) => {
 	try {
 		const user = await User.findById(userId)
-		if (!user) {
-			throw new Error('User not found')
-		}
+		if (!user) throw new Error('User not found')
+
 		return await Subscription.findById(user.subscriptionId)
 	} catch (error) {
 		console.error(error)
@@ -29,43 +29,24 @@ export const getSubscriptionsByUserId: any = async (userId: any) => {
 	}
 }
 
-export const createRepresentativeSubscriptions: any = async (subtype: any) => {
+export const createRepresentativeSubscriptions: any = async () => {
 	try {
-		if (subtype === CompanySubscriptionTypes.BASIC) {
-			const expirationDate = new Date()
-			expirationDate.setMonth(expirationDate.getMonth() + 1)
-			const subscription = new CompanySubscription({
-				subtype: CompanySubscriptionTypes.BASIC,
-				price: {
-					amount: 29.99,
-					currency: 'EUR',
-				},
-				lastPaymentDate: new Date(),
-				expirationDate: expirationDate,
-				automaticRenovation: false,
-				remainingSearches: 25,
-				teamLimit: 3,
-			})
-			await subscription.save()
-			return subscription
-		} else if (subtype === CompanySubscriptionTypes.PRO) {
-			const expirationDate = new Date()
-			expirationDate.setMonth(expirationDate.getMonth() + 1)
-			const subscription = new CompanySubscription({
-				subtype: CompanySubscriptionTypes.PRO,
-				price: {
-					amount: 79.99,
-					currency: 'EUR',
-				},
-				lastPaymentDate: new Date(),
-				expirationDate: expirationDate,
-				automaticRenovation: false,
-				remainingSearches: 150,
-				teamLimit: 5,
-			})
-			await subscription.save()
-			return subscription
-		}
+		const expirationDate = new Date()
+		expirationDate.setMonth(expirationDate.getMonth() + 24)
+		const subscription = new CompanySubscription({
+			subtype: CompanySubscriptionTypes.NO_SUBSCRIPTION,
+			price: {
+				amount: 0,
+				currency: 'EUR',
+			},
+			lastPaymentDate: new Date(),
+			expirationDate,
+			automaticRenovation: false,
+			remainingSearches: 0,
+			teamLimit: 0,
+		})
+		await subscription.save()
+		return subscription
 	} catch (error) {
 		console.error(error)
 		throw new Error('Error creating subscription')
@@ -83,7 +64,7 @@ export const createCandidateSubscriptions: any = async (role: any) => {
 				currency: 'EUR',
 			},
 			lastPaymentDate: new Date(),
-			expirationDate: expirationDate,
+			expirationDate,
 			automaticRenovation: false,
 			remainingUpdates: 1,
 		})
@@ -98,14 +79,12 @@ export const createCandidateSubscriptions: any = async (role: any) => {
 export const updateSubscriptions: any = async (userId: any, subtype: any) => {
 	try {
 		const user = await User.findById(userId)
-		if (!user) {
-			throw new Error('User not found')
-		}
+		if (!user) throw new Error('User not found')
+
 		const subscription = await Subscription.findById(user.subscriptionId)
-		if (!subscription) {
-			throw new Error('Subscription not found')
-		} else if ((subscription as any).type === 'CompanySubscription') {
-			subscription.set({ subtype: subtype })
+		if (!subscription) throw new Error('Subscription not found')
+		else if ((subscription as any).type === 'CompanySubscription') {
+			subscription.set({ subtype })
 			if (subtype === CompanySubscriptionTypes.BASIC) {
 				subscription.set({
 					price: { amount: 29.99, currency: 'EUR' },
@@ -125,7 +104,7 @@ export const updateSubscriptions: any = async (userId: any, subtype: any) => {
 			await subscription.save()
 			return subscription
 		} else if ((subscription as any).type === 'CandidateSubscription') {
-			subscription.set({ subtype: subtype })
+			subscription.set({ subtype })
 			if (subtype === CandidateSubscriptionTypes.BASIC) {
 				subscription.set({
 					price: { amount: 0, currency: 'EUR' },
