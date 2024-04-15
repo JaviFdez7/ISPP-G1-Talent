@@ -14,7 +14,6 @@ export default function RegisterRepresentative() {
 		username: '',
 		corporative_email: '',
 		company_name: '',
-		subscriptionType: 'Basic plan',
 		password: '',
 		password2: '',
 	})
@@ -24,7 +23,6 @@ export default function RegisterRepresentative() {
 		username,
 		corporative_email,
 		company_name,
-		subscriptionType,
 		phone_number,
 		projectSocietyName,
 		password,
@@ -115,7 +113,7 @@ export default function RegisterRepresentative() {
 
 			if (response.status === 200) {
 				login(data.token, data.user.role, data.user._id)
-				navigate('/representative/detail')
+				navigate('/representative/subscription')
 			} else if (response.status === 400 || response.status === 409) {
 				setErrors(response.data)
 			}

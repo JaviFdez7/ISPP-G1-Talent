@@ -85,9 +85,10 @@ export function AuthContextProvider({ children }) {
       logout,
       isCandidate,
       isRepresentative,
-      subscription
+      subscription,
+      fetchSubscription
     }),
-    [isAuthenticated, login, logout, isCandidate, isRepresentative, subscription]
+    [isAuthenticated, login, logout, isCandidate, isRepresentative, subscription, fetchSubscription]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

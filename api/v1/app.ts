@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import express, { type Request, type Response } from 'express'
-import { connectToMongoDB } from './db/dbConfig'
-import swaggerUi from 'swagger-ui-express'
-import swaggerJSDoc from 'swagger-jsdoc'
-import AnalysisRouter from './modules/analysis'
-import UserRouter from './modules/user'
-import HistoryRouter from './modules/history'
-import NotificationRouter from './modules/notification'
-import ProfessionalExperienceRouter from './modules/professional-experience'
-import SubscriptionRouter from './modules/subscriptions'
-import TeamCreatorRouter from './modules/team-creator'
-import cors from 'cors'
+import express, { type Request, type Response } from 'express';
+import { connectToMongoDB } from './db/dbConfig';
+import swaggerUi from 'swagger-ui-express';
+import swaggerJSDoc from 'swagger-jsdoc';
+import AnalysisRouter from './modules/analysis';
+import UserRouter from './modules/user';
+import HistoryRouter from './modules/history';
+import NotificationRouter from './modules/notification';
+import ProfessionalExperienceRouter from './modules/professional-experience';
+import SubscriptionRouter from './modules/subscriptions';
+import TeamCreatorRouter from './modules/team-creator';
+import PaymentRouter from './modules/payment';
+import cors from 'cors';
 
 const app = express()
 const swaggerHost = process.env.HOST ?? 'localhost:3000'
@@ -43,7 +44,8 @@ app.use(HistoryRouter)
 app.use(ProfessionalExperienceRouter)
 app.use(SubscriptionRouter)
 app.use(TeamCreatorRouter)
-app.use(NotificationRouter)
+app.use(NotificationRouter);
+app.use(PaymentRouter);
 
 // Server -------------------------------------------------------
 connectToMongoDB()
