@@ -58,7 +58,7 @@ function App() {
 						 />
 
 						<Route path='/support' element={
-							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true}>
+							<ProtectedRoute roles={['Representative', 'Candidate']} allowUnauthenticated={true} checkSubscription = {false}>
 								<Support />
 							</ProtectedRoute>} 
 						/>
@@ -255,7 +255,7 @@ function App() {
 						<Route
 							path='/representative/subscription'
 							element={
-								<ProtectedRoute roles={['Representative']}>
+								<ProtectedRoute roles={['Representative']} checkSubscription = {false}>
 									<RepresentativeSubscription />
 								</ProtectedRoute>
 							}
