@@ -14,9 +14,11 @@ const DeleteHistorySearchButton = ({ history, toggleText = false, setErrorMessag
     async function deleteHistorySearchEntry() {
         const userId = localStorage.getItem("userId");
         const token = localStorage.getItem("access_token");
+        console.log("userId", userId);
         const uri = `/user/${userId}/team_creator/history/${history._id}`;
         if (history.favorite) {
             const favUri = `/user/${userId}/team_creator/history/${history._id}/favorite`;
+            console.log("favUri", favUri);
             try {
                 await axios.patch(apiURL + favUri, {}, {
                     headers: {

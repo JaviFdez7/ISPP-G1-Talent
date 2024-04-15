@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import FavoriteButton from '../../components/history/FavoriteButton.jsx'
-import DeleteHistoryButton from '../../components/history/DeleteHistoryButton.jsx'
+import SearchFavoriteButton  from '../../components/history/SearchFavoriteButton.jsx'
 import { handleNetworkError } from '../TokenExpired.jsx'
 import { useNavigate } from 'react-router-dom'
+import DeleteHistorySearchButton from './DeleteHistorySearchButton.jsx'
 
 const SearchHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 	const [teamCreator, setTeamCreator] = useState(null)
@@ -47,10 +47,10 @@ const SearchHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 				</Link>
 				<div className='flex items-center justify-end'>
 					<div className='flex mx-2'>
-						<FavoriteButton history={item} />
+						<SearchFavoriteButton history={item} />
 					</div>
 					<div className='flex mx-2'>
-						<DeleteHistoryButton
+						<DeleteHistorySearchButton
 							history={item}
 							setErrorMessage={setErrorMessage}
 						/>
