@@ -14,7 +14,7 @@ import { Notification } from '../../notification/models/notification'
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
 	try {
-		const analyses = await AnalysisModel.find().exec()
+		const analyses = await AnalysisModel.find()
 		return analyses
 	} catch (error) {
 		throw new Error(`Error when getting all analyses: ${error}`)
