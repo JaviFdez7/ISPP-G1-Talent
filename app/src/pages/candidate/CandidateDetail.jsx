@@ -99,7 +99,7 @@ export default function CandidateDetail() {
 			if (!candidate.subscriptionId || await getSubscription(candidate._id) <= 0) {
 				Swal.fire({
 					icon: 'warning',
-					title: `You have reached your update limit for the ${candidate.subscriptionId.subtype} plan.`,
+					title: `You have reached your update limit of this month`,
 					showConfirmButton: true,
 					background: 'var(--talent-secondary)',
 					color: 'white',
@@ -256,10 +256,6 @@ export default function CandidateDetail() {
 			<br></br>
 			<h3 className='profile-title'>Update your Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
-			<br></br>
-			<br></br>
-			<hr className='w-5/12 self-center'></hr>
-			<br></br>
 			<br></br>
 			<div className='input-analysis-container' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<div
