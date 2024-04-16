@@ -7,6 +7,8 @@ import LatestHistory from '../../components/history/LatestHistory'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
+import LatestHistorySearch from '../../components/history/LatestHistorySearch'
+import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function RepresentativeDetail() {
 	const { isAuthenticated } = useAuthContext()
@@ -68,12 +70,29 @@ export default function RepresentativeDetail() {
 		fetchAnalysisHistoryData()
 	}, [])
 
-	function sortAndFormatHistory(historyList) {
-		historyList.sort((a, b) => b.date - a.date)
-		return historyList.map((history) => ({
-			date: history.date.toString(),
-		}))
-	}
+	useEffect(() => {
+		const fetchSearchHistoryData = async () => {
+			try {
+				if (isAuthenticated) {
+					const currentUserId = localStorage.getItem('userId')
+					const uri = `/user/${currentUserId}/team_creator/history`
+					const response = await axios.get(import.meta.env.VITE_BACKEND_URL + uri)
+					const historySearchArray = response.data.data.map((item) => item)
+					sortAndFormatHistory(historySearchArray)
+					setSearchHistoryData(historySearchArray)
+				}
+			} catch (error) {
+				console.error('Error fetching history datadasdsadsadsa:', error.response.data.errors[0].detail)
+				if (
+					error.response.data.errors[0].detail ===
+					'Error when getting the analysis by ID: jwt expired'
+				) {
+					console.error('Error fetching history data:', error)
+				}
+			}
+		}
+		fetchSearchHistoryData()
+	}, [])
 
 	function sortAndFormatHistory(historyList) {
 		historyList.sort((a, b) => b.date - a.date)
@@ -164,7 +183,22 @@ export default function RepresentativeDetail() {
 				/>
 				<br></br>
 				<br></br>
+
 			</div>
+			<br></br>
+			<br></br>
+			<br></br>
+			<div className='flex flex-col justify-center w-8/12 self-center'>
+				<LatestHistorySearch
+					header='Latest Search'
+					data={searchHistoryData}
+					type='searches'
+				/>
+				<br></br>
+				<br></br>
+
+			</div>
+
 		</div>
 	)
 }

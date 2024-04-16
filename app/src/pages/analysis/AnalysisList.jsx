@@ -110,10 +110,7 @@ export default function AnalysisList() {
                                 );
                             })}
                         </div>
-
                     </div>
-
-
                 </div>
             </div>
         </section >
