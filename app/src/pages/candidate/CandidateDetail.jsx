@@ -37,7 +37,8 @@ export default function CandidateDetail() {
 			if (isAuthenticated) {
 				const token = localStorage.getItem('access_token')
 				if (userId && token) {
-					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${userId}`,
+					const response = await axios.get(
+						`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${userId}`,
 						{
 							params: {
 								userId: userId,
@@ -48,9 +49,9 @@ export default function CandidateDetail() {
 							},
 						}
 					)
-					const subscription = response.data.data;
-					const remainingUpdates = subscription.remainingUpdates;
-					return remainingUpdates;
+					const subscription = response.data.data
+					const remainingUpdates = subscription.remainingUpdates
+					return remainingUpdates
 				}
 			}
 		} catch (error) {
@@ -96,7 +97,7 @@ export default function CandidateDetail() {
 				timer: 1500,
 			})
 		} catch (error) {
-			if (!candidate.subscriptionId || await getSubscription(candidate._id) <= 0) {
+			if (!candidate.subscriptionId || (await getSubscription(candidate._id)) <= 0) {
 				Swal.fire({
 					icon: 'warning',
 					title: `You have reached your update limit of this month`,
@@ -257,40 +258,37 @@ export default function CandidateDetail() {
 			<h3 className='profile-title'>Update your Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
-			<div className='input-analysis-container' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+			<div
+				className='input-analysis-container'
+				style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<div
-					className="flex"
+					className='flex'
 					style={{
-						marginBottom: "1rem",
+						marginBottom: '1rem',
 						width: '100%',
 						maxWidth: '600px',
-					}}
-				>
+					}}>
 					<input
-						type="password"
-						className="leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+						type='password'
+						className='leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
 						style={{
-							width: "100%",
-							padding: "0.5rem 0.75rem",
+							width: '100%',
+							padding: '0.5rem 0.75rem',
 						}}
-						placeholder="Enter your Apikey of your Username of GitHub"
-						name="apikey"
+						placeholder='Enter your Apikey of your Username of GitHub'
+						name='apikey'
 						value={apikey.apikey}
 						onChange={(e) => onInputChange(e)}
 					/>
 					{errors.apikey && (
-						<p className="text-red-500 text-xs italic">
-							{errors.apikey}
-						</p>
+						<p className='text-red-500 text-xs italic'>{errors.apikey}</p>
 					)}
 				</div>
 				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
 				<div className='mt-8'>
-					{SecondaryButton(
-						'Update Developer',
-						'', () => setShowModal(true))}
+					{SecondaryButton('Update Developer', '', () => setShowModal(true))}
 				</div>
 			</div>
 			<br></br>
