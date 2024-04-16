@@ -82,7 +82,10 @@ export default function RepresentativeDetail() {
 					setSearchHistoryData(historySearchArray)
 				}
 			} catch (error) {
-				console.error('Error fetching history datadasdsadsadsa:', error.response.data.errors[0].detail)
+				console.error(
+					'Error fetching history datadasdsadsadsa:',
+					error.response.data.errors[0].detail
+				)
 				if (
 					error.response.data.errors[0].detail ===
 					'Error when getting the analysis by ID: jwt expired'
@@ -109,7 +112,6 @@ export default function RepresentativeDetail() {
 				backgroundSize: 'cover',
 				overflowY: 'scroll',
 				height: '100vh',
-
 			}}>
 			<div
 				className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'
@@ -117,9 +119,7 @@ export default function RepresentativeDetail() {
 				<div className='flex flex-col items-center'>
 					<img
 						src={
-							userData && userData.profilePicture
-								? userData.profilePicture
-								: profile
+							userData && userData.profilePicture ? userData.profilePicture : profile
 						}
 						className='rounded-full border border-gray-300 profile-img'
 						style={{
@@ -183,7 +183,6 @@ export default function RepresentativeDetail() {
 				/>
 				<br></br>
 				<br></br>
-
 			</div>
 			<br></br>
 			<br></br>
@@ -196,9 +195,7 @@ export default function RepresentativeDetail() {
 				/>
 				<br></br>
 				<br></br>
-
 			</div>
-
 		</div>
 	)
 }
