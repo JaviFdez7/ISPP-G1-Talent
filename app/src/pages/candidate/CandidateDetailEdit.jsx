@@ -173,7 +173,7 @@ export default function CandidateDetailEdit() {
 			)
 		) {
 			errors.phone =
-			'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 		return errors
 	}
