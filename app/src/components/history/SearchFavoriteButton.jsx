@@ -1,58 +1,51 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faS, faStar } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import React, { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faS, faStar } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 const SearchFavoriteButton = ({ history, toggleText = false }) => {
-    const [isFavorite, setIsFavorite] = useState(history.favorite);
-    const [errorMessage, setErrorMessage] = useState(null);
-    const favOn = 'var(--talent-highlight)';
-    const favOff = 'gray';
+	const [isFavorite, setIsFavorite] = useState(history.favorite)
+	const [errorMessage, setErrorMessage] = useState(null)
+	const favOn = 'var(--talent-highlight)'
+	const favOff = 'gray'
 
-    const apiURL = import.meta.env.VITE_BACKEND_URL;
+	const apiURL = import.meta.env.VITE_BACKEND_URL
 
-    async function changeFavorites(userId) {
-        const uri = `/user/${userId}/team_creator/history/${history._id}/favorite`;
-        console.log("uri", uri);
-        try {
-            console.log("uri22222222222", apiURL + uri);
+	async function changeFavorites(userId) {
+		const uri = `/user/${userId}/team_creator/history/${history._id}/favorite`
+		console.log('uri', uri)
+		try {
+			console.log('uri22222222222', apiURL + uri)
 
-            const response = await axios.patch(apiURL + uri);
-            console.log("response", response);
-            setErrorMessage(null);
-            return response;
-        } catch (error) {
-            setErrorMessage('Unable to connect to the server. Please try again later.');
-            //console.error("Error changing history search favorite state:", error);
-            throw error;
-        }
-    }
+			const response = await axios.patch(apiURL + uri)
+			console.log('response', response)
+			setErrorMessage(null)
+			return response
+		} catch (error) {
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			//console.error("Error changing history search favorite state:", error);
+			throw error
+		}
+	}
 
-    const handleToggleFavorite = () => {
-        setIsFavorite(!isFavorite);
-        const userId = localStorage.getItem("userId");
-        changeFavorites(userId);
-    };
+	const handleToggleFavorite = () => {
+		setIsFavorite(!isFavorite)
+		const userId = localStorage.getItem('userId')
+		changeFavorites(userId)
+	}
 
-    return (
-        <button
-            onClick={handleToggleFavorite}
-            className="flex items-center text-white transition-colors duration-300 hover:text-yellow-300 bg-transparent border-none rounded-full p-2"
-            style={{ width: "40px", height: "40px" }}
-        >
-            <div className="bg-transparent hover:bg-gray-500 hover:bg-opacity-50 rounded-lg duration-300 p-2">
-                <FontAwesomeIcon icon={faStar} style={{ color: isFavorite ? favOn : favOff }} />
-            </div>
-            {toggleText && (
-                <span className="ml-2">Add to favorites</span>
-            )}
-            {errorMessage && (
-                <div className="text-center text-red-600">
-                    {errorMessage}
-                </div>
-            )}
-        </button>
-    );
+	return (
+		<button
+			onClick={handleToggleFavorite}
+			className='flex items-center text-white transition-colors duration-300 hover:text-yellow-300 bg-transparent border-none rounded-full p-2'
+			style={{ width: '40px', height: '40px' }}>
+			<div className='bg-transparent hover:bg-gray-500 hover:bg-opacity-50 rounded-lg duration-300 p-2'>
+				<FontAwesomeIcon icon={faStar} style={{ color: isFavorite ? favOn : favOff }} />
+			</div>
+			{toggleText && <span className='ml-2'>Add to favorites</span>}
+			{errorMessage && <div className='text-center text-red-600'>{errorMessage}</div>}
+		</button>
+	)
 }
 
-export default SearchFavoriteButton;
+export default SearchFavoriteButton

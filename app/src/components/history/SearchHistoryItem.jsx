@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-import SearchFavoriteButton  from '../../components/history/SearchFavoriteButton.jsx'
+import SearchFavoriteButton from '../../components/history/SearchFavoriteButton.jsx'
 import { handleNetworkError } from '../TokenExpired.jsx'
 import { useNavigate } from 'react-router-dom'
 import DeleteHistorySearchButton from './DeleteHistorySearchButton.jsx'
@@ -29,11 +29,11 @@ const SearchHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 	useEffect(() => {
 		getGithubUsername(item.userId).then((teamCreators) => {
 			teamCreators.map((teamCreator) => {
-				setTeamCreator(teamCreator.teamCreatorId);
-			});
-			setErrorMessage(null);
-		});
-	}, [item.userId]);
+				setTeamCreator(teamCreator.teamCreatorId)
+			})
+			setErrorMessage(null)
+		})
+	}, [item.userId])
 
 	return (
 		<div className='p-4 rounded-lg bg-black bg-opacity-70 transition-colors duration-300 hover:bg-gray-700 mb-2 border-b border-t border-gray-900'>
