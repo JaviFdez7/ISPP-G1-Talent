@@ -256,14 +256,31 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '90%',
-											height: '110%',
+											widthper: '60px',
+											height: '80px',
 										}}
 									/>
 								</div>
-								<div className='profile-text'>
-									<h1>{userData ? userData.username : ' - '}</h1>
-									<h1 className='text-gray-500'>
+								<div
+									className='profile-text'
+									style={{
+										flex: 1,
+										marginLeft: '10px',
+										maxWidth: 'calc(100% - 110px)',
+									}}>
+									<h1
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
+										{userData ? userData.username : ' - '}
+									</h1>
+									<h1 className='text-gray-500' style={{
+										overflow: 'hidden',
+										textOverflow: 'ellipsis',
+										whiteSpace: 'nowrap',
+									}}>
 										{userData ? userData.companyName : ' - '}
 									</h1>
 								</div>
@@ -291,7 +308,7 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											widthper: '80px',
+											widthper: '60px',
 											height: '80px',
 										}}
 									/>
