@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/await-thenable
-import { type Request, type Response } from 'express';
-import TrendService from '../services/TrendService';
-import { ApiResponse } from '../../../utils/ApiResponse';
+import { type Request, type Response } from 'express'
+import TrendService from '../services/TrendService'
+import { ApiResponse } from '../../../utils/ApiResponse'
 
 // Default controller functions
 export const getTrend: any = async (req: Request, res: Response) => {
-  try {
+	try {
 		const data = await TrendService.getTrend()
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
@@ -18,8 +18,8 @@ export const getTrend: any = async (req: Request, res: Response) => {
 			},
 		])
 	}
-};
+}
 
 export default {
-  getTrend
-};
+	getTrend,
+}
