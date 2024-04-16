@@ -207,9 +207,18 @@ export default function RegisterRepresentative() {
 		} else if (form.password2.length < 8 || form.password2.length > 20) {
 			errors.password2 = 'The password field must be between 8 and 20 characters'
 		}
-		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-			errors.phone_number = 'A phone number must consist of 9 digits exclusively'
+
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
+			errors.phone_number =
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
+
 		if (
 			form.projectSocietyName &&
 			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)

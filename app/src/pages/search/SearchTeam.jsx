@@ -8,6 +8,7 @@ import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton.jsx'
 import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
+import SecondaryButton from '../../components/secondaryButton.jsx'
 
 export default function SearchResult() {
 	const [error, setError] = useState(false)
@@ -388,6 +389,7 @@ export default function SearchResult() {
 				</Modal>
 				<div className='flex justify-center mt-10 mb-10'>
 					{MainButton('New search', `/searches/search`, '')}
+					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>
 			</div>
 		</section>

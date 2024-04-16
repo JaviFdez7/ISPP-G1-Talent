@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Input from '../../components/Input'
 import profile from '../../images/profile.jpg'
 import mainBackground from '../../images/main-background2.jpg'
@@ -10,12 +10,20 @@ import { useAuthContext } from '../../context/authContext'
 import SecondaryButton from '../../components/secondaryButton'
 import WorkExperienceList from '../../components/WorkExperienceList'
 import TopRepositoriesTable from '../../components/TopRepositoriesTable'
+import Swal from 'sweetalert2'
+import { useNavigate } from 'react-router-dom'
+import Modal from 'react-modal'
 
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
 	const [experience, setExperience] = useState([])
 	const [analysis, setAnalysis] = useState(null)
+	const [apikey, setApiKey] = useState('')
+	const [errors, setErrors] = useState({})
+	let navigate = useNavigate()
+	const [showModal, setShowModal] = useState(false)
+
 	const languages =
 		analysis && analysis.globalTopLanguages
 			? analysis.globalTopLanguages.map((item) => item.language)
@@ -24,6 +32,103 @@ export default function CandidateDetail() {
 		analysis && analysis.globalTechnologies
 			? analysis.globalTechnologies.map((item) => item)
 			: []
+	async function getSubscription(userId) {
+		try {
+			if (isAuthenticated) {
+				const token = localStorage.getItem('access_token')
+				if (userId && token) {
+					const response = await axios.get(
+						`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${userId}`,
+						{
+							params: {
+								userId: userId,
+							},
+							headers: {
+								'Content-type': 'application/json',
+								Authorization: `${token}`,
+							},
+						}
+					)
+					const subscription = response.data.data
+					const remainingUpdates = subscription.remainingUpdates
+					return remainingUpdates
+				}
+			}
+		} catch (error) {
+			console.log('Error fetching notification data:', error.response.data.message)
+		}
+	}
+
+	const updateAnalysis = async () => {
+		try {
+			const body = apikey ? { apikey: apikey } : {}
+			const token = localStorage.getItem('access_token')
+			const url = `${import.meta.env.VITE_BACKEND_URL}/analysis/${candidate._id}`
+			const response = await axios.patch(
+				url,
+				{ body },
+				{
+					headers: {
+						'Content-type': 'application/json',
+						Authorization: token,
+					},
+				}
+			)
+			setAnalysis(response.data.data)
+			if (response.status === 404) {
+				setErrors(response.data)
+				return
+			}
+			if (response.status === 400) {
+				setErrors(response.data)
+				return
+			}
+			if (response.status === 401 || response.status === 403) {
+				setErrors(response.data)
+				return
+			}
+			navigate('/candidate/detail')
+			Swal.fire({
+				icon: 'success',
+				title: `Candidate updated successfully, you have ${await getSubscription(candidate._id)} update left.`,
+				showConfirmButton: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 1500,
+			})
+		} catch (error) {
+			if (!candidate.subscriptionId || (await getSubscription(candidate._id)) <= 0) {
+				Swal.fire({
+					icon: 'warning',
+					title: `You have reached your update limit of this month`,
+					showConfirmButton: true,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+					confirmButtonColor: 'var(--talent-highlight)',
+				})
+			}
+		} finally {
+			setShowModal(false)
+		}
+	}
+	const handleConfirm = () => {
+		setShowModal(false)
+		updateAnalysis()
+	}
+
+	function handleCancel() {
+		setShowModal(false)
+	}
+
+	function onInputChange(e) {
+		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+		setApiKey({
+			...apikey,
+			[e.target.name]: value,
+		})
+		setErrors({})
+	}
 
 	React.useEffect(() => {
 		const fetchUserData = async () => {
@@ -140,7 +245,7 @@ export default function CandidateDetail() {
 						</div>
 						<div className='mt-8 self-center'>
 							{SecondaryButton(
-								'Update',
+								'Update Profile',
 								`/candidate/detail/edit/${candidate._id}`,
 								''
 							)}
@@ -149,9 +254,46 @@ export default function CandidateDetail() {
 				</div>
 			</div>
 			<br></br>
-			<h3 className='profile-title'>Developer info</h3>
+			<br></br>
+			<h3 className='profile-title'>Update your Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
+			<div
+				className='input-analysis-container'
+				style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				<div
+					className='flex'
+					style={{
+						marginBottom: '1rem',
+						width: '100%',
+						maxWidth: '600px',
+					}}>
+					<input
+						type='password'
+						className='leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+						style={{
+							width: '100%',
+							padding: '0.5rem 0.75rem',
+						}}
+						placeholder='Enter your Apikey of your Username of GitHub'
+						name='apikey'
+						value={apikey.apikey}
+						onChange={(e) => onInputChange(e)}
+					/>
+					{errors.apikey && (
+						<p className='text-red-500 text-xs italic'>{errors.apikey}</p>
+					)}
+				</div>
+				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
+					<p className='text-red-500'>{errors.errors[0].detail}</p>
+				)}
+				<div className='mt-8'>
+					{SecondaryButton('Update Developer', '', () => setShowModal(true))}
+				</div>
+			</div>
+			<br></br>
+			<h3 className='profile-title'>Developer info</h3>
+			<hr className='w-5/12 self-center'></hr>
 			<br></br>
 			<br></br>
 			<div className='flex flex-col w-8/12 self-center'>
@@ -178,6 +320,53 @@ export default function CandidateDetail() {
 			</div>
 			<br></br>
 			<br></br>
+			<Modal
+				isOpen={showModal}
+				onRequestClose={handleCancel}
+				contentLabel='Update Confirmation'
+				style={{
+					content: {
+						width: '40%',
+						height: '20%',
+						margin: 'auto',
+						display: 'flex',
+						flexDirection: 'column',
+						justifyContent: 'center',
+						alignItems: 'center',
+						backgroundColor: 'var(--talent-secondary)',
+						borderRadius: '10px',
+						color: 'white',
+					},
+				}}>
+				<h2 style={{ marginBottom: '3%' }}>
+					Are you sure you want to update your Developer info?
+				</h2>
+				<div>
+					<button
+						onClick={handleConfirm}
+						style={{
+							marginRight: '10px',
+							padding: '10px',
+							backgroundColor: 'var(--talent-highlight)',
+							color: 'white',
+							border: 'none',
+							borderRadius: '5px',
+						}}>
+						Yes
+					</button>
+					<button
+						onClick={handleCancel}
+						style={{
+							padding: '10px',
+							backgroundColor: 'var(--talent-black)',
+							color: 'white',
+							border: 'none',
+							borderRadius: '5px',
+						}}>
+						No
+					</button>
+				</div>
+			</Modal>
 		</div>
 	)
 }

@@ -3,12 +3,19 @@ import dotenv from 'dotenv'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { getUserById } from '../../user/services/UserService'
-import { Candidate, CandidateSubscription, CompanySubscription, Representative } from '../../user/models/user'
+import {
+	Candidate,
+	CandidateSubscription,
+	CompanySubscription,
+	Representative,
+} from '../../user/models/user'
 
-
-
-export const validatePayment = async (req: Request, res: Response, next: NextFunction): Promise<void>  => {
-    const subscriptionPlan = req.body.subscriptionPlan
+export const validatePayment = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+): Promise<void> => {
+	const subscriptionPlan = req.body.subscriptionPlan
 	const price = req.body.price
 	const paymentMethod = req.body.paymentMethod
 
@@ -18,47 +25,37 @@ export const validatePayment = async (req: Request, res: Response, next: NextFun
 	const user = await getUserById(userId)
 	const role = user.role
 
-if (role == "Candidate")
-{
-        console.log(!Object.values(CandidateSubscription).includes(subscriptionPlan))
-		if (!Object.values(CandidateSubscription).includes(subscriptionPlan))
-		{
-			 ApiResponse.sendError(res, [
+	if (role == 'Candidate') {
+		console.log(!Object.values(CandidateSubscription).includes(subscriptionPlan))
+		if (!Object.values(CandidateSubscription).includes(subscriptionPlan)) {
+			ApiResponse.sendError(res, [
 				{
 					title: 'Unrecogniced plan',
-					detail: "Plan not recogniced for candidates",
+					detail: 'Plan not recogniced for candidates',
 				},
-			 ])
-             return
-			 
-	}
-	
-	}
-	else if (role == "Representative")
-	{
-		if (!Object.values(CompanySubscription).includes(subscriptionPlan))
-		{
-			 ApiResponse.sendError(res, [
+			])
+			return
+		}
+	} else if (role == 'Representative') {
+		if (!Object.values(CompanySubscription).includes(subscriptionPlan)) {
+			ApiResponse.sendError(res, [
 				{
 					title: 'Unrecogniced plan',
-					detail: "Plan not recogniced for representatives",
+					detail: 'Plan not recogniced for representatives',
 				},
-			 ])	
-             return
-	}
-	
-}
-else
-	{
-		 ApiResponse.sendError(res, [
+			])
+			return
+		}
+	} else {
+		ApiResponse.sendError(res, [
 			{
-				title: "Unrecogniced role",
+				title: 'Unrecogniced role',
 				detail: `Role ${role} not recogniced`,
 			},
 		])
-        return
+		return
 	}
-    next()
+	next()
 }
 
 export const checkValidToken: any = async (req: Request, res: Response, next: NextFunction) => {
@@ -76,7 +73,7 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
 		}
 		const decodedToken = verifyJWT(token).sub
 		const representative = await Representative.findById(decodedToken)
-		const candidate = await Candidate.findById(decodedToken);
+		const candidate = await Candidate.findById(decodedToken)
 		if (!representative && !candidate) {
 			const message = 'Permission denied'
 			ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 401)

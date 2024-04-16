@@ -104,12 +104,10 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating user:', error)
-
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
-				'Error when getting the analysis by ID: jwt expired'
+					'Error when getting the analysis by ID: jwt expired'
 			) {
 				console.log('Invalid URL')
 				console.log('Error:', token)
@@ -174,9 +172,8 @@ export default function CandidateDetailEdit() {
 				userData.phone
 			)
 		) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
 			errors.phone =
-				'The phone field must be a valid Spanish phone number or a valid American phone number'
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 		return errors
 	}

@@ -2,9 +2,9 @@
 import { type Request, type Response } from 'express'
 import { ApiResponse } from '../../../utils/ApiResponse'
 import { verifyJWT } from '../../user/helpers/handleJWT'
-import { getUserById } from '../../user/services/UserService';
-import { updateSubscriptions } from '../../subscriptions/services/SubscriptionsService';
-const stripe = require('stripe')(process.env.STRIPE_API_KEY);
+import { getUserById } from '../../user/services/UserService'
+import { updateSubscriptions } from '../../subscriptions/services/SubscriptionsService'
+const stripe = require('stripe')(process.env.STRIPE_API_KEY)
 
 export const makePayment: any = async (req: Request, res: Response) => {
 	const subscriptionPlan = req.body.subscriptionPlan
@@ -18,32 +18,31 @@ export const makePayment: any = async (req: Request, res: Response) => {
 	const role = user.role
 
 	try {
-		if (price !== 0 && paymentMethod !== "No payment method") {
+		if (price !== 0 && paymentMethod !== 'No payment method') {
 			const paymentIntent = await stripe.paymentIntents.create({
 				amount: Math.round(parseFloat(price.toFixed(2))),
-				currency: "eur",
+				currency: 'eur',
 				payment_method: paymentMethod,
 				description: `Pago por plan de suscripción ${subscriptionPlan} para el usuario ${user.username}`,
 				confirm: true,
 				automatic_payment_methods: {
 					enabled: true,
-					allow_redirects: 'never'
+					allow_redirects: 'never',
 				},
-
-			});
+			})
 
 			switch (paymentIntent.status) {
-				case "succeeded": {
-					const data = await updateSubscriptions(userId, subscriptionPlan);
+				case 'succeeded': {
+					const data = await updateSubscriptions(userId, subscriptionPlan)
 					return ApiResponse.sendSuccess(res, data, 200, {
 						self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
 					})
 				}
-				case "canceled": {
+				case 'canceled': {
 					return ApiResponse.sendError(res, [
 						{
 							title: 'Payment cancelled',
-							detail: "An error ocurred while processing the payment, check your card permissions",
+							detail: 'An error ocurred while processing the payment, check your card permissions',
 						},
 					])
 				}
@@ -51,13 +50,13 @@ export const makePayment: any = async (req: Request, res: Response) => {
 					return ApiResponse.sendError(res, [
 						{
 							title: 'Payment stopped',
-							detail: "An error ocurred while processing the payment. Aditional steps required",
+							detail: 'An error ocurred while processing the payment. Aditional steps required',
 						},
 					])
 				}
 			}
 		} else {
-			const data = await updateSubscriptions(userId, subscriptionPlan);
+			const data = await updateSubscriptions(userId, subscriptionPlan)
 			return ApiResponse.sendSuccess(res, data, 200, {
 				self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,
 			})
@@ -73,5 +72,5 @@ export const makePayment: any = async (req: Request, res: Response) => {
 }
 
 export default {
-	makePayment
+	makePayment,
 }

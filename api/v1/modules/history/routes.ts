@@ -30,8 +30,8 @@ router.patch('/:userId/history/:id', updateHistory) // X
 router.delete('/:userId/history/:id', checkDeleteHistory, deleteHistory) // X
 
 router.get('/:userId/team_creator/history', getTeamCreatorHistoryFromUser) // X
-router.get('/:userId/team_creator/not_favorites', getFavoritesTeamCreatorFromUser) // X
-router.get('/:userId/team_creator/favorites', getNotFavoritesTeamCreatorFromUser)
+router.get('/:userId/team_creator/not_favorites', getNotFavoritesTeamCreatorFromUser) // X
+router.get('/:userId/team_creator/favorites', getFavoritesTeamCreatorFromUser)
 router.post('/:userId/team_creator/history', createTeamCreatorHistory) // X
 router.patch('/:userId/team_creator/history/:id/favorite', toogleFavoriteTeamCreator)
 router.patch('/:userId/team_creator/history/:id', updateTeamCreatorHistory) // X
