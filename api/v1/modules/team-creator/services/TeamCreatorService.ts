@@ -229,6 +229,14 @@ export const getTeamCreatorById: any = async (id: any) => {
 	}
 }
 
+export const getAllTeamCreators: any = async () => {
+	try {
+		return await TeamCreator.find()
+	} catch (error) {
+		console.error(error)
+		throw new Error('Error getting subscriptions')
+	}
+}
 export default {
 	getAllTeamCreatorOfRepresentative,
 	createTeamCreator,
