@@ -178,7 +178,7 @@ export default function SearchResult() {
 												Filter Parameters {index + 1}
 											</h6>
 											<DataTableVertical
-												width='w-3/4'
+												width={(mobile || (team.recommendedCandidates && team.recommendedCandidates.length < 3)) ? 'w-full' : 'w-3/4'}
 												data={[
 													{
 														header: 'Technologies',
@@ -210,10 +210,9 @@ export default function SearchResult() {
 												]}
 											/>
 											<div
-												className='flex flex-wrap mt-5'
-												style={{
-													flexDirection: mobile ? 'column' : 'row',
-												}}>
+												className='flex flex-wrap items-center w-full justify-center mt-5 mb-5'
+												style={{  flexDirection: (mobile || (team.recommendedCandidates && team.recommendedCandidates.length < 3)) ? 'column' : 'row',
+									width: '100%',  }}>
 												{Array.isArray(team.recommendedCandidates) &&
 													team.recommendedCandidates.map(
 														(candidate, candidateIndex) => (
@@ -221,19 +220,12 @@ export default function SearchResult() {
 																key={candidateIndex}
 																className='w-1/3 px-2 '>
 																<h6
-																	className='text-1xl font-bold text-center text-white mt-5 mb-5'
-																	style={{
-																		marginLeft: mobile
-																			? '140px'
-																			: '',
-																		width: 'calc(100% )',
-																	}}>
-																	Filtered Candidate{' '}
-																	{candidateIndex + 1}
+																	className='text-1xl font-bold text-center text-white  mt-5 mb-5'>
+																	Filtered Candidate {candidateIndex + 1}
 																</h6>
 
 																<DataTableVertical
-																	width='w-full'
+																	
 																	data={[
 																		{
 																			header: 'Gihub username',
@@ -312,18 +304,18 @@ export default function SearchResult() {
 																	]}
 																/>
 																<div
-																	className='flex justify-center  mt-10 mb-4'
 																	style={{
-																		marginLeft: mobile
-																			? '140px'
-																			: '',
-																		width: 'calc(100% )',
+																		display: 'flex',
+																		justifyContent: 'center',
+																		alignItems: 'center',
+																		
+
 																	}}>
-																	{MainButton(
-																		'View Analysis',
-																		'',
-																		() => handleClick(candidate)
-																	)}
+																	<div className='flex justify-center mt-10 mb-4'>
+																		{MainButton('View Analysis', '', () =>
+																			handleClick(candidate)
+																		)}
+																	</div>
 																</div>
 															</div>
 														)
