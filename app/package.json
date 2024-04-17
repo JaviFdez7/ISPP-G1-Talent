@@ -1,47 +1,49 @@
 {
-  "name": "app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "gcp-build": "",
-  "engines": {
-    "node": "20.11.1",
-    "npm": ">=8.3.0"
-  },
-  "scripts": {
-    "dev": "vite --port 7134",
-    "build": "vite build",
-    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "start": "npm install"
-  },
-  "dependencies": {
-    "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@fortawesome/react-fontawesome": "^0.2.0",
-    "@vitejs/plugin-react-swc": "^3.6.0",
-    "axios": "^1.6.7",
-    "chart.js": "^4.4.2",
-    "dotenv": "^16.4.5",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router": "^6.22.1",
-    "react-router-dom": "^6.22.1",
-    "react-select": "^5.8.0",
-    "sweetalert2": "^11.6.13"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.56",
-    "@types/react-dom": "^18.2.19",
-    "@vitejs/plugin-react": "^4.2.1",
-    "autoprefixer": "^10.4.17",
-    "eslint": "^8.56.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
-    "vite": "^5.1.4"
-  }
+	"name": "app",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"gcp-build": "",
+	"engines": {
+		"node": "20.11.1",
+		"npm": ">=8.3.0"
+	},
+	"scripts": {
+		"dev": "vite --port 7134",
+		"build": "vite build",
+		"lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+		"preview": "vite preview",
+		"start": "npm install"
+	},
+	"dependencies": {
+		"@fortawesome/free-solid-svg-icons": "^6.5.1",
+		"@fortawesome/react-fontawesome": "^0.2.0",
+		"@stripe/react-stripe-js": "^2.7.0",
+		"@stripe/stripe-js": "^3.3.0",
+		"@vitejs/plugin-react-swc": "^3.6.0",
+		"axios": "^1.6.7",
+		"chart.js": "^4.4.2",
+		"dotenv": "^16.4.5",
+		"react": "^18.2.0",
+		"react-chartjs-2": "^5.2.0",
+		"react-dom": "^18.2.0",
+		"react-modal": "^3.16.1",
+		"react-router": "^6.22.1",
+		"react-router-dom": "^6.22.1",
+		"react-select": "^5.8.0",
+		"sweetalert2": "^11.6.13"
+	},
+	"devDependencies": {
+		"@types/react": "^18.2.56",
+		"@types/react-dom": "^18.2.19",
+		"@vitejs/plugin-react": "^4.2.1",
+		"autoprefixer": "^10.4.17",
+		"eslint": "^8.56.0",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.5",
+		"postcss": "^8.4.35",
+		"tailwindcss": "^3.4.1",
+		"vite": "^5.1.4"
+	}
 }

@@ -8,6 +8,7 @@ import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import MainButton from '../../components/mainButton.jsx'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import SecondaryButton from '../../components/secondaryButton.jsx'
 
 export default function SearchResult() {
 	let navigate = useNavigate()
@@ -284,6 +285,7 @@ export default function SearchResult() {
 
 				<div className='flex justify-center mt-10 mb-10'>
 					{MainButton('Back to Search', `/searches/search`, '')}
+					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>
 				{error && <p>{errorMessage}</p>}
 			</div>

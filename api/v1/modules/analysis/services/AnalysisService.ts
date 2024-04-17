@@ -9,12 +9,12 @@ import { History } from '../../history/models/history'
 import { createHistory } from '../../history/services/HistoryService'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService'
-import { CompanySubscription } from '../../subscriptions/models/subscription'
+import { CandidateSubscription, CompanySubscription } from '../../subscriptions/models/subscription'
 import { Notification } from '../../notification/models/notification'
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
 	try {
-		const analyses = await AnalysisModel.find().exec()
+		const analyses = await AnalysisModel.find()
 		return analyses
 	} catch (error) {
 		throw new Error(`Error when getting all analyses: ${error}`)
@@ -68,8 +68,12 @@ export const createAnalysis: any = async (
 	try {
 		if (token.length > 0) {
 			const actualSubscription = await getSubscriptionsByUserId(verifyJWT(token).sub)
-			actualSubscription.remainingSearches--
-			await CompanySubscription.findByIdAndUpdate(actualSubscription._id, actualSubscription)
+			if (actualSubscription instanceof CompanySubscription) {
+				;(actualSubscription as any).remainingSearches--
+			} else if (actualSubscription instanceof CandidateSubscription) {
+				;(actualSubscription as any).remainingUpdates--
+			}
+			await actualSubscription.save()
 		}
 		const analysis = await AnalysisModel.findOne({ githubUsername })
 		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)

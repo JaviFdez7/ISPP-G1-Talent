@@ -10,7 +10,9 @@ import NotificationRouter from './modules/notification'
 import ProfessionalExperienceRouter from './modules/professional-experience'
 import SubscriptionRouter from './modules/subscriptions'
 import TeamCreatorRouter from './modules/team-creator'
+import PaymentRouter from './modules/payment'
 import cors from 'cors'
+import TrendRouter from './modules/trend/'
 
 const app = express()
 const swaggerHost = process.env.HOST ?? 'localhost:3000'
@@ -44,6 +46,8 @@ app.use(ProfessionalExperienceRouter)
 app.use(SubscriptionRouter)
 app.use(TeamCreatorRouter)
 app.use(NotificationRouter)
+app.use(PaymentRouter)
+app.use(TrendRouter)
 
 // Server -------------------------------------------------------
 connectToMongoDB()

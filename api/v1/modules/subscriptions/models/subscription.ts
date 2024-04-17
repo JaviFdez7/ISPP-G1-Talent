@@ -3,9 +3,9 @@ import mongoose from 'mongoose'
 const { Schema, model } = mongoose
 
 const CompanySubscriptionTypes = {
+	NO_SUBSCRIPTION: 'No subscription',
 	BASIC: 'Basic plan',
 	PRO: 'Pro plan',
-	CUSTOM: 'Custom plan',
 }
 
 const CandidateSubscriptionTypes = {
@@ -21,7 +21,6 @@ const SupportedCurrencies = {
 	 */
 }
 
-// Define el esquema de Mongoose para la suscripción
 const subscriptionSchema = new Schema(
 	{
 		price: {
@@ -35,7 +34,6 @@ const subscriptionSchema = new Schema(
 	{ discriminatorKey: 'type' }
 )
 
-// Crea el modelo de Mongoose para la Subscription
 const Subscription = model('Subscription', subscriptionSchema)
 
 const CompanySubscriptionSchema = new Schema({
@@ -44,8 +42,8 @@ const CompanySubscriptionSchema = new Schema({
 		required: true,
 		enum: Object.values(CompanySubscriptionTypes),
 	},
-	remainingSearches: { type: Number, required: true, default: 25 },
-	teamLimit: { type: Number, required: true, default: 3 },
+	remainingSearches: { type: Number, required: true, default: 0 },
+	teamLimit: { type: Number, required: true, default: 0 },
 })
 const CompanySubscription = Subscription.discriminator(
 	'CompanySubscription',

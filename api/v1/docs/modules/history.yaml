@@ -170,6 +170,179 @@ paths:
             description: Success
             schema:
               $ref: "#/definitions/HistoryItem"
+
+# TEAM CREATOR HISTORY
+/user/{userId}/team_creator/history:
+    get:
+      tags:
+        - Histories
+      summary: Get history from user
+      description: Get the complete history of a representative
+      parameters:
+      - name: userId
+        in: path
+        description: ID of the user
+        required: true
+        type: string
+      - name: authorization
+        in: header
+        schema:
+          type: string
+          required: true
+          description: Its the token of authentication.
+      responses:
+        200:
+          description: ºSuccess
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/TeamCreatorHistoryItem"
+    post:
+      tags:
+        - Histories
+      summary: Create history entry
+      description: Create a new entry in the history of a representative
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user
+          required: true
+          type: string
+        - name: body
+          in: body
+          description: History entry object
+          required: true
+          schema:
+            $ref: "#/definitions/NewTeamCreatorHistoryItem"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/TeamCreatorHistoryItem"
+/user/{userId}/team_creator/history/{id}:
+      patch:
+        tags:
+          - Histories
+        summary: Update history entry
+        description: Update a specific history entry
+        parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+          - name: body
+            in: body
+            description: History entry object
+            required: true
+            schema:
+              $ref: "#/definitions/TeamCreatorHistoryItem"
+        responses:
+          200:
+            description: Success
+      delete:
+        tags:
+          - Histories
+        summary: Delete history entry
+        description: Delete a specific history entry
+        parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+        responses:
+          200:
+            description: Success
+/user/{userId}/team_creator/history/{id}/favorite:
+    patch:
+      tags:
+          - Histories-Favorites
+      summary: Update the state of the history
+      description: Update the state of the history
+      parameters:
+          - name: id
+            in: path
+            description: ID of the history entry
+            required: true
+            type: string
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+      responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/TeamCreatorHistoryItem"
+/user/{userId}/team_creator/favorites:
+    get:
+        tags:
+          - Histories-Favorites
+        summary: List all the favorite history of the user 
+        description: List all the favorite history of the user
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+        responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/TeamCreatorHistoryItem"
+/user/{userId}/team_creator/not_favorites:
+    get:
+        tags:
+          - Histories-Favorites
+        summary: List all the not favorite history of the user 
+        description: List all the not favorite history of the user 
+        parameters:
+          - name: authorization
+            in: header
+            schema:
+              type: string
+              required: true
+              description: Its the token of authentication.
+          - name: userId
+            in: path
+            description: ID of the user
+            required: true
+            type: string
+        responses:
+          200:
+            description: Success
+            schema:
+              $ref: "#/definitions/TeamCreatorHistoryItem"
+
+
+
+
+
 definitions:
   HistoryItem:
     type: object
@@ -200,3 +373,32 @@ definitions:
         format: uuiid
         required: true
         description: The unique identifier for the analysis.
+  TeamCreatorHistoryItem:
+    type: object
+    properties:
+      date:
+        type: string
+        required: true
+        description: The acquisition date the history item.
+      favorite:
+        type: boolean
+        required: true
+        description: The state of the history item
+      userId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the user.
+      teamCreatorId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the team creator object.
+  NewTeamCreatorHistoryItem:
+    type: object
+    properties:
+      teamCreatorId:
+        type: string
+        format: uuiid
+        required: true
+        description: The unique identifier for the team creator object.

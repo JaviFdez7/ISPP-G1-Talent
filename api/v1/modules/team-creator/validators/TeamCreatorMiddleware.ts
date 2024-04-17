@@ -3,6 +3,7 @@ import { ApiResponse } from '../../../utils/ApiResponse'
 import { Candidate, Representative } from '../../user/models/user'
 import e, { type Request, type Response, type NextFunction } from 'express'
 import { TeamCreator } from '../models/TeamCreatorModel'
+import { Subscription } from '../../subscriptions/models/subscription'
 
 export const checkTeamCreatorById: any = async (
 	req: Request,
@@ -30,6 +31,7 @@ export const checkTeamCreatorById: any = async (
 				detail: error.message,
 			},
 		])
+		return
 	}
 }
 export const checkValidToken: any = async (req: Request, res: Response, next: NextFunction) => {
@@ -54,6 +56,7 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
 				detail: error.message,
 			},
 		])
+		return
 	}
 }
 
@@ -86,6 +89,7 @@ export const checkIsRepresentative: any = async (
 				detail: error.message,
 			},
 		])
+		return
 	}
 }
 
@@ -115,6 +119,7 @@ export const checkAuthorization: any = async (req: Request, res: Response, next:
 				detail: error.message,
 			},
 		])
+		return
 	}
 }
 
@@ -153,6 +158,66 @@ export const checkDataCreateTeam: any = async (req: Request, res: Response, next
 		next()
 	} catch (error: any) {
 		console.error('Error inserting professional experience:', error)
+		ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+		return
+	}
+}
+
+export const checkSubscriptionState: any = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const profiles=req.body
+		const token = req.headers.authorization ?? ''
+		const decodedToken = verifyJWT(token)
+		const representativeUser = await Representative.findById(decodedToken.sub)
+		const subscription= await Subscription.findById((representativeUser as any).subscriptionId)
+		if(subscription===null){
+			const message = 'You arent subscribed'
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
+			return
+		}else if((subscription as any).remainingSearches<profiles.length){
+			const message = 'You dont have enough tokens to search'
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
+			return
+		}else if(profiles.length>(subscription as any).teamLimit){
+			const message = `You cant make teams higher tha ${(subscription as any).teamLimit}`
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: message,
+					},
+				],
+				400
+			)
+			return
+		}
+		next()
+
+	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
 				title: 'Internal Server Error',

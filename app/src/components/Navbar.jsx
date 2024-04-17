@@ -15,6 +15,7 @@ import Logout from './swat/logout'
 import { useLocation } from 'react-router-dom'
 
 export default function Navbar() {
+	const { subscription: authSubscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const [notifications, setNotifications] = useState(0)
@@ -23,10 +24,9 @@ export default function Navbar() {
 	const { isAuthenticated, logout } = useAuthContext()
 	const currentUserId2 = localStorage.getItem('userId')
 	const location = useLocation()
-
 	const opts = [
-		{ Information: 0, Settings: 1 }, //Not logged
-		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 }, //Candidate
+		{ Information: 0, Settings: 1 },
+		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 },
 		{
 			Trends: 0,
 			'My analysis': 1,
@@ -34,11 +34,11 @@ export default function Navbar() {
 			Subscription: 3,
 			Information: 4,
 			Settings: 5,
-		}, //Representative
+		},
 	]
 
 	function getOptsNum(key) {
-		let optsTemplate = 0 //Change for every case
+		let optsTemplate = 0
 		if (isAuthenticated && userData && userData.role === 'Candidate') {
 			optsTemplate = 1
 		}
@@ -154,7 +154,11 @@ export default function Navbar() {
 			? '/representative/subscription'
 			: '/candidate/subscription'
 		: '/login'
-
+	if (authSubscription) {
+		if (authSubscription === 'No subscription') {
+			return null
+		}
+	}
 	return (
 		<div className='sidenav' id='sidenav'>
 			<div className='inner-sidenav'>
@@ -239,7 +243,6 @@ export default function Navbar() {
 				</>
 				{isAuthenticated &&
 					(userData && userData.role == 'Representative' ? (
-						// Mostrar contenido para representante
 						<div>
 							<Link to='/representative/detail' className='profile-container'>
 								<div className='profile-pic-container'>
@@ -253,14 +256,31 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '90%',
-											height: '110%',
+											widthper: '60px',
+											height: '80px',
 										}}
 									/>
 								</div>
-								<div className='profile-text'>
-									<h1>{userData ? userData.username : ' - '}</h1>
-									<h1 className='text-gray-500'>
+								<div
+									className='profile-text'
+									style={{
+										flex: 1,
+										marginLeft: '10px',
+										maxWidth: 'calc(100% - 110px)',
+									}}>
+									<h1
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
+										{userData ? userData.username : ' - '}
+									</h1>
+									<h1 className='text-gray-500' style={{
+										overflow: 'hidden',
+										textOverflow: 'ellipsis',
+										whiteSpace: 'nowrap',
+									}}>
 										{userData ? userData.companyName : ' - '}
 									</h1>
 								</div>
@@ -269,13 +289,14 @@ export default function Navbar() {
 								onClick={() => Logout(logout, navigate, userData.role)}
 								className='logout'>
 								<img src={logoutIcon} />
-								{/* TODO code of petitions left*/}
 							</button>
 						</div>
 					) : (
-						// Mostrar contenido para usuario autenticado pero no representante
 						<div>
-							<Link to='/candidate/detail' className='profile-container'>
+							<Link
+								to='/candidate/detail'
+								className='profile-container'
+								style={{ display: 'flex', justifyContent: 'space-between' }}>
 								<div className='profile-pic-container'>
 									<img
 										src={
@@ -287,13 +308,26 @@ export default function Navbar() {
 										style={{
 											objectFit: 'cover',
 											objectPosition: 'center',
-											width: '90%',
-											height: '110%',
+											widthper: '60px',
+											height: '80px',
 										}}
 									/>
 								</div>
-								<div className='profile-text'>
-									<h1>{userData ? userData.fullName : ' - '}</h1>
+								<div
+									className='profile-text'
+									style={{
+										flex: 1,
+										marginLeft: '10px',
+										maxWidth: 'calc(100% - 110px)',
+									}}>
+									<h1
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
+										{userData ? userData.fullName : ' - '}
+									</h1>
 								</div>
 							</Link>
 							<Link to='/candidate/notification/detail' className='mail'>

@@ -12,7 +12,8 @@ import {
   checkIsRepresentative,
   checkValidToken,
   checkDataCreateTeam,
-  checkAuthorization
+  checkAuthorization,
+  checkSubscriptionState
 
 } from './validators/TeamCreatorMiddleware';
 const router = express.Router();
@@ -21,7 +22,7 @@ router.use(express.json());
 //router.get('/', getAllTeamCreator);
 router.get('/:id',checkValidToken,checkIsRepresentative, getTeamCreatorById);
 router.get('/representative-user/:id',checkValidToken,checkIsRepresentative,checkAuthorization,getAllTeamCreatorOfRepresentative)
-router.post('/',checkValidToken,checkIsRepresentative,checkDataCreateTeam, createTeamCreator);
+router.post('/',checkValidToken,checkIsRepresentative,checkDataCreateTeam,checkSubscriptionState, createTeamCreator);
 //router.patch('/:id', updateTeamCreator);
 router.delete('/:id',checkValidToken,checkIsRepresentative, deleteTeamCreator);
 
