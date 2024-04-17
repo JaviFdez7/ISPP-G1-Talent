@@ -8,6 +8,14 @@
 	}
 }
 
+.analysis-main-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 80%;
+	margin-top: 10vh;
+}
+
 .analysis-profile {
 	display: flex;
 	flex-direction: row;
@@ -20,16 +28,41 @@
 	align-items: center;
 }
 
+.analysis-subtitle {
+	font-size: 1.1rem;
+	color: var(--talent-secondary);
+}
+
+.stuff-container {
+	backdrop-filter: blur(8px);
+}
+.analysis-text {
+	font-size: 1.3rem;
+}
+
+.analysis-text-big {
+	font-size: 1.8rem;
+}
+
+.analysis-data-container {
+	border-radius: 20px;
+	background-color: var(--talent-dark-background);
+	padding: 20px;
+	backdrop-filter: blur(8px);
+}
+
 .analysis-profile-img {
 	border-radius: 50%;
-	height: 50%;
-	width: 50%;
+}
+
+.analysis-name {
+	font-size: 2.0rem;
+	color: var(--talent-highlight);
 }
 
 .analysis-profile-text {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
 	width: 100%;
 	position: relative;
 	left: -10%;
