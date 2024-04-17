@@ -178,12 +178,13 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 						favorite: false,
 					})
 				}
-				return savedRecord
+				
 			} catch (error) {
 				console.error('Error al crear el historial para el análisis:', error)
 			}
 		}
 	}
+	return savedRecord
 }
 export const createTeamCreator: any = async (data: ProfileRequested[], userId: string) => {
 	const skills: SkillRequested = processSkillsRequested(data)
