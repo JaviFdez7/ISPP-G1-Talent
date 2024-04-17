@@ -174,7 +174,7 @@ export default function Navbar() {
 				<>
 					{userData && getOptsNum('Trends') !== -1 && (
 						<Link
-							to='/'
+							to='/trends'
 							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
 							onMouseDown={() => move_current(getOptsNum('Trends'))}
 							className='link-container'>

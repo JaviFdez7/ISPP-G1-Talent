@@ -213,10 +213,9 @@ export default function AnalysisDashboard() {
 
 				<div className='analysis-main-container' style={{flexDirection: mobile ? 'column' : 'row'}}>
 					<div className='flex flex-col items-center space-y-4'>
-						<img
+						<img className='analysis-profile-img'
 							src={imgSrc}
 							alt='Imagen'
-							className='analysis-profile-img'
 						/>
 						<h2 className='analysis-name'>{dataArray.githubUsername}</h2>
 						<div>
@@ -268,7 +267,7 @@ export default function AnalysisDashboard() {
 
 				{languages.length > 0 && (
 				<div
-					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 					style={{
 						backgroundColor: 'rgba(0, 0, 0, 0.5)',
 						marginLeft: '100',
@@ -290,14 +289,14 @@ export default function AnalysisDashboard() {
 									<p className='analysis-subtitle'>Most used language</p>
 									<p className='analysis-name'>{languages.sort((a, b) => b.percentage - a.percentage)[0].language}</p>
 								</div>
-								<div className='flex flex-col'>
+								{languages.length > 1 && <div className='flex flex-col'>
 									<p className='analysis-subtitle'>#2</p>
 									<p className='analysis-text'>{languages.sort((a, b) => b.percentage - a.percentage)[1].language}</p>
-								</div>
-								<div className='flex flex-col'>
+								</div>}
+								{languages.length > 2 && <div className='flex flex-col'>
 									<p className='analysis-subtitle'>#3</p>
 									<p className='analysis-text'>{languages.sort((a, b) => b.percentage - a.percentage)[2].language}</p>
-								</div>
+								</div>}
 							</div>
 
 						<div className='w-7/12 justify-center flex'
@@ -313,7 +312,6 @@ export default function AnalysisDashboard() {
 										}
 									]
 								}}>
-
 							</Pie>
 						</div>
 					</div>
@@ -322,7 +320,7 @@ export default function AnalysisDashboard() {
 
 				{tecnologies.length > 0 && (
 				<div
-					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 					style={{
 						backgroundColor: 'rgba(0, 0, 0, 0.5)',
 						marginLeft: '100',
@@ -364,7 +362,7 @@ export default function AnalysisDashboard() {
 				</div>)}
 
 				<div
-					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 					style={{
 						backgroundColor: 'rgba(0, 0, 0, 0.5)',
 						marginLeft: '100',
@@ -546,7 +544,7 @@ export default function AnalysisDashboard() {
 
 				{candidate && experience && experience.length > 0 && (
 					<div
-						className='w-full flex justify-center items-center p-1 rounded shadow-md flex-col mt-10 mb-10 ml-10'
+						className='w-full flex justify-center items-center p-1 rounded shadow-md flex-col mt-10 mb-10'
 						style={{
 							backgroundColor: 'rgba(0, 0, 0, 0.5)',
 							marginLeft: '100',

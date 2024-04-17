@@ -53,6 +53,7 @@
 
 .analysis-profile-img {
 	border-radius: 50%;
+	max-height: 250px;
 }
 
 .analysis-name {

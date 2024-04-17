@@ -4,6 +4,7 @@ import { AuthContextProvider } from '../context/authContext.jsx'
 import Home from '../pages/Home'
 import Support from '../pages/Support'
 import Settings from '../pages/Settings'
+import Trends from '../pages/Trends.jsx'
 
 import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
 import CandidateDetail from '../pages/candidate/CandidateDetail.jsx'
@@ -194,6 +195,12 @@ function App() {
 								<ProtectedRoute roles={['Candidate']}>
 									<ChangePassword />
 								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/trends'
+							element={
+								<Trends />
 							}
 						/>
 						{/*RUTAS CANDIDATO */}
