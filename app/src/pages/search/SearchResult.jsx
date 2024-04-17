@@ -285,7 +285,7 @@ export default function SearchResult() {
 						</DropdownComponent>
 					))}
 
-				<div className='flex justify-center mt-10 mb-10'>
+				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Back to Search', `/searches/search`, '')}
 					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>

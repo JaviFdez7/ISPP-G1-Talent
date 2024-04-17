@@ -24,7 +24,7 @@ import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
-import Search from '../pages/search/SearchTeam.jsx'
+
 import SearchForm from '../pages/search/SearchForm.jsx'
 import SearchResult from '../pages/search/SearchResult.jsx'
 import SearchList from '../pages/search/SearchList.jsx'
@@ -141,14 +141,7 @@ function App() {
 							}
 						/>
 
-						<Route
-							path='/searches/representative/:representativeId'
-							element={
-								<ProtectedRoute roles={['Representative']}>
-									<Search />
-								</ProtectedRoute>
-							}
-						/>
+						
 						<Route
 							path='/searches/search'
 							element={
