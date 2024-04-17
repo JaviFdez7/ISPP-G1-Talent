@@ -178,7 +178,6 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 						favorite: false,
 					})
 				}
-				
 			} catch (error) {
 				console.error('Error al crear el historial para el análisis:', error)
 			}
