@@ -44,7 +44,7 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
 					title: 'Internal Server Error',
 					detail: 'No token provided.',
 				},
-			])
+			],401)
 			return
 		} else {
 			next()
@@ -107,7 +107,7 @@ export const checkAuthorization: any = async (req: Request, res: Response, next:
 					title: 'Internal Server Error',
 					detail: 'Unauthorized.',
 				},
-			])
+			],401)
 			return
 		} else {
 			next()

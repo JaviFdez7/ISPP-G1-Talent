@@ -1,0 +1,17 @@
+GUÍA PARA REALIZAR TESTS DE ACEPTACIÓN DE FORMA CÓMODA Y RÁPIDA
+
+1º Será necesario poner mockups para las peticiones y respuestas:
+    Ej: Tras cada describe
+    let request: httpMocks.MockRequest<Request>, response: httpMocks.MockResponse<Response>
+    y luego definir el contenido. El requests sigue la misma estructura que el que se utiliza en el controlador
+    , al igual que la respuesta.
+
+2º Como la creación de stubs puede ser dificil de hacer, podeis directamente crear los objetos
+y utilizar el DB de testing HACIENDO UN INIT y un tearDown al iniciar y finalizar. Es decir, si necesitamos el token de un representante, creamos el representante,
+lo guardamos en alguna variable y luego lo utilizamos.
+
+3º Cada assert== una condición del caso de uso.
+4º Si quieres ver los datos que devuelve la respuesta, JSOSIFICALO ANTES
+5º Recuerda limpiar la base de datos y de inicializar las entidades una vez y ya estarías listo.
+
+Mucha suerte!!!
