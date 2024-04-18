@@ -522,7 +522,6 @@ export default function SearchForm() {
 				))}
 				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
-					{MainButton('Previous Searches', `/searches/representative/${userId}`)}
 					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>
 			</form>
