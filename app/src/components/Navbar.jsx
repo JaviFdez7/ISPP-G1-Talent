@@ -139,7 +139,7 @@ export default function Navbar() {
 		if (!expanded) {
 			document.getElementById('sidenav').style.left = '-0px'
 			document.getElementById('arrow-img').src = arrowLeft
-			document.getElementById('sideNavButtonContainer').style.left = '325px'
+			document.getElementById('sideNavButtonContainer').style.left = '285px'
 			setExpanded(true)
 		} else {
 			document.getElementById('sidenav').style.left = '-325px'
@@ -174,7 +174,7 @@ export default function Navbar() {
 				<>
 					{userData && getOptsNum('Trends') !== -1 && (
 						<Link
-							to='/'
+							to='/trends'
 							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
 							onMouseDown={() => move_current(getOptsNum('Trends'))}
 							className='link-container'>
@@ -276,11 +276,13 @@ export default function Navbar() {
 										}}>
 										{userData ? userData.username : ' - '}
 									</h1>
-									<h1 className='text-gray-500' style={{
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										whiteSpace: 'nowrap',
-									}}>
+									<h1
+										className='text-gray-500'
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
 										{userData ? userData.companyName : ' - '}
 									</h1>
 								</div>

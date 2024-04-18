@@ -1,19 +1,30 @@
 .history-table-container {
-    width: 100%;
-    backdrop-filter: blur(8px);
+	width: 100%;
+	backdrop-filter: blur(8px);
+	border-radius: 14px;
 }
 
 .history-table-header {
-    padding: 0;
-    background-color: var(--talent-light-background);
-    border-top: 10px solid var(--talent-secondary);
-    height: 60px;
+	padding: 0;
+	background-color: var(--talent-light-background);
+	height: 60px;
+	border-radius: 14px 14px 0 0;
 }
 .history-table-body {
-    background-color: var(--talent-dark-background);
-    max-height: 200px; /* Adjust as needed */
-    overflow-y: auto;
+	max-height: 200px; /* Adjust as needed */
+	overflow-y: auto;
+	border-radius: 10px;
 }
 .history-table-body * td {
-    height: 50px;
+	height: 50px;
+}
+
+.history-list-element {
+	background-color: var(--talent-dark-background);
+	transition: 0.25s;
+	border-radius: 14px;
+}
+
+.history-list-element:hover {
+	background-color: var(--talent-light-background);
 }

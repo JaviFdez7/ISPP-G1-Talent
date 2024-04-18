@@ -234,7 +234,7 @@ export default function CandidateDetailEdit() {
 				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
 					width: '83.3333%',
 					overflowY: 'scroll',

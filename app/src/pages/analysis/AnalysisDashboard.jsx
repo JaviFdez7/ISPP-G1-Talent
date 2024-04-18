@@ -12,11 +12,14 @@ import { handleNetworkError } from '../../components/TokenExpired'
 import { useNavigate } from 'react-router-dom'
 import profile from '../../images/profile.jpg'
 import WorkExperienceListNoButtons from '../../components/WorkExperienceListNoButtons'
+import { Chart as ChartJS } from 'chart.js/auto';
+import { Pie, Bar, Radar } from 'react-chartjs-2';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
 	const textColor2 = 'var(--talent-highlight)'
-	const borderColor = 'var(--talent-highlight)'
+	const borderColor = 'var(--talent-secondary)'
 	const { analysisId } = useParams()
 	const { isRepresentative } = useAuthContext()
 
@@ -68,13 +71,25 @@ export default function AnalysisDashboard() {
 			})
 	}, [analysisId])
 
+	const calculateTimePeriod = (startDate, endDate) => {
+		const start = new Date(startDate);
+		const end = new Date(endDate);
+		const timeDiff = Math.abs(end - start);
+		const days = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+		return days;
+	  };
+	  
 	const languages = dataArray.globalTopLanguages
-		? dataArray.globalTopLanguages.map((item) => item.language)
+		? dataArray.globalTopLanguages
 		: []
 	const tecnologies = dataArray.globalTechnologies
-		? dataArray.globalTechnologies.map((item) => item)
+		? dataArray.globalTechnologies.map((item) => ({name: item, appearences: dataArray.topRepositories.filter((repo) => repo.technologies.includes(item)).length}))
 		: []
-
+	let areas = experience.map((item) => ({name: item.professionalArea, duration: calculateTimePeriod(item.startDate, item.endDate)}))
+	const areas_max_duration = areas.length > 0 ? areas.sort((a, b) => b.duration - a.duration)[0].duration : 1
+	areas = areas.map((item) => ({name: item.name, duration: item.duration / areas_max_duration * 100}))
+	const companies = experience.map((item) => ({name: item.companyName, duration: calculateTimePeriod(item.startDate, item.endDate)}))
+	
 	function getHistory(currentAnalysisId) {
 		const currentUserId = localStorage.getItem('userId')
 		const uri = `/user/${currentUserId}/history`
@@ -169,6 +184,20 @@ export default function AnalysisDashboard() {
 		}
 	}
 
+	function randomNumberInRange (min, max) {
+        return Math.floor(Math.random()
+            * (max - min + 1)) + min;
+    }
+
+	function getListOfRandomColors (n) {
+		const colors = []
+		for (let i = 0; i < n; i++) {
+			const randomColor = `rgb(${randomNumberInRange(0, 255) * 0.4}, ${randomNumberInRange(0, 255) * 0.4}, ${randomNumberInRange(0, 255) * 0.4})`
+			colors.push(randomColor)
+		}
+		return colors
+	}
+
 	return (
 		<section
 			className='text-white flex flex-row justify-center bg-fixed'
@@ -181,73 +210,159 @@ export default function AnalysisDashboard() {
 			</div>
 
 			<div className='container flex flex-col items-center w-10/12 h-full'>
-				{/* CANDIDATE column */}
 
-				<br></br>
-				<div className='flex flex-col items-center w-full mt-10'>
-					{isRepresentative && history ? (
-						<FavoriteButton history={history} toggleText />
-					) : null}
-					<br></br>
-
-					<h6 className='text-3xl font-bold text-center text-white mt-5 mb-5  '>
-						GitHub Statistics
-					</h6>
-					<br></br>
-					<div className='analysis-profile'>
-						<img
+				<div className='analysis-main-container' style={{flexDirection: mobile ? 'column' : 'row'}}>
+					<div className='flex flex-col items-center space-y-4'>
+						<img className='analysis-profile-img'
 							src={imgSrc}
 							alt='Imagen'
-							className='analysis-profile-img'
-							style={{
-								position: 'relative',
-								left: '0%',
-								zIndex: '1',
-								objectFit: 'cover',
-								objectPosition: 'center',
-								width: '300px',
-								height: '300px',
-							}}
 						/>
-
-						<div className='analysis-profile-text'>
-							<div className='analysis-profile-textcell-main'>
-								<h2>{dataArray.githubUsername}</h2>
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Followers',
-									value: dataArray.followers,
-									width: '300px',
-								})}
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Commits',
-									value:
-										dataArray && dataArray.contributions
-											? dataArray.contributions.totalCommits
-											: 0,
-									width: '300px',
-								})}
-							</div>
-							<div className='analysis-profile-textcell'>
-								{Input({
-									name: 'Pull Requests',
-									value:
-										dataArray && dataArray.contributions
-											? dataArray.contributions.totalPullRequests
-											: 0,
-									width: '300px',
-								})}
-							</div>
+						<h2 className='analysis-name'>{dataArray.githubUsername}</h2>
+						<div>
+							{isRepresentative && history ? (
+								<FavoriteButton history={history} toggleText />
+							) : null}
+						</div>
+						<div className='w-full'>
+							{candidate && candidate.email && (
+								data.map((item) => (
+									<>
+										<div className='flex flex-row w-full justify-between space-x-16 items-center'>
+											<p className='analysis-subtitle'>{item.header}:</p>
+											<p className='analysis-text'>{item.content}</p>
+										</div>
+										<br></br>
+										<hr></hr>
+										<br></br>
+									</>
+								))
+							)}
 						</div>
 					</div>
-					<br></br>
+					{dataArray && dataArray.contributions && (
+						<div className='flex flex-col space-y-4'>
+							<div className='flex flex-row space-x-4'>
+								<div className='analysis-data-container w-full'>
+									<p className='analysis-subtitle'>Followers</p>
+									<p className='analysis-text-big'>{dataArray.followers}</p>
+								</div>
+								<div className='analysis-data-container w-full'>
+									<p className='analysis-subtitle'>Issues Closed</p>
+									<p className='analysis-text-big'>{dataArray.globalIssuesClosed}</p>
+								</div>
+							</div>
+							<div className='flex flex-row space-x-4'>
+								<div className='analysis-data-container w-full'>
+									<p className='analysis-subtitle'>Total Commits</p>
+									<p className='analysis-text-big'>{dataArray.contributions.totalCommits}</p>
+								</div>
+								<div className='analysis-data-container w-full'>
+									<p className='analysis-subtitle'>Total Pull Requests</p>
+									<p className='analysis-text-big'>{dataArray.contributions.totalPullRequests}</p>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 
+				{languages.length > 0 && (
 				<div
-					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
+					style={{
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						marginLeft: '100',
+						marginRight: '100',
+						borderColor: borderColor,
+						borderWidth: '1px',
+					}}>
+					<h6 className='text-2xl font-bold text-center text-white mt-6'>
+						Languages
+					</h6>
+
+					<div className='flex items-center w-10/12 justify-around self-center p-10'
+						style={{
+							flexDirection: mobile ? 'column' : 'row',
+						}}>
+							<div className='analysis-data-container space-y-10 w-3/12'
+								style={{width: mobile ? '100%' : '30.00%'}}>
+								<div>
+									<p className='analysis-subtitle'>Most used language</p>
+									<p className='analysis-name'>{languages.sort((a, b) => b.percentage - a.percentage)[0].language}</p>
+								</div>
+								{languages.length > 1 && <div className='flex flex-col'>
+									<p className='analysis-subtitle'>#2</p>
+									<p className='analysis-text'>{languages.sort((a, b) => b.percentage - a.percentage)[1].language}</p>
+								</div>}
+								{languages.length > 2 && <div className='flex flex-col'>
+									<p className='analysis-subtitle'>#3</p>
+									<p className='analysis-text'>{languages.sort((a, b) => b.percentage - a.percentage)[2].language}</p>
+								</div>}
+							</div>
+
+						<div className='w-7/12 justify-center flex'
+							style={{width: mobile ? '200%' : '50.00%', marginTop: mobile ? '40px' : '0'}}>
+							<Pie
+								data={{
+									labels: languages.map((item) => item.language),
+									datasets: [
+										{
+											label: '',
+											data: languages.map((item) => item.percentage),
+											backgroundColor: getListOfRandomColors(languages.length),
+										}
+									]
+								}}>
+							</Pie>
+						</div>
+					</div>
+
+				</div>)}
+
+				{tecnologies.length > 0 && (
+				<div
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
+					style={{
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						marginLeft: '100',
+						marginRight: '100',
+						borderColor: borderColor,
+						borderWidth: '1px',
+					}}>
+					<h6 className='text-2xl font-bold text-center text-white mt-6'>
+						Tecnologies
+					</h6>
+
+					<div className='flex items-center w-10/12 justify-around self-center p-10'
+						style={{
+							flexDirection: mobile ? 'column' : 'row',
+						}}>
+						<div className='w-2/12'
+							style={{width: mobile ? '100%' : '30.00%'}}>
+							<DataTable header={'Used Tecnologies'} contentArray={tecnologies ? tecnologies.sort((a, b) => b.appearences - a.appearences).map((item) => item.name) : []} />
+						</div>
+
+						<div className='w-10/12 justify-center flex'
+							style={{width: mobile ? '150%' : '50.00%', marginTop: mobile ? '40px' : '0'}}>
+							<Bar
+								data={{
+									labels: tecnologies.map((item) => item.name),
+									datasets: [
+										{
+											label: 'Tecnologies usage',
+											data: tecnologies.map((item) => item.appearences),
+											backgroundColor: getListOfRandomColors(tecnologies.length),
+										}
+									]
+								}}>
+
+							</Bar>
+						</div>
+					</div>
+
+				</div>)}
+
+				<div
+					className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 					style={{
 						backgroundColor: 'rgba(0, 0, 0, 0.5)',
 						marginLeft: '100',
@@ -260,8 +375,8 @@ export default function AnalysisDashboard() {
 					) : (
 						<>
 							<br></br>
-							<h6 className='text-3xl font-bold text-center text-white mt-5 mb-5  '>
-								Top recent Repositories
+							<h6 className='text-2xl font-bold text-center text-white mt-6'>
+								Top Repositories
 							</h6>
 							<br></br>
 							{errorMessage ? (
@@ -270,18 +385,18 @@ export default function AnalysisDashboard() {
 								<div
 									className='mt-2 w-11/12 self-center'
 									style={{ backdropFilter: 'blur(8px)', maxHeight: '200px' }}>
-									<table className='w-full'>
+									<table className='w-full datatable-header-container'>
 										<thead>
 											<tr>
 												<th
 													className='datatable-header'
 													style={{ width: '16.66%' }}>
-													Name
+													Stars
 												</th>
 												<th
 													className='datatable-header'
 													style={{ width: '16.66%' }}>
-													Stars
+													Name
 												</th>
 												<th
 													className='datatable-header'
@@ -301,11 +416,12 @@ export default function AnalysisDashboard() {
 											</tr>
 										</thead>
 									</table>
-									<div style={{ overflow: 'auto', maxHeight: '450px' }}>
+									<div className='datatable-body-container' style={{ overflow: 'auto', maxHeight: '450px' }}>
 										<table className='w-full'>
 											<tbody className='datatable-body'>
 												{dataArray.topRepositories
-													? dataArray.topRepositories.map(
+													? dataArray.topRepositories.sort((a, b) => b.stars - a.stars)
+														.map(
 															(item, index) => (
 																<>
 																	<tr
@@ -315,13 +431,13 @@ export default function AnalysisDashboard() {
 																			width: '100%',
 																			tableLayout: 'fixed',
 																		}}>
+																			<td className='datatable-cell-small text-center'>
+																				<br></br>
+																				{item.stars}
+																			</td>
 																		<td className='datatable-cell-small  text-center'>
 																			<br></br>
 																			{item.name}
-																		</td>
-																		<td className='datatable-cell-small text-center'>
-																			<br></br>
-																			{item.stars}
 																		</td>
 																		<td className='datatable-cell-small text-center'>
 																			<br></br>
@@ -349,31 +465,31 @@ export default function AnalysisDashboard() {
 																		<td>
 																			<hr
 																				style={{
-																					width: '100%',
+																					width: '101%',
 																				}}></hr>
 																		</td>
 																		<td>
 																			<hr
 																				style={{
-																					width: '100%',
+																					width: '101%',
 																				}}></hr>
 																		</td>
 																		<td>
 																			<hr
 																				style={{
-																					width: '100%',
+																					width: '101%',
 																				}}></hr>
 																		</td>
 																		<td>
 																			<hr
 																				style={{
-																					width: '100%',
+																					width: '101%',
 																				}}></hr>
 																		</td>
 																		<td>
 																			<hr
 																				style={{
-																					width: '100%',
+																					width: '101%',
 																				}}></hr>
 																		</td>
 																		<td>
@@ -393,31 +509,32 @@ export default function AnalysisDashboard() {
 								</div>
 							)}
 							<br></br>
+							<br></br>
+							<br></br>
+							<br></br>
+							<br></br>
 							<div
-								className='flex w-full justify-around mt-10 mb-10'
+								className='flex justify-around self-center mb-10'
 								style={{
-									marginTop: '20%',
-									flexDirection: mobile ? 'column' : 'row',
+									marginTop: mobile ? '40vh' : '30vh',
+									width: mobile ? '95%' : '60%'
 								}}>
-								<div className='flex flex-row justify-center pl-20'>
-									{Input({
-										name: 'Repositories Contributes with Commits',
-										value:
-											dataArray && dataArray.contributions
+								<div className='analysis-data-container'
+									style={{
+										marginRight: mobile ? '2vh' : '20vh',
+									}}>
+									<p className='analysis-subtitle'>Repositories Contributes with Commits</p>
+									<p className='analysis-text-big'>{dataArray && dataArray.contributions
 												? dataArray.contributions
 														.totalRepositoriesContributedWithCommits
-												: 0,
-									})}
+												: 0}</p>
 								</div>
-								<div className='flex flex-row justify-center pl-20'>
-									{Input({
-										name: 'Repositories Contributes with Pull Requests',
-										value:
-											dataArray && dataArray.contributions
+								<div className='analysis-data-container'>
+									<p className='analysis-subtitle'>Repositories Contributes with Pull Requests</p>
+									<p className='analysis-text-big'>{dataArray && dataArray.contributions
 												? dataArray.contributions
 														.totalRepositoriesContributedWithPullRequests
-												: 0,
-									})}
+												: 0}</p>
 								</div>
 							</div>
 							<br></br>
@@ -425,42 +542,9 @@ export default function AnalysisDashboard() {
 					)}
 				</div>
 
-				<div
-					className='w-10/12 max-w-6xl  h-100 p-1  rounded shadow-md flex flex-col justify-between mt-10 mb-10 ml-10 mr-10'
-					style={{
-						backgroundColor: 'rgba(0, 0, 0, 0.5)',
-						marginLeft: '100',
-						marginRight: '100',
-						borderColor: borderColor,
-						borderWidth: '1px',
-					}}>
-					<br></br>
-					<h6 className='text-3xl font-bold text-center  text-white  mt-5 mb-5'>
-						Experience
-					</h6>
-					<br></br>
-					{errorMessage ? (
-						<div className='text-center text-white'>{errorMessage}</div>
-					) : (
-						<>
-							<div className='flex flex-col items-center w-8/12 self-center'>
-								<DataTable
-									header={'Top 5 Used Languages'}
-									contentArray={languages}
-								/>
-								<div className='mr-20 '></div>
-								<br></br>
-								<br></br>
-								<DataTable header={'Used Tecnologies'} contentArray={tecnologies} />
-							</div>
-						</>
-					)}
-					<br></br>
-				</div>
-
-				{candidate && candidate.email && (
+				{candidate && experience && experience.length > 0 && (
 					<div
-						className='w-full flex justify-center items-center p-1 rounded shadow-md flex flex-col mt-10 mb-10 ml-10'
+						className='w-full flex justify-center items-center p-1 rounded shadow-md flex-col mt-10 mb-10'
 						style={{
 							backgroundColor: 'rgba(0, 0, 0, 0.5)',
 							marginLeft: '100',
@@ -472,24 +556,6 @@ export default function AnalysisDashboard() {
 							<div className='text-center text-white'>{errorMessage}</div>
 						) : (
 							<>
-								{candidate.email ? (
-									<>
-										<br />
-										<h6 className='text-3xl font-bold text-center text-white mt-5 mb-5  '>
-											Candidate Information
-										</h6>
-										<br />
-										<br></br>
-										<div className='w-1/3 justify-center overflow-auto w-full max-w-full'>
-											<DataTableVertical
-												data={data}
-												topCell={'Contact Information'}
-											/>
-										</div>
-										<br></br>
-									</>
-								) : null}
-
 								<br />
 								{experience && experience.length > 0 ? (
 									<>
@@ -497,6 +563,81 @@ export default function AnalysisDashboard() {
 										<h6 className='text-2xl font-bold text-center text-white '>
 											Working experiences
 										</h6>
+										<div className='flex w-full justify-around mt-10 items-center'
+											style={{ 
+												flexDirection: mobile ? 'column' : 'row',
+											}}>
+											<div className='flex flex-col items-center'
+												style={{
+													width: mobile ? '90%' : '40%'
+												}}>
+												<h6 className='text-xl font-bold text-center text-white mb-4'>
+													Areas of expertise
+												</h6>
+												<Radar
+													options={{
+														scales: {
+															r: {
+																max: 100,
+																min: 0,
+																ticks: {
+																	stepSize: 20,
+																	textStrokeColor: 'rgb(54, 162, 235)',
+																	color: 'rgba(240, 240, 240, 0.5)',
+																	backdropColor: 'rgb(47, 56, 62)'
+																},
+																angleLines: {
+																	color: 'rgba(240, 240, 240,0.5)',
+																},
+												
+																grid: {
+																	color: "lightgreen",
+																},
+												
+															},
+														},								  
+													}}
+													data={{
+														labels: areas.map((item) => item.name),
+														datasets: [
+															{
+																label: '',
+																data: areas.map((item) => item.duration),
+																fill: true,
+																backgroundColor: 'rgba(255, 99, 132, 0.2)',
+																borderColor: 'rgb(255, 99, 132)',
+																pointBackgroundColor: 'rgb(255, 99, 132)',
+																pointBorderColor: '#fff',
+																pointHoverBackgroundColor: '#fff',
+																pointHoverBorderColor: 'rgb(255, 99, 132)'														
+															}
+														]
+													}}>
+												</Radar>
+
+											</div>
+											<div className='flex flex-col w-4/12 items-center'
+												style={{
+													width: mobile ? '90%' : '30%'
+												}}>
+												<h6 className='text-xl font-bold text-center text-white mb-4'>
+													Companies worked for
+												</h6>
+												<Pie
+													data={{
+														labels: companies.map((item) => item.name),
+														datasets: [
+															{
+																label: '',
+																data: companies.map((item) => item.duration),
+																backgroundColor: getListOfRandomColors(companies.length),
+															}
+														]
+													}}>
+
+												</Pie>
+											</div>
+										</div>
 										<div className='flex justify-between items-center w-full'>
 											<WorkExperienceListNoButtons experience={experience} />
 										</div>

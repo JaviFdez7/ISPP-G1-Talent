@@ -15,7 +15,7 @@ export default function Support() {
 
 	return (
 		<div
-			className='flex flex-col items-center justify-center min-h-screen text-white'
+			className='flex flex-col items-center justify-center bg-fixed min-h-screen text-white'
 			style={{
 				backgroundImage: `url(${mainBackground})`,
 				backgroundSize: 'cover',

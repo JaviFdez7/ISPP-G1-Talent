@@ -8,14 +8,14 @@ import GroupedSelect from '../../components/GroupedSelect'
 const apiURL = import.meta.env.VITE_BACKEND_URL
 import axios from 'axios'
 import Select from 'react-select'
-import { useAuthContext } from './../../context/authContext';
+import { useAuthContext } from './../../context/authContext'
 
 export default function SearchForm() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const [numForms, setNumForms] = useState(1)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')
-	const { subscription } = useAuthContext();
+	const { subscription } = useAuthContext()
 
 	const [errorMessage, setErrorMessage] = useState('')
 	const [form, setForm] = useState(
@@ -267,7 +267,7 @@ export default function SearchForm() {
 				headers: { Authorization: `${token}` },
 			}
 			const subscription = localStorage.getItem('subscriptionType')
-			
+
 			const formArray = Object.values(form)
 			const response = await axios.post(apiURL + '/team-creator', formArray, config)
 			const todosSearches = await axios.get(
@@ -301,23 +301,23 @@ export default function SearchForm() {
 
 	useEffect(() => {
 		if (subscription) {
-		  if (subscription.toLowerCase() == 'basic plan') {
-			setNumOptions([
-			  { value: 1, label: '1' },
-			  { value: 2, label: '2' },
-			  { value: 3, label: '3' },
-			])
-		  } else {
-			setNumOptions([
-			  { value: 1, label: '1' },
-			  { value: 2, label: '2' },
-			  { value: 3, label: '3' },
-			  { value: 4, label: '4' },
-			  { value: 5, label: '5' },
-			])
-		  }
+			if (subscription.toLowerCase() == 'basic plan') {
+				setNumOptions([
+					{ value: 1, label: '1' },
+					{ value: 2, label: '2' },
+					{ value: 3, label: '3' },
+				])
+			} else {
+				setNumOptions([
+					{ value: 1, label: '1' },
+					{ value: 2, label: '2' },
+					{ value: 3, label: '3' },
+					{ value: 4, label: '4' },
+					{ value: 5, label: '5' },
+				])
+			}
 		}
-	  }, [subscription]);
+	}, [subscription])
 
 	useEffect(() => {
 		const newForms = Array.from(
@@ -334,7 +334,6 @@ export default function SearchForm() {
 		setForm(newForms)
 	}, [numForms, numOptions])
 
-	
 	return (
 		<div
 			className='min-h-screen flex flex-col bg-fixed home-container'

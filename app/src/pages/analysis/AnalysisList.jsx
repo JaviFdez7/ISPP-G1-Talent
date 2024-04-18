@@ -8,7 +8,7 @@ import { handleNetworkError } from '../../components/TokenExpired'
 import { useNavigate } from 'react-router-dom'
 
 export default function AnalysisList() {
-	const borderColor = 'var(--talent-highlight)'
+	const borderColor = 'var(--talent-secondary)'
 	const [dataArray, setDataArray] = useState([])
 	const [errorMessage, setErrorMessage] = useState('')
 	const [filter, setFilter] = useState('All')

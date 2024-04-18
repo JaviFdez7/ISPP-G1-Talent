@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom'
 import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function CandidateProfessionalExperienceDetail({}) {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 
 	const [experience, setExperience] = useState({})
 	const [showModal, setShowModal] = useState(false)
@@ -67,7 +67,7 @@ export default function CandidateProfessionalExperienceDetail({}) {
 				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
 				}}>
 				<div>
