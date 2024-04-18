@@ -8,14 +8,14 @@ export default function TopRepositoriesTable({ analysis }) {
 
 	return (
 		<div className='mt-2 datatable-container'>
-			<table className='w-full'>
+			<table className='w-full datatable-header-container'>
 				<thead>
 					<tr>
 						<th className='datatable-header' colSpan={3} style={{ height: cellHeight }}>
 							<div className='datatable-header-text mr-3 ml-3'>{header}</div>
 						</th>
 					</tr>
-					<tr>
+					<tr className='border-t'>
 						<th className='datatable-header' style={{ width: '33.33%' }}>
 							Name
 						</th>
@@ -29,7 +29,7 @@ export default function TopRepositoriesTable({ analysis }) {
 				</thead>
 			</table>
 			<div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-				<table className='w-full'>
+				<table className='w-full datatable-body-container'>
 					<tbody className='datatable-body'>
 						{topRepositories.map((repo, index) => (
 							<React.Fragment key={index}>
@@ -54,10 +54,10 @@ export default function TopRepositoriesTable({ analysis }) {
 										tableLayout: 'fixed',
 									}}>
 									<td>
-										<hr style={{ width: '100%' }}></hr>
+										<hr style={{ width: '105%' }}></hr>
 									</td>
 									<td>
-										<hr style={{ width: '100%' }}></hr>
+										<hr style={{ width: '105%' }}></hr>
 									</td>
 									<td>
 										<hr style={{ width: '100%' }}></hr>

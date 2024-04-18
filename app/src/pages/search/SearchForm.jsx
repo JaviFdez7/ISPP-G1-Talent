@@ -11,7 +11,7 @@ import Select from 'react-select'
 import { useAuthContext } from './../../context/authContext';
 
 export default function SearchForm() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const [numForms, setNumForms] = useState(1)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')

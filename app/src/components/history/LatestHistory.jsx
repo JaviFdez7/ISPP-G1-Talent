@@ -25,8 +25,8 @@ const LatestHistory = ({ header, data, type = 'analysis' }) => {
 		<div className='text-white m-auto mb-3 history-table-container'>
 			<table className='history-table-container'>
 				<thead>
-					<tr className='history-table-header'>
-						<th colSpan='2'>{header}</th>
+					<tr>
+						<th className='history-table-header' colSpan='2'>{header}</th>
 					</tr>
 				</thead>
 				<tbody className='history-table-body'>

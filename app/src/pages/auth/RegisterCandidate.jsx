@@ -8,7 +8,7 @@ import MainButton from '../../components/mainButton'
 import Swal from 'sweetalert2'
 
 export default function RegisterCandidate() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const [users, setUsers] = useState([])
 
 	const { login } = useAuthContext()

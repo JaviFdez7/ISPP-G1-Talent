@@ -1,0 +1,9 @@
+.experience-list-element {
+    background-color: var(--talent-dark-background);
+    border-radius: 14px;
+    transition: 0.25s;
+}
+
+.experience-list-element:hover {
+    background-color: var(--talent-light-background);
+}

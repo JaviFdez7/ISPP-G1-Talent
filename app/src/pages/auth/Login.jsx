@@ -88,7 +88,7 @@ export default function Login() {
           margin: "1rem",
           marginLeft: "auto",
           marginRight: "auto",
-          borderColor: "var(--talent-highlight)",
+          borderColor: "var(--talent-secondary)",
           borderWidth: "1px",
         }}
       >

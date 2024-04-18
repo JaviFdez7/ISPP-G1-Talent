@@ -7,7 +7,7 @@ import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
 
 export default function RegisterRepresentative() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const { login } = useAuthContext()
 	const [users, setUsers] = useState([])
 	const [form, setForm] = useState({

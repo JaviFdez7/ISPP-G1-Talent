@@ -10,7 +10,7 @@ import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function Analyzer() {
 	const textColor = 'white'
-	const borderColor = 'var(--talent-highlight)'
+	const borderColor = 'var(--talent-secondary)'
 	const asteriskColor = 'var(--talent-highlight-background)'
 	const navigate = useNavigate()
 	const ruta = import.meta.env.VITE_BACKEND_URL

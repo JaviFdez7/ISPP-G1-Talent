@@ -10,7 +10,6 @@ export default function MainButton(text, link, func="", w="115px", h="65px") {
                 <div className="flex main-button-container">
                     <h4>{text}</h4>
                 </div>
-                <div className="main-button-highlight"></div>
             </Link>
         );
     } else {
@@ -19,7 +18,6 @@ export default function MainButton(text, link, func="", w="115px", h="65px") {
                 <div className="flex main-button-container">
                     <h4>{text}</h4>
                 </div>
-                <div className="main-button-highlight"></div>
             </button>
         );
     }

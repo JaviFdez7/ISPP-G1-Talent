@@ -10,7 +10,6 @@ export default function SecondaryButton(text, link, func="", w="115px", h="65px"
                 <div className="flex secondary-button-container">
                     <h4>{text}</h4>
                 </div>
-                <div className="secondary-button-highlight"></div>
             </Link>
         );
     } else {
@@ -19,7 +18,6 @@ export default function SecondaryButton(text, link, func="", w="115px", h="65px"
                 <div className="flex secondary-button-container">
                     <h4>{text}</h4>
                 </div>
-                <div className="secondary-button-highlight"></div>
             </button>
         );
     }
