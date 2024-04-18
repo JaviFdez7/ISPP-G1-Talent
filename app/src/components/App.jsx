@@ -3,7 +3,6 @@ import { AuthContextProvider } from '../context/authContext.jsx'
 
 import Home from '../pages/Home'
 import Support from '../pages/Support'
-import Settings from '../pages/Settings'
 import Trends from '../pages/Trends.jsx'
 
 import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
@@ -72,17 +71,6 @@ function App() {
 									allowUnauthenticated={true}
 									checkSubscription={false}>
 									<Support />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route
-							path='/settings'
-							element={
-								<ProtectedRoute
-									roles={['Representative', 'Candidate']}
-									allowUnauthenticated={true}>
-									<Settings />
 								</ProtectedRoute>
 							}
 						/>

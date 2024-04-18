@@ -232,17 +232,6 @@ export default function Navbar() {
 							<span>Information</span>
 						</Link>
 					)}
-					{getOptsNum('Settings') !== -1 && (
-						<Link
-							to='/settings'
-							onMouseEnter={() => move_hoverer(getOptsNum('Settings'))}
-							onMouseDown={() => move_current(getOptsNum('Settings'))}
-							className='link-container'>
-							<span><FontAwesomeIcon icon={faGear} /></span>
-							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>Settings</span>
-						</Link>
-					)}
 				</>
 				{isAuthenticated &&
 					(userData && userData.role == 'Representative' ? (
