@@ -4,7 +4,8 @@ import { ProfessionalExperience } from '../../professional-experience/models/pro
 import { getModelForRole } from '../helpers/handleRoles'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
 import {
-	createSubscriptions,
+	createRepresentativeSubscriptions,
+	createCandidateSubscriptions,
 	getSubscriptionsByUserId,
 } from '../../subscriptions/services/SubscriptionsService'
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
@@ -27,10 +28,14 @@ export const createUser: any = async (data: any, role: string) => {
 		const Model = getModelForRole(role)
 		if (role === 'Candidate') {
 			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
+			const subscription = await createCandidateSubscriptions()
 			data.analysisId = analysis._id
+			data.subscriptionId = subscription._id
 		}
-		const subscription = await createSubscriptions(role)
-		data.subscriptionId = subscription._id
+		if (role === 'Representative') {
+			const subscription = await createRepresentativeSubscriptions()
+			data.subscriptionId = subscription._id
+		}
 		const user = new Model(data)
 		await user.save()
 		return user
@@ -46,13 +51,6 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 		if (role === 'Candidate') {
 			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
 			data.analysisId = analysis._id
-
-			const actualSubscription = await getSubscriptionsByUserId(id)
-			actualSubscription.remainingUpdates--
-			await CandidateSubscription.findByIdAndUpdate(
-				actualSubscription._id,
-				actualSubscription
-			)
 		}
 		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
 		return updatedUser

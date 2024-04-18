@@ -1,18 +1,26 @@
 
 .datatable-container {
     width: 100%;
-    backdrop-filter: blur(8px);
+}
+
+.datatable-header-container {
+    background-color: var(--talent-light-background);
+    border-radius: 20px 20px 0px 0px;
+}
+
+.datatable-body-container {
+    background-color: var(--talent-dark-background);
+    border-radius: 0px 0px 20px 20px;
 }
 
 .datatable-body {
-    background-color: var(--talent-dark-background);
     max-height: 200px; /* Adjust as needed */
     overflow-y: auto;
 }
 .datatable-header {
     padding: 0;
-    background-color: var(--talent-light-background);
-    border-top: 10px solid var(--talent-secondary);
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .datatable-header-text {
     height: 95%;

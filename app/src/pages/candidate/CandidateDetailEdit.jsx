@@ -40,7 +40,6 @@ export default function CandidateDetailEdit() {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === id)
 					setUserData(user)
-					console.log(user)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error)
@@ -105,9 +104,8 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.error('Error updating user:', error.response)
 			if (
-				error.response.status === 400 ||
+				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
 					'Error when getting the analysis by ID: jwt expired'
 			) {
@@ -117,25 +115,41 @@ export default function CandidateDetailEdit() {
 					text: 'Please login again to continue',
 					timer: 1500,
 					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
 				})
 				navigate('/login')
+			} else if (
+				(error.response.data.errors[0].detail =
+					'You cant update your profile until next month')
+			) {
+				Swal.fire({
+					icon: 'error',
+					title: 'You can not update your profile until next month',
+					timer: 1500,
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					confirmButtonColor: 'var(--talent-highlight)',
+				})
 			}
 		}
 	}
 
 	const handleProfilePictureChange = (e) => {
 		const url = e.target.value
-		if (url && isValidURL(url)) {
+		if (url && isValidURL(url) && isValidImageURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
-			console.log('profilePicture after url input:', profilePicture)
 		} else {
 			Swal.fire({
 				icon: 'error',
 				title: 'Invalid URL',
+				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
-				timer: 1500,
+				timer: 2000,
 			})
 		}
 	}
@@ -155,9 +169,8 @@ export default function CandidateDetailEdit() {
 				userData.phone
 			)
 		) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
 			errors.phone =
-				'The phone field must be a valid Spanish phone number or a valid American phone number'
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 		return errors
 	}
@@ -201,6 +214,9 @@ export default function CandidateDetailEdit() {
 		)
 		return res !== null
 	}
+	function isValidImageURL(url) {
+		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
+	}
 
 	return (
 		<div
@@ -215,9 +231,10 @@ export default function CandidateDetailEdit() {
 				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
 					width: '83.3333%',
+					overflowY: 'scroll',
 				}}>
 				<div>
 					<h2

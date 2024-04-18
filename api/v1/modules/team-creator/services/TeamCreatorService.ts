@@ -1,14 +1,18 @@
 import { AnalysisModel, AnalysisDocument } from '../../analysis/models/analysis.model'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { History } from '../../history/models/history'
-import { createHistory, updateHistory } from '../../history/services/HistoryService'
-import { Notification } from '../../notification/models/notification'
-import { Candidate, CandidateDocument, Representative } from '../../user/models/user'
 import {
-	ProfileRequested,
-	SkillRequested,
-	FilteredCandidates,
-	ProfileMap,
+	createHistory,
+	createTeamCreatorHistory,
+	updateHistory,
+} from '../../history/services/HistoryService'
+import { Notification } from '../../notification/models/notification'
+import { Candidate, type CandidateDocument, Representative } from '../../user/models/user'
+import {
+	type ProfileRequested,
+	type SkillRequested,
+	type FilteredCandidates,
+	type ProfileMap,
 	TeamCreatorDocument,
 	TeamCreator,
 } from '../models/TeamCreatorModel'
@@ -17,6 +21,7 @@ import {
 	createNotification,
 	updateNotification,
 } from '../../notification/services/NotificationService'
+import { getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService'
 
 function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 	const languagesSet = new Set<string>()
@@ -26,9 +31,9 @@ function processSkillsRequested(profiles: ProfileRequested[]): SkillRequested {
 	profiles.forEach((profile) => {
 		profile.languages.forEach((language) => languagesSet.add(language))
 		profile.technologies.forEach((technology) => technologiesSet.add(technology))
-		if (profile.yearsOfExperience < minYearsOfExperience) {
+		if (profile.yearsOfExperience < minYearsOfExperience)
 			minYearsOfExperience = profile.yearsOfExperience
-		}
+
 		fieldsSet.add(profile.field)
 	})
 
@@ -65,13 +70,9 @@ async function filterCandidates(skillsRequested: SkillRequested): Promise<Filter
 			const endDate = exp.endDate ? new Date(exp.endDate) : new Date()
 			const years = endDate.getFullYear() - startDate.getFullYear()
 			const monthDiff = endDate.getMonth() - startDate.getMonth()
-			if (years > 0 || monthDiff > 0) {
-				totalExperienceYears += years + monthDiff / 12
-			}
+			if (years > 0 || monthDiff > 0) totalExperienceYears += years + monthDiff / 12
 
-			if (skillsRequested.field.includes(exp.professionalArea)) {
-				matchesField = true
-			}
+			if (skillsRequested.field.includes(exp.professionalArea)) matchesField = true
 		})
 
 		if (
@@ -105,8 +106,8 @@ function selectBestCandidates(
 	const bestCandidatesPerProfile = new Map<ProfileRequested, FilteredCandidates[]>()
 
 	for (const profile of profilesRequested) {
-		let maxScore = 0
-		const candidatesScores: Map<FilteredCandidates, number> = new Map()
+		const maxScore = 0
+		const candidatesScores = new Map<FilteredCandidates, number>()
 
 		for (const candidate of filteredCandidates) {
 			let score = 0
@@ -130,7 +131,7 @@ function selectBestCandidates(
 
 	return bestCandidatesPerProfile
 }
-async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise<void> {
+async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise<any> {
 	const profiles = Array.from(profilesMap).map(([profileRequested, recommendedCandidates]) => ({
 		profileRequested,
 		recommendedCandidates,
@@ -141,7 +142,7 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 		profiles,
 	})
 
-	await teamCreator.save()
+	const savedRecord = await teamCreator.save()
 
 	for (const { recommendedCandidates } of profiles) {
 		for (const candidate of recommendedCandidates) {
@@ -161,20 +162,18 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 							candidateId: (candidateDocument as any)._id,
 							message: `${(representative as any).companyName} has seen your profile.`,
 						})
-					} else {
-						await updateNotification(notification._id, { dateTime: Date.now() })
-					}
+					} else await updateNotification(notification._id, { dateTime: Date.now() })
 				}
 				const analysisId = candidateDocument?.analysisId._id
 
 				const existingHistory = await History.findOne({
-					userId: userId,
-					analysisId: analysisId,
+					userId,
+					analysisId,
 				}).exec()
 
 				if (!existingHistory) {
 					await createHistory(userId, {
-						analysisId: analysisId,
+						analysisId,
 						date: new Date(),
 						favorite: false,
 					})
@@ -184,12 +183,25 @@ async function saveTeamCreator(userId: string, profilesMap: ProfileMap): Promise
 			}
 		}
 	}
+	return savedRecord
 }
 export const createTeamCreator: any = async (data: ProfileRequested[], userId: string) => {
 	const skills: SkillRequested = processSkillsRequested(data)
 	const filteredcandidates: FilteredCandidates[] = await filterCandidates(skills)
 	const selectCandidates: ProfileMap = selectBestCandidates(filteredcandidates, data)
-	await saveTeamCreator(userId, selectCandidates)
+	const savedRecord = await saveTeamCreator(userId, selectCandidates)
+	try {
+		const subscription = await getSubscriptionsByUserId(userId)
+		subscription.remainingSearches -= data.length
+		await subscription.save()
+		const representative = await Representative.findById(userId)
+		if (representative !== null) {
+			await createTeamCreatorHistory(representative._id, { teamCreatorId: savedRecord._id })
+		}
+		return savedRecord
+	} catch (error: any) {
+		console.log(error)
+	}
 }
 export const getAllTeamCreatorOfRepresentative: any = async (id: any) => {
 	try {
@@ -217,6 +229,14 @@ export const getTeamCreatorById: any = async (id: any) => {
 	}
 }
 
+export const getAllTeamCreators: any = async () => {
+	try {
+		return await TeamCreator.find()
+	} catch (error) {
+		console.error(error)
+		throw new Error('Error getting subscriptions')
+	}
+}
 export default {
 	getAllTeamCreatorOfRepresentative,
 	createTeamCreator,

@@ -43,7 +43,7 @@ export default function CandidateNotificationDetail() {
 					}
 				}
 			} catch (error) {
-				console.log('Error fetching notification data:', error.response.data.message)
+				console.error('Error fetching notification data:', error.response.data.message)
 			}
 		}
 		fetchNotificationsData()
@@ -79,11 +79,10 @@ export default function CandidateNotificationDetail() {
 							},
 						}
 					)
-					console.log(response.data)
 				}
 			}
 		} catch (error) {
-			console.log('Error setting notification data:', error.response.data.message)
+			console.error('Error setting notification data:', error.response.data.message)
 		}
 	}
 
@@ -109,7 +108,7 @@ export default function CandidateNotificationDetail() {
 				}
 			}
 		} catch (error) {
-			console.log('Error fetching notification data:', error.response.data.message)
+			console.error('Error fetching notification data:', error.response.data.message)
 		}
 	}
 
@@ -145,7 +144,7 @@ export default function CandidateNotificationDetail() {
 				className='h-full w-10/12 rounded shadow-md flex flex-col justify-start self-center p-4 m-4 mb-4'
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
 					backdropFilter: 'blur(8px)',
 				}}>

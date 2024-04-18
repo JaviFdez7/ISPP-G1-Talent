@@ -1,17 +1,20 @@
 import { type AnalysisDocument, AnalysisModel } from '../models/analysis.model'
-import { createNotification, updateNotification } from '../../notification/services/NotificationService'
+import {
+	createNotification,
+	updateNotification,
+} from '../../notification/services/NotificationService'
 import { Candidate, Representative } from '../../user/models/user'
 import { GetUserAnaliseInfo } from './GitHubService'
 import { History } from '../../history/models/history'
 import { createHistory } from '../../history/services/HistoryService'
 import { verifyJWT } from '../../user/helpers/handleJWT'
 import { getSubscriptionsByUserId } from '../../subscriptions/services/SubscriptionsService'
-import { CompanySubscription } from '../../subscriptions/models/subscription'
+import { CandidateSubscription, CompanySubscription } from '../../subscriptions/models/subscription'
 import { Notification } from '../../notification/models/notification'
 // Default service functions
 export const getAllAnalysis = async (): Promise<any[]> => {
 	try {
-		const analyses = await AnalysisModel.find().exec()
+		const analyses = await AnalysisModel.find()
 		return analyses
 	} catch (error) {
 		throw new Error(`Error when getting all analyses: ${error}`)
@@ -51,22 +54,26 @@ export const getAnalysisByGitHubUsername = async (githubUsername: string) => {
 			`Error when getting the analysis by GitHub username: ${error instanceof Error ? error.message : error}`
 		)
 	}
-};
+}
 
 export const createAnalysis: any = async (
 	githubUsername: string,
 	token?: string,
-	userApikey?: string 
-	) => {
+	userApikey?: string
+) => {
 	token = token ?? ''
 	if (!githubUsername) {
 		throw new Error('A valid GitHub username was not provided.')
 	}
 	try {
-		if(token.length>0){
-			const actualSubscription= await getSubscriptionsByUserId(verifyJWT(token).sub);
-			actualSubscription.remainingSearches--;
-			await CompanySubscription.findByIdAndUpdate(actualSubscription._id,actualSubscription);
+		if (token.length > 0) {
+			const actualSubscription = await getSubscriptionsByUserId(verifyJWT(token).sub)
+			if (actualSubscription instanceof CompanySubscription) {
+				;(actualSubscription as any).remainingSearches--
+			} else if (actualSubscription instanceof CandidateSubscription) {
+				;(actualSubscription as any).remainingUpdates--
+			}
+			await actualSubscription.save()
 		}
 		const analysis = await AnalysisModel.findOne({ githubUsername })
 		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)

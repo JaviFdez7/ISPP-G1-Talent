@@ -8,13 +8,17 @@ export default function DropdownComponent({ name, children, defaultOpen = false 
 			className='w-auto h-100 p-1 rounded shadow-md flex flex-col justify-between mt-10 '
 			style={{
 				backgroundColor: 'rgba(0, 0, 0, 0.5)',
-				borderColor: 'orange',
+				borderColor: 'var(--talent-secondary)',
 				borderWidth: '1px',
 			}}>
 			<div className='flex flex-col items-center'>
 				<h2
 					className='text-2xl font-bold text-center text-white mt-5 mb-5 cursor-pointer'
-					style={{ borderBottom: '1px solid orange', userSelect: 'none' }}
+					style={{
+						borderBottom: '1px solid',
+						userSelect: 'none',
+						borderColor: 'var(--talent-secondary)',
+					}}
 					onClick={() => setIsOpen(!isOpen)}>
 					<div className='flex items-center ml-20 mr-20'>
 						<span>{name}</span>

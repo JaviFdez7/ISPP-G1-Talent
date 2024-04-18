@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
+import SecondaryButton from '../../components/secondaryButton'
 import GroupedSelect from '../../components/GroupedSelect'
 const apiURL = import.meta.env.VITE_BACKEND_URL
 import axios from 'axios'
 import Select from 'react-select'
+import { useAuthContext } from './../../context/authContext'
 
 export default function SearchForm() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const [numForms, setNumForms] = useState(1)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')
+	const { subscription } = useAuthContext()
 
 	const [errorMessage, setErrorMessage] = useState('')
 	const [form, setForm] = useState(
@@ -263,6 +266,8 @@ export default function SearchForm() {
 			const config = {
 				headers: { Authorization: `${token}` },
 			}
+			const subscription = localStorage.getItem('subscriptionType')
+
 			const formArray = Object.values(form)
 			const response = await axios.post(apiURL + '/team-creator', formArray, config)
 			const todosSearches = await axios.get(
@@ -295,37 +300,24 @@ export default function SearchForm() {
 	}
 
 	useEffect(() => {
-		const fetchUser = async () => {
-			try {
-				const representativeId = localStorage.getItem('userId')
-				const token = localStorage.getItem('access_token')
-				const config = {
-					headers: { Authorization: `${token}` },
-				}
-				const response = await axios.get(apiURL + '/user/' + representativeId, config)
-				const subscription = response.data.data.companySubscription.toLowerCase()
-				if (subscription === 'basic plan') {
-					setNumOptions([
-						{ value: 1, label: '1' },
-						{ value: 2, label: '2' },
-						{ value: 3, label: '3' },
-					])
-				} else {
-					setNumOptions([
-						{ value: 1, label: '1' },
-						{ value: 2, label: '2' },
-						{ value: 3, label: '3' },
-						{ value: 4, label: '4' },
-						{ value: 5, label: '5' },
-					])
-				}
-			} catch (error) {
-				// Handle the error
+		if (subscription) {
+			if (subscription.toLowerCase() == 'basic plan') {
+				setNumOptions([
+					{ value: 1, label: '1' },
+					{ value: 2, label: '2' },
+					{ value: 3, label: '3' },
+				])
+			} else {
+				setNumOptions([
+					{ value: 1, label: '1' },
+					{ value: 2, label: '2' },
+					{ value: 3, label: '3' },
+					{ value: 4, label: '4' },
+					{ value: 5, label: '5' },
+				])
 			}
 		}
-
-		fetchUser()
-	}, [])
+	}, [subscription])
 
 	useEffect(() => {
 		const newForms = Array.from(
@@ -529,7 +521,7 @@ export default function SearchForm() {
 				))}
 				<div className='flex justify-center mt-2 mb-4 space-x-20'>
 					{MainButton('Search', '', handleSubmit)}
-					{MainButton('Previous Searches', `/searches/representative/${userId}`)}
+					{SecondaryButton('Search list', '/searches/list', '')}
 				</div>
 			</form>
 		</div>

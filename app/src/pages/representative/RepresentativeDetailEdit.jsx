@@ -101,7 +101,11 @@ export default function RepresentativeDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			if (error.response.status === 400) {
+			if (
+				error.response.status === 401 ||
+				error.response.data.errors[0].detail ===
+					'Error when getting the analysis by ID: jwt expired'
+			) {
 				Swal.fire({
 					icon: 'error',
 					title: 'Token expired',
@@ -118,11 +122,11 @@ export default function RepresentativeDetailEdit() {
 		const url = e.target.value
 		if (url && isValidURL(url)) {
 			setUserData({ ...userData, profilePicture: url })
-			console.log('profilePicture after url input:', profilePicture)
 		} else {
 			Swal.fire({
 				icon: 'error',
 				title: 'Invalid URL',
+				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
@@ -184,8 +188,12 @@ export default function RepresentativeDetailEdit() {
 			errors.companyName =
 				'The company name field must have be between 2 and 50 characters long'
 		}
-		if (userData.projectSocietyName && !userData.projectSocietyName.length <= 3) {
-			errors.projectSocietyName = 'The username field must be more than 3 characters'
+		if (
+			userData.projectSocietyName &&
+			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 50)
+		) {
+			errors.projectSocietyName =
+				'The Project Society Name must be between 2 and 50 characters long'
 		}
 		if (
 			userData.phone &&
@@ -193,9 +201,8 @@ export default function RepresentativeDetailEdit() {
 				userData.phone
 			)
 		) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
 			errors.phone =
-				'The phone field must be a valid Spanish phone number or a valid American phone number'
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 		return errors
 	}
@@ -213,9 +220,10 @@ export default function RepresentativeDetailEdit() {
 				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
 					width: '83.3333%',
+					overflowY: 'scroll',
 				}}>
 				<div>
 					<h2

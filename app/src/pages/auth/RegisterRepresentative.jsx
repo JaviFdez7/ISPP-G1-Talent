@@ -7,14 +7,13 @@ import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
 
 export default function RegisterRepresentative() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const { login } = useAuthContext()
 	const [users, setUsers] = useState([])
 	const [form, setForm] = useState({
 		username: '',
 		corporative_email: '',
 		company_name: '',
-		companySubscription: 'Basic plan',
 		password: '',
 		password2: '',
 	})
@@ -24,7 +23,6 @@ export default function RegisterRepresentative() {
 		username,
 		corporative_email,
 		company_name,
-		companySubscription,
 		phone_number,
 		projectSocietyName,
 		password,
@@ -65,15 +63,6 @@ export default function RegisterRepresentative() {
 			setErrors(validationErrors)
 			return
 		}
-		if (enableValidation) {
-			setLoading(true)
-			const isValidEmail = await validateEmail(form.corporative_email)
-			setLoading(false)
-			if (!isValidEmail) {
-				setEmailValid(false)
-				return
-			}
-		}
 
 		let valid = true
 
@@ -92,6 +81,17 @@ export default function RegisterRepresentative() {
 				return
 			}
 		})
+
+		//email validation API
+		if (enableValidation) {
+			setLoading(true)
+			const isValidEmail = await validateEmail(form.corporative_email)
+			setLoading(false)
+			if (!isValidEmail) {
+				setEmailValid(false)
+				return
+			}
+		}
 
 		try {
 			const response = await axios.post(
@@ -113,7 +113,7 @@ export default function RegisterRepresentative() {
 
 			if (response.status === 200) {
 				login(data.token, data.user.role, data.user._id)
-				navigate('/representative/detail')
+				navigate('/representative/subscription')
 			} else if (response.status === 400 || response.status === 409) {
 				setErrors(response.data)
 			}
@@ -144,48 +144,36 @@ export default function RegisterRepresentative() {
 	}, [])
 
 	async function validateEmail(email) {
-		const verifaliaUserId = 'ittalentID1111111111111111'
-		const verifaliaUserPwd = 'rI8e.gOjdUWfv0'
+		const options = {
+			method: 'GET',
+			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
+			params: {
+				email: email,
+			},
+			headers: {
+				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			// Enviar solicitud de validación de correo electrónico
-			const response = await axios.post(
-				'https://api.verifalia.com/v2.5/email-validations',
-				{
-					entries: [{ inputData: email }],
-				},
-				{
-					auth: {
-						username: verifaliaUserId,
-						password: verifaliaUserPwd,
-					},
-				}
-			)
-			const taskId = response.data.overview.id
-			let taskStatus = 'InProgress'
-			let result = false
-			while (taskStatus === 'InProgress') {
-				const taskResponse = await axios.get(
-					`https://api.verifalia.com/v2.5/email-validations/${taskId}`,
-					{
-						auth: {
-							username: verifaliaUserId,
-							password: verifaliaUserPwd,
-						},
-					}
-				)
-				taskStatus = taskResponse.status
-				result = taskResponse.data.entries.data[0].classification === 'Deliverable'
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+			const response = await axios.request(options)
+			if (response.data.status === 'valid') {
+				return true
+			} else {
+				return false
 			}
-
-			return result
 		} catch (error) {
-			console.error('Error validating email:', error)
+			if (error.response && error.response.status === 402) {
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
+				return true
+			}
+			console.error(error)
 			return false
 		}
 	}
-
 	function validateForm() {
 		let errors = {}
 
@@ -209,15 +197,28 @@ export default function RegisterRepresentative() {
 		}
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
+		} else if (form.password.length < 8 || form.password.length > 20) {
+			errors.password = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Password do not match'
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password field must be between 8 and 20 characters'
 		}
-		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-			errors.phone_number = 'A phone number must consist of 9 digits exclusively'
+
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
+			errors.phone_number =
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
+
 		if (
 			form.projectSocietyName &&
 			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)

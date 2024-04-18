@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../context/authContext'
 import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import axios from 'axios'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
+import Swal from 'sweetalert2'
 
 export default function RegisterCandidate() {
-	const talentColor = 'var(--talent-highlight)'
+	const talentColor = 'var(--talent-secondary)'
 	const [users, setUsers] = useState([])
+
 	const { login } = useAuthContext()
 	const [form, setForm] = useState({
 		first_name: '',
@@ -37,10 +39,31 @@ export default function RegisterCandidate() {
 
 	const [emailValid, setEmailValid] = useState(true)
 	const [loading, setLoading] = useState(false)
+	const [loadingRegister, setLoadingRegister] = useState(false)
+	const [loadingMessageRegister, setLoadingMessageRegister] = useState('')
 
 	const enableValidation = import.meta.env.VITE_MAIL_VALIDATION_ENABLED === 'true' || false
 
 	let navigate = useNavigate()
+	useEffect(() => {
+		if (loadingRegister) {
+			setLoadingMessageRegister(
+				Swal.fire({
+					icon: 'info',
+					title: 'Please wait',
+					text: 'Registration in progress. This might take some time.',
+					showConfirmButton: true,
+					confirmButtonColor: 'var(--talent-highlight)',
+					allowOutsideClick: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 5000,
+				})
+			)
+		} else {
+			setLoadingMessageRegister('')
+		}
+	}, [loadingRegister])
 
 	function onInputChange(e) {
 		const { name, value, checked } = e.target
@@ -70,16 +93,6 @@ export default function RegisterCandidate() {
 			return
 		}
 
-		if (enableValidation) {
-			setLoading(true)
-			const isValidEmail = await validateEmail(form.email)
-			setLoading(false)
-			if (!isValidEmail) {
-				setEmailValid(false)
-				return
-			}
-		}
-
 		let valid = true
 
 		await fetchUsers()
@@ -105,6 +118,18 @@ export default function RegisterCandidate() {
 			}
 		})
 
+		//email validation API
+		if (enableValidation) {
+			setLoading(true)
+			const isValidEmail = await validateEmail(form.email)
+			setLoading(false)
+			if (!isValidEmail) {
+				setEmailValid(false)
+				return
+			}
+		}
+
+		setLoadingRegister(true)
 		try {
 			const response = await axios.post(
 				import.meta.env.VITE_BACKEND_URL + '/user/candidate',
@@ -127,6 +152,7 @@ export default function RegisterCandidate() {
 			setIsCheckboxChecked(false)
 			const data = userDataFetch.data.data
 			login(data.token, data.user.role, data.user._id)
+			setLoadingMessageRegister('')
 			navigate('/candidate/detail')
 		} catch (error) {
 			if (error.response.status === 409 || error.response.status === 400) {
@@ -157,44 +183,33 @@ export default function RegisterCandidate() {
 	}, [])
 
 	async function validateEmail(email) {
-		const verifaliaUserId = 'ittalentID1111111111111111'
-		const verifaliaUserPwd = 'rI8e.gOjdUWfv0'
+		const options = {
+			method: 'GET',
+			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
+			params: {
+				email: email,
+			},
+			headers: {
+				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			const response = await axios.post(
-				'https://api.verifalia.com/v2.5/email-validations',
-				{
-					entries: [{ inputData: email }],
-				},
-				{
-					auth: {
-						username: verifaliaUserId,
-						password: verifaliaUserPwd,
-					},
-				}
-			)
-			const taskId = response.data.overview.id
-			let taskStatus = 'InProgress'
-			let result = false
-			while (taskStatus === 'InProgress') {
-				const taskResponse = await axios.get(
-					`https://api.verifalia.com/v2.5/email-validations/${taskId}`,
-					{
-						auth: {
-							username: verifaliaUserId,
-							password: verifaliaUserPwd,
-						},
-					}
-				)
-				taskStatus = taskResponse.status
-				result = taskResponse.data.entries.data[0].classification === 'Deliverable'
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+			const response = await axios.request(options)
+			if (response.data.status === 'valid') {
+				return true
+			} else {
+				return false
 			}
-
-			return result
 		} catch (error) {
-			console.error('Error validating email:', error)
-			return false
+			if (error.response && error.response.status === 402) {
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
+				return true
+			}
+			console.error(error)
 		}
 	}
 
@@ -217,11 +232,15 @@ export default function RegisterCandidate() {
 		}
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
+		} else if (form.password.length < 8 || form.password.length > 20) {
+			errors.password = 'The password fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Passwords do not match'
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password fields must be between 8 and 20 characters'
 		}
 		if (!form.githubUsername) {
 			errors.githubUsername = getRequiredFieldMessage('github username')
@@ -229,10 +248,15 @@ export default function RegisterCandidate() {
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
 		}
-		if (form.phone_number && !/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(form.phone_number)) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono 34|0034|34|+1|001|1 para EEUU
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
 			errors.phone_number =
-				"The phone field must be a valid Spanish phone number or a valid American phone number";
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 		return errors
 	}

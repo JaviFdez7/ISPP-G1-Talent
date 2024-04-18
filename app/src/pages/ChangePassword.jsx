@@ -48,7 +48,6 @@ export default function ChangePassword() {
 					},
 				}
 			)
-			console.log('yeddsdsah ' + response)
 			if (response.status === 404) {
 				setErrors(response.data)
 				return
@@ -84,11 +83,15 @@ export default function ChangePassword() {
 		let errors = {}
 		if (!form.oldPassword) {
 			errors.oldPassword = getRequiredFieldMessage('oldPassword')
+		} else if (form.oldPassword.length < 8 || form.oldPassword.length > 20) {
+			errors.oldPassword = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.oldPassword == form.newPassword) {
 			errors.newPassword = 'Passwords match the old password'
 		}
 		if (!form.newPassword) {
 			errors.newPassword = getRequiredFieldMessage('newPassword')
+		} else if (form.newPassword.length < 8 || form.newPassword.length > 20) {
+			errors.newPassword = 'The passwords fields must be between 8 and 20 characters'
 		}
 		return errors
 	}
@@ -103,23 +106,24 @@ export default function ChangePassword() {
 				msOverflowY: 'scroll',
 			}}>
 			<div
-				className='h-full w-10/12 rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4'
+				className='rounded shadow-md flex flex-col justify-between self-center p-4 mt-4 mb-4 '
 				style={{
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
-					borderColor: 'var(--talent-highlight)',
+					borderColor: 'var(--talent-secondary)',
 					borderWidth: '1px',
-					width: '83.3333%',
+					width: '40%',
+					marginTop: '10%',
 				}}>
 				<div className='flex flex-row justify-center'>
 					<div
 						className='flex flex-col items-center mt-10'
-						style={{ width: '41.6667%', padding: '4rem' }}>
+						style={{ width: '90%', marginTop: '-5%' }}>
 						<h2
 							className='font-bold text-center text-white'
 							style={{
 								fontSize: '2rem',
-								marginTop: '2rem',
-								marginBottom: '4rem',
+								marginTop: '5%',
+								marginBottom: '10%',
 							}}>
 							Change password
 						</h2>
@@ -157,7 +161,9 @@ export default function ChangePassword() {
 								errors.errors[0].detail && (
 									<p className='text-red-500'>{errors.errors[0].detail}</p>
 								)}
-							<div className='flex align-center justify-center'>
+							<div
+								className='flex align-center justify-center'
+								style={{ marginTop: '17%' }}>
 								{MainButton('Update', '/', handleChangePassword)}
 								{SecondaryButton('Cancel', '/', '')}
 							</div>
