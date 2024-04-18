@@ -21,7 +21,7 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 					Authorization: `${token}`,
 				},
 			})
-			console.log("dedeeweeeeeeeeee 12121212    ", response.data.data)
+			console.log('dedeeweeeeeeeeee 12121212    ', response.data.data)
 
 			return response.data.data.githubUsername
 		} catch (error) {
@@ -55,10 +55,7 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 						<FavoriteButton history={item} />
 					</div>
 					<div className='flex mx-2'>
-						<DeleteHistoryButton
-							history={item}
-							setErrorMessage={setErrorMessage}
-						/>
+						<DeleteHistoryButton history={item} setErrorMessage={setErrorMessage} />
 					</div>
 				</div>
 			</div>

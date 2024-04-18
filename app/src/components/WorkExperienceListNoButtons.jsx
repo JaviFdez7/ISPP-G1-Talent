@@ -27,7 +27,8 @@ const WorkExperienceList = ({ experience }) => {
 					<div className='p-4 mb-2 mx-auto w-full experience-list-element'>
 						<div className='flex-col relative'>
 							<div className='flex justify-start items-center'>
-								<div className={`flex ${mobile ? 'flex-col' : 'flex-row'} items-center`}>
+								<div
+									className={`flex ${mobile ? 'flex-col' : 'flex-row'} items-center`}>
 									<h6
 										className='text-white py-1 px-2 rounded-lg'
 										style={{ backgroundColor: 'var(--talent-highlight)' }}>

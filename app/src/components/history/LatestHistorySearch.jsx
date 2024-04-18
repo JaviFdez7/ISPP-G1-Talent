@@ -26,7 +26,9 @@ const LatestHistorySearch = ({ header, data, type = 'searches' }) => {
 			<table className='history-table-container'>
 				<thead>
 					<tr>
-						<th className='history-table-header' colSpan='2'>{header}</th>
+						<th className='history-table-header' colSpan='2'>
+							{header}
+						</th>
 					</tr>
 				</thead>
 				<tbody className='history-table-body'>

@@ -14,7 +14,11 @@ export default function DropdownComponent({ name, children, defaultOpen = false 
 			<div className='flex flex-col items-center'>
 				<h2
 					className='text-2xl font-bold text-center text-white mt-5 mb-5 cursor-pointer'
-					style={{ borderBottom: '1px solid', userSelect: 'none', borderColor: 'var(--talent-secondary)' }}
+					style={{
+						borderBottom: '1px solid',
+						userSelect: 'none',
+						borderColor: 'var(--talent-secondary)',
+					}}
 					onClick={() => setIsOpen(!isOpen)}>
 					<div className='flex items-center ml-20 mr-20'>
 						<span>{name}</span>

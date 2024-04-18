@@ -276,11 +276,13 @@ export default function Navbar() {
 										}}>
 										{userData ? userData.username : ' - '}
 									</h1>
-									<h1 className='text-gray-500' style={{
-										overflow: 'hidden',
-										textOverflow: 'ellipsis',
-										whiteSpace: 'nowrap',
-									}}>
+									<h1
+										className='text-gray-500'
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
 										{userData ? userData.companyName : ' - '}
 									</h1>
 								</div>

@@ -23,7 +23,6 @@ const WorkExperienceList = ({ experience }) => {
 		}
 	}, [])
 
-
 	function formatDate(date) {
 		const options = { year: 'numeric', month: 'long', day: 'numeric' }
 		return new Date(date).toLocaleDateString('en-US', options)
@@ -63,15 +62,14 @@ const WorkExperienceList = ({ experience }) => {
 								className='block text-white'
 								to={`/candidate/professional-experience/detail/${item._id}`}>
 								<div className='flex flex-col lg:flex-row justify-start items-center'>
-									<div className={`flex ${mobile ? 'flex-col' : 'flex-row'} items-center`}>
+									<div
+										className={`flex ${mobile ? 'flex-col' : 'flex-row'} items-center`}>
 										<h6
 											className='text-white py-1 px-2 rounded-lg'
 											style={{ backgroundColor: 'var(--talent-highlight)' }}>
 											{item.professionalArea}
 										</h6>
-										<h6 className='text-white ml-8'>
-											{item.companyName}
-										</h6>
+										<h6 className='text-white ml-8'>{item.companyName}</h6>
 										<h6 className='text-white ml-8'>
 											{formatDate(item.startDate)} -{' '}
 											{formatDate(item.endDate)}
