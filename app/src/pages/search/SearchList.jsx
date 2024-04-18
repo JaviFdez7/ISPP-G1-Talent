@@ -43,7 +43,7 @@ export default function SearchList() {
 				setDataArray(newArray)
 			})
 			.catch((error) => {
-				console.log('Error fetching history team creator data:', error)
+				console.error('Error fetching history team creator data:', error)
 			})
 	}, [filter, triggerUpdate])
 

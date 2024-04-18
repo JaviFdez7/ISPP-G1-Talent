@@ -24,7 +24,6 @@ export default function Trends() {
 					const trends = response.data.data
 					const token = localStorage.getItem('access_token')
 					setTrends(trends)
-                    console.log(trends)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error)

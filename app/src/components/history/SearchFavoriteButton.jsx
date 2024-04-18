@@ -13,17 +13,12 @@ const SearchFavoriteButton = ({ history, toggleText = false }) => {
 
 	async function changeFavorites(userId) {
 		const uri = `/user/${userId}/team_creator/history/${history._id}/favorite`
-		console.log('uri', uri)
 		try {
-			console.log('uri22222222222', apiURL + uri)
-
 			const response = await axios.patch(apiURL + uri)
-			console.log('response', response)
 			setErrorMessage(null)
 			return response
 		} catch (error) {
 			setErrorMessage('Unable to connect to the server. Please try again later.')
-			//console.error("Error changing history search favorite state:", error);
 			throw error
 		}
 	}

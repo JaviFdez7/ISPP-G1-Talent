@@ -43,7 +43,7 @@ export default function AnalysisList() {
 				setDataArray(newArray)
 			})
 			.catch((error) => {
-				console.log('Error fetching history data:', error)
+				console.error('Error fetching history data:', error)
 			})
 	}, [filter, triggerUpdate])
 

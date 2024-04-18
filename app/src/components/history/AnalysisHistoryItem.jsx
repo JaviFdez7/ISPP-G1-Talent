@@ -21,7 +21,6 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 					Authorization: `${token}`,
 				},
 			})
-			console.log('dedeeweeeeeeeeee 12121212    ', response.data.data)
 
 			return response.data.data.githubUsername
 		} catch (error) {

@@ -43,7 +43,7 @@ export default function CandidateNotificationDetail() {
 					}
 				}
 			} catch (error) {
-				console.log('Error fetching notification data:', error.response.data.message)
+				console.error('Error fetching notification data:', error.response.data.message)
 			}
 		}
 		fetchNotificationsData()
@@ -82,7 +82,7 @@ export default function CandidateNotificationDetail() {
 				}
 			}
 		} catch (error) {
-			console.log('Error setting notification data:', error.response.data.message)
+			console.error('Error setting notification data:', error.response.data.message)
 		}
 	}
 
@@ -108,7 +108,7 @@ export default function CandidateNotificationDetail() {
 				}
 			}
 		} catch (error) {
-			console.log('Error fetching notification data:', error.response.data.message)
+			console.error('Error fetching notification data:', error.response.data.message)
 		}
 	}
 

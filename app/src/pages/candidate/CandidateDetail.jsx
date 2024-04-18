@@ -55,7 +55,7 @@ export default function CandidateDetail() {
 				}
 			}
 		} catch (error) {
-			console.log('Error fetching notification data:', error.response.data.message)
+			console.error('Error fetching notification data:', error.response.data.message)
 		}
 	}
 

@@ -67,8 +67,6 @@ const PricingTable = ({ suscription }) => {
 					maxCount = plans[plan]
 				}
 			}
-
-			console.log('Most popular plan:', mostPopularPlan)
 			setPopular(mostPopularPlan)
 			return mostPopularPlan
 		} catch (error) {

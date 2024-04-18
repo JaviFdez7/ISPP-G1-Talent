@@ -51,13 +51,6 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 		if (role === 'Candidate') {
 			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
 			data.analysisId = analysis._id
-
-			const actualSubscription = await getSubscriptionsByUserId(id)
-			actualSubscription.remainingUpdates--
-			await CandidateSubscription.findByIdAndUpdate(
-				actualSubscription._id,
-				actualSubscription
-			)
 		}
 		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
 		return updatedUser

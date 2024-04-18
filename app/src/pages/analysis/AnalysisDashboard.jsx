@@ -99,7 +99,7 @@ export default function AnalysisDashboard() {
 				return filteredHistory[0]
 			})
 			.catch((error) => {
-				console.log('Error while retrieving the history related to this analysis', error)
+				console.error('Error while retrieving the history related to this analysis', error)
 				throw error
 			})
 	}

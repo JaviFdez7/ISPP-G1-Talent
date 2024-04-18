@@ -251,21 +251,6 @@ export const checkUpdateCandidate: any = async (
 				401
 			)
 			return
-		}
-		const subscription = await CandidateSubscription.findById((user as any).subscriptionId)
-		if (!subscription || (subscription as any).remainingUpdates <= 0) {
-			const message = 'You cant update your profile until next month'
-			ApiResponse.sendError(
-				res,
-				[
-					{
-						title: 'Bad Request',
-						detail: message,
-					},
-				],
-				400
-			)
-			return
 		} else {
 			if ('email' in data || 'username' in data) {
 				if (data.email && data.email !== user.email) {
