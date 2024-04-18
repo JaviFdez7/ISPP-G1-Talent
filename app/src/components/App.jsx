@@ -24,7 +24,6 @@ import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
-
 import SearchForm from '../pages/search/SearchForm.jsx'
 import SearchResult from '../pages/search/SearchResult.jsx'
 import SearchList from '../pages/search/SearchList.jsx'
@@ -130,7 +129,6 @@ function App() {
 							}
 						/>
 
-						
 						<Route
 							path='/searches/search'
 							element={
@@ -178,12 +176,7 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-						<Route
-							path='/trends'
-							element={
-								<Trends />
-							}
-						/>
+						<Route path='/trends' element={<Trends />} />
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
