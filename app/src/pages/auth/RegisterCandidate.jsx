@@ -6,9 +6,131 @@ import axios from 'axios'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
 import Swal from 'sweetalert2'
+import SecondaryButton from '../../components/secondaryButton'
+
+const TermsAndConditions = ({ handleClose, handleAccept }) => {
+	return (
+		<div
+			className='modal'
+			style={{
+				display: 'block',
+				position: 'fixed',
+				zIndex: 1,
+				left: 0,
+				top: 0,
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'rgba(0,0,0,0.5)',
+			}}>
+			<div
+				className='modal-content'
+				style={{
+					backgroundColor: 'rgba(0, 0, 0, 0.9)',
+					margin: '15% auto',
+					padding: '20px',
+					border: '1px solid var(--talent-highlight)',
+					width: '80%',
+					maxWidth: '600px',
+				}}>
+				<div
+					className='terms-container'
+					style={{
+						overflowY: 'scroll',
+						scrollbarWidth: '5%',
+						scrollbarColor: 'red',
+						maxHeight: '50vh',
+					}}>
+					<pre
+						style={{ color: 'white', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+						{`1. Terms of Service
+	  1.1 Acceptable Use
+		  Use of the services provided by IT Talent is subject to the following terms of acceptable use:
+			  ●	Users must provide truthful and up-to-date information in their profiles.
+			  ●	Use of the platform for illegal or unethical purposes is not permitted.
+			  ●	Manipulation of search results or interference with the proper functioning of the platform is prohibited.
+			  ●	Users must comply with all applicable laws and regulations in their use of the Services.
+	  1.2 Term and Termination
+		  This agreement will be effective from the date the user accesses IT Talent services and will continue until terminated by either party:
+			  A.	Termination by User
+				  User may terminate this Agreement at any time by simply ceasing to use the Service. Additionally, if you wish, you can proceed to delete your account.
+			  B.	Termination by IT Talent
+				  IT Talent reserves the right to terminate this Agreement or suspend the user's access to the Service in cases of actual unauthorized use of the Service, or in case of breach of this Agreement by the user. In such situations, IT Talent will provide the user with reasonable notice and the opportunity to correct the situation before proceeding with the termination of the agreement. However, in cases where the user's actions give rise to potential legal liability, IT Talent reserves the right to take action.
+			  C.	Effects of Termination
+				  Upon termination of this Agreement, User's right to use the Service will immediately cease. In the event of termination of the user's account, IT Talent may, in its sole discretion, delete the user's account and any related data.
+			  D.	Survival
+				  Any provisions of this Agreement which by their nature should survive termination hereof shall remain in full force and effect after such termination. This includes ownership provisions, warranty disclaimers, and limitations of liability.
+	  1.3 Privacy Policy and GDPR
+		  IT Talent is committed to protecting the privacy of its users. Our privacy policy describes how we collect, use and protect personal information provided by users in accordance with the General Data Protection Regulation (GDPR).
+			  Data Collection and Use
+				  I.	Personal Data Collected : IT Talent collects personal data from users, including names, email addresses, contact information, and data relevant to job searches such as skills and work experience.
+				  II.	User Consent : Before a user can create an account on IT Talent, they are presented with a form where they must give their express consent for the processing of their personal data in accordance with the terms established in our privacy policy.
+			  User Rights
+				  I.	Data Access and Rectification : Users have the right to access and correct their personal data stored on the platform.
+				  II.	Data Deletion : Users may request the deletion of their personal data when it is no longer necessary for the purposes for which it was collected.
+				  III.	Data Portability : Users have the right to request the transfer of their data to another service.
+			  Data Security
+				  IT Talent implements security measures to protect user information against unauthorized access, disclosure, alteration or loss of data. These measures include data encryption, access control, and continuous platform monitoring.
+	  1.4 Intellectual Property
+		  All intellectual property rights related to IT Talent's services, including but not limited to software, design, and content, are the exclusive property of IT Talent. Users have no right to use, copy or distribute such materials without the express consent of IT Talent.
+  2. Prices and Services
+	  2.1 Plans for Companies
+		  Basic Plan: €30/month
+			  ●	Up to 25 candidate searches per month.
+			  ●	Individual and team search of up to 3 people.
+			  ●	No scrolling between candidate options.
+			  ●	Basic filters available.
+			  ●	30-day free trial.
+		  Advanced Plan: €80/month
+			  ●	Up to 150 candidate searches per month.
+			  ●	Search for teams of up to 5 people.
+			  ●	Scroll up to 10 different options for each of the results in team searches.
+			  ●	All filters available.
+			  ●	Candidate profile statistics.
+			  ●	Shorter response times.
+			  ●	Priority support.
+		  Custom Plan: Customized pricing and features on demand.
+	  2.2 Plans for Users in Job Search
+		  Basic Plan: Free
+			  ●	All the basic functionalities of the application.
+			  ●	Possibility of updating data every 30 days.
+		  Advanced Plan: €10/month
+			  ●	All the features of the previous plan.
+			  ●	Ability to update data three times every 30 days.
+			  ●	Ability to see which companies have viewed your profile.
+			  ●	Advanced application statistics.
+  3. SLAS (Service Level Agreements)
+	  3.1 Service Level Indicators (SLI)
+		  The following service level indicators apply to IT Talent services:
+		  Service Availability: IT Talent will endeavor to maintain 80% service availability.
+		  Response Time: IT Talent is committed to providing an average response time of less than 5 ms for user requests.
+	  3.2 Service Level Objectives (SLO)
+		  The following service level objectives apply to IT Talent services:
+			  ●	Problem Resolution : IT Talent is committed to resolving any problem reported by users within a maximum period of 48 hours if it is a company with a basic plan and 24 hours if it has a priority plan.
+			  ●	Data Update : IT Talent will endeavor to update user data within a maximum period of 24 hours.
+	  3.3 Compensations
+		In the event of non-compliance with the service level indicators or objectives mentioned above, IT Talent will offer compensation to affected users, which may include free subscription extensions or partial refunds, as determined by IT Talent.
+  
+  We reserve the right to modify this agreement at any time and the user will be notified accordingly. The user must therefore accept the new terms in order to continue using the service.
+  If you have any questions about these terms, please contact us at: ittalentofficial@outlook.com
+			  `}
+					</pre>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							gap: '20px',
+						}}>
+						{SecondaryButton('Cancel', '', handleClose)}
+						{MainButton('Accept', '', handleAccept)}
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
 
 export default function RegisterCandidate() {
-	const talentColor = 'var(--talent-secondary)'
+	const talentColor = 'var(--talent-highlight)'
 	const [users, setUsers] = useState([])
 
 	const { login } = useAuthContext()
@@ -23,6 +145,20 @@ export default function RegisterCandidate() {
 		githubUsername: '',
 		candidateSubscription: 'Basic plan',
 	})
+	const [showModal, setShowModal] = useState(false)
+
+	const showModalHandler = () => {
+		setShowModal(true)
+	}
+
+	const hideModalHandler = () => {
+		setIsCheckboxChecked(false)
+		setShowModal(false)
+	}
+	const acceptTermsHandler = () => {
+		setIsCheckboxChecked(true)
+		setShowModal(false)
+	}
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
 	const [errors, setErrors] = useState({})
 	const {
@@ -83,7 +219,7 @@ export default function RegisterCandidate() {
 	async function handleSubmit(e) {
 		e.preventDefault()
 		if (!isCheckboxChecked) {
-			setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
+			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
 			return
 		}
 		const validationErrors = validateForm()
@@ -405,7 +541,9 @@ export default function RegisterCandidate() {
 									<input
 										type='checkbox'
 										className='form-checkbox text-blue-500'
-										onChange={handleCheckboxChange}
+										onChange={(e) => e.preventDefault()}
+										onClick={showModalHandler}
+										checked={isCheckboxChecked}
 									/>
 									<span className='ml-2'>
 										Do you accept the terms and
@@ -423,25 +561,6 @@ export default function RegisterCandidate() {
 											className='hidden lg:inline-block'
 											style={{ marginRight: '-10px' }}
 										/>
-										<a
-											href='https://tu-enlace-externo.com'
-											className='text-white hover:underline'
-											target='_blank'
-											rel='noopener noreferrer'>
-											Read the conditions in here
-											<svg
-												className='h-6 w-6  inline-block'
-												fill='none'
-												viewBox='0 0 24 24'
-												stroke='currentColor'>
-												<path
-													strokeLinecap='round'
-													strokeLinejoin='round'
-													strokeWidth='2'
-													d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14'
-												/>
-											</svg>
-										</a>
 									</span>
 								</label>
 								{errors.termsCheckbox && (
@@ -468,6 +587,12 @@ export default function RegisterCandidate() {
 						<div className='mt-4 mb-4'>{MainButton('Register', '/', handleSubmit)}</div>
 					</div>
 				</form>
+				{showModal && (
+					<TermsAndConditions
+						handleClose={hideModalHandler}
+						handleAccept={acceptTermsHandler}
+					/>
+				)}
 			</div>
 			<br></br>
 		</div>

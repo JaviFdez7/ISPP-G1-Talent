@@ -3,7 +3,6 @@ import { AuthContextProvider } from '../context/authContext.jsx'
 
 import Home from '../pages/Home'
 import Support from '../pages/Support'
-import Settings from '../pages/Settings'
 import Trends from '../pages/Trends.jsx'
 
 import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
@@ -24,7 +23,6 @@ import RepresentativeDetailEdit from '../pages/representative/RepresentativeDeta
 import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
-
 
 import SearchForm from '../pages/search/SearchForm.jsx'
 import SearchResult from '../pages/search/SearchResult.jsx'
@@ -72,17 +70,6 @@ function App() {
 									allowUnauthenticated={true}
 									checkSubscription={false}>
 									<Support />
-								</ProtectedRoute>
-							}
-						/>
-
-						<Route
-							path='/settings'
-							element={
-								<ProtectedRoute
-									roles={['Representative', 'Candidate']}
-									allowUnauthenticated={true}>
-									<Settings />
 								</ProtectedRoute>
 							}
 						/>
@@ -142,7 +129,6 @@ function App() {
 							}
 						/>
 
-						
 						<Route
 							path='/searches/search'
 							element={
@@ -190,12 +176,7 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-						<Route
-							path='/trends'
-							element={
-								<Trends />
-							}
-						/>
+						<Route path='/trends' element={<Trends />} />
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
