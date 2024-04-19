@@ -10,27 +10,39 @@ import SecondaryButton from '../../components/secondaryButton'
 
 const TermsAndConditions = ({ handleClose, handleAccept }) => {
 	return (
-	  <div className="modal" style={{
-		display: "block",
-		position: "fixed",
-		zIndex: 1,
-		left: 0,
-		top: 0,
-		width: "100%",
-		height: "100%",
-		backgroundColor: "rgba(0,0,0,0.5)",
-	  }}>
-		<div className="modal-content" style={{
-		  backgroundColor: "rgba(0, 0, 0, 0.9)",
-		  margin: "15% auto",
-		  padding: "20px",
-		  border: "1px solid var(--talent-highlight)",
-		  width: "80%",
-		  maxWidth: "600px",
-		}}>
-		  <div className="terms-container" style={{ overflowY: "scroll", scrollbarWidth: "5%", scrollbarColor: "red", maxHeight: "50vh" }}>
-		  <pre style={{ color: "white", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
-			  {`1. Terms of Service
+		<div
+			className='modal'
+			style={{
+				display: 'block',
+				position: 'fixed',
+				zIndex: 1,
+				left: 0,
+				top: 0,
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'rgba(0,0,0,0.5)',
+			}}>
+			<div
+				className='modal-content'
+				style={{
+					backgroundColor: 'rgba(0, 0, 0, 0.9)',
+					margin: '15% auto',
+					padding: '20px',
+					border: '1px solid var(--talent-highlight)',
+					width: '80%',
+					maxWidth: '600px',
+				}}>
+				<div
+					className='terms-container'
+					style={{
+						overflowY: 'scroll',
+						scrollbarWidth: '5%',
+						scrollbarColor: 'red',
+						maxHeight: '50vh',
+					}}>
+					<pre
+						style={{ color: 'white', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+						{`1. Terms of Service
 	  1.1 Acceptable Use
 		  Use of the services provided by IT Talent is subject to the following terms of acceptable use:
 			  ●	Users must provide truthful and up-to-date information in their profiles.
@@ -101,23 +113,24 @@ const TermsAndConditions = ({ handleClose, handleAccept }) => {
   We reserve the right to modify this agreement at any time and the user will be notified accordingly. The user must therefore accept the new terms in order to continue using the service.
   If you have any questions about these terms, please contact us at: ittalentofficial@outlook.com
 			  `}
-			</pre>
-			<div style={{
-			  display: 'flex',
-			  justifyContent: 'center',
-			  gap: '20px'
-			}}>
-			  {SecondaryButton('Cancel', '', handleClose)}
-			  {MainButton('Accept', '', handleAccept)}
+					</pre>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							gap: '20px',
+						}}>
+						{SecondaryButton('Cancel', '', handleClose)}
+						{MainButton('Accept', '', handleAccept)}
+					</div>
+				</div>
 			</div>
-		  </div>
 		</div>
-	  </div>
-	);
-  };
+	)
+}
 
 export default function RegisterCandidate() {
-	const talentColor = "var(--talent-highlight)";
+	const talentColor = 'var(--talent-highlight)'
 	const [users, setUsers] = useState([])
 
 	const { login } = useAuthContext()
@@ -132,20 +145,20 @@ export default function RegisterCandidate() {
 		githubUsername: '',
 		candidateSubscription: 'Basic plan',
 	})
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState(false)
 
 	const showModalHandler = () => {
-		setShowModal(true);
-	};
+		setShowModal(true)
+	}
 
 	const hideModalHandler = () => {
-		setIsCheckboxChecked(false);
-		setShowModal(false);
-	};
+		setIsCheckboxChecked(false)
+		setShowModal(false)
+	}
 	const acceptTermsHandler = () => {
-		setIsCheckboxChecked(true);
-		setShowModal(false);
-	};
+		setIsCheckboxChecked(true)
+		setShowModal(false)
+	}
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
 	const [errors, setErrors] = useState({})
 	const {
@@ -206,7 +219,7 @@ export default function RegisterCandidate() {
 	async function handleSubmit(e) {
 		e.preventDefault()
 		if (!isCheckboxChecked) {
-			setErrors({ termsCheckbox: "You must read and accept the terms and conditions" })
+			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
 			return
 		}
 		const validationErrors = validateForm()
@@ -526,12 +539,12 @@ export default function RegisterCandidate() {
 								style={{ marginTop: '20px', marginBottom: '0px' }}>
 								<label className='inline-flex items-center'>
 									<input
-									type="checkbox"
-									className="form-checkbox text-blue-500"
-									onChange={(e) => e.preventDefault()}
-									onClick={showModalHandler}
-									checked={isCheckboxChecked}
-								  	/>
+										type='checkbox'
+										className='form-checkbox text-blue-500'
+										onChange={(e) => e.preventDefault()}
+										onClick={showModalHandler}
+										checked={isCheckboxChecked}
+									/>
 									<span className='ml-2'>
 										Do you accept the terms and
 										<br
@@ -574,7 +587,12 @@ export default function RegisterCandidate() {
 						<div className='mt-4 mb-4'>{MainButton('Register', '/', handleSubmit)}</div>
 					</div>
 				</form>
-				{showModal && <TermsAndConditions handleClose={hideModalHandler} handleAccept={acceptTermsHandler} />}
+				{showModal && (
+					<TermsAndConditions
+						handleClose={hideModalHandler}
+						handleAccept={acceptTermsHandler}
+					/>
+				)}
 			</div>
 			<br></br>
 		</div>
