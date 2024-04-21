@@ -1,15 +1,15 @@
 :root {
-    --talent-black: #171717;
-    --talent-darker: #000000;
-    
-    --talent-highlight: #d4983d;
-    --talent-secondary: #737373;
+	--talent-black: #171717;
+	--talent-darker: #000000;
 
-    --talent-dark-background: #282828;
-    
-    --talent-highlight-background: #d4983dc5;
-    --talent-light-background: rgba(63, 63, 63, 0.65);
-    --talent-dark-background: rgba(33, 33, 33, 0.65);
+	--talent-highlight: #d4983d;
+	--talent-secondary: #737373;
 
-    --talent-navbar-background: rgba(0, 0, 0, 0.85);
+	--talent-dark-background: #282828;
+
+	--talent-highlight-background: #d4983dc5;
+	--talent-light-background: rgba(63, 63, 63, 0.65);
+	--talent-dark-background: rgba(33, 33, 33, 0.65);
+
+	--talent-navbar-background: rgba(0, 0, 0, 0.85);
 }
