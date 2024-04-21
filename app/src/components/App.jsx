@@ -3,7 +3,7 @@ import { AuthContextProvider } from '../context/authContext.jsx'
 
 import Home from '../pages/Home'
 import Support from '../pages/Support'
-import Settings from '../pages/Settings'
+import Trends from '../pages/Trends.jsx'
 
 import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
 import CandidateDetail from '../pages/candidate/CandidateDetail.jsx'
@@ -24,9 +24,9 @@ import Navbar from './Navbar'
 import { PlaceHolder } from '../pages/PlaceHolder.jsx'
 import ProtectedRoute from '../context/routes/ProtectedRoute.jsx'
 
-import Search from "../pages/search/SearchTeam.jsx";
-import SearchForm from "../pages/search/SearchForm.jsx";
-import SearchResult from "../pages/search/SearchResult.jsx";
+import SearchForm from '../pages/search/SearchForm.jsx'
+import SearchResult from '../pages/search/SearchResult.jsx'
+import SearchList from '../pages/search/SearchList.jsx'
 
 import Login from '../pages/auth/Login.jsx'
 import RegisterCandidate from '../pages/auth/RegisterCandidate.jsx'
@@ -34,6 +34,14 @@ import RegisterRepresentative from '../pages/auth/RegisterRepresentative.jsx'
 import AnalysisDashboard from '../pages/analysis/AnalysisDashboard.jsx'
 import AnalysisAnalizer from '../pages/analysis/AnalysisAnalizer.jsx'
 import AnalysisList from '../pages/analysis/AnalysisList.jsx'
+
+import ChangePassword from '../pages/ChangePassword.jsx'
+
+import PaymentScreen from '../pages/payment/PaymentScreen.jsx'
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
 function App() {
 	return (
@@ -43,14 +51,54 @@ function App() {
 					<Navbar />
 					<Routes>
 						{/*RUTAS PUBLICAS */}
-						<Route index element={<Home />} />
-						<Route path='/support' element={<Support />} />
-						<Route path='/settings' element={<Settings />} />
-						<Route path='/login' element={<Login />} />
-						<Route path='/register/candidate' element={<RegisterCandidate />} />
+						<Route
+							index
+							element={
+								<ProtectedRoute
+									roles={['Representative', 'Candidate']}
+									allowUnauthenticated={true}>
+									<Home />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/support'
+							element={
+								<ProtectedRoute
+									roles={['Representative', 'Candidate']}
+									allowUnauthenticated={true}
+									checkSubscription={false}>
+									<Support />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/login'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<Login />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/register/candidate'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<RegisterCandidate />
+								</ProtectedRoute>
+							}
+						/>
+
 						<Route
 							path='/register/representative'
-							element={<RegisterRepresentative />}
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<RegisterRepresentative />
+								</ProtectedRoute>
+							}
 						/>
 						{/*RUTAS PRIVADAS */}
 						{/*Analysis*/}
@@ -81,41 +129,54 @@ function App() {
 							}
 						/>
 
-            <Route path="/searches/representative/:representativeId" element={
-              <ProtectedRoute roles={['Representative']} >
-                <Search/>
-              </ProtectedRoute>}
-            />
-             <Route
-              path="/searches/search"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchForm />
-                </ProtectedRoute>
-              }
-            />
-           <Route
-              path="/searches/:searchId"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <SearchResult/>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/searches/list"
-              element={
-                <ProtectedRoute roles={['Representative']} >
-                  <PlaceHolder pageName="search list" />
-                </ProtectedRoute>
-              }
-            />
-   
+						<Route
+							path='/searches/search'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<SearchForm />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/searches/:searchId'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<SearchResult />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/searches/list'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<SearchList />
+								</ProtectedRoute>
+							}
+						/>
 
 						{/*Subscription*/}
-						<Route path='/pricing' element={<PlaceHolder pageName='subscription' />} />
-						{/*<Route path="/pricing" element={<Pricing />} />*/}
+						<Route
+							path='/payments/:subscriptionPlan'
+							element={
+								<ProtectedRoute
+									roles={['Candidate', 'Representative']}
+									checkSubscription={false}>
+									<Elements stripe={stripePromise}>
+										<PaymentScreen />
+									</Elements>
+								</ProtectedRoute>
+							}
+						/>
 
+						<Route
+							path='/candidate/:id/password'
+							element={
+								<ProtectedRoute roles={['Candidate']}>
+									<ChangePassword />
+								</ProtectedRoute>
+							}
+						/>
+						<Route path='/trends' element={<Trends />} />
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
@@ -126,7 +187,7 @@ function App() {
 							}
 						/>
 						<Route
-							path='/candidate/detail/edit'
+							path='/candidate/detail/edit/:id'
 							element={
 								<ProtectedRoute roles={['Candidate']}>
 									<CandidateDetailEdit />
@@ -202,7 +263,9 @@ function App() {
 						<Route
 							path='/representative/subscription'
 							element={
-								<ProtectedRoute roles={['Representative']}>
+								<ProtectedRoute
+									roles={['Representative']}
+									checkSubscription={false}>
 									<RepresentativeSubscription />
 								</ProtectedRoute>
 							}
@@ -216,10 +279,18 @@ function App() {
 							}
 						/>
 						<Route
-							path='/representative/detail/edit'
+							path='/representative/detail/edit/:id'
 							element={
 								<ProtectedRoute roles={['Representative']}>
 									<RepresentativeDetailEdit />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path='/representative/:id/password'
+							element={
+								<ProtectedRoute roles={['Representative']}>
+									<ChangePassword />
 								</ProtectedRoute>
 							}
 						/>

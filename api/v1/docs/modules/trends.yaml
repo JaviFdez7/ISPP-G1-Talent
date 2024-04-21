@@ -1,0 +1,80 @@
+swagger: "3.0.0"
+info:
+  version: "1.0.0"
+  title: IT Talent API - Trend Module
+paths:
+  /trend:
+    get:
+      tags:
+        - Trend
+      summary: Get the current trend data
+      description: Retrieves the most current trend data related to technologies, languages, and professional fields.
+      responses:
+        200:
+          description: Successfully retrieved the trend data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/definitions/TrendData'
+        400:
+          description: Bad request, possibly incorrect or incomplete parameters.
+        500:
+          description: Internal server error when trying to fetch trend data.
+
+definitions:
+  TrendData:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date-time
+        description: The date when the trend data was last updated or checked.
+      state:
+        type: string
+        description: The current state of the trend data, e.g., Updated, In Progress, or Outdated.
+      mostSolicitatedTechnologies:
+        type: array
+        items:
+          type: string
+        description: List of the most solicited technologies.
+      mostSolicitatedLanguages:
+        type: array
+        items:
+          type: string
+        description: List of the most solicited languages.
+      mostSolicitatedFields:
+        type: array
+        items:
+          type: string
+        description: List of the most solicited professional fields.
+      yearsOfExperienceMean:
+        type: number
+        format: float
+        description: Average years of experience in the collected data.
+      mostUsedLanguages:
+        type: array
+        items:
+          type: string
+        description: List of the most used languages according to the analysis.
+      mostUsedTechnologies:
+        type: array
+        items:
+          type: string
+        description: List of the most used technologies according to the analysis.
+      mostOcupatedFields:
+        type: array
+        items:
+          type: string
+        description: List of the most occupied professional fields.
+      topRepositories:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            stars:
+              type: integer
+            forks:
+              type: integer
+        description: Information about the top repositories.

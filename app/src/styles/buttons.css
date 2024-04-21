@@ -1,46 +1,42 @@
-
 .button-container {
-    width: 90%;
-    height: 90%;
-    transition: 0.25s;
-}
-
-.button-container:hover {
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
+	margin: 10px;
 }
 
 .main-button-container {
-    width: 100%;
-    height: 90%;
-    background-color: var(--talent-highlight-background);
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+	width: 100%;
+	height: 90%;
+	transition: 0.25s;
+	border-radius: 14px;
+	border-color: var(--talent-highlight);
+	border-width: 4px;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
 }
 
 .secondary-button-container {
-    width: 100%;
-    height: 90%;
-    background-color: var(--talent-light-background);
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+	width: 100%;
+	height: 90%;
+	transition: 0.25s;
+	border-radius: 14px;
+	border-color: var(--talent-secondary);
+	border-width: 4px;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
 }
 
-.main-button-highlight {
-    width: 100%;
-    height: 10%;
-    background-color: var(--talent-highlight);
+.main-button-container:hover {
+	background-color: var(--talent-highlight);
 }
 
-.secondary-button-highlight {
-    width: 100%;
-    height: 10%;
-    background-color: var(--talent-secondary);
+.secondary-button-container:hover {
+	background-color: var(--talent-secondary);
 }
 
 h4 {
-    color: white;
-    font-size: 18px;
+	color: white;
+	font-size: 16px;
 }

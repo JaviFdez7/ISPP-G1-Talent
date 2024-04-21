@@ -78,7 +78,8 @@ describe('loginUser Function Tests', function () {
 		await loginUser(request, response)
 
 		assert.strictEqual(response.statusCode, 200)
-		const responseData = response._getData()
-		assert.deepStrictEqual(responseData.user.username, 'fake-user')
+		const responseData = response._getJSONData()
+		console.log(responseData)
+		assert.deepStrictEqual((responseData as any).data.user.username, 'fake-user')
 	})
 }).timeout(100000)

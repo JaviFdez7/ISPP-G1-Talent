@@ -2,8 +2,16 @@ import { encrypt, compare } from '../helpers/handleBcrypt'
 import { verifyJWT } from '../helpers/handleJWT'
 import { Candidate, Representative, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
-import { type Request, type Response, type NextFunction } from 'express'
+import e, { type Request, type Response, type NextFunction } from 'express'
 import { ApiResponse } from '../../../utils/ApiResponse'
+import { CandidateSubscription, Subscription } from '../../subscriptions/models/subscription'
+import { ObjectId } from 'mongodb'
+
+interface IRepresentative {
+	_id: ObjectId
+	email: string
+	username: string
+}
 
 export const checkGetUserById: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
@@ -78,12 +86,7 @@ export const checkCreateCandidate: any = async (
 	try {
 		const data = req.body
 		const isMissingFields: boolean =
-			!data.username ||
-			!data.email ||
-			!data.fullName ||
-			!data.password ||
-			!data.githubUser ||
-			!data.candidateSubscription
+			!data.username || !data.email || !data.fullName || !data.password || !data.githubUser
 		// Comprobar si faltan campos requeridos en el candidato
 		if (isMissingFields) {
 			const message = 'Missing required fields'
@@ -163,7 +166,8 @@ export const checkCreateRepresentative: any = async (
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
 		} else {
 			// Encriptar la contraseña
-			data.password = await encrypt(data.password)
+			const inputPassword: string = data.password
+			data.password = await encrypt(inputPassword)
 			next()
 		}
 	} catch (error: any) {
@@ -219,7 +223,7 @@ export const checkUpdateCandidate: any = async (
 		const data = req.body
 		const token = req.headers.authorization ?? ''
 		const id = req.params.id.toString()
-		const user = await Candidate.findById(id)
+		const user = await Candidate.findById(id).lean<IRepresentative>()
 		if (!user) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
@@ -231,17 +235,6 @@ export const checkUpdateCandidate: any = async (
 		} else if (token.length === 0) {
 			const message = 'No token provided'
 			ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401)
-			return
-		}
-		const existingUsername = await User.findOne({ username: data.username ?? '' })
-		const existingEmail = await User.findOne({ email: data.email ?? '' })
-		if (data.username && existingUsername) {
-			const message = 'Username already exists'
-			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
-			return
-		} else if (data.email && existingEmail) {
-			const message = 'User with that email already exists'
-			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
 			return
 		}
 		const decodedToken = verifyJWT(token)
@@ -259,6 +252,19 @@ export const checkUpdateCandidate: any = async (
 			)
 			return
 		} else {
+			if ('email' in data || 'username' in data) {
+				if (data.email && data.email !== user.email) {
+					const message = 'Email does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
+				}
+
+				if (data.username && data.username !== user.username) {
+					const message = 'Username does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
+				}
+			}
 			next()
 		}
 	} catch (error: any) {
@@ -274,6 +280,7 @@ export const checkUpdateCandidate: any = async (
 // Comprobar si el usuario existe
 // Comprobar si hay datos para actualizar
 // Comprobar si el token es correcto
+// Encriptar la contraseña si se ha actualizado
 export const checkUpdateRepresentative: any = async (
 	req: Request,
 	res: Response,
@@ -283,7 +290,7 @@ export const checkUpdateRepresentative: any = async (
 		const id = req.params.id.toString()
 		const token = req.headers.authorization ?? ''
 		const data = req.body
-		const user = await Representative.findById(id)
+		const user = await Representative.findById(id).lean<IRepresentative>()
 		if (!user) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
@@ -295,17 +302,6 @@ export const checkUpdateRepresentative: any = async (
 		} else if (token.length === 0) {
 			const message = 'No token provided'
 			ApiResponse.sendError(res, [{ title: 'Unauthorized', detail: message }], 401)
-			return
-		}
-		const existingUsername = await User.findOne({ username: data.username ?? '' })
-		const existingEmail = await User.findOne({ email: data.email ?? '' })
-		if (data.username && existingUsername) {
-			const message = 'Username already exists'
-			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
-			return
-		} else if (data.email && existingEmail) {
-			const message = 'User with that email already exists'
-			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
 			return
 		}
 		const decodedToken = verifyJWT(token)
@@ -323,6 +319,19 @@ export const checkUpdateRepresentative: any = async (
 			)
 			return
 		} else {
+			if ('email' in data || 'username' in data) {
+				if (data.email && data.email !== user.email) {
+					const message = 'Email does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
+				}
+
+				if (data.username && data.username !== user.username) {
+					const message = 'Username does not match the current one'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
+				}
+			}
 			next()
 		}
 	} catch (error: any) {
@@ -387,7 +396,7 @@ export const checkUpdateUserProfilePicture: any = async (
 export const checkUpdatePassword: any = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const id = req.params.id.toString()
-		const data = req.body
+		const { oldPassword, newPassword } = req.body
 		const token = req.headers.authorization ?? ''
 		if (token.length === 0) {
 			const message = 'No token provided'
@@ -418,11 +427,36 @@ export const checkUpdatePassword: any = async (req: Request, res: Response, next
 			)
 			return
 		}
-		if (data.password) {
-			data.password = await encrypt(data.password)
-		} else {
-			next()
+		const user = await User.findById(id)
+		if (!user) {
+			return ApiResponse.sendError(
+				res,
+				[{ title: 'Not Found', detail: 'User not found' }],
+				404
+			)
 		}
+		const isOldPasswordCorrect = await comparePasswords(oldPassword, user.password)
+		if (!isOldPasswordCorrect) {
+			return ApiResponse.sendError(
+				res,
+				[{ title: 'Unauthorized', detail: 'Old password is incorrect' }],
+				401
+			)
+		}
+		if (oldPassword === newPassword) {
+			return ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Bad Request',
+						detail: 'New password cannot be the same as old password',
+					},
+				],
+				400
+			)
+		}
+		req.body.newPassword = await encrypt(newPassword)
+		next()
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -431,6 +465,10 @@ export const checkUpdatePassword: any = async (req: Request, res: Response, next
 			},
 		])
 	}
+}
+
+const comparePasswords = async (providedPassword: any, storedPassword: any) => {
+	return compare(providedPassword, storedPassword)
 }
 
 // Comprobar si el usuario existe

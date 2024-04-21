@@ -7,10 +7,12 @@ import LatestHistory from '../../components/history/LatestHistory'
 import SecondaryButton from '../../components/secondaryButton'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
+import LatestHistorySearch from '../../components/history/LatestHistorySearch'
+import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function RepresentativeDetail() {
 	const { isAuthenticated } = useAuthContext()
-	const [userData, setUserData] = useState(null)
+	const [userData, setUserData] = useState({})
 	const [analysisHistoryData, setAnalysisHistoryData] = useState([
 		{
 			id: 1,
@@ -38,7 +40,7 @@ export default function RepresentativeDetail() {
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error.response.data.errors[0].detail)
-        handleNetworkError(error, navigate)
+				handleNetworkError(error, navigate)
 			}
 		}
 		fetchUserData()
@@ -56,10 +58,43 @@ export default function RepresentativeDetail() {
 					setAnalysisHistoryData(historyArray)
 				}
 			} catch (error) {
-				console.error('Error fetching history data:', error)
+				console.error('Error fetching history data:', error.response.data.errors[0].detail)
+				if (
+					error.response.data.errors[0].detail ===
+					'Error when getting the analysis by ID: jwt expired'
+				) {
+					console.error('Error fetching history data:', error)
+				}
 			}
 		}
 		fetchAnalysisHistoryData()
+	}, [])
+
+	useEffect(() => {
+		const fetchSearchHistoryData = async () => {
+			try {
+				if (isAuthenticated) {
+					const currentUserId = localStorage.getItem('userId')
+					const uri = `/user/${currentUserId}/team_creator/history`
+					const response = await axios.get(import.meta.env.VITE_BACKEND_URL + uri)
+					const historySearchArray = response.data.data.map((item) => item)
+					sortAndFormatHistory(historySearchArray)
+					setSearchHistoryData(historySearchArray)
+				}
+			} catch (error) {
+				console.error(
+					'Error fetching history datadasdsadsadsa:',
+					error.response.data.errors[0].detail
+				)
+				if (
+					error.response.data.errors[0].detail ===
+					'Error when getting the analysis by ID: jwt expired'
+				) {
+					console.error('Error fetching history data:', error)
+				}
+			}
+		}
+		fetchSearchHistoryData()
 	}, [])
 
 	function sortAndFormatHistory(historyList) {
@@ -69,66 +104,98 @@ export default function RepresentativeDetail() {
 		}))
 	}
 
-  function sortAndFormatHistory(historyList) {
-    historyList.sort((a, b) => b.date - a.date);
-    return historyList.map((history) => ({
-      date: history.date.toString(),
-    }));
-  }
+	return (
+		<div
+			className='flex flex-col bg-fixed'
+			style={{
+				backgroundImage: `url(${mainBackground})`,
+				backgroundSize: 'cover',
+				overflowY: 'scroll',
+				height: '100vh',
+			}}>
+			<div
+				className='flex flex-row justify-center items-center profile-header w-10/12 mt-20'
+				style={{ marginLeft: '8%' }}>
+				<div className='flex flex-col items-center'>
+					<img
+						src={
+							userData && userData.profilePicture ? userData.profilePicture : profile
+						}
+						className='rounded-full border border-gray-300 profile-img'
+						style={{
+							objectFit: 'cover',
+							objectPosition: 'center',
+							width: '300px',
+							height: '300px',
+						}}
+					/>
+				</div>
+				<div className='flex flex-col mt-10 w-fit'>
+					<div className='profile-name-text text-center'>
+						<h2>{userData && userData.username ? userData.username : ' - '}</h2>
+					</div>
+					<div className='flex flex-col w-full profile-info-text'>
+						{Input({
+							name: 'Company name',
+							value: userData ? userData.companyName : ' - ',
+							editable: false,
+						})}
+						<br></br>
+						{Input({
+							name: 'Phone number',
+							value: userData ? userData.phone : ' - ',
+							editable: false,
+						})}
+						<br></br>
+						{Input({
+							name: 'Corporative Email',
+							value: userData ? userData.email : ' - ',
+							editable: false,
+						})}
+						<br></br>
+						{Input({
+							name: 'Project Society Name',
+							value: userData ? userData.projectSocietyName : ' - ',
+							editable: false,
+						})}
+					</div>
 
-
-  return (
-    <div
-      className="flex flex-col"
-      style={{
-        backgroundImage: `url(${mainBackground})`,
-        backgroundSize: "cover",
-      }}
-    >
-      <div className="flex flex-row justify-center items-center profile-header w-10/12 mt-20">
-        <div className="flex flex-col items-center">
-          <img
-            src={profile} //[candidate.profilePicture}
-            className="rounded-full border border-gray-300 profile-img"
-          />
-        </div>
-        <div className="flex flex-col mt-10 w-fit">
-          <div className="profile-name-text text-center">
-            <h2>
-              {userData && userData.username ? userData.username : " - "}
-            </h2>
-          </div>
-            <div className="flex flex-col w-full profile-info-text">
-              {Input({name:"Company name", value:userData ? userData.companyName : " - ", editable:false})}
-              <br></br>
-              {Input({name:"Phone number", value:userData ? userData.phone : " - ", editable:false})}
-              <br></br>
-              {Input({name:"Corporative Email", value:userData ? userData.email : " - ", editable:false})}
-              <br></br>
-              {Input({name:"Project Society Name", value:userData ? userData.projectSocietyName : " - ", editable:false})}
-
-            </div>
-            <div className="mt-8 self-center">
-              {SecondaryButton("Update", "", "")}
-            </div>
-
-        </div>
-      </div>
-      <br></br>
-      <h3 className="profile-title">Latest Actions</h3>
-      <hr className="w-5/12 self-center"></hr>
-      <br></br>
-      <br></br>
-      <br></br>
-      <div className="flex flex-col justify-center w-8/12 self-center">
-        <LatestHistory
-          header="Latest Analysis"
-          data={analysisHistoryData}
-          type="analysis"
-          />
-      <br></br>
-      <br></br>
-      </div>
-    </div>
-  );
+					<div className='mt-8 self-center'>
+						{SecondaryButton(
+							'Update',
+							`/representative/detail/edit/${userData._id}`,
+							''
+						)}
+					</div>
+				</div>
+			</div>
+			<br></br>
+			<h3 className='profile-title'>Latest Actions</h3>
+			<hr className='w-5/12 self-center'></hr>
+			<br></br>
+			<br></br>
+			<br></br>
+			<div className='flex flex-col justify-center w-8/12 self-center'>
+				<LatestHistory
+					header='Latest Analysis'
+					data={analysisHistoryData}
+					type='analysis'
+				/>
+				<br></br>
+				<br></br>
+			</div>
+			<br></br>
+			<br></br>
+			<br></br>
+			<div className='flex flex-col justify-center w-8/12 self-center'>
+				<LatestHistorySearch
+					header='Latest Search'
+					data={searchHistoryData}
+					type='searches'
+				/>
+				<br></br>
+				<br></br>
+			</div>
+		</div>
+	)
 }

@@ -5,6 +5,128 @@ import mainBackgroundRegisterLogin from '../../images/main-background2.jpg'
 import axios from 'axios'
 import FormTextInput from '../../components/FormTextInput'
 import MainButton from '../../components/mainButton'
+import SecondaryButton from '../../components/secondaryButton'
+
+const TermsAndConditions = ({ handleClose, handleAccept }) => {
+	return (
+		<div
+			className='modal'
+			style={{
+				display: 'block',
+				position: 'fixed',
+				zIndex: 1,
+				left: 0,
+				top: 0,
+				width: '100%',
+				height: '100%',
+				backgroundColor: 'rgba(0,0,0,0.5)',
+			}}>
+			<div
+				className='modal-content'
+				style={{
+					backgroundColor: 'rgba(0, 0, 0, 0.9)',
+					margin: '15% auto',
+					padding: '20px',
+					border: '1px solid var(--talent-highlight)',
+					width: '80%',
+					maxWidth: '600px',
+				}}>
+				<div
+					className='terms-container'
+					style={{
+						overflowY: 'scroll',
+						scrollbarWidth: '5%',
+						scrollbarColor: 'red',
+						maxHeight: '50vh',
+					}}>
+					<pre
+						style={{ color: 'white', whiteSpace: 'pre-wrap', fontFamily: 'monospace' }}>
+						{`1. Terms of Service
+    1.1 Acceptable Use
+        Use of the services provided by IT Talent is subject to the following terms of acceptable use:
+            ●	Users must provide truthful and up-to-date information in their profiles.
+            ●	Use of the platform for illegal or unethical purposes is not permitted.
+            ●	Manipulation of search results or interference with the proper functioning of the platform is prohibited.
+            ●	Users must comply with all applicable laws and regulations in their use of the Services.
+    1.2 Term and Termination
+        This agreement will be effective from the date the user accesses IT Talent services and will continue until terminated by either party:
+            A.	Termination by User
+                User may terminate this Agreement at any time by simply ceasing to use the Service. Additionally, if you wish, you can proceed to delete your account.
+            B.	Termination by IT Talent
+                IT Talent reserves the right to terminate this Agreement or suspend the user's access to the Service in cases of actual unauthorized use of the Service, or in case of breach of this Agreement by the user. In such situations, IT Talent will provide the user with reasonable notice and the opportunity to correct the situation before proceeding with the termination of the agreement. However, in cases where the user's actions give rise to potential legal liability, IT Talent reserves the right to take action.
+            C.	Effects of Termination
+                Upon termination of this Agreement, User's right to use the Service will immediately cease. In the event of termination of the user's account, IT Talent may, in its sole discretion, delete the user's account and any related data.
+            D.	Survival
+                Any provisions of this Agreement which by their nature should survive termination hereof shall remain in full force and effect after such termination. This includes ownership provisions, warranty disclaimers, and limitations of liability.
+    1.3 Privacy Policy and GDPR
+        IT Talent is committed to protecting the privacy of its users. Our privacy policy describes how we collect, use and protect personal information provided by users in accordance with the General Data Protection Regulation (GDPR).
+            Data Collection and Use
+                I.	Personal Data Collected : IT Talent collects personal data from users, including names, email addresses, contact information, and data relevant to job searches such as skills and work experience.
+                II.	User Consent : Before a user can create an account on IT Talent, they are presented with a form where they must give their express consent for the processing of their personal data in accordance with the terms established in our privacy policy.
+            User Rights
+                I.	Data Access and Rectification : Users have the right to access and correct their personal data stored on the platform.
+                II.	Data Deletion : Users may request the deletion of their personal data when it is no longer necessary for the purposes for which it was collected.
+                III.	Data Portability : Users have the right to request the transfer of their data to another service.
+            Data Security
+                IT Talent implements security measures to protect user information against unauthorized access, disclosure, alteration or loss of data. These measures include data encryption, access control, and continuous platform monitoring.
+    1.4 Intellectual Property
+        All intellectual property rights related to IT Talent's services, including but not limited to software, design, and content, are the exclusive property of IT Talent. Users have no right to use, copy or distribute such materials without the express consent of IT Talent.
+2. Prices and Services
+    2.1 Plans for Companies
+        Basic Plan: €30/month
+            ●	Up to 25 candidate searches per month.
+            ●	Individual and team search of up to 3 people.
+            ●	No scrolling between candidate options.
+            ●	Basic filters available.
+            ●	30-day free trial.
+        Advanced Plan: €80/month
+            ●	Up to 150 candidate searches per month.
+            ●	Search for teams of up to 5 people.
+            ●	Scroll up to 10 different options for each of the results in team searches.
+            ●	All filters available.
+            ●	Candidate profile statistics.
+            ●	Shorter response times.
+            ●	Priority support.
+        Custom Plan: Customized pricing and features on demand.
+    2.2 Plans for Users in Job Search
+        Basic Plan: Free
+            ●	All the basic functionalities of the application.
+            ●	Possibility of updating data every 30 days.
+        Advanced Plan: €10/month
+            ●	All the features of the previous plan.
+            ●	Ability to update data three times every 30 days.
+            ●	Ability to see which companies have viewed your profile.
+            ●	Advanced application statistics.
+3. SLAS (Service Level Agreements)
+    3.1 Service Level Indicators (SLI)
+        The following service level indicators apply to IT Talent services:
+        Service Availability: IT Talent will endeavor to maintain 80% service availability.
+        Response Time: IT Talent is committed to providing an average response time of less than 5 ms for user requests.
+    3.2 Service Level Objectives (SLO)
+        The following service level objectives apply to IT Talent services:
+            ●	Problem Resolution : IT Talent is committed to resolving any problem reported by users within a maximum period of 48 hours if it is a company with a basic plan and 24 hours if it has a priority plan.
+            ●	Data Update : IT Talent will endeavor to update user data within a maximum period of 24 hours.
+    3.3 Compensations
+      In the event of non-compliance with the service level indicators or objectives mentioned above, IT Talent will offer compensation to affected users, which may include free subscription extensions or partial refunds, as determined by IT Talent.
+
+We reserve the right to modify this agreement at any time and the user will be notified accordingly. The user must therefore accept the new terms in order to continue using the service.
+If you have any questions about these terms, please contact us at: ittalentofficial@outlook.com
+            `}
+					</pre>
+					<div
+						style={{
+							display: 'flex',
+							justifyContent: 'center',
+							gap: '20px',
+						}}>
+						{SecondaryButton('Cancel', '', handleClose)}
+						{MainButton('Accept', '', handleAccept)}
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
 
 export default function RegisterRepresentative() {
 	const talentColor = 'var(--talent-highlight)'
@@ -14,17 +136,29 @@ export default function RegisterRepresentative() {
 		username: '',
 		corporative_email: '',
 		company_name: '',
-		companySubscription: 'Basic plan',
 		password: '',
 		password2: '',
 	})
+	const [showModal, setShowModal] = useState(false)
+
+	const showModalHandler = () => {
+		setShowModal(true)
+	}
+
+	const hideModalHandler = () => {
+		setIsCheckboxChecked(false)
+		setShowModal(false)
+	}
+	const acceptTermsHandler = () => {
+		setIsCheckboxChecked(true)
+		setShowModal(false)
+	}
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false)
 	const [errors, setErrors] = useState({})
 	const {
 		username,
 		corporative_email,
 		company_name,
-		companySubscription,
 		phone_number,
 		projectSocietyName,
 		password,
@@ -57,22 +191,13 @@ export default function RegisterRepresentative() {
 		setEmailValid(true)
 
 		if (!isCheckboxChecked) {
-			setErrors({ termsCheckbox: 'You must accept the terms and conditions' })
+			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
 			return
 		}
 		const validationErrors = validateForm()
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors)
 			return
-		}
-		if (enableValidation) {
-			setLoading(true)
-			const isValidEmail = await validateEmail(form.corporative_email)
-			setLoading(false)
-			if (!isValidEmail) {
-				setEmailValid(false)
-				return
-			}
 		}
 
 		let valid = true
@@ -92,6 +217,17 @@ export default function RegisterRepresentative() {
 				return
 			}
 		})
+
+		//email validation API
+		if (enableValidation) {
+			setLoading(true)
+			const isValidEmail = await validateEmail(form.corporative_email)
+			setLoading(false)
+			if (!isValidEmail) {
+				setEmailValid(false)
+				return
+			}
+		}
 
 		try {
 			const response = await axios.post(
@@ -113,7 +249,7 @@ export default function RegisterRepresentative() {
 
 			if (response.status === 200) {
 				login(data.token, data.user.role, data.user._id)
-				navigate('/representative/detail')
+				navigate('/representative/subscription')
 			} else if (response.status === 400 || response.status === 409) {
 				setErrors(response.data)
 			}
@@ -144,48 +280,36 @@ export default function RegisterRepresentative() {
 	}, [])
 
 	async function validateEmail(email) {
-		const verifaliaUserId = 'ittalentID1111111111111111'
-		const verifaliaUserPwd = 'rI8e.gOjdUWfv0'
+		const options = {
+			method: 'GET',
+			url: 'https://validect-email-verification-v1.p.rapidapi.com/v1/verify',
+			params: {
+				email: email,
+			},
+			headers: {
+				'X-RapidAPI-Key': '7308b20086mshb693866b5675d9cp10aa6fjsn7830c3168107',
+				'X-RapidAPI-Host': 'validect-email-verification-v1.p.rapidapi.com',
+			},
+		}
 
 		try {
-			// Enviar solicitud de validación de correo electrónico
-			const response = await axios.post(
-				'https://api.verifalia.com/v2.5/email-validations',
-				{
-					entries: [{ inputData: email }],
-				},
-				{
-					auth: {
-						username: verifaliaUserId,
-						password: verifaliaUserPwd,
-					},
-				}
-			)
-			const taskId = response.data.overview.id
-			let taskStatus = 'InProgress'
-			let result = false
-			while (taskStatus === 'InProgress') {
-				const taskResponse = await axios.get(
-					`https://api.verifalia.com/v2.5/email-validations/${taskId}`,
-					{
-						auth: {
-							username: verifaliaUserId,
-							password: verifaliaUserPwd,
-						},
-					}
-				)
-				taskStatus = taskResponse.status
-				result = taskResponse.data.entries.data[0].classification === 'Deliverable'
-				await new Promise((resolve) => setTimeout(resolve, 1000))
+			const response = await axios.request(options)
+			if (response.data.status === 'valid') {
+				return true
+			} else {
+				return false
 			}
-
-			return result
 		} catch (error) {
-			console.error('Error validating email:', error)
+			if (error.response && error.response.status === 402) {
+				console.error(
+					'Se agotaron los créditos de la API de validación. El correo puede no ser auténtico.'
+				)
+				return true
+			}
+			console.error(error)
 			return false
 		}
 	}
-
 	function validateForm() {
 		let errors = {}
 
@@ -209,15 +333,28 @@ export default function RegisterRepresentative() {
 		}
 		if (!form.password) {
 			errors.password = getRequiredFieldMessage('password')
+		} else if (form.password.length < 8 || form.password.length > 20) {
+			errors.password = 'The passwords fields must be between 8 and 20 characters'
 		} else if (form.password !== form.password2) {
 			errors.password2 = 'Password do not match'
 		}
 		if (!form.password2) {
 			errors.password2 = getRequiredFieldMessage('repeat password')
+		} else if (form.password2.length < 8 || form.password2.length > 20) {
+			errors.password2 = 'The password field must be between 8 and 20 characters'
 		}
-		if (form.phone_number && !/^\d{9}$/.test(form.phone_number)) {
-			errors.phone_number = 'A phone number must consist of 9 digits exclusively'
+
+		if (
+			form.phone_number &&
+			!/^(\+34|0034|34)?[ -]*(6|7|9)[ -]*([0-9][ -]*){8}$|^(\+1|001|1)?[ -]*408[ -]*([0-9][ -]*){7}$/.test(
+				form.phone_number
+			)
+		) {
+			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
+			errors.phone_number =
+				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
+
 		if (
 			form.projectSocietyName &&
 			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)
@@ -365,7 +502,9 @@ export default function RegisterRepresentative() {
 									<input
 										type='checkbox'
 										className='form-checkbox text-blue-500'
-										onChange={handleCheckboxChange}
+										onChange={(e) => e.preventDefault()}
+										onClick={showModalHandler}
+										checked={isCheckboxChecked}
 									/>
 									<span className='ml-2'>
 										Do you accept the terms and
@@ -383,25 +522,6 @@ export default function RegisterRepresentative() {
 											className='hidden lg:inline-block'
 											style={{ marginRight: '-10px' }}
 										/>
-										<a
-											href='https://tu-enlace-externo.com'
-											className='text-white hover:underline'
-											target='_blank'
-											rel='noopener noreferrer'>
-											Read the conditions in here
-											<svg
-												className='h-6 w-6 inline-block'
-												fill='none'
-												viewBox='0 0 24 24'
-												stroke='currentColor'>
-												<path
-													strokeLinecap='round'
-													strokeLinejoin='round'
-													strokeWidth='2'
-													d='M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14'
-												/>
-											</svg>
-										</a>
 									</span>
 								</label>
 								{errors.termsCheckbox && (
@@ -428,6 +548,12 @@ export default function RegisterRepresentative() {
 						<div className='mt-4 mb-4'>{MainButton('Register', '/', handleSubmit)}</div>
 					</div>
 				</form>
+				{showModal && (
+					<TermsAndConditions
+						handleClose={hideModalHandler}
+						handleAccept={acceptTermsHandler}
+					/>
+				)}
 			</div>
 			<br></br>
 		</div>

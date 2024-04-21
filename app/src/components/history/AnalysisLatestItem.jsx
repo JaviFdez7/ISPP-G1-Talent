@@ -32,7 +32,7 @@ const AnalysisLatestItem = ({ item, formattedDate, triggerUpdate }) => {
 	}, [item.analysisId])
 
 	return (
-		<div className='p-4 rounded-lg bg-black bg-opacity-70 transition-colors duration-300 hover:bg-gray-700 mb-2 border-b border-t border-gray-900'>
+		<div className='p-4 mb-2 mt-2 history-list-element'>
 			<div className='flex-col relative'>
 				<Link className='block text-white' to={`/analysis/${githubUsername}`}>
 					<div className='flex flex-col lg:flex-row justify-start items-center'>

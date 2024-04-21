@@ -34,8 +34,8 @@ const FavoriteButton = ({ history, toggleText = false }) => {
         <button
             onClick={handleToggleFavorite}
             className="flex items-center text-white transition-colors duration-300 hover:text-yellow-300 bg-transparent border-none rounded-full p-2"
-            style={{ width: "40px", height: "40px" }}
-        >
+
+            >
             <div className="bg-transparent hover:bg-gray-500 hover:bg-opacity-50 rounded-lg duration-300 p-2">
                 <FontAwesomeIcon icon={faStar} style={{ color: isFavorite ? favOn : favOff }} />
             </div>

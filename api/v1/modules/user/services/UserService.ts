@@ -1,9 +1,14 @@
 import { generateJWT } from '../helpers/handleJWT'
 import { Candidate, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
-
 import { getModelForRole } from '../helpers/handleRoles'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
+import {
+	createRepresentativeSubscriptions,
+	createCandidateSubscriptions,
+	getSubscriptionsByUserId,
+} from '../../subscriptions/services/SubscriptionsService'
+import { CandidateSubscription } from '../../subscriptions/models/subscription'
 
 export const getAllUser: any = async () => await User.find({})
 
@@ -22,8 +27,14 @@ export const createUser: any = async (data: any, role: string) => {
 	try {
 		const Model = getModelForRole(role)
 		if (role === 'Candidate') {
-			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			const analysis = await createAnalysis(data?.githubUser, '', data?.githubToken)
+			const subscription = await createCandidateSubscriptions()
 			data.analysisId = analysis._id
+			data.subscriptionId = subscription._id
+		}
+		if (role === 'Representative') {
+			const subscription = await createRepresentativeSubscriptions()
+			data.subscriptionId = subscription._id
 		}
 		const user = new Model(data)
 		await user.save()
@@ -37,8 +48,11 @@ export const createUser: any = async (data: any, role: string) => {
 export const updateUser: any = async (id: any, data: any, role: string) => {
 	try {
 		const Model = getModelForRole(role) as typeof User
-		const { password, profilePicture, ...editableDetails } = data
-		const updatedUser = await Model.findByIdAndUpdate(id, editableDetails, { new: true })
+		if (role === 'Candidate') {
+			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			data.analysisId = analysis._id
+		}
+		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
 		return updatedUser
 	} catch (error) {
 		console.error('Error updating user:', error)
@@ -48,7 +62,7 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 
 export const updateUserProfilePicture: any = async (id: any, picture: string) => {
 	try {
-		const updatedUser = await Candidate.findByIdAndUpdate(
+		const updatedUser = await User.findByIdAndUpdate(
 			id,
 			{ profilePicture: picture },
 			{ new: true }
@@ -60,9 +74,13 @@ export const updateUserProfilePicture: any = async (id: any, picture: string) =>
 	}
 }
 
-export const updateUserPassword: any = async (id: any, password: string) => {
+export const updateUserPassword: any = async (id: any, newPassword: string) => {
 	try {
-		const updatedUser = await User.findByIdAndUpdate(id, { password }, { new: true })
+		const updatedUser = await User.findByIdAndUpdate(
+			id,
+			{ password: newPassword },
+			{ new: true }
+		)
 		return updatedUser
 	} catch (error) {
 		console.error('Error updating user password:', error)

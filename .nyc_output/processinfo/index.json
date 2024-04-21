@@ -1,0 +1,78 @@
+{
+	"processes": { "b755a280-3904-4861-918c-2476ca49ae4e": { "parent": null, "children": [] } },
+	"files": {
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\tests\\api\\CallingApiTest.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\analysis\\services\\GitHubService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\tests\\e2e\\UserControllerTest.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\controllers\\UserController.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\services\\UserService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\helpers\\handleJWT.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\models\\user.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\analysis\\models\\analysis.model.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\professional-experience\\models\\professional-experience.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\helpers\\handleRoles.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\analysis\\services\\AnalysisService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\notification\\services\\NotificationService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\notification\\models\\notification.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\history\\models\\history.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\history\\services\\HistoryService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\subscriptions\\services\\SubscriptionsService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\subscriptions\\models\\subscription.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\utils\\ApiResponse.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\middlewares\\UserMiddleware.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\user\\helpers\\handleBcrypt.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\tests\\unit\\TeamCreatorServiceTest.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\professional-experience\\services\\ProfessionalExperienceService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\team-creator\\services\\TeamCreatorService.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		],
+		"C:\\ISPP\\ISPP-G1-Talent\\api\\v1\\modules\\team-creator\\models\\TeamCreatorModel.js": [
+			"b755a280-3904-4861-918c-2476ca49ae4e"
+		]
+	},
+	"externalIds": {}
+}
