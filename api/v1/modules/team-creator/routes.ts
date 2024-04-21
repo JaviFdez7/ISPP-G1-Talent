@@ -1,29 +1,41 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import express from 'express';
+import express from 'express'
 import {
- // getAllTeamCreator,
- getTeamCreatorById,
-  createTeamCreator,
-  getAllTeamCreatorOfRepresentative,
-  //updateTeamCreator,
-  deleteTeamCreator
-} from './controllers/TeamCreatorController';
+	// getAllTeamCreator,
+	getTeamCreatorById,
+	createTeamCreator,
+	getAllTeamCreatorOfRepresentative,
+	//updateTeamCreator,
+	deleteTeamCreator,
+} from './controllers/TeamCreatorController'
 import {
-  checkIsRepresentative,
-  checkValidToken,
-  checkDataCreateTeam,
-  checkAuthorization,
-  checkSubscriptionState
-
-} from './validators/TeamCreatorMiddleware';
-const router = express.Router();
-router.use(express.json());
+	checkIsRepresentative,
+	checkValidToken,
+	checkDataCreateTeam,
+	checkAuthorization,
+	checkSubscriptionState,
+} from './validators/TeamCreatorMiddleware'
+const router = express.Router()
+router.use(express.json())
 // Define routes for the TeamCreator module
 //router.get('/', getAllTeamCreator);
-router.get('/:id',checkValidToken,checkIsRepresentative, getTeamCreatorById);
-router.get('/representative-user/:id',checkValidToken,checkIsRepresentative,checkAuthorization,getAllTeamCreatorOfRepresentative)
-router.post('/',checkValidToken,checkIsRepresentative,checkDataCreateTeam,checkSubscriptionState, createTeamCreator);
+router.get('/:id', checkValidToken, checkIsRepresentative, getTeamCreatorById)
+router.get(
+	'/representative-user/:id',
+	checkValidToken,
+	checkIsRepresentative,
+	checkAuthorization,
+	getAllTeamCreatorOfRepresentative
+)
+router.post(
+	'/',
+	checkValidToken,
+	checkIsRepresentative,
+	checkDataCreateTeam,
+	checkSubscriptionState,
+	createTeamCreator
+)
 //router.patch('/:id', updateTeamCreator);
-router.delete('/:id',checkValidToken,checkIsRepresentative, deleteTeamCreator);
+router.delete('/:id', checkValidToken, checkIsRepresentative, deleteTeamCreator)
 
-export default router;
+export default router

@@ -142,7 +142,13 @@ export default function SearchResult() {
 										Filter Parameters {index + 1}
 									</h6>
 									<DataTableVertical
-										width={(mobile || (team.recommendedCandidates && team.recommendedCandidates.length < 3)) ? 'w-full' : 'w-3/4'}
+										width={
+											mobile ||
+											(team.recommendedCandidates &&
+												team.recommendedCandidates.length < 3)
+												? 'w-full'
+												: 'w-3/4'
+										}
 										data={[
 											{
 												header: 'Technologies',
@@ -171,21 +177,28 @@ export default function SearchResult() {
 								</div>
 								<div
 									className='flex flex-wrap items-center w-full justify-center mt-5 mb-5'
-									style={{  flexDirection: (mobile || (team.recommendedCandidates && team.recommendedCandidates.length < 3)) ? 'column' : 'row',
-									width: '100%',  }}>
+									style={{
+										flexDirection:
+											mobile ||
+											(team.recommendedCandidates &&
+												team.recommendedCandidates.length < 3)
+												? 'column'
+												: 'row',
+										width: '100%',
+									}}>
 									{Array.isArray(team.recommendedCandidates) &&
 									team.recommendedCandidates.length > 0 ? (
 										team.recommendedCandidates.map(
 											(candidate, candidateIndex) => (
 												<div
 													key={candidateIndex}
-													className={mobile ? 'w-full px-2' : 'w-1/3 px-2'}>
-													<h6
-														className='text-1xl font-bold text-center text-white  mt-5 mb-5'>
+													className={
+														mobile ? 'w-full px-2' : 'w-1/3 px-2'
+													}>
+													<h6 className='text-1xl font-bold text-center text-white  mt-5 mb-5'>
 														Filtered Candidate {candidateIndex + 1}
 													</h6>
 													<DataTableVertical
-														
 														data={[
 															{
 																header: 'Github username',
@@ -263,8 +276,6 @@ export default function SearchResult() {
 															display: 'flex',
 															justifyContent: 'center',
 															alignItems: 'center',
-															
-
 														}}>
 														<div className='flex justify-center mt-10 mb-4'>
 															{MainButton('View Analysis', '', () =>
