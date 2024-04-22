@@ -1,56 +1,55 @@
-
 .datatable-container {
-    width: 100%;
+	width: 100%;
 }
 
 .datatable-header-container {
-    background-color: var(--talent-light-background);
-    border-radius: 20px 20px 0px 0px;
+	background-color: var(--talent-light-background);
+	border-radius: 20px 20px 0px 0px;
 }
 
 .datatable-body-container {
-    background-color: var(--talent-dark-background);
-    border-radius: 0px 0px 20px 20px;
+	background-color: var(--talent-dark-background);
+	border-radius: 0px 0px 20px 20px;
 }
 
 .datatable-body {
-    max-height: 200px; /* Adjust as needed */
-    overflow-y: auto;
+	max-height: 200px; /* Adjust as needed */
+	overflow-y: auto;
 }
 .datatable-header {
-    padding: 0;
-    padding-top: 15px;
-    padding-bottom: 15px;
+	padding: 0;
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 .datatable-header-text {
-    height: 95%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+	height: 95%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 .datatable-container * th {
-    color: white;   
+	color: white;
 }
 .datatable-cell {
-    color: white;
-    height: fit-content;
-    word-break: break-all;
-    align-items: center;
-    justify-content: center;
-    padding-left: 3%;
-    padding-bottom: 3%;
+	color: white;
+	height: fit-content;
+	word-break: break-all;
+	align-items: center;
+	justify-content: center;
+	padding-left: 3%;
+	padding-bottom: 3%;
 }
 
 .datatable-cell-small {
-    color: white;
-    height: fit-content;
-    word-break: break-all;
-    align-items: center;
-    justify-content: center;
-    padding-left: 1%;
-    padding-bottom: 1%;
+	color: white;
+	height: fit-content;
+	word-break: break-all;
+	align-items: center;
+	justify-content: center;
+	padding-left: 1%;
+	padding-bottom: 1%;
 }
 
 .edit-button {
-    background-color: var(--talent-secondary);
+	background-color: var(--talent-secondary);
 }

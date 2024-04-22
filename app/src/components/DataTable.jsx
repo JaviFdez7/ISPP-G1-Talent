@@ -46,7 +46,9 @@ export default function DataTable({
 	return (
 		<div className='mt-2 datatable-container'>
 			<table className='w-full datatable-header-container'>{head}</table>
-			<div className='datatable-body-container' style={{ overflow: 'auto', maxHeight: '400px' }}>
+			<div
+				className='datatable-body-container'
+				style={{ overflow: 'auto', maxHeight: '400px' }}>
 				<table className='w-full'>
 					<tbody className='datatable-body'>
 						{contentArray.map((item, index) => (

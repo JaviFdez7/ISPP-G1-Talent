@@ -168,14 +168,18 @@ export const checkDataCreateTeam: any = async (req: Request, res: Response, next
 	}
 }
 
-export const checkSubscriptionState: any = async (req: Request, res: Response, next: NextFunction) => {
+export const checkSubscriptionState: any = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	try {
-		const profiles=req.body
+		const profiles = req.body
 		const token = req.headers.authorization ?? ''
 		const decodedToken = verifyJWT(token)
 		const representativeUser = await Representative.findById(decodedToken.sub)
-		const subscription= await Subscription.findById((representativeUser as any).subscriptionId)
-		if(subscription===null){
+		const subscription = await Subscription.findById((representativeUser as any).subscriptionId)
+		if (subscription === null) {
 			const message = 'You arent subscribed'
 			ApiResponse.sendError(
 				res,
@@ -188,7 +192,7 @@ export const checkSubscriptionState: any = async (req: Request, res: Response, n
 				400
 			)
 			return
-		}else if((subscription as any).remainingSearches<profiles.length){
+		} else if ((subscription as any).remainingSearches < profiles.length) {
 			const message = 'You dont have enough tokens to search'
 			ApiResponse.sendError(
 				res,
@@ -201,7 +205,7 @@ export const checkSubscriptionState: any = async (req: Request, res: Response, n
 				400
 			)
 			return
-		}else if(profiles.length>(subscription as any).teamLimit){
+		} else if (profiles.length > (subscription as any).teamLimit) {
 			const message = `You cant make teams higher tha ${(subscription as any).teamLimit}`
 			ApiResponse.sendError(
 				res,
@@ -216,7 +220,6 @@ export const checkSubscriptionState: any = async (req: Request, res: Response, n
 			return
 		}
 		next()
-
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
