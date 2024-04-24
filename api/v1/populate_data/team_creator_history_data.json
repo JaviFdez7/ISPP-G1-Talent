@@ -1,30 +1,30 @@
 [
-    {
-        "_id": "333f1f8bcf30e2d9c6a7d8b4",
-        "userId": "630f1f8bcf30e2d9c6a7d8b1",
-        "teamCreatorId": "631f1f8bcf30e2d9c6a7d8c1",
-        "date": "2024-04-01T00:00:00Z",
-        "favorite": true
-    },
-    {
-        "_id": "333f1f8bcf30e2d9c6a7d8b1",
-        "userId": "630f1f8bcf30e2d9c6a7d8b2",
-        "teamCreatorId": "631f1f8bcf30e2d9c6a7d8c2",
-        "date": "2024-04-02T00:00:00Z",
-        "favorite": false
-    },
-    {
-        "_id": "333f1f8bcf30e2d9c6a7d8b2",
-        "userId": "630f1f8bcf30e2d9c6a7d8b1",
-        "teamCreatorId": "631f1f8bcf30e2d9c6a7d8c3",
-        "date": "2024-04-03T00:00:00Z",
-        "favorite": true
-    },
-    {
-        "_id": "333f1f8bcf30e2d9c6a7d8b3",
-        "userId": "630f1f8bcf30e2d9c6a7d8b2",
-        "teamCreatorId": "631f1f8bcf30e2d9c6a7d8c4",
-        "date": "2024-04-04T00:00:00Z",
-        "favorite": true
-    }
+	{
+		"_id": "333f1f8bcf30e2d9c6a7d8b4",
+		"userId": "630f1f8bcf30e2d9c6a7d8b1",
+		"teamCreatorId": "631f1f8bcf30e2d9c6a7d8c1",
+		"date": "2024-04-01T00:00:00Z",
+		"favorite": true
+	},
+	{
+		"_id": "333f1f8bcf30e2d9c6a7d8b1",
+		"userId": "630f1f8bcf30e2d9c6a7d8b2",
+		"teamCreatorId": "631f1f8bcf30e2d9c6a7d8c2",
+		"date": "2024-04-02T00:00:00Z",
+		"favorite": false
+	},
+	{
+		"_id": "333f1f8bcf30e2d9c6a7d8b2",
+		"userId": "630f1f8bcf30e2d9c6a7d8b1",
+		"teamCreatorId": "631f1f8bcf30e2d9c6a7d8c3",
+		"date": "2024-04-03T00:00:00Z",
+		"favorite": true
+	},
+	{
+		"_id": "333f1f8bcf30e2d9c6a7d8b3",
+		"userId": "630f1f8bcf30e2d9c6a7d8b2",
+		"teamCreatorId": "631f1f8bcf30e2d9c6a7d8c4",
+		"date": "2024-04-04T00:00:00Z",
+		"favorite": true
+	}
 ]
