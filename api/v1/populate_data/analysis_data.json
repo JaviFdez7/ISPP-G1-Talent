@@ -1,0 +1,442 @@
+[
+  {
+      "_id": "640f1f8bcf30e2d9c6a7d8b6",
+      "githubUsername": "johndoe",
+      "avatarUrl": "http://example.com/pic.jpg",
+      "followers": 120,
+      "globalIssuesClosed": 50,
+      "contributions": {
+          "totalCommits": 350,
+          "totalPullRequests": 40,
+          "totalRepositoriesContributedWithCommits": 8,
+          "totalRepositoriesContributedWithPullRequests": 4
+      },
+      "globalTopLanguages": [
+          {"language": "JavaScript", "percentage": 60},
+          {"language": "Ruby", "percentage": 40}
+      ],
+      "globalTechnologies": ["React", "Rails"],
+      "topRepositories": [
+          {
+              "name": "Innovative Project",
+              "description": "A project to innovate tech solutions.",
+              "url": "http://github.com/johndoe/innovativeproject",
+              "stars": 150,
+              "forks": 35,
+              "languages": ["JavaScript", "Ruby"],
+              "technologies": ["React", "Rails"],
+              "numberClosedIssues": 10
+          }
+      ]
+  },
+  {
+      "_id": "640f1f8bcf30e2d9c6a7d8b7",
+      "githubUsername": "lgzarturo",
+      "avatarUrl": "http://example.com/jane.jpg",
+      "followers": 200,
+      "globalIssuesClosed": 65,
+      "contributions": {
+          "totalCommits": 400,
+          "totalPullRequests": 50,
+          "totalRepositoriesContributedWithCommits": 10,
+          "totalRepositoriesContributedWithPullRequests": 5
+      },
+      "globalTopLanguages": [
+          {"language": "TypeScript", "percentage": 70},
+          {"language": "Python", "percentage": 30}
+      ],
+      "globalTechnologies": ["Angular", "Django"],
+      "topRepositories": [
+          {
+              "name": "Tech Revolution",
+              "description": "Revolutionizing technology through innovation.",
+              "url": "http://github.com/lgzarturo/techrevolution",
+              "stars": 175,
+              "forks": 42,
+              "languages": ["TypeScript", "Python"],
+              "technologies": ["Angular", "Django"],
+              "numberClosedIssues": 15
+          }
+      ]
+  },
+  {
+      "_id": "640f1f8bcf30e2d9c6a7d8b8",
+      "githubUsername": "alexcjohnson",
+      "avatarUrl": "http://example.com/alex.jpg",
+      "followers": 300,
+      "globalIssuesClosed": 80,
+      "contributions": {
+          "totalCommits": 500,
+          "totalPullRequests": 60,
+          "totalRepositoriesContributedWithCommits": 12,
+          "totalRepositoriesContributedWithPullRequests": 6
+      },
+      "globalTopLanguages": [
+          {"language": "C#", "percentage": 55},
+          {"language": "JavaScript", "percentage": 45}
+      ],
+      "globalTechnologies": [".NET", "Node.js"],
+      "topRepositories": [
+          {
+              "name": "Future Tech",
+              "description": "Shaping the future of technology.",
+              "url": "http://github.com/alexcjohnson/futuretech",
+              "stars": 220,
+              "forks": 58,
+              "languages": ["C#", "JavaScript"],
+              "technologies": [".NET", "Node.js"],
+              "numberClosedIssues": 20
+          }
+      ]
+  },
+  {
+    "_id": "640f1f8bcf30e2d9c6a7d8b9",
+    "githubUsername": "mariar",
+    "avatarUrl": "http://example.com/maria.jpg",
+    "followers": 180,
+    "globalIssuesClosed": 45,
+    "contributions": {
+        "totalCommits": 230,
+        "totalPullRequests": 30,
+        "totalRepositoriesContributedWithCommits": 6,
+        "totalRepositoriesContributedWithPullRequests": 3
+    },
+    "globalTopLanguages": [
+        {"language": "Java", "percentage": 70},
+        {"language": "Kotlin", "percentage": 30}
+    ],
+    "globalTechnologies": ["Spring", "Android"],
+    "topRepositories": [
+        {
+            "name": "Innovative Android",
+            "description": "Innovative Android applications built with Kotlin and Java.",
+            "url": "http://github.com/mariar/innovativeandroid",
+            "stars": 130,
+            "forks": 40,
+            "languages": ["Java", "Kotlin"],
+            "technologies": ["Android", "Spring"],
+            "numberClosedIssues": 25
+        }
+    ]
+},
+{   
+    "_id": "640f1f8bcf30e2d9c6a7d8ba",
+    "githubUsername": "aristoteles-nunez",
+    "avatarUrl": "http://example.com/aristoteles.jpg",
+    "followers": 150,
+    "globalIssuesClosed": 34,
+    "MostClosedIssueRepo": {
+        "name": "Innovative Web",
+        "description": "A project focused on creating innovative web applications.",
+        "url": "http://github.com/aristoteles-nunez/innovative-web",
+        "stars": 115,
+        "forks": 30,
+        "languages": ["JavaScript", "HTML", "CSS"],
+        "technologies": ["React", "Node.js"],
+        "numberClosedIssues": 48
+    },
+    "contributions": {
+        "totalCommits": 450,
+        "totalPullRequests": 37,
+        "totalRepositoriesContributedWithCommits": 12,
+        "totalRepositoriesContributedWithPullRequests": 8
+    },
+    "globalTopLanguages": [
+        {"language": "JavaScript", "percentage": 60},
+        {"language": "HTML", "percentage": 25},
+        {"language": "CSS", "percentage": 15}
+    ],
+    "globalTechnologies": ["React", "Node.js"],
+    "topRepositories": [
+        {
+            "name": "Innovative Web",
+            "description": "A project focused on creating innovative web applications.",
+            "url": "http://github.com/aristoteles-nunez/innovative-web",
+            "stars": 115,
+            "forks": 30,
+            "languages": ["JavaScript", "HTML", "CSS"],
+            "technologies": ["React", "Node.js"],
+            "numberClosedIssues": 48
+        }
+    ]
+},
+{
+    "_id": "640f1f8bcf30e2d9c6a7d8bb",
+    "githubUsername": "manuel-fidalgo",
+    "avatarUrl": "http://example.com/manuel.jpg",
+    "followers": 220,
+    "globalIssuesClosed": 75,
+    "MostClosedIssueRepo": {
+        "name": "Enterprise Solutions",
+        "description": "Next-gen enterprise management system.",
+        "url": "http://github.com/manuel-fidalgo/enterprise-solutions",
+        "stars": 95,
+        "forks": 45,
+        "languages": ["Java", "Kotlin"],
+        "technologies": ["Spring", "Android"],
+        "numberClosedIssues": 50
+    },
+    "contributions": {
+        "totalCommits": 620,
+        "totalPullRequests": 55,
+        "totalRepositoriesContributedWithCommits": 20,
+        "totalRepositoriesContributedWithPullRequests": 15
+    },
+    "globalTopLanguages": [
+        {"language": "Java", "percentage": 50},
+        {"language": "Kotlin", "percentage": 50}
+    ],
+    "globalTechnologies": ["Spring", "Android"],
+    "topRepositories": [
+        {
+            "name": "Enterprise Solutions",
+            "description": "Next-gen enterprise management system.",
+            "url": "http://github.com/manuel-fidalgo/enterprise-solutions",
+            "stars": 95,
+            "forks": 45,
+            "languages": ["Java", "Kotlin"],
+            "technologies": ["Spring", "Android"],
+            "numberClosedIssues": 50
+        }
+    ]
+},
+{
+    "_id": "640f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "Libertual",
+    "avatarUrl": "http://example.com/libertual.jpg",
+    "followers": 180,
+    "globalIssuesClosed": 65,
+    "MostClosedIssueRepo": {
+        "name": "Open Source Advocate",
+        "description": "Project focused on promoting open-source software.",
+        "url": "http://github.com/Libertual/open-source-advocate",
+        "stars": 200,
+        "forks": 150,
+        "languages": ["Python", "JavaScript"],
+        "technologies": ["Django", "React"],
+        "numberClosedIssues": 75
+    },
+    "contributions": {
+        "totalCommits": 900,
+        "totalPullRequests": 80,
+        "totalRepositoriesContributedWithCommits": 30,
+        "totalRepositoriesContributedWithPullRequests": 20
+    },
+    "globalTopLanguages": [
+        {"language": "Python", "percentage": 70},
+        {"language": "JavaScript", "percentage": 30}
+    ],
+    "globalTechnologies": ["Django", "React"],
+    "topRepositories": [
+        {
+            "name": "Open Source Advocate",
+            "description": "Project focused on promoting open-source software.",
+            "url": "http://github.com/Libertual/open-source-advocate",
+            "stars": 200,
+            "forks": 150,
+            "languages": ["Python", "JavaScript"],
+            "technologies": ["Django", "React"],
+            "numberClosedIssues": 75
+        }
+    ]
+},
+{
+    "_id": "740f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "PabloRdrRbl",
+    "avatarUrl": "http://example.com/pablor.jpg",
+    "followers": 205,
+    "globalIssuesClosed": 60,
+    "MostClosedIssueRepo": {
+        "name": "Advanced Security Systems",
+        "description": "Cutting-edge security solutions for modern applications.",
+        "url": "http://github.com/PabloRdrRbl/advanced-security-systems",
+        "stars": 180,
+        "forks": 100,
+        "languages": ["Ruby", "JavaScript"],
+        "technologies": ["Rails", "React"],
+        "numberClosedIssues": 90
+    },
+    "contributions": {
+        "totalCommits": 750,
+        "totalPullRequests": 65,
+        "totalRepositoriesContributedWithCommits": 18,
+        "totalRepositoriesContributedWithPullRequests": 15
+    },
+    "globalTopLanguages": [
+        {"language": "Ruby", "percentage": 60},
+        {"language": "JavaScript", "percentage": 40}
+    ],
+    "globalTechnologies": ["Rails", "React"],
+    "topRepositories": [
+        {
+            "name": "Advanced Security Systems",
+            "description": "Cutting-edge security solutions for modern applications.",
+            "url": "http://github.com/PabloRdrRbl/advanced-security-systems",
+            "stars": 180,
+            "forks": 100,
+            "languages": ["Ruby", "JavaScript"],
+            "technologies": ["Rails", "React"],
+            "numberClosedIssues": 90
+        }
+    ]
+},
+{
+    "_id": "770f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "dmananes",
+    "avatarUrl": "http://example.com/dmananes.jpg",
+    "followers": 135,
+    "globalIssuesClosed": 40,
+    "MostClosedIssueRepo": {
+        "name": "Mobile Innovations Lab",
+        "description": "Exploring new concepts in mobile applications.",
+        "url": "http://github.com/dmananes/mobile-innovations-lab",
+        "stars": 120,
+        "forks": 70,
+        "languages": ["Kotlin", "Swift"],
+        "technologies": ["Android", "iOS"],
+        "numberClosedIssues": 60
+    },
+    "contributions": {
+        "totalCommits": 600,
+        "totalPullRequests": 50,
+        "totalRepositoriesContributedWithCommits": 24,
+        "totalRepositoriesContributedWithPullRequests": 18
+    },
+    "globalTopLanguages": [
+        {"language": "Kotlin", "percentage": 50},
+        {"language": "Swift", "percentage": 50}
+    ],
+    "globalTechnologies": ["Android", "iOS"],
+    "topRepositories": [
+        {
+            "name": "Mobile Innovations Lab",
+            "description": "Exploring new concepts in mobile applications.",
+            "url": "http://github.com/dmananes/mobile-innovations-lab",
+            "stars": 120,
+            "forks": 70,
+            "languages": ["Kotlin", "Swift"],
+            "technologies": ["Android", "iOS"],
+            "numberClosedIssues": 60
+        }
+    ]
+},
+{
+    "_id": "777f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "roobre",
+    "avatarUrl": "http://example.com/roobre.jpg",
+    "followers": 158,
+    "globalIssuesClosed": 55,
+    "MostClosedIssueRepo": {
+        "name": "Cloud Solutions Architect",
+        "description": "Innovative cloud solutions for scaling applications.",
+        "url": "http://github.com/roobre/cloud-solutions-architect",
+        "stars": 140,
+        "forks": 85,
+        "languages": ["Go", "JavaScript"],
+        "technologies": ["Docker", "Kubernetes"],
+        "numberClosedIssues": 70
+    },
+    "contributions": {
+        "totalCommits": 500,
+        "totalPullRequests": 45,
+        "totalRepositoriesContributedWithCommits": 16,
+        "totalRepositoriesContributedWithPullRequests": 12
+    },
+    "globalTopLanguages": [
+        {"language": "Go", "percentage": 70},
+        {"language": "JavaScript", "percentage": 30}
+    ],
+    "globalTechnologies": ["Docker", "Kubernetes"],
+    "topRepositories": [
+        {
+            "name": "Cloud Solutions Architect",
+            "description": "Innovative cloud solutions for scaling applications.",
+            "url": "http://github.com/roobre/cloud-solutions-architect",
+            "stars": 140,
+            "forks": 85,
+            "languages": ["Go", "JavaScript"],
+            "technologies": ["Docker", "Kubernetes"],
+            "numberClosedIssues": 70
+        }
+    ]
+},
+{   "_id": "340f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "jesus-cruz",
+    "avatarUrl": "http://example.com/jesusc.jpg",
+    "followers": 175,
+    "globalIssuesClosed": 50,
+    "MostClosedIssueRepo": {
+        "name": "AI Ventures",
+        "description": "Artificial intelligence projects to transform industries.",
+        "url": "http://github.com/jesus-cruz/ai-ventures",
+        "stars": 160,
+        "forks": 95,
+        "languages": ["Python", "JavaScript"],
+        "technologies": ["TensorFlow", "React"],
+        "numberClosedIssues": 85
+    },
+    "contributions": {
+        "totalCommits": 680,
+        "totalPullRequests": 60,
+        "totalRepositoriesContributedWithCommits": 22,
+        "totalRepositoriesContributedWithPullRequests": 14
+    },
+    "globalTopLanguages": [
+        {"language": "Python", "percentage": 70},
+        {"language": "JavaScript", "percentage": 30}
+    ],
+    "globalTechnologies": ["TensorFlow", "React"],
+    "topRepositories": [
+        {
+            "name": "AI Ventures",
+            "description": "Artificial intelligence projects to transform industries.",
+            "url": "http://github.com/jesus-cruz/ai-ventures",
+            "stars": 160,
+            "forks": 95,
+            "languages": ["Python", "JavaScript"],
+            "technologies": ["TensorFlow", "React"],
+            "numberClosedIssues": 85
+        }
+    ]
+},
+{   
+    "_id": "330f1f8bcf30e2d9c6a7d8bc",
+    "githubUsername": "egara",
+    "avatarUrl": "http://example.com/egara.jpg",
+    "followers": 190,
+    "globalIssuesClosed": 48,
+    "MostClosedIssueRepo": {
+        "name": "NextGen DevOps",
+        "description": "Revolutionizing DevOps practices.",
+        "url": "http://github.com/egara/nextgen-devops",
+        "stars": 170,
+        "forks": 110,
+        "languages": ["Shell", "Python"],
+        "technologies": ["AWS", "Azure"],
+        "numberClosedIssues": 65
+    },
+    "contributions": {
+        "totalCommits": 710,
+        "totalPullRequests": 70,
+        "totalRepositoriesContributedWithCommits": 25,
+        "totalRepositoriesContributedWithPullRequests": 19
+    },
+    "globalTopLanguages": [
+        {"language": "Shell", "percentage": 60},
+        {"language": "Python", "percentage": 40}
+    ],
+    "globalTechnologies": ["AWS", "Azure"],
+    "topRepositories": [
+        {
+            "name": "NextGen DevOps",
+            "description": "Revolutionizing DevOps practices.",
+            "url": "http://github.com/egara/nextgen-devops",
+            "stars": 170,
+            "forks": 110,
+            "languages": ["Shell", "Python"],
+            "technologies": ["AWS", "Azure"],
+            "numberClosedIssues": 65
+        }
+    ]
+}
+]
