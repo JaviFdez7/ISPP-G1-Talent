@@ -1,0 +1,101 @@
+[
+    {
+        "_id": "333f1f8bcf30e2d9c6a7d8b4",
+        "userId": "630f1f8bcf30e2d9c6a7d8b1",
+        "profiles": [
+            {
+                "profileRequested": {
+                    "languages": ["JavaScript", "TypeScript"],
+                    "technologies": ["React", "Node.js"],
+                    "yearsOfExperience": 5,
+                    "field": "Web application"
+                },
+                "recommendedCandidates": [
+                    {
+                        "github_username": "johndoe",
+                        "languages": ["JavaScript", "TypeScript"],
+                        "technologies": ["React", "Node.js"],
+                        "yearsOfExperience": 5,
+                        "field": ["Frontend", "Backend"]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "333f1f8bcf30e2d9c6a7d814",
+        "userId": "630f1f8bcf30e2d9c6a7d8b2",
+        "profiles": [
+            {
+                "profileRequested": {
+                    "languages": ["Python", "Java"],
+                    "technologies": ["Django", "Spring"],
+                    "yearsOfExperience": 3,
+                    "field": "Web application"
+                },
+                "recommendedCandidates": [
+                    {
+                        "github_username": "lgzarturo",
+                        "languages": ["Python"],
+                        "technologies": ["Django"],
+                        "yearsOfExperience": 3,
+                        "field": ["Backend"]
+                    },
+                    {
+                        "github_username": "alexcjohnson",
+                        "languages": ["Java"],
+                        "technologies": ["Spring"],
+                        "yearsOfExperience": 4,
+                        "field": ["Backend"]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "333f1f8bcf30e2d9c6a7d824",
+        "userId": "630f1f8bcf30e2d9c6a7d8b1",
+        "profiles": [
+            {
+                "profileRequested": {
+                    "languages": ["C#", "JavaScript"],
+                    "technologies": [".NET", "Angular"],
+                    "yearsOfExperience": 8,
+                    "field": "Mobile application"
+                },
+                "recommendedCandidates": [
+                    {
+                        "github_username": "alexcjohnson",
+                        "languages": ["C#", "JavaScript"],
+                        "technologies": [".NET", "Node.js"],
+                        "yearsOfExperience": 8,
+                        "field": ["Backend", "Frontend"]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "_id": "333f1f8bcf30e2d9c6a7d834",
+        "userId": "630f1f8bcf30e2d9c6a7d8b2",
+        "profiles": [
+            {
+                "profileRequested": {
+                    "languages": ["Kotlin", "Swift"],
+                    "technologies": ["Android", "iOS"],
+                    "yearsOfExperience": 6,
+                    "field": "Mobile application"
+                },
+                "recommendedCandidates": [
+                    {
+                        "github_username": "mariar",
+                        "languages": ["Java", "Kotlin"],
+                        "technologies": ["Android", "Spring"],
+                        "yearsOfExperience": 6,
+                        "field": ["Mobile application"]
+                    }
+                ]
+            }
+        ]
+    }
+]

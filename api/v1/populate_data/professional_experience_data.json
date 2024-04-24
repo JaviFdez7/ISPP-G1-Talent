@@ -1,0 +1,229 @@
+[
+  {
+      "_id": "333f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b3",
+      "startDate": "2018-01-01",
+      "endDate": "2020-12-31",
+      "companyName": "DevTech Solutions",
+      "professionalArea": "Web application", 
+      "lifestyle": "Telematic", 
+      "location": "Remote"
+  },
+  {
+      "_id": "133f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b3",
+      "startDate": "2021-01-01",
+      "companyName": "Innovate Software",
+      "professionalArea": "Frontend", 
+      "lifestyle": "Telematic", 
+      "location": "Remote"
+  },
+  { 
+      "_id": "233f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b4",
+      "startDate": "2017-05-01",
+      "endDate": "2022-04-30",
+      "companyName": "Tech Pioneers",
+      "professionalArea": "Mobile application", 
+      "lifestyle": "On-site",
+      "location": "San Francisco, CA"
+  },
+  {
+      "_id": "433f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b4",
+      "startDate": "2022-05-01",
+      "companyName": "Mobile Innovations",
+      "professionalArea": "Mobile application", 
+      "lifestyle": "On-site",
+      "location": "San Francisco, CA"
+  },
+  {
+      "_id": "533f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b5",
+      "startDate": "2019-03-01",
+      "endDate": "2023-01-01",
+      "companyName": "Cloud Services Inc",
+      "professionalArea": "DevOps", 
+      "lifestyle": "Telematic", 
+      "location": "Remote"
+  },
+  {
+      "_id": "633f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b5",
+      "startDate": "2023-02-01",
+      "companyName": "Global Tech",
+      "professionalArea": "Security", 
+      "lifestyle": "Telematic", 
+      "location": "Remote"
+  },
+  {
+      "_id": "733f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b6",
+      "startDate": "2016-06-01",
+      "endDate": "2020-05-31",
+      "companyName": "App Development Co.",
+      "professionalArea": "Mobile application", 
+      "lifestyle": "On-site", 
+      "location": "Madrid, Spain"
+  },
+  {
+      "_id": "833f1f8bcf30e2d9c6a7d8b4",
+      "candidateId": "630f1f8bcf30e2d9c6a7d8b6",
+      "startDate": "2020-06-01",
+      "companyName": "NextGen Developers",
+      "professionalArea": "Data science", 
+      "lifestyle": "On-site", 
+      "location": "Madrid, Spain"
+  },
+  {
+    "_id": "933f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b6",
+    "startDate": "2016-01-01",
+    "endDate": "2018-12-31",
+    "companyName": "Startup Tech Inc",
+    "professionalArea": "Backend",
+    "lifestyle": "On-site",
+    "location": "Mexico City"
+},
+{
+    "_id": "313f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b6",
+    "startDate": "2019-01-01",
+    "companyName": "Advanced Solutions",
+    "professionalArea": "Frontend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "323f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b7",
+    "startDate": "2015-03-01",
+    "endDate": "2020-05-30",
+    "companyName": "Code Innovators",
+    "professionalArea": "Frontend",
+    "lifestyle": "On-site",
+    "location": "Madrid"
+},
+{
+    "_id": "343f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b7",
+    "startDate": "2020-06-01",
+    "companyName": "Global Tech Systems",
+    "professionalArea": "Backend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "353f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b8",
+    "startDate": "2018-04-01",
+    "endDate": "2022-02-28",
+    "companyName": "App Dev International",
+    "professionalArea": "Backend",
+    "lifestyle": "On-site",
+    "location": "Buenos Aires"
+},
+{
+    "_id": "363f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b8",
+    "startDate": "2022-03-01",
+    "companyName": "NextGen Mobile Apps",
+    "professionalArea": "Frontend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "373f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b9",
+    "startDate": "2019-07-01",
+    "endDate": "2024-06-30",
+    "companyName": "Innovative Web Solutions",
+    "professionalArea": "Frontend",
+    "lifestyle": "On-site",
+    "location": "Seville"
+},
+{
+    "_id": "383f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8b9",
+    "startDate": "2024-07-01",
+    "companyName": "Enterprise Software Solutions",
+    "professionalArea": "Backend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "393f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8ba",
+    "startDate": "2016-09-01",
+    "companyName": "Dynamic Code Crafters",
+    "professionalArea": "Backend",
+    "lifestyle": "On-site",
+    "location": "Bilbao"
+},
+{
+    "_id": "331f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8ba",
+    "startDate": "2020-10-01",
+    "companyName": "FrontEnd Innovations",
+    "professionalArea": "Frontend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "332f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bb",
+    "startDate": "2018-01-01",
+    "endDate": "2022-01-01",
+    "companyName": "Tech Frontiers",
+    "professionalArea": "Frontend",
+    "lifestyle": "On-site",
+    "location": "Oviedo"
+},
+{
+    "_id": "334f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bb",
+    "startDate": "2022-02-02",
+    "companyName": "Backend Systems Ltd",
+    "professionalArea": "Backend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "335f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bc",
+    "startDate": "2017-11-01",
+    "endDate": "2023-10-31",
+    "companyName": "Ultimate Web Designs",
+    "professionalArea": "Frontend",
+    "lifestyle": "On-site",
+    "location": "Valencia"
+},
+{
+    "_id": "336f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bc",
+    "startDate": "2023-11-01",
+    "companyName": "Core Backend Developers",
+    "professionalArea": "Backend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+},
+{
+    "_id": "337f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bd",
+    "startDate": "2015-05-01",
+    "endDate": "2020-04-30",
+    "companyName": "Innovative Developers Inc",
+    "professionalArea": "Backend",
+    "lifestyle": "On-site",
+    "location": "Barcelona"
+},
+{
+    "_id": "338f1f8bcf30e2d9c6a7d8b4",
+    "candidateId": "630f1f8bcf30e2d9c6a7d8bd",
+    "startDate": "2020-05-01",
+    "companyName": "Frontend Pioneers",
+    "professionalArea": "Frontend",
+    "lifestyle": "Telematic",
+    "location": "Remote"
+}
+]
