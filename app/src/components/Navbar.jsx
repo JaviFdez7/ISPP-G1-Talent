@@ -38,7 +38,7 @@ export default function Navbar() {
 		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 },
 		{
 			Trends: 0,
-			'My analysis': 1,
+			'Analysis': 1,
 			'Team Search': 2,
 			Subscription: 3,
 			Information: 4,
@@ -194,17 +194,17 @@ export default function Navbar() {
 							<span>Trends</span>
 						</Link>
 					)}
-					{userData && getOptsNum('My analysis') !== -1 && (
+					{userData && getOptsNum('Analysis') !== -1 && (
 						<Link
 							to='/analysis/analyze'
-							onMouseEnter={() => move_hoverer(getOptsNum('My analysis'))}
-							onMouseDown={() => move_current(getOptsNum('My analysis'))}
+							onMouseEnter={() => move_hoverer(getOptsNum('Analysis'))}
+							onMouseDown={() => move_current(getOptsNum('Analysis'))}
 							className='link-container'>
 							<span>
 								<FontAwesomeIcon icon={faMagnifyingGlassChart} />
 							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>My analysis</span>
+							<span>Analysis</span>
 						</Link>
 					)}
 					{userData && getOptsNum('Team Search') !== -1 && (

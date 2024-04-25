@@ -178,7 +178,7 @@ export default function CandidateNotificationDetail() {
 						},
 					}}>
 					<h2 style={{ marginBottom: '3%' }}>
-						Are you sure you want to delete this professional experience?
+						Are you sure you want to delete this notification?
 					</h2>
 					<div>
 						<button
