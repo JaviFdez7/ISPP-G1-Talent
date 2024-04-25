@@ -145,7 +145,7 @@ export default function CandidateDetailEdit() {
 			Swal.fire({
 				icon: 'error',
 				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+				text: 'The provided URL is not valid. Please ensure it starts with http:// or https://, ends with .jpeg, .jpg, .gif or .png and is a valid image URL.',
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
