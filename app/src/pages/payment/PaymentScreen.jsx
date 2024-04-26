@@ -23,8 +23,8 @@ export default function PaymentScreen() {
 			pro: 9.99,
 		},
 		representative: {
-			basic: 29.99,
-			pro: 79.99,
+			basic: 49.99,
+			pro: 99.99,
 		},
 	}
 
