@@ -348,15 +348,25 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: languages.map((item) => item.language),
 										datasets: [
-											{
-												label: '',
-												data: languages.map((item) => item.percentage),
-												backgroundColor: getListOfRandomColors(
-													languages.length
-												),
-											},
+										{
+											label: '',
+											data: languages.map((item) => item.percentage),
+											backgroundColor: getListOfRandomColors(
+											languages.length
+											),
+										},
 										],
-									}}></Pie>
+									}}
+									options={{
+										plugins: {
+										legend: {
+											labels: {
+											color: 'white' 
+											}
+										}
+										}
+									}}
+									></Pie>
 							</div>
 						</div>
 					</div>
@@ -404,15 +414,37 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: tecnologies.map((item) => item.name),
 										datasets: [
-											{
-												label: 'Tecnologies usage',
-												data: tecnologies.map((item) => item.appearences),
-												backgroundColor: getListOfRandomColors(
-													tecnologies.length
-												),
-											},
+										{
+											label: 'Technologies usage',
+											data: tecnologies.map((item) => item.appearences),
+											backgroundColor: getListOfRandomColors(
+											tecnologies.length
+											),
+										},
 										],
-									}}></Bar>
+									}}
+									options={{
+										plugins: {
+										legend: {
+											labels: {
+											color: 'white' 
+											}
+										}
+										},
+										scales: {
+										x: {
+											ticks: {
+											color: 'white' 
+											}
+										},
+										y: {
+											ticks: {
+											color: 'white' 
+											}
+										}
+										}
+									}}
+									></Bar>
 							</div>
 						</div>
 					</div>
