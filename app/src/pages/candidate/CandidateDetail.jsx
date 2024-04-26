@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom'
 import Modal from 'react-modal'
 
 export default function CandidateDetail() {
-	const { isAuthenticated } = useAuthContext()
+	const { isAuthenticated, subscription, fetchSubscription } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
 	const [experience, setExperience] = useState([])
 	const [analysis, setAnalysis] = useState(null)
@@ -23,6 +23,9 @@ export default function CandidateDetail() {
 	const [errors, setErrors] = useState({})
 	let navigate = useNavigate()
 	const [showModal, setShowModal] = useState(false)
+
+
+	
 
 	const languages =
 		analysis && analysis.globalTopLanguages
@@ -88,6 +91,7 @@ export default function CandidateDetail() {
 				return
 			}
 			navigate('/candidate/detail')
+			fetchSubscription()
 			Swal.fire({
 				icon: 'success',
 				title: `Candidate updated successfully, you have ${await getSubscription(candidate._id)} update left.`,
@@ -98,6 +102,7 @@ export default function CandidateDetail() {
 			})
 		} catch (error) {
 			if (!candidate.subscriptionId || (await getSubscription(candidate._id)) <= 0) {
+				fetchSubscription()
 				Swal.fire({
 					icon: 'warning',
 					title: `You have reached your update limit of this month`,
@@ -257,7 +262,14 @@ export default function CandidateDetail() {
 			<br></br>
 			<h3 className='profile-title'>Update your Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
+			
 			<br></br>
+			<h2 className='text-white text-center'>
+				{subscription && `You have `}
+				{subscription && <span style={{color: 'var(--talent-highlight)'}}>{subscription.remainingUpdates}</span>}
+				{subscription && ` remaining ${subscription.remainingUpdates === 1 ? 'update' : 'updates'} this month`}
+			</h2>
+			
 			<div
 				className='input-analysis-container'
 				style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -283,10 +295,12 @@ export default function CandidateDetail() {
 					{errors.apikey && (
 						<p className='text-red-500 text-xs italic'>{errors.apikey}</p>
 					)}
+					
 				</div>
 				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
+				<h2 className='text-white text-center'>(PLease make sure you write your real GitHub APIkey)</h2>
 				<div className='mt-8'>
 					{SecondaryButton('Update Developer', '', () => setShowModal(true))}
 				</div>
