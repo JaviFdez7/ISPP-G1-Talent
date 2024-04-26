@@ -10,6 +10,7 @@ export default function DataTable({
 	editLink = '',
 	idArray = [],
 	idName = '',
+	maxHeight = '400px'
 }) {
 	const cellHeight = '100px'
 	const minCellWidth = '142px'
@@ -48,7 +49,7 @@ export default function DataTable({
 			<table className='w-full datatable-header-container'>{head}</table>
 			<div
 				className='datatable-body-container'
-				style={{ overflow: 'auto', maxHeight: '400px' }}>
+				style={{ overflow: 'auto', maxHeight: maxHeight }}>
 				<table className='w-full'>
 					<tbody className='datatable-body'>
 						{contentArray.map((item, index) => (
