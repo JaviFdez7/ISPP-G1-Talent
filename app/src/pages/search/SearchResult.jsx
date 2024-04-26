@@ -219,81 +219,208 @@ export default function SearchResult() {
 												<div
 													key={candidateIndex}
 													className='items-center flex flex-col'>
-													
-													<div className='flex items-center justify-around w-full px-4' style={{flexDirection: mobile ? 'column' : 'row'}}>
-														{historyData[candidate.github_username] && analysisData[candidate.github_username] && analysisData[candidate.github_username].data && (
-														<div className='flex flex-col items-center pt-8' style={{width: mobile ? '100%' : '25%'}}>
-															<img src={analysisData[candidate.github_username].data.avatarUrl}
-																className='w-3/4 rounded-full'/>
-															<h6 className='text-center text-3xl mt-2'>{candidate.github_username}</h6>
-															<FavoriteButton history={historyData[candidate.github_username]} toggleText />
-														</div>)}
+													<div
+														className='flex items-center justify-around w-full px-4'
+														style={{
+															flexDirection: mobile
+																? 'column'
+																: 'row',
+														}}>
+														{historyData[candidate.github_username] &&
+															analysisData[
+																candidate.github_username
+															] &&
+															analysisData[candidate.github_username]
+																.data && (
+																<div
+																	className='flex flex-col items-center pt-8'
+																	style={{
+																		width: mobile
+																			? '100%'
+																			: '25%',
+																	}}>
+																	<img
+																		src={
+																			analysisData[
+																				candidate
+																					.github_username
+																			].data.avatarUrl
+																		}
+																		className='w-3/4 rounded-full'
+																	/>
+																	<h6 className='text-center text-3xl mt-2'>
+																		{candidate.github_username}
+																	</h6>
+																	<FavoriteButton
+																		history={
+																			historyData[
+																				candidate
+																					.github_username
+																			]
+																		}
+																		toggleText
+																	/>
+																</div>
+															)}
 
-														{ candidate && analysisData[candidate.github_username] && analysisData[candidate.github_username].data && (
-														<div className='flex flex-col space-y-4 mt-8' style={{width: mobile ? '100%' : '50%'}}>
-															<div className='flex flex-row space-x-4'>
-																<div className='analysis-data-container w-full'>
-																	<p className='analysis-subtitle-2'>Experienced Technology</p>
-																	<p className='analysis-text'>{Array.isArray(
-																		candidate.technologies) ? candidate.technologies[0] : ''}</p>
+														{candidate &&
+															analysisData[
+																candidate.github_username
+															] &&
+															analysisData[candidate.github_username]
+																.data && (
+																<div
+																	className='flex flex-col space-y-4 mt-8'
+																	style={{
+																		width: mobile
+																			? '100%'
+																			: '50%',
+																	}}>
+																	<div className='flex flex-row space-x-4'>
+																		<div className='analysis-data-container w-full'>
+																			<p className='analysis-subtitle-2'>
+																				Experienced
+																				Technology
+																			</p>
+																			<p className='analysis-text'>
+																				{Array.isArray(
+																					candidate.technologies
+																				)
+																					? candidate
+																							.technologies[0]
+																					: ''}
+																			</p>
+																		</div>
+																		<div className='analysis-data-container w-full'>
+																			<p className='analysis-subtitle-2'>
+																				Most used language
+																			</p>
+																			<p className='analysis-text'>
+																				{
+																					analysisData[
+																						candidate
+																							.github_username
+																					].data.globalTopLanguages.sort(
+																						(a, b) =>
+																							b.percentage -
+																							a.percentage
+																					)[0].language
+																				}
+																			</p>
+																		</div>
+																	</div>
+																	<div className='flex flex-row space-x-4'>
+																		<div className='analysis-data-container w-full'>
+																			<p className='analysis-subtitle-2'>
+																				Common field
+																			</p>
+																			<p className='analysis-text'>
+																				{Array.isArray(
+																					candidate.field
+																				)
+																					? candidate
+																							.field[0]
+																					: ''}
+																			</p>
+																		</div>
+																		<div className='analysis-data-container w-full'>
+																			<p className='analysis-subtitle-2'>
+																				Years of Experience
+																			</p>
+																			<p className='analysis-text'>
+																				{candidate.yearsOfExperience.toFixed(
+																					2
+																				)}
+																			</p>
+																		</div>
+																	</div>
 																</div>
-																<div className='analysis-data-container w-full'>
-																	<p className='analysis-subtitle-2'>Most used language</p>
-																	<p className='analysis-text'>{
-																		analysisData[candidate.github_username].data.globalTopLanguages.sort((a, b) => b.percentage - a.percentage)[0].language}
-																	</p>
-																</div>
-															</div>
-															<div className='flex flex-row space-x-4'>
-																<div className='analysis-data-container w-full'>
-																	<p className='analysis-subtitle-2'>Common field</p>
-																	<p className='analysis-text'>{Array.isArray(
-																		candidate.field) ? candidate.field[0] : ''}
-																	</p>
-																</div>
-																<div className='analysis-data-container w-full'>
-																	<p className='analysis-subtitle-2'>Years of Experience</p>
-																	<p className='analysis-text'>
-																		{candidate.yearsOfExperience.toFixed(2)}
-																	</p>
-																</div>
-															</div>
-														</div>)}
+															)}
 													</div>
 
-													<div className='flex items-center justify-around w-full px-4' style={{flexDirection: mobile ? 'column' : 'row'}}>
-														{analysisData[candidate.github_username] && analysisData[candidate.github_username].data && (
-															<div className='flex flex-row items-center' style={{width: mobile ? '100%' : '30.00%'}}>
-																<div className='flex flex-col items-center mt-8'>
-																	<h6 className='text-center text-xl'>Top Languages</h6>
-																	<br></br>
-																	<Pie
-																	data={{
-																		labels: analysisData[candidate.github_username].data.globalTopLanguages.map((item) => item.language),
-																		datasets: [
-																			{
-																				label: '',
-																				data: analysisData[candidate.github_username].data.globalTopLanguages.map((item) => item.percentage),
-																				backgroundColor: getListOfRandomColors(
-																					analysisData[candidate.github_username].data.globalTopLanguages.length
+													<div
+														className='flex items-center justify-around w-full px-4'
+														style={{
+															flexDirection: mobile
+																? 'column'
+																: 'row',
+														}}>
+														{analysisData[candidate.github_username] &&
+															analysisData[candidate.github_username]
+																.data && (
+																<div
+																	className='flex flex-row items-center'
+																	style={{
+																		width: mobile
+																			? '100%'
+																			: '30.00%',
+																	}}>
+																	<div className='flex flex-col items-center mt-8'>
+																		<h6 className='text-center text-xl'>
+																			Top Languages
+																		</h6>
+																		<br></br>
+																		<Pie
+																			data={{
+																				labels: analysisData[
+																					candidate
+																						.github_username
+																				].data.globalTopLanguages.map(
+																					(item) =>
+																						item.language
 																				),
-																			},
-																		],
-																	}}></Pie>
+																				datasets: [
+																					{
+																						label: '',
+																						data: analysisData[
+																							candidate
+																								.github_username
+																						].data.globalTopLanguages.map(
+																							(
+																								item
+																							) =>
+																								item.percentage
+																						),
+																						backgroundColor:
+																							getListOfRandomColors(
+																								analysisData[
+																									candidate
+																										.github_username
+																								]
+																									.data
+																									.globalTopLanguages
+																									.length
+																							),
+																					},
+																				],
+																			}}></Pie>
+																	</div>
 																</div>
-															</div>
-														)}
+															)}
 
-														{analysisData[candidate.github_username] && analysisData[candidate.github_username].data && (
-														<div className='flex flex-row items-center mt-4' style={{ width: mobile ? '100%' : '30.00%'}}>
-															<DataTable
-																maxHeight='200px'
-																header={'Used Tecnologies'}
-																contentArray={
-																	analysisData[candidate.github_username].data.globalTechnologies
-																}
-															/>
-														</div>)}
+														{analysisData[candidate.github_username] &&
+															analysisData[candidate.github_username]
+																.data && (
+																<div
+																	className='flex flex-row items-center mt-4'
+																	style={{
+																		width: mobile
+																			? '100%'
+																			: '30.00%',
+																	}}>
+																	<DataTable
+																		maxHeight='200px'
+																		header={'Used Tecnologies'}
+																		contentArray={
+																			analysisData[
+																				candidate
+																					.github_username
+																			].data
+																				.globalTechnologies
+																		}
+																	/>
+																</div>
+															)}
 													</div>
 
 													<div
@@ -326,21 +453,29 @@ export default function SearchResult() {
 								<div className='flex flex-col items-center w-full self-center text-xs'>
 									<div className='flex flex-row justify-around'>
 										{Input({
-											name: 'Technologies:', value: team.profileRequested.technologies
-											? team.profileRequested.technologies.join(', ')
-											: '',})}
+											name: 'Technologies:',
+											value: team.profileRequested.technologies
+												? team.profileRequested.technologies.join(', ')
+												: '',
+										})}
 										{Input({
-											name: 'Languages:', value: team.profileRequested.languages
-											? team.profileRequested.languages.join(', ')
-											: '',})}
+											name: 'Languages:',
+											value: team.profileRequested.languages
+												? team.profileRequested.languages.join(', ')
+												: '',
+										})}
 									</div>
 									<div className='flex flex-row justify-around'>
 										{Input({
-											name: 'Field:', value: team.profileRequested.field
-											? team.profileRequested.field
-											: ''})}
+											name: 'Field:',
+											value: team.profileRequested.field
+												? team.profileRequested.field
+												: '',
+										})}
 										{Input({
-											name: 'Years of Experience:', value: team.profileRequested.yearsOfExperience})}
+											name: 'Years of Experience:',
+											value: team.profileRequested.yearsOfExperience,
+										})}
 									</div>
 								</div>
 							</div>
