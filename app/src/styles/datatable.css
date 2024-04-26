@@ -2,6 +2,22 @@
 	width: 100%;
 }
 
+.datatable-container > ::-webkit-scrollbar {
+	width: 10px;
+}
+
+.datatable-container > ::-webkit-scrollbar-track {
+	background: #464646;
+}
+
+.datatable-container > ::-webkit-scrollbar-thumb {
+	background: #e2e2e2;
+}
+
+.datatable-container > ::-webkit-scrollbar-thumb:hover {
+	background: #aeaeae;
+}
+
 .datatable-header-container {
 	background-color: var(--talent-light-background);
 	border-radius: 20px 20px 0px 0px;
