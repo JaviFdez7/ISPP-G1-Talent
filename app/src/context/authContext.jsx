@@ -25,7 +25,7 @@ export function AuthContextProvider({ children }) {
 	const [role, setRole] = useState(getInitialRole)
 	const { isCandidate, isRepresentative } = role
 
-	const [subscription, setSubscription] = useState(null)
+	const [subscription, setSubscription] = useState({})
 
 	const fetchSubscription = useCallback(async () => {
 		try {
@@ -35,7 +35,7 @@ export function AuthContextProvider({ children }) {
 				headers: { Authorization: `${token}` },
 			}
 			const response = await axios.get(apiURL + '/subscriptions/' + userId, config)
-			setSubscription(response.data.data.subtype) // Establece la suscripción en el contexto
+			setSubscription(response.data.data) // Establece la suscripción en el contexto
 		} catch (error) {
 			console.error(error) // Muestra el error
 			throw error // Lanza el error
