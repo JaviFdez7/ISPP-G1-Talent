@@ -164,7 +164,6 @@ export default function CandidateNotificationDetail() {
 					) : (
 						<p className='text-white'>You have not received any notification.</p>
 					)}
-
 				</div>
 				<Modal
 					isOpen={showModal}
