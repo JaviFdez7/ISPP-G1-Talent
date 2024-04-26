@@ -308,7 +308,7 @@ export default function SearchResult() {
 															)}
 														</div>
 													</div>
-													<hr></hr>
+													<hr className='w-11/12 bg-white'></hr>
 												</div>
 											)
 										)
