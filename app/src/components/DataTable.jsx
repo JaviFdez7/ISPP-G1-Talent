@@ -10,7 +10,7 @@ export default function DataTable({
 	editLink = '',
 	idArray = [],
 	idName = '',
-	maxHeight = '400px'
+	maxHeight = '400px',
 }) {
 	const cellHeight = '100px'
 	const minCellWidth = '142px'
