@@ -25,7 +25,7 @@ import { useLocation } from 'react-router-dom'
 
 export default function Navbar() {
 	const { subscription: authSubscription } = useAuthContext()
-	const {subscription} = useAuthContext()
+	const { subscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const [notifications, setNotifications] = useState(0)
@@ -39,7 +39,7 @@ export default function Navbar() {
 		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 },
 		{
 			Trends: 0,
-			'Analysis': 1,
+			Analysis: 1,
 			'Team Search': 2,
 			Subscription: 3,
 			Information: 4,
