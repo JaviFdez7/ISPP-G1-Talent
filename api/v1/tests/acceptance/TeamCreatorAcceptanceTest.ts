@@ -16,12 +16,15 @@ import assert from 'assert'
 import { ObjectId } from 'mongodb'
 import { createTeamCreator } from '../../modules/team-creator/controllers/TeamCreatorController'
 import { createUser } from '../../modules/user/services/UserService'
+import { checkDataCreateTeam, checkIsRepresentative, checkValidToken } from '../../modules/team-creator/validators/TeamCreatorMiddleware'
 
 
 describe('As a representative, I want to be prevented from creating a team by not entering my token correctly', function () {
     let representativeToken: any
     let candidateToken: any
 	let request: httpMocks.MockRequest<Request>, response: httpMocks.MockResponse<Response>
+    let BASE_URL = 'http://localhost:3000'
+    let checkers: sinon.SinonSpy
     before(async function(){
         try{
             const representativeData= {
@@ -61,6 +64,7 @@ describe('As a representative, I want to be prevented from creating a team by no
             const loggedCandidate=await loginUser({username: "candidate2", 
             password: "string"})
             candidateToken=loggedCandidate.token
+            
         }catch(error:any){
             console.log(error)
         }
@@ -115,7 +119,7 @@ describe('As a representative, I want to be prevented from creating a team by no
                 ]
 		})
 
-        await createTeamCreator(request,response)
+        await checkIsRepresentative(request,response)
         console.log(response._getJSONData())
         assert.strictEqual(response.statusCode, 401)
 	})
