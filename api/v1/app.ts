@@ -14,6 +14,10 @@ import PaymentRouter from './modules/payment'
 import cors from 'cors'
 import TrendRouter from './modules/trend/'
 import { populate } from './populateDB'
+import rateLimit from 'express-rate-limit';
+import { RequestHandler } from 'express-serve-static-core';
+
+
 
 const app = express()
 const swaggerHost = process.env.HOST ?? 'localhost:3000'
@@ -49,7 +53,15 @@ app.use(TeamCreatorRouter)
 app.use(NotificationRouter)
 app.use(PaymentRouter)
 app.use(TrendRouter)
-
+//LIMITADOR DE LLAMADAS----------------------------------------------
+// Configurar el limitador de tasas
+const limiter: RequestHandler = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutos
+	max: 100, // Límite cada IP a 100 solicitudes por ventana
+	standardHeaders: true, // Devuelve la información de límite de tasa en los encabezados `RateLimit-*`
+	legacyHeaders: false, // Deshabilitar los encabezados `X-RateLimit-*`
+  });
+app.use(limiter);
 // Server -------------------------------------------------------
 connectToMongoDB()
 	.then(async () => {

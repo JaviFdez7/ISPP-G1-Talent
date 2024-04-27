@@ -264,6 +264,11 @@ export const checkUpdateCandidate: any = async (
 					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
 					return
 				}
+				if(data.githubUser && data.githubUser!==(user as any).githubUser){
+					const message = 'You cannot change your github user'
+					ApiResponse.sendError(res, [{ title: 'Forbidden', detail: message }], 403)
+					return
+				}
 			}
 			next()
 		}
