@@ -32,6 +32,10 @@
 	font-size: 1.1rem;
 	color: var(--talent-secondary);
 }
+.analysis-subtitle-2 {
+	font-size: 0.8rem;
+	color: var(--talent-secondary);
+}
 
 .stuff-container {
 	backdrop-filter: blur(8px);
