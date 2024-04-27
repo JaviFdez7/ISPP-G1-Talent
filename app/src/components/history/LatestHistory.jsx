@@ -42,13 +42,15 @@ const LatestHistory = ({ header, data, type = 'analysis' }) => {
 				</tbody>
 			</table>
 			<div className='mt-4 ml-2 mr-2'>
-							{paddedDataToShow.length === 0 ? (
-								<div className='w-full flex flex-row justify-center'>Your analysis history is empty</div>
-							) : (
-								<div className='w-full flex flex-row justify-center mt-4'>
-									{MainButton('See all', `/${type}/list`, '')}
-								</div>
-							)}
+				{paddedDataToShow.length === 0 ? (
+					<div className='w-full flex flex-row justify-center'>
+						Your analysis history is empty
+					</div>
+				) : (
+					<div className='w-full flex flex-row justify-center mt-4'>
+						{MainButton('See all', `/${type}/list`, '')}
+					</div>
+				)}
 			</div>
 		</div>
 	)
