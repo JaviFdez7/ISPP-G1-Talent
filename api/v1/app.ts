@@ -63,3 +63,5 @@ connectToMongoDB()
 		console.log('Error connecting to MongoDB')
 		console.log(err)
 	})
+
+export default app;
