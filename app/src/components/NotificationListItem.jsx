@@ -16,11 +16,11 @@ const NotificationListItem = ({ n, deleteNotification }) => {
 				</p>
 				<br></br>
 				<p>
-					{subscription.subtype === 'Basic plan' ? 'A company has seen your Analysis' : n.message}
+					{subscription === 'Basic plan' ? 'A company has seen your Analysis' : n.message}
 				</p>
 			</div>
 			<div className='w-1/5'>
-				{subscription.subtype !== 'Basic plan' &&
+				{subscription !== 'Basic plan' &&
 					MainButton(
 						'View profile',
 						'/candidate/representative-view/' + n.representativeId

@@ -16,8 +16,9 @@ import Modal from 'react-modal'
 import { Pie, Bar, Radar } from 'react-chartjs-2'
 
 export default function CandidateDetail() {
-	const { isAuthenticated, subscription, fetchSubscription } = useAuthContext()
+	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
+	const [subscription, setSubscription] = useState(null)
 	const [experience, setExperience] = useState([])
 	const [analysis, setAnalysis] = useState(null)
 	const [apikey, setApiKey] = useState('')
@@ -59,8 +60,9 @@ export default function CandidateDetail() {
 							},
 						}
 					)
-					const subscription = response.data.data
-					const remainingUpdates = subscription.remainingUpdates
+					console.log('Subscription data:', response)
+					setSubscription(response.data.data.remainingUpdates)
+					const remainingUpdates = response.data.data.remainingUpdates;
 					return remainingUpdates
 				}
 			}
@@ -98,7 +100,7 @@ export default function CandidateDetail() {
 				return
 			}
 			navigate('/candidate/detail')
-			fetchSubscription()
+
 			Swal.fire({
 				icon: 'success',
 				title: `Candidate updated successfully, you have ${await getSubscription(candidate._id)} update left.`,
@@ -109,7 +111,6 @@ export default function CandidateDetail() {
 			})
 		} catch (error) {
 			if (!candidate.subscriptionId || (await getSubscription(candidate._id)) <= 0) {
-				fetchSubscription()
 				Swal.fire({
 					icon: 'warning',
 					title: `You have reached your update limit of this month`,
@@ -191,6 +192,20 @@ export default function CandidateDetail() {
 		}
 		fetchDataFromEndpoint()
 	}, [isAuthenticated, candidate])
+	const userId = localStorage.getItem('userId')
+	React.useEffect(() => {
+	
+		if (userId) {
+			getSubscription(userId);
+		}
+	}, [userId]);
+
+	React.useEffect(() => {
+		console.log('Subscription state:', subscription);
+		if (subscription) {
+			console.log('Remaining updates:', subscription);
+		}
+	}, [subscription]);
 
 	let mobile = false
 	if (window.screen.width < 500) {
@@ -291,9 +306,10 @@ export default function CandidateDetail() {
 
 			<br></br>
 			<h2 className='text-white text-center'>
-				{subscription && `You have `}
-				{subscription && <span style={{color: 'var(--talent-highlight)'}}>{subscription.remainingUpdates}</span>}
-				{subscription && ` remaining ${subscription.remainingUpdates === 1 ? 'update' : 'updates'} this month`}
+				{console.log(subscription)}
+				{subscription !== null && subscription !== undefined && `You have `}
+				{subscription !== null && subscription !== undefined && <span style={{color: 'var(--talent-highlight)'}}>{subscription}</span>}
+				{subscription !== null && subscription !== undefined && ` remaining ${subscription === 1 ? 'update' : 'updates'} this month`}
 			</h2>
 			
 			<div
