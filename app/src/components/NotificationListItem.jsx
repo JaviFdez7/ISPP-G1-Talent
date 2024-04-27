@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import MainButton from '../components/mainButton'
 import SecondaryButton from '../components/secondaryButton'
-import { useAuthContext } from '../context/authContext';
+import { useAuthContext } from '../context/authContext'
 
 const NotificationListItem = ({ n, deleteNotification }) => {
-	const { subscription } = useAuthContext();
+	const { subscription } = useAuthContext()
 	return (
 		<div className='flex flex-row'>
 			<div className='w-1/5'>{!n.seen && <p className='text-white font-bold'>New!</p>}</div>

@@ -11,6 +11,15 @@ import { useAuthContext } from '../context/authContext.jsx'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Logout from './swat/logout'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+	faArrowTrendUp,
+	faCrown,
+	faCircleInfo,
+	faGear,
+	faUsers,
+	faMagnifyingGlassChart,
+} from '@fortawesome/free-solid-svg-icons'
 
 import { useLocation } from 'react-router-dom'
 
@@ -178,7 +187,9 @@ export default function Navbar() {
 							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
 							onMouseDown={() => move_current(getOptsNum('Trends'))}
 							className='link-container'>
-							<span>ICON</span>
+							<span>
+								<FontAwesomeIcon icon={faArrowTrendUp} />
+							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>Trends</span>
 						</Link>
@@ -189,7 +200,9 @@ export default function Navbar() {
 							onMouseEnter={() => move_hoverer(getOptsNum('My analysis'))}
 							onMouseDown={() => move_current(getOptsNum('My analysis'))}
 							className='link-container'>
-							<span>ICON</span>
+							<span>
+								<FontAwesomeIcon icon={faMagnifyingGlassChart} />
+							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>My analysis</span>
 						</Link>
@@ -200,7 +213,9 @@ export default function Navbar() {
 							onMouseEnter={() => move_hoverer(getOptsNum('Team Search'))}
 							onMouseDown={() => move_current(getOptsNum('Team Search'))}
 							className='link-container'>
-							<span>ICON</span>
+							<span>
+								<FontAwesomeIcon icon={faUsers} />
+							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>Team search</span>
 						</Link>
@@ -211,7 +226,9 @@ export default function Navbar() {
 							onMouseEnter={() => move_hoverer(getOptsNum('Subscription'))}
 							onMouseDown={() => move_current(getOptsNum('Subscription'))}
 							className='link-container'>
-							<span>ICON</span>
+							<span>
+								<FontAwesomeIcon icon={faCrown} />
+							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>Subscription</span>
 						</Link>
@@ -224,20 +241,11 @@ export default function Navbar() {
 							onMouseEnter={() => move_hoverer(getOptsNum('Information'))}
 							onMouseDown={() => move_current(getOptsNum('Information'))}
 							className='link-container'>
-							<span>ICON</span>
+							<span>
+								<FontAwesomeIcon icon={faCircleInfo} />
+							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
 							<span>Information</span>
-						</Link>
-					)}
-					{getOptsNum('Settings') !== -1 && (
-						<Link
-							to='/settings'
-							onMouseEnter={() => move_hoverer(getOptsNum('Settings'))}
-							onMouseDown={() => move_current(getOptsNum('Settings'))}
-							className='link-container'>
-							<span>ICON</span>
-							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>Settings</span>
 						</Link>
 					)}
 				</>
