@@ -27,15 +27,15 @@ export default function CandidateDetail() {
 	let navigate = useNavigate()
 	const [showModal, setShowModal] = useState(false)
 
-
-	
-
 	const languages =
 		analysis && analysis.globalTopLanguages
-			? analysis.globalTopLanguages ? analysis.globalTopLanguages : []
+			? analysis.globalTopLanguages
+				? analysis.globalTopLanguages
+				: []
 			: []
 
-	const tecnologies = analysis && analysis.globalTechnologies
+	const tecnologies =
+		analysis && analysis.globalTechnologies
 			? analysis.globalTechnologies.map((item) => ({
 					name: item,
 					appearences: analysis.topRepositories.filter((repo) =>
@@ -62,7 +62,7 @@ export default function CandidateDetail() {
 					)
 					console.log('Subscription data:', response)
 					setSubscription(response.data.data.remainingUpdates)
-					const remainingUpdates = response.data.data.remainingUpdates;
+					const remainingUpdates = response.data.data.remainingUpdates
 					return remainingUpdates
 				}
 			}
@@ -168,7 +168,6 @@ export default function CandidateDetail() {
 		fetchUserData()
 	}, [isAuthenticated])
 
-
 	React.useEffect(() => {
 		const fetchDataFromEndpoint = async () => {
 			try {
@@ -194,18 +193,17 @@ export default function CandidateDetail() {
 	}, [isAuthenticated, candidate])
 	const userId = localStorage.getItem('userId')
 	React.useEffect(() => {
-	
 		if (userId) {
-			getSubscription(userId);
+			getSubscription(userId)
 		}
-	}, [userId]);
+	}, [userId])
 
 	React.useEffect(() => {
-		console.log('Subscription state:', subscription);
+		console.log('Subscription state:', subscription)
 		if (subscription) {
-			console.log('Remaining updates:', subscription);
+			console.log('Remaining updates:', subscription)
 		}
-	}, [subscription]);
+	}, [subscription])
 
 	let mobile = false
 	if (window.screen.width < 500) {
@@ -308,10 +306,14 @@ export default function CandidateDetail() {
 			<h2 className='text-white text-center'>
 				{console.log(subscription)}
 				{subscription !== null && subscription !== undefined && `You have `}
-				{subscription !== null && subscription !== undefined && <span style={{color: 'var(--talent-highlight)'}}>{subscription}</span>}
-				{subscription !== null && subscription !== undefined && ` remaining ${subscription === 1 ? 'update' : 'updates'} this month`}
+				{subscription !== null && subscription !== undefined && (
+					<span style={{ color: 'var(--talent-highlight)' }}>{subscription}</span>
+				)}
+				{subscription !== null &&
+					subscription !== undefined &&
+					` remaining ${subscription === 1 ? 'update' : 'updates'} this month`}
 			</h2>
-			
+
 			<div
 				className='input-analysis-container'
 				style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -337,12 +339,13 @@ export default function CandidateDetail() {
 					{errors.apikey && (
 						<p className='text-red-500 text-xs italic'>{errors.apikey}</p>
 					)}
-					
 				</div>
 				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
-				<h2 className='text-white text-center'>(PLease make sure you write your real GitHub APIkey)</h2>
+				<h2 className='text-white text-center'>
+					(PLease make sure you write your real GitHub APIkey)
+				</h2>
 				<div className='mt-8'>
 					{SecondaryButton('Update Developer', '', () => setShowModal(true))}
 				</div>
@@ -351,27 +354,35 @@ export default function CandidateDetail() {
 			<h3 className='profile-title'>Developer info</h3>
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
-			<div className='input-analysis-container' style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+			<div
+				className='input-analysis-container'
+				style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				{analysis && analysis.contributions && (
 					<div className='flex flex-col space-y-4'>
-					<div className='flex flex-row space-x-4'>
-						<div className='analysis-data-container w-full'>
-						<p className='analysis-subtitle'>Followers</p>
-						<p className='analysis-text-big text-white'>{analysis.followers}</p>
+						<div className='flex flex-row space-x-4'>
+							<div className='analysis-data-container w-full'>
+								<p className='analysis-subtitle'>Followers</p>
+								<p className='analysis-text-big text-white'>{analysis.followers}</p>
+							</div>
+							<div className='analysis-data-container w-full'>
+								<p className='analysis-subtitle'>Issues Closed</p>
+								<p className='analysis-text-big text-white'>
+									{analysis.globalIssuesClosed}
+								</p>
+							</div>
+							<div className='analysis-data-container w-full'>
+								<p className='analysis-subtitle'>Total Commits</p>
+								<p className='analysis-text-big text-white'>
+									{analysis.contributions.totalCommits}
+								</p>
+							</div>
+							<div className='analysis-data-container w-full'>
+								<p className='analysis-subtitle'>Total Pull Requests</p>
+								<p className='analysis-text-big text-white'>
+									{analysis.contributions.totalPullRequests}
+								</p>
+							</div>
 						</div>
-						<div className='analysis-data-container w-full'>
-						<p className='analysis-subtitle'>Issues Closed</p>
-						<p className='analysis-text-big text-white'>{analysis.globalIssuesClosed}</p>
-						</div>
-						<div className='analysis-data-container w-full'>
-						<p className='analysis-subtitle'>Total Commits</p>
-						<p className='analysis-text-big text-white'>{analysis.contributions.totalCommits}</p>
-						</div>
-						<div className='analysis-data-container w-full'>
-						<p className='analysis-subtitle'>Total Pull Requests</p>
-						<p className='analysis-text-big text-white'>{analysis.contributions.totalPullRequests}</p>
-						</div>
-					</div>
 					</div>
 				)}
 			</div>
@@ -379,319 +390,322 @@ export default function CandidateDetail() {
 			<br></br>
 			<div className='flex flex-col w-10/12 self-center'>
 				<>
-				{languages.length > 0 && (
-					<div
-						className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
-						style={{
-							backgroundColor: 'rgba(0, 0, 0, 0.5)',
-							marginLeft: '100',
-							marginRight: '100',
-							borderColor: borderColor,
-							borderWidth: '1px',
-						}}>
-						<h6 className='text-2xl font-bold text-center text-white mt-6'>
-							Languages
-						</h6>
-
+					{languages.length > 0 && (
 						<div
-							className='flex items-center w-10/12 justify-around self-center p-10'
+							className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 							style={{
-								flexDirection: mobile ? 'column' : 'row',
+								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								marginLeft: '100',
+								marginRight: '100',
+								borderColor: borderColor,
+								borderWidth: '1px',
 							}}>
+							<h6 className='text-2xl font-bold text-center text-white mt-6'>
+								Languages
+							</h6>
+
 							<div
-								className='analysis-data-container space-y-10 w-3/12'
-								style={{ width: mobile ? '100%' : '30.00%' }}>
-								<div>
-									<p className='analysis-subtitle'>Most used language</p>
-									<p className='analysis-name'>
-										{
-											languages.sort((a, b) => b.percentage - a.percentage)[0]
-												.language
-										}
-									</p>
+								className='flex items-center w-10/12 justify-around self-center p-10'
+								style={{
+									flexDirection: mobile ? 'column' : 'row',
+								}}>
+								<div
+									className='analysis-data-container space-y-10 w-3/12'
+									style={{ width: mobile ? '100%' : '30.00%' }}>
+									<div>
+										<p className='analysis-subtitle'>Most used language</p>
+										<p className='analysis-name'>
+											{
+												languages.sort(
+													(a, b) => b.percentage - a.percentage
+												)[0].language
+											}
+										</p>
+									</div>
+									{languages.length > 1 && (
+										<div className='flex flex-col'>
+											<p className='analysis-subtitle'>#2</p>
+											<p className='analysis-text text-white'>
+												{
+													languages.sort(
+														(a, b) => b.percentage - a.percentage
+													)[1].language
+												}
+											</p>
+										</div>
+									)}
+									{languages.length > 2 && (
+										<div className='flex flex-col'>
+											<p className='analysis-subtitle'>#3</p>
+											<p className='analysis-text text-white'>
+												{
+													languages.sort(
+														(a, b) => b.percentage - a.percentage
+													)[2].language
+												}
+											</p>
+										</div>
+									)}
 								</div>
-								{languages.length > 1 && (
-									<div className='flex flex-col'>
-										<p className='analysis-subtitle'>#2</p>
-										<p className='analysis-text text-white'>
-											{
-												languages.sort(
-													(a, b) => b.percentage - a.percentage
-												)[1].language
-											}
-										</p>
-									</div>
-								)}
-								{languages.length > 2 && (
-									<div className='flex flex-col'>
-										<p className='analysis-subtitle'>#3</p>
-										<p className='analysis-text text-white'>
-											{
-												languages.sort(
-													(a, b) => b.percentage - a.percentage
-												)[2].language
-											}
-										</p>
-									</div>
-								)}
-							</div>
 
-							<div
-								className='w-7/12 justify-center flex'
-								style={{
-									width: mobile ? '200%' : '50.00%',
-									marginTop: mobile ? '40px' : '0',
-								}}>
-								<Pie
-									data={{
-										labels: languages.map((item) => item.language),
-										datasets: [
-										{
-											label: '',
-											data: languages.map((item) => item.percentage),
-											backgroundColor: getListOfRandomColors(
-											languages.length
-											),
-										},
-										],
-									}}
-									options={{
-										plugins: {
-										legend: {
-											labels: {
-											color: 'white' 
-											}
-										}
-										}
-									}}
-									></Pie>
+								<div
+									className='w-7/12 justify-center flex'
+									style={{
+										width: mobile ? '200%' : '50.00%',
+										marginTop: mobile ? '40px' : '0',
+									}}>
+									<Pie
+										data={{
+											labels: languages.map((item) => item.language),
+											datasets: [
+												{
+													label: '',
+													data: languages.map((item) => item.percentage),
+													backgroundColor: getListOfRandomColors(
+														languages.length
+													),
+												},
+											],
+										}}
+										options={{
+											plugins: {
+												legend: {
+													labels: {
+														color: 'white',
+													},
+												},
+											},
+										}}></Pie>
+								</div>
 							</div>
 						</div>
-					</div>
-				)}
+					)}
 
-				{tecnologies.length > 0 && (
-					<div
-						className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
-						style={{
-							backgroundColor: 'rgba(0, 0, 0, 0.5)',
-							marginLeft: '100',
-							marginRight: '100',
-							borderColor: borderColor,
-							borderWidth: '1px',
-						}}>
-						<h6 className='text-2xl font-bold text-center text-white mt-6'>
-							Tecnologies
-						</h6>
-
+					{tecnologies.length > 0 && (
 						<div
-							className='flex items-center w-10/12 justify-around self-center p-10'
+							className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
 							style={{
-								flexDirection: mobile ? 'column' : 'row',
+								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								marginLeft: '100',
+								marginRight: '100',
+								borderColor: borderColor,
+								borderWidth: '1px',
 							}}>
-							<div className='w-2/12' style={{ width: mobile ? '100%' : '30.00%' }}>
-								<DataTable
-									header={'Used Tecnologies'}
-									contentArray={
-										tecnologies
-											? tecnologies
-													.sort((a, b) => b.appearences - a.appearences)
-													.map((item) => item.name)
-											: []
-									}
-								/>
-							</div>
+							<h6 className='text-2xl font-bold text-center text-white mt-6'>
+								Tecnologies
+							</h6>
 
 							<div
-								className='w-10/12 justify-center flex'
+								className='flex items-center w-10/12 justify-around self-center p-10'
 								style={{
-									width: mobile ? '150%' : '50.00%',
-									marginTop: mobile ? '40px' : '0',
+									flexDirection: mobile ? 'column' : 'row',
 								}}>
-								<Bar
-									data={{
-										labels: tecnologies.map((item) => item.name),
-										datasets: [
-										{
-											label: 'Technologies usage',
-											data: tecnologies.map((item) => item.appearences),
-											backgroundColor: getListOfRandomColors(
-											tecnologies.length
-											),
-										},
-										],
-									}}
-									options={{
-										plugins: {
-										legend: {
-											labels: {
-											color: 'white'
-											}
+								<div
+									className='w-2/12'
+									style={{ width: mobile ? '100%' : '30.00%' }}>
+									<DataTable
+										header={'Used Tecnologies'}
+										contentArray={
+											tecnologies
+												? tecnologies
+														.sort(
+															(a, b) => b.appearences - a.appearences
+														)
+														.map((item) => item.name)
+												: []
 										}
-										},
-										scales: {
-										x: {
-											ticks: {
-											color: 'white' 
-											}
-										},
-										y: {
-											ticks: {
-											color: 'white'
-											}
-										}
-										}
-									}}
-									></Bar>
+									/>
+								</div>
+
+								<div
+									className='w-10/12 justify-center flex'
+									style={{
+										width: mobile ? '150%' : '50.00%',
+										marginTop: mobile ? '40px' : '0',
+									}}>
+									<Bar
+										data={{
+											labels: tecnologies.map((item) => item.name),
+											datasets: [
+												{
+													label: 'Technologies usage',
+													data: tecnologies.map(
+														(item) => item.appearences
+													),
+													backgroundColor: getListOfRandomColors(
+														tecnologies.length
+													),
+												},
+											],
+										}}
+										options={{
+											plugins: {
+												legend: {
+													labels: {
+														color: 'white',
+													},
+												},
+											},
+											scales: {
+												x: {
+													ticks: {
+														color: 'white',
+													},
+												},
+												y: {
+													ticks: {
+														color: 'white',
+													},
+												},
+											},
+										}}></Bar>
+								</div>
 							</div>
 						</div>
-					</div>
-				)}
+					)}
 
-				{analysis && (
-					<div 
-						className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
-						style={{
-							backgroundColor: 'rgba(0, 0, 0, 0.5)',
-							marginLeft: '100',
-							marginRight: '100',
-							borderColor: borderColor,
-							borderWidth: '1px',
-						}}>
-
+					{analysis && (
+						<div
+							className='w-full p-1 rounded shadow-md flex flex-col mt-10 mb-10'
+							style={{
+								backgroundColor: 'rgba(0, 0, 0, 0.5)',
+								marginLeft: '100',
+								marginRight: '100',
+								borderColor: borderColor,
+								borderWidth: '1px',
+							}}>
 							<>
 								<br></br>
 								<h6 className='text-2xl font-bold text-center text-white mt-6'>
 									Top Repositories
 								</h6>
 								<br></br>
+								<div
+									className='mt-2 w-11/12 self-center'
+									style={{ backdropFilter: 'blur(8px)', maxHeight: '200px' }}>
+									<table className='w-full datatable-header-container text-white '>
+										<thead>
+											<tr>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Stars
+												</th>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Name
+												</th>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Forks
+												</th>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Languages
+												</th>
+												<th
+													className='datatable-header'
+													style={{ width: '16.66%' }}>
+													Technologies
+												</th>
+											</tr>
+										</thead>
+									</table>
 									<div
-										className='mt-2 w-11/12 self-center'
-										style={{ backdropFilter: 'blur(8px)', maxHeight: '200px' }}>
-										<table className='w-full datatable-header-container text-white '>
-											<thead>
-												<tr>
-													<th
-														className='datatable-header'
-														style={{ width: '16.66%' }}>
-														Stars
-													</th>
-													<th
-														className='datatable-header'
-														style={{ width: '16.66%' }}>
-														Name
-													</th>
-													<th
-														className='datatable-header'
-														style={{ width: '16.66%' }}>
-														Forks
-													</th>
-													<th
-														className='datatable-header'
-														style={{ width: '16.66%' }}>
-														Languages
-													</th>
-													<th
-														className='datatable-header'
-														style={{ width: '16.66%' }}>
-														Technologies
-													</th>
-												</tr>
-											</thead>
+										className='datatable-body-container'
+										style={{ overflow: 'auto', maxHeight: '450px' }}>
+										<table className='w-full'>
+											<tbody className='datatable-body'>
+												{analysis && analysis.topRepositories
+													? analysis.topRepositories
+															.sort((a, b) => b.stars - a.stars)
+															.map((item, index) => (
+																<>
+																	<tr
+																		key={index}
+																		style={{
+																			display: 'table',
+																			width: '100%',
+																			tableLayout: 'fixed',
+																		}}>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.stars}
+																		</td>
+																		<td className='datatable-cell-small  text-center'>
+																			<br></br>
+																			{item.name}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.forks}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.languages.join(
+																				', '
+																			)}
+																		</td>
+																		<td className='datatable-cell-small text-center'>
+																			<br></br>
+																			{item.technologies.join(
+																				', '
+																			)}
+																		</td>
+																	</tr>
+																	<tr
+																		style={{
+																			display: 'table',
+																			width: '100%',
+																			tableLayout: 'fixed',
+																		}}>
+																		<td>
+																			<hr
+																				style={{
+																					width: '101%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '101%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '101%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '101%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '101%',
+																				}}></hr>
+																		</td>
+																		<td>
+																			<hr
+																				style={{
+																					width: '100%',
+																				}}></hr>
+																		</td>
+																	</tr>
+																</>
+															))
+													: null}
+											</tbody>
 										</table>
-										<div
-											className='datatable-body-container'
-											style={{ overflow: 'auto', maxHeight: '450px' }}>
-											<table className='w-full'>
-												<tbody className='datatable-body'>
-													
-													{analysis && analysis.topRepositories
-														? analysis.topRepositories
-																.sort((a, b) => b.stars - a.stars)
-																.map((item, index) => (
-																	<>
-																		<tr
-																			key={index}
-																			style={{
-																				display: 'table',
-																				width: '100%',
-																				tableLayout: 'fixed',
-																			}}>
-																			<td className='datatable-cell-small text-center'>
-																				<br></br>
-																				{item.stars}
-																			</td>
-																			<td className='datatable-cell-small  text-center'>
-																				<br></br>
-																				{item.name}
-																			</td>
-																			<td className='datatable-cell-small text-center'>
-																				<br></br>
-																				{item.forks}
-																			</td>
-																			<td className='datatable-cell-small text-center'>
-																				<br></br>
-																				{item.languages.join(
-																					', '
-																				)}
-																			</td>
-																			<td className='datatable-cell-small text-center'>
-																				<br></br>
-																				{item.technologies.join(
-																					', '
-																				)}
-																			</td>
-																		</tr>
-																		<tr
-																			style={{
-																				display: 'table',
-																				width: '100%',
-																				tableLayout: 'fixed',
-																			}}>
-																			<td>
-																				<hr
-																					style={{
-																						width: '101%',
-																					}}></hr>
-																			</td>
-																			<td>
-																				<hr
-																					style={{
-																						width: '101%',
-																					}}></hr>
-																			</td>
-																			<td>
-																				<hr
-																					style={{
-																						width: '101%',
-																					}}></hr>
-																			</td>
-																			<td>
-																				<hr
-																					style={{
-																						width: '101%',
-																					}}></hr>
-																			</td>
-																			<td>
-																				<hr
-																					style={{
-																						width: '101%',
-																					}}></hr>
-																			</td>
-																			<td>
-																				<hr
-																					style={{
-																						width: '100%',
-																					}}></hr>
-																			</td>
-																		</tr>
-																	</>
-																))
-														: null}
-												</tbody>
-											</table>
-										</div>
 									</div>
+								</div>
 								<br></br>
 								<br></br>
 								<br></br>
@@ -732,8 +746,8 @@ export default function CandidateDetail() {
 								</div>
 								<br></br>
 							</>
-					</div>)}
-
+						</div>
+					)}
 				</>
 				<br></br>
 			</div>
