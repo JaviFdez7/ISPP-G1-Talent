@@ -56,6 +56,15 @@ export default function CandidateProfessionalExperienceCreate() {
 				setErrors(data)
 				return
 			}
+			Swal.fire({
+				icon: 'success',
+				title: 'Professional experience created successfully',
+				showConfirmButton: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 1500,
+			})
+
 			navigate('/candidate/detail')
 		} catch (error) {
 			handleNetworkError(error, navigate)

@@ -6,6 +6,7 @@ import MainButton from '../../components/mainButton'
 import Modal from 'react-modal'
 import { useParams } from 'react-router-dom'
 import { handleNetworkError } from '../../components/TokenExpired'
+import Swal from 'sweetalert2'
 
 export default function CandidateProfessionalExperienceDetail({}) {
 	const talentColor = 'var(--talent-secondary)'
@@ -38,6 +39,15 @@ export default function CandidateProfessionalExperienceDetail({}) {
 				headers: {
 					Authorization: `${token}`,
 				},
+			})
+
+			Swal.fire({
+				icon: 'success',
+				title: 'Professional experience deleted successfully',
+				showConfirmButton: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 1500,
 			})
 			navigate('/candidate/detail')
 			setShowModal(false)
