@@ -105,7 +105,7 @@ export default function AnalysisList() {
 						/>
 						<div className='mt-4 ml-2 mr-2'>
 							{dataArray.length === 0 ? (
-								<div>No data available.</div>
+								<div>Your history is empty</div>
 							) : (
 								dataArray.map((item, index) => {
 									const formattedDate = formatDate(item.date)

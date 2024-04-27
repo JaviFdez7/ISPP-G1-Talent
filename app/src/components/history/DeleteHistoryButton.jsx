@@ -88,7 +88,7 @@ const DeleteHistoryButton = ({ history, toggleText = false, setErrorMessage }) =
                     },
                 }}
             >
-                <h2 style={{ marginBottom: '3%' }}>Are you sure you want to delete this history entry?</h2>
+                <h2 style={{ marginBottom: '3%' }}>Are you sure you want to delete this analysis history entry?</h2>
                 <div>
                     <button
                         onClick={handleConfirm}
