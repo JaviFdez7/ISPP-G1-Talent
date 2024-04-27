@@ -35,20 +35,16 @@ export function AuthContextProvider({ children }) {
 				headers: { Authorization: `${token}` },
 			}
 			const response = await axios.get(apiURL + '/subscriptions/' + userId, config)
-			setSubscription(response.data.data.subtype);
-			
+			setSubscription(response.data.data.subtype)
 		} catch (error) {
 			console.error(error) // Muestra el error
 			throw error // Lanza el error
 		}
 	}, [apiURL])
 
-
-
 	useEffect(() => {
 		if (isAuthenticated) {
 			fetchSubscription()
-			
 		}
 	}, [isAuthenticated, fetchSubscription])
 
@@ -98,7 +94,6 @@ export function AuthContextProvider({ children }) {
 			fetchSubscription,
 		]
 	)
-
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
