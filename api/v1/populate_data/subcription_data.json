@@ -74,7 +74,7 @@
 		"type": "CandidateSubscription",
 		"subtype": "Pro plan",
 		"price": {
-			"amount":  9.99,
+			"amount": 9.99,
 			"currency": "EUR"
 		},
 		"lastPaymentDate": "2023-05-01T00:00:00Z",
@@ -98,7 +98,7 @@
 	{
 		"_id": "730f1f8bcf30e2d9c6a7d8b7",
 		"price": {
-			"amount":  9.99,
+			"amount": 9.99,
 			"currency": "EUR"
 		},
 		"lastPaymentDate": "2024-03-02",
@@ -122,7 +122,7 @@
 	{
 		"_id": "730f1f8bcf30e2d9c6a7d8b9",
 		"price": {
-			"amount":  9.99,
+			"amount": 9.99,
 			"currency": "EUR"
 		},
 		"lastPaymentDate": "2024-03-04",
@@ -146,7 +146,7 @@
 	{
 		"_id": "730f1f8bcf30e2d9c6a7d8bb",
 		"price": {
-			"amount":  9.99,
+			"amount": 9.99,
 			"currency": "EUR"
 		},
 		"lastPaymentDate": "2024-03-06",
@@ -170,7 +170,7 @@
 	{
 		"_id": "730f1f8bcf30e2d9c6a7d8bd",
 		"price": {
-			"amount":  9.99,
+			"amount": 9.99,
 			"currency": "EUR"
 		},
 		"lastPaymentDate": "2024-03-08",
