@@ -77,7 +77,7 @@ export const checkIsRepresentative: any = async (
 					title: 'Internal Server Error',
 					detail: 'Representative user not exists.',
 				},
-			])
+			],401)
 			return
 		} else {
 			next()

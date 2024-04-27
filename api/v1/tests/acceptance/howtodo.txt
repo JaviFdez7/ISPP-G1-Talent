@@ -5,6 +5,8 @@ GUÍA PARA REALIZAR TESTS DE ACEPTACIÓN DE FORMA CÓMODA Y RÁPIDA
     let request: httpMocks.MockRequest<Request>, response: httpMocks.MockResponse<Response>
     y luego definir el contenido. El requests sigue la misma estructura que el que se utiliza en el controlador
     , al igual que la respuesta.
+1.1º La estructura es similar a los tests unitarios, pero en vez de hacer llamadas a los servicios, llamas a los middlewares
+y compruebas que te devuelva lo que tu quieres.
 
 2º Como la creación de stubs puede ser dificil de hacer, podeis directamente crear los objetos
 y utilizar el DB de testing HACIENDO UN INIT y un tearDown al iniciar y finalizar. Es decir, si necesitamos el token de un representante, creamos el representante,
