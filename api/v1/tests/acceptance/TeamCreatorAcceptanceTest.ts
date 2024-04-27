@@ -5,26 +5,18 @@ import { EventEmitter } from 'events'
 import httpMocks from 'node-mocks-http'
 import mockRequire from 'mock-require'
 import mongoose from 'mongoose'
-import { MongoMemoryServer } from 'mongodb-memory-server'
-
 import { loginUser } from '../../modules/user/services/UserService'
-import * as UserMiddleware from '../../modules/user/middlewares/UserMiddleware'
-import * as UserService from '../../modules/user/services/UserService'
-import { User } from '../../modules/user/models/user'
-
 import assert from 'assert'
-import { ObjectId } from 'mongodb'
 import { createTeamCreator } from '../../modules/team-creator/controllers/TeamCreatorController'
 import { createUser } from '../../modules/user/services/UserService'
-import { checkDataCreateTeam, checkIsRepresentative, checkValidToken } from '../../modules/team-creator/validators/TeamCreatorMiddleware'
+import {checkDataCreateTeam, checkIsRepresentative, checkValidToken } from '../../modules/team-creator/validators/TeamCreatorMiddleware'
+import app from '../../app'
 
 
 describe('As a representative, I want to be prevented from creating a team by not entering my token correctly', function () {
     let representativeToken: any
     let candidateToken: any
-	let request: httpMocks.MockRequest<Request>, response: httpMocks.MockResponse<Response>
-    let BASE_URL = 'http://localhost:3000'
-    let checkers: sinon.SinonSpy
+	let req: httpMocks.MockRequest<Request>, response: httpMocks.MockResponse<Response>
     before(async function(){
         try{
             const representativeData= {
@@ -96,12 +88,12 @@ describe('As a representative, I want to be prevented from creating a team by no
         }
     })
 
-	it('should return 400 sending request without token', async function () {
-		request = httpMocks.createRequest({
+	it('should return 401 sending request without token', async function () {
+		req = httpMocks.createRequest({
 			method: 'POST',
 			url: '/team-creator',
             headers:{
-                authorization:""
+                
             },
 			// Simula lo que necesites en el cuerpo o cabeceras
 			body:
@@ -118,14 +110,13 @@ describe('As a representative, I want to be prevented from creating a team by no
                       }
                 ]
 		})
-
-        await checkIsRepresentative(request,response)
-        console.log(response._getJSONData())
+        const next = () => {};
+        await checkValidToken(req,response,next)
         assert.strictEqual(response.statusCode, 401)
 	})
 
     it('should return 401 sending request with false token', async function () {
-		request = httpMocks.createRequest({
+		req = httpMocks.createRequest({
 			method: 'POST',
 			url: '/team-creator',
             headers:{
@@ -146,8 +137,8 @@ describe('As a representative, I want to be prevented from creating a team by no
                       }
                 ]
 		})
-        await createTeamCreator(request,response)
-        console.log(response._getJSONData())
+        const next = () => {};
+        await checkIsRepresentative(req,response,next)
         assert.strictEqual(response.statusCode, 401)
 	})
 }).timeout(100000)
