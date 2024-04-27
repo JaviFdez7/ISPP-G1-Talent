@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import Input from '../../components/Input'
-import profile from '../../images/profile.jpg'
+import React, { useState } from 'react'
 import mainBackground from '../../images/main-background2.jpg'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 import DataTable from '../../components/DataTable.jsx'
 import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
-import MainButton from '../../components/mainButton'
-import SecondaryButton from '../../components/secondaryButton'
 import NotificationListItem from '../../components/NotificationListItem.jsx'
 import Modal from 'react-modal'
+import Swal from 'sweetalert2'
 
 export default function CandidateNotificationDetail() {
 	const [notifications, setNotifications] = useState([])
 	const [showModal, setShowModal] = useState(false)
 	const [selectedId, setSelectedId] = useState(null)
 
-	const { isAuthenticated, logout } = useAuthContext()
+	const { isAuthenticated } = useAuthContext()
 
 	React.useEffect(() => {
 		const fetchNotificationsData = async () => {
@@ -105,6 +99,14 @@ export default function CandidateNotificationDetail() {
 					)
 
 					setNotifications(notifications.filter((n) => n._id !== notificationId))
+					Swal.fire({
+						icon: 'success',
+						title: 'Notification deleted successfully',
+						showConfirmButton: false,
+						background: 'var(--talent-secondary)',
+						color: 'white',
+						timer: 1500,
+					})
 				}
 			}
 		} catch (error) {
@@ -153,11 +155,15 @@ export default function CandidateNotificationDetail() {
 				<div
 					className='flex flex-col justify-between items-center h-max'
 					style={{ overflowY: 'scroll' }}>
-					<DataTable
-						header={''}
-						contentArray={notifications ? getNotificationsList(notifications) : []}
-						editable={false}
-					/>
+					{notifications && notifications.length > 0 ? (
+						<DataTable
+							header={''}
+							contentArray={getNotificationsList(notifications)}
+							editable={false}
+						/>
+					) : (
+						<p className='text-white'>You have not received any notification.</p>
+					)}
 				</div>
 				<Modal
 					isOpen={showModal}
@@ -178,7 +184,7 @@ export default function CandidateNotificationDetail() {
 						},
 					}}>
 					<h2 style={{ marginBottom: '3%' }}>
-						Are you sure you want to delete this professional experience?
+						Are you sure you want to delete this notification?
 					</h2>
 					<div>
 						<button

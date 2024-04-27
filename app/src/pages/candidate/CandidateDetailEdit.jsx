@@ -156,7 +156,6 @@ export default function CandidateDetailEdit() {
 	}
 
 
-
 	function getRequiredFieldMessage(fieldName) {
 		return `The ${fieldName} field is required`
 	}

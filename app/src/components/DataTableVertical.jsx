@@ -45,7 +45,7 @@ export default function DataTableVertical({
 						{data.map((item, index) => (
 							<tr key={index}>
 								<th
-									className='datatable-header '
+									className='datatable-header'
 									style={{
 										borderTop: '0',
 										height: cellHeight,
