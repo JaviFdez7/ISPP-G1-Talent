@@ -1,0 +1,50 @@
+[
+	{
+		"_id": "640f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b1",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b3",
+		"dateTime": "2024-04-05T08:00:00Z",
+		"message": "John Doe has been recommended for your project based on recent achievements.",
+		"seen": false
+	},
+	{
+		"_id": "610f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b1",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b4",
+		"dateTime": "2024-04-06T09:00:00Z",
+		"message": "New candidate Ignacio Durán has matched your search criteria.",
+		"seen": false
+	},
+	{
+		"_id": "620f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b2",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b5",
+		"dateTime": "2024-04-07T10:00:00Z",
+		"message": "Alex Johnson's profile has been updated with new skills relevant to your projects.",
+		"seen": false
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b2",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b6",
+		"dateTime": "2024-04-08T11:00:00Z",
+		"message": "Maria Ruiz is available for interviews next week.",
+		"seen": false
+	},
+	{
+		"_id": "650f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b1",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b5",
+		"dateTime": "2024-04-09T12:00:00Z",
+		"message": "Review the latest project contributions from Alex Johnson.",
+		"seen": true
+	},
+	{
+		"_id": "641f1f8bcf30e2d9c6a7d8ba",
+		"representativeId": "630f1f8bcf30e2d9c6a7d8b2",
+		"candidateId": "630f1f8bcf30e2d9c6a7d8b4",
+		"dateTime": "2024-04-10T13:00:00Z",
+		"message": "Ignacio Durán's new certification is highly relevant to your tech stack.",
+		"seen": true
+	}
+]
