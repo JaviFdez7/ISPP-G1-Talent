@@ -76,4 +76,4 @@ connectToMongoDB()
 		console.log(err)
 	})
 
-export default app;
+export default app

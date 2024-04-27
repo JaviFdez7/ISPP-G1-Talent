@@ -39,12 +39,16 @@ export const checkValidToken: any = async (req: Request, res: Response, next: Ne
 		const token = req.headers.authorization ?? ''
 
 		if (token.length === 0) {
-			ApiResponse.sendError(res, [
-				{
-					title: 'Internal Server Error',
-					detail: 'No token provided.',
-				},
-			],401)
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Internal Server Error',
+						detail: 'No token provided.',
+					},
+				],
+				401
+			)
 			return
 		} else {
 			next()
@@ -72,12 +76,16 @@ export const checkIsRepresentative: any = async (
 
 		const existingRepresentative = await Representative.findById(decodedToken.sub)
 		if (!existingRepresentative) {
-			ApiResponse.sendError(res, [
-				{
-					title: 'Internal Server Error',
-					detail: 'Representative user not exists.',
-				},
-			],401)
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Internal Server Error',
+						detail: 'Representative user not exists.',
+					},
+				],
+				401
+			)
 			return
 		} else {
 			next()
@@ -102,12 +110,16 @@ export const checkAuthorization: any = async (req: Request, res: Response, next:
 
 		const representativeUser = await Representative.findById(userId)
 		if (decodedToken.sub !== representativeUser?._id.toString()) {
-			ApiResponse.sendError(res, [
-				{
-					title: 'Internal Server Error',
-					detail: 'Unauthorized.',
-				},
-			],401)
+			ApiResponse.sendError(
+				res,
+				[
+					{
+						title: 'Internal Server Error',
+						detail: 'Unauthorized.',
+					},
+				],
+				401
+			)
 			return
 		} else {
 			next()
