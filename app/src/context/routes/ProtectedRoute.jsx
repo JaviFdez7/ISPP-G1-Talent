@@ -41,7 +41,7 @@ export default function ProtectedRoute({
 	useEffect(() => {
 		if (checkSubscription && subscription) {
 			if (
-				subscription.subtype === 'No subscription' &&
+				subscription === 'No subscription' &&
 				location.pathname !== '/representative/subscription'
 			) {
 				navigate('/representative/subscription')

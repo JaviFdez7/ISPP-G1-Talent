@@ -300,8 +300,8 @@ export default function SearchForm() {
 	}
 
 	useEffect(() => {
-		if (subscription.subtype) {
-			if (subscription.subtype.toLowerCase() == 'basic plan') {
+		if (subscription) {
+			if (subscription.toLowerCase() == 'basic plan') {
 				setNumOptions([
 					{ value: 1, label: '1' },
 					{ value: 2, label: '2' },
