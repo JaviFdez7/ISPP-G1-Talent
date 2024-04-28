@@ -344,7 +344,7 @@ export default function CandidateDetail() {
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
 				<h2 className='text-white text-center'>
-					(PLease make sure you write your real GitHub APIkey)
+					(Please make sure you write your real GitHub APIkey)
 				</h2>
 				<div className='mt-8'>
 					{SecondaryButton('Update Developer', '', () => setShowModal(true))}
