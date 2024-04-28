@@ -16,28 +16,30 @@ import {
 	updateTeamCreatorHistory,
 	deleteTeamCreatorHistory,
 } from './controllers/HistoryController'
-import { checkDeleteHistory, checkDeleteTeamCreatorHistory } from './validators/HistoryMiddleware'
+import { checkDeleteHistory,
+	 checkAuthorization,
+	checkCorrectHistory } from './validators/HistoryMiddleware'
 
 const router = express.Router()
 
 // Define routes for the History module
-router.get('/:userId/history', getHistoryFromUser) // X
-router.get('/:userId/not_favorites', getNotFavoritesFromUser) // X
-router.get('/:userId/favorites', getFavoritesFromUser)
-router.post('/:userId/history', createHistory) // X
-router.patch('/:userId/history/:id/favorite', toogleFavorite)
-router.patch('/:userId/history/:id', updateHistory) // X
-router.delete('/:userId/history/:id', checkDeleteHistory, deleteHistory) // X
+router.get('/:userId/history', checkAuthorization,getHistoryFromUser) // X
+router.get('/:userId/not_favorites', checkAuthorization,getNotFavoritesFromUser) // X
+router.get('/:userId/favorites', checkAuthorization,getFavoritesFromUser)
+router.post('/:userId/history', checkAuthorization,createHistory) // X
+router.patch('/:userId/history/:id/favorite',checkAuthorization,checkCorrectHistory ,toogleFavorite)
+router.patch('/:userId/history/:id', checkAuthorization,checkCorrectHistory,updateHistory) // X
+router.delete('/:userId/history/:id', checkAuthorization,checkDeleteHistory, checkDeleteHistory,deleteHistory) // X
 
-router.get('/:userId/team_creator/history', getTeamCreatorHistoryFromUser) // X
-router.get('/:userId/team_creator/not_favorites', getNotFavoritesTeamCreatorFromUser) // X
-router.get('/:userId/team_creator/favorites', getFavoritesTeamCreatorFromUser)
-router.post('/:userId/team_creator/history', createTeamCreatorHistory) // X
-router.patch('/:userId/team_creator/history/:id/favorite', toogleFavoriteTeamCreator)
-router.patch('/:userId/team_creator/history/:id', updateTeamCreatorHistory) // X
+router.get('/:userId/team_creator/history', checkAuthorization,getTeamCreatorHistoryFromUser) // X
+router.get('/:userId/team_creator/not_favorites', checkAuthorization,getNotFavoritesTeamCreatorFromUser) // X
+router.get('/:userId/team_creator/favorites', checkAuthorization,getFavoritesTeamCreatorFromUser)
+router.post('/:userId/team_creator/history', checkAuthorization,createTeamCreatorHistory) // X
+router.patch('/:userId/team_creator/history/:id/favorite', checkAuthorization,checkCorrectHistory,toogleFavoriteTeamCreator)
+router.patch('/:userId/team_creator/history/:id', checkAuthorization,checkCorrectHistory,updateTeamCreatorHistory) // X
 router.delete(
-	'/:userId/team_creator/history/:id',
-	checkDeleteTeamCreatorHistory,
+	'/:userId/team_creator/history/:id',checkAuthorization,checkCorrectHistory,
+	checkDeleteHistory,
 	deleteTeamCreatorHistory
 ) // X
 

@@ -16,10 +16,10 @@ paths:
         required: true
         type: string
       - name: authorization
+        required: true
         in: header
         schema:
           type: string
-          required: true
           description: Its the token of authentication.
       responses:
         200:
@@ -39,6 +39,12 @@ paths:
           description: ID of the user
           required: true
           type: string
+        - name: authorization
+          required: true
+          in: header
+          schema:
+            type: string
+            description: Its the token of authentication.
         - name: body
           in: body
           description: History entry object
@@ -67,6 +73,12 @@ paths:
             description: ID of the user
             required: true
             type: string
+          - name: authorization
+            required: true
+            in: header
+            schema:
+              type: string
+              description: Its the token of authentication.
           - name: body
             in: body
             description: History entry object
@@ -118,6 +130,12 @@ paths:
             description: ID of the user
             required: true
             type: string
+          - name: authorization
+            required: true
+            in: header
+            schema:
+              type: string
+              description: Its the token of authentication.
       responses:
           200:
             description: Success
@@ -132,9 +150,9 @@ paths:
         parameters:
           - name: authorization
             in: header
+            required: true
             schema:
               type: string
-              required: true
               description: Its the token of authentication.
           - name: userId
             in: path
@@ -165,6 +183,12 @@ paths:
             description: ID of the user
             required: true
             type: string
+          - name: authorization
+            required: true
+            in: header
+            schema:
+              type: string
+              description: Its the token of authentication.
         responses:
           200:
             description: Success
@@ -186,9 +210,9 @@ paths:
         type: string
       - name: authorization
         in: header
+        required: true
         schema:
           type: string
-          required: true
           description: Its the token of authentication.
       responses:
         200:
@@ -208,6 +232,12 @@ paths:
           description: ID of the user
           required: true
           type: string
+        - name: authorization
+          required: true
+          in: header
+          schema:
+            type: string
+            description: Its the token of authentication.
         - name: body
           in: body
           description: History entry object
@@ -236,6 +266,12 @@ paths:
             description: ID of the user
             required: true
             type: string
+          - name: authorization
+            required: true
+            in: header
+            schema:
+              type: string
+              description: Its the token of authentication.
           - name: body
             in: body
             description: History entry object
@@ -263,9 +299,9 @@ paths:
             type: string
           - name: authorization
             in: header
+            required: true
             schema:
               type: string
-              required: true
               description: Its the token of authentication.
         responses:
           200:
@@ -287,6 +323,12 @@ paths:
             description: ID of the user
             required: true
             type: string
+          - name: authorization
+            required: true
+            in: header
+            schema:
+              type: string
+              description: Its the token of authentication.
       responses:
           200:
             description: Success
@@ -301,9 +343,9 @@ paths:
         parameters:
           - name: authorization
             in: header
+            required: true
             schema:
               type: string
-              required: true
               description: Its the token of authentication.
           - name: userId
             in: path
@@ -324,9 +366,9 @@ paths:
         parameters:
           - name: authorization
             in: header
+            required: true
             schema:
               type: string
-              required: true
               description: Its the token of authentication.
           - name: userId
             in: path
