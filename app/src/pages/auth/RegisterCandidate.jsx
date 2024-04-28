@@ -421,7 +421,7 @@ export default function RegisterCandidate() {
 					boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
 					backdropFilter: 'blur(8px)',
 					borderWidth: '1px',
-					overflow: 'auto', 
+					overflow: 'auto',
 				}}>
 				<h2
 					className='text-2xl font-bold text-center mb-4 text-white'
