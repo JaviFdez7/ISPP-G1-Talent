@@ -6,12 +6,16 @@ export default function RepresentativeSubscription() {
 	const suscriptions = [
 		{
 			name: 'Basic plan',
-			price: '49.95€',
+
+			price: '49.99€',
+
 			description: ['25 searches', '3 members per search', 'Basic filters'],
 		},
 		{
 			name: 'Pro plan',
-			price: '99.95€',
+
+			price: '99.99€',
+
 			description: [
 				'150 searches',
 				'5 members per search',

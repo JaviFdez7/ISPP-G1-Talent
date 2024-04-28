@@ -31,7 +31,7 @@ const SearchLatestItem = ({ item, formattedDate, triggerUpdate }) => {
 			})
 			setErrorMessage(null)
 		})
-	}, [item.userId])
+	}, [item.teamCreatorId])
 
 	return (
 		<div className='p-4 mb-2 mt-2 history-list-element'>

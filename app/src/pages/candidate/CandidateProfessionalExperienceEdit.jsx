@@ -94,6 +94,14 @@ export default function CandidateProfessionalExperienceEdit() {
 				setErrors(response.data)
 				return
 			}
+			Swal.fire({
+				icon: 'success',
+				title: 'Professional experience updated successfully',
+				showConfirmButton: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 1500,
+			})
 			navigate(`/candidate/professional-experience/detail/${id}`)
 			Swal.fire({
 				icon: 'success',
