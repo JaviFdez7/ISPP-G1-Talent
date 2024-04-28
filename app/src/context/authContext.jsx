@@ -35,7 +35,7 @@ export function AuthContextProvider({ children }) {
 				headers: { Authorization: `${token}` },
 			}
 			const response = await axios.get(apiURL + '/subscriptions/' + userId, config)
-			setSubscription(response.data.data.subtype) // Establece la suscripción en el contexto
+			setSubscription(response.data.data.subtype)
 		} catch (error) {
 			console.error(error) // Muestra el error
 			throw error // Lanza el error
