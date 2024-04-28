@@ -218,7 +218,6 @@ export default function RegisterRepresentative() {
 			}
 		})
 
-		//email validation API
 		if (enableValidation) {
 			setLoading(true)
 			const isValidEmail = await validateEmail(form.corporative_email)
@@ -350,7 +349,6 @@ export default function RegisterRepresentative() {
 				form.phone_number
 			)
 		) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
 			errors.phone_number =
 				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
@@ -384,11 +382,13 @@ export default function RegisterRepresentative() {
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
 					marginLeft: 'auto',
 					marginRight: 'auto',
-					marginTop: '50px',
+					marginTop: '1%',
+					marginBottom: '1%',
 					borderColor: talentColor,
 					boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
 					backdropFilter: 'blur(8px)',
 					borderWidth: '1px',
+					overflow: 'auto',
 				}}>
 				<h2
 					className='text-2xl font-bold text-center mb-4 text-white'

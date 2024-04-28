@@ -104,17 +104,21 @@ export default function SearchList() {
 							functionToApply={changeFilter}
 						/>
 						<div className='mt-4 ml-2 mr-2'>
-							{dataArray.map((item, index) => {
-								const formattedDate = formatDate(item.date)
-								return (
-									<SearchHistoryItem
-										key={index}
-										item={item}
-										formattedDate={formattedDate}
-										triggerUpdate={updateList}
-									/>
-								)
-							})}
+							{dataArray.length === 0 ? (
+								<div>Your history is empty</div>
+							) : (
+								dataArray.map((item, index) => {
+									const formattedDate = formatDate(item.date)
+									return (
+										<SearchHistoryItem
+											key={index}
+											item={item}
+											formattedDate={formattedDate}
+											triggerUpdate={updateList}
+										/>
+									)
+								})
+							)}
 						</div>
 					</div>
 				</div>
