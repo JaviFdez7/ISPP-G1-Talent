@@ -291,7 +291,44 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/definitions/ProfessionalExperience'
+    /user/forgot-password:
+        post:
+            tags:
+                - Users
+            summary: Request to change your password if you forgot it
+            description: Request to change your password if you forgot it
+            parameters:
+                - name: data
+                  in: body
+                  required: true
+                  schema:
+                      $ref: '#/definitions/RememberData'
+            responses:
+                '200':
+                    description: A verification email with the URL to change the password have been send
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/UrlToChangePassword'
+
 definitions:
+    UrlToChangePassword:
+        type: object
+        required:
+            - url
+        properties:
+            url:
+                type: string
+                format: uri
+                description: The url and the token to change the password
+    RememberData:
+        type: object
+        required:
+            - usernameOrEmail
+        properties:
+            usernameOrEmail:
+                type: string
+                description: The username or the email of the user
     RepresentativeData:
         type: object
         required:
@@ -358,7 +395,7 @@ definitions:
                 description: The subscription of the company.
             projectSocietyName:
                 type: string
-                description: The project society name of teh representative.
+                description: The project society name of the representative.
 
     CandidateData:
         type: object
