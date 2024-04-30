@@ -106,6 +106,7 @@ export const updateCandidate: any = async (req: Request, res: Response) => {
 	}
 }
 
+
 export const updateRepresentative: any = async (req: Request, res: Response) => {
 	try {
 		const id = req.params.id
@@ -147,6 +148,22 @@ export const updateUserPassword: any = async (req: Request, res: Response) => {
 		const id = req.params.id
 		const { newPassword } = req.body
 		const data = await UserService.updateUserPassword(id, newPassword)
+		return ApiResponse.sendSuccess(res, data, 200, {
+			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		return ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
+
+export const createChangePasswordRequest: any = async (req: Request, res: Response) => {
+	try {
+		const data = await UserService.createChangePasswordRequest(req.body)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})

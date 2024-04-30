@@ -99,6 +99,21 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
+export const createChangePasswordRequest: any = async (data: any) => {
+	try {
+		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
+		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		const user = userByEmail ?? userByUsername
+		const id = user?._id.toString()
+		const token = generateJWT(id)
+		const result = { token, user }
+		return result
+	} catch (error) {
+		console.error('Error logging in:', error)
+		throw error
+	}
+}
+
 export const loginUser: any = async (data: any) => {
 	try {
 		const user = await User.findOne({ username: data.username })
@@ -120,5 +135,5 @@ export default {
 	updateUserProfilePicture,
 	updateUserPassword,
 	deleteUser,
-	loginUser,
+	loginUser,createChangePasswordRequest
 }

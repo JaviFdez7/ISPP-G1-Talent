@@ -180,6 +180,28 @@ export const checkCreateRepresentative: any = async (
 	}
 }
 
+export const checkRealUser: any = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const data = req.body
+		// Comprobar si el usuario existe
+		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
+		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		if (!userByEmail && !userByUsername) {
+			const message = 'User not found'
+			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
+		}else {
+			next()
+		}
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Error logging in',
+				detail: error.message,
+			},
+		])
+	}
+}
+
 /*
  * Comprobar si el usuario existe
  * Comprobar si la contraseña es correcta
