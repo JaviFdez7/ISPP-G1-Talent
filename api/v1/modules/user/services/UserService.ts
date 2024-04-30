@@ -1,4 +1,4 @@
-import { generateJWT } from '../helpers/handleJWT'
+import { generateJWT, generateJWTWithSoonerExpiration } from '../helpers/handleJWT'
 import { Candidate, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { getModelForRole } from '../helpers/handleRoles'
@@ -99,17 +99,17 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
-export const createChangePasswordRequest: any = async (data: any) => {
+export const createChangePasswordRequest: any = async (data: any,originalUrl: string) => {
 	try {
 		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
 		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
 		const user = userByEmail ?? userByUsername
 		const id = user?._id.toString()
-		const token = generateJWT(id)
-		const result = { token, user }
+		const token = generateJWTWithSoonerExpiration(id)
+		const result = originalUrl+"/"+token
 		return result
 	} catch (error) {
-		console.error('Error logging in:', error)
+		console.error('Error creating your request:', error)
 		throw error
 	}
 }
