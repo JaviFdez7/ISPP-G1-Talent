@@ -11,7 +11,8 @@ import {
   updateUserProfilePicture,
   updateUserPassword,
   deleteUser,
-  loginUser,createChangePasswordRequest
+  loginUser,createChangePasswordRequest,
+  updateUserForgottenPassword
 } from './controllers/UserController';
 import {
   checkCreateCandidate,
@@ -23,7 +24,9 @@ import {
   checkLoginUser,
   checkGetUserById,
   checkGetProfessionalExperienceByUserId,
-  checkDeleteUser,checkRealUser} from './middlewares/UserMiddleware';
+  checkDeleteUser,checkRealUser,
+  checkCorrectToken,
+  checkRepeatedPassword} from './middlewares/UserMiddleware';
 
 const router = express.Router();
 
@@ -42,5 +45,6 @@ router.patch('/candidate/:id/profile-picture', checkUpdateUserProfilePicture, up
 router.patch('/:id/password', checkUpdatePassword, updateUserPassword);
 router.delete('/:id', checkDeleteUser, deleteUser);//X
 router.post('/forgot-password',checkRealUser,createChangePasswordRequest)
+router.post('/forgot-password/:token',checkCorrectToken,checkRepeatedPassword,updateUserForgottenPassword);
 
 export default router;

@@ -310,8 +310,46 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/definitions/UrlToChangePassword'
+    
+    /user/forgot-password/{token}:
+        post:
+            tags:
+                - Users
+            summary: Confirmation to change your password if you forgot it
+            description: Confirmation to change your password if you forgot it
+            parameters:
+                - name: password
+                  in: body
+                  required: true
+                  schema:
+                    $ref: '#/definitions/ChangeAndRepeatPasswordData'
+                - in: path
+                  name: token
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: You have change your password, now try to log in
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/definitions/User'
 
 definitions:
+    ChangeAndRepeatPasswordData:
+        type: object
+        required:
+            - newPassword
+            - repeatedPassword
+        properties:
+            newPassword:
+                type: string
+                description: The new password for the user.
+            repeatedPassword:
+                type: string
+                description: The repeated new password for the user to double check.
+
     UrlToChangePassword:
         type: object
         required:

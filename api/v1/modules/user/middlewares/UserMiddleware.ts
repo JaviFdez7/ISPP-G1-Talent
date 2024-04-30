@@ -202,6 +202,63 @@ export const checkRealUser: any = async (req: Request, res: Response, next: Next
 	}
 }
 
+export const checkCorrectToken: any = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const token = req.params.token ?? ''
+		if (token.length === 0) {
+			const message = 'No token'
+			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
+			return
+		}
+		const decodedToken = verifyJWT(token)
+		if(!decodedToken.sub){
+			const message = 'Incorrect token'
+			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 401)
+			return
+		}
+		const user= await User.findById(decodedToken.sub)
+		if(!user){
+			const message = 'User not found'
+			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
+		}else {
+			next()
+		}
+
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Error trying to request to change your password',
+				detail: error.message,
+			},
+		])
+	}
+}
+
+export const checkRepeatedPassword: any = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		const {newPassword,repeatedPassword} = req.body
+		const compare=newPassword === repeatedPassword
+		if(newPassword.lenght ===0 || repeatedPassword.lenght===0){
+			const message = 'There are empty fields'
+			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
+		}else if(!(compare)){
+			const message = 'The passwords dont match'
+			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
+		}else {
+			req.body.encryptedPassword=await encrypt(newPassword)
+			next()
+		}
+
+	} catch (error: any) {
+		ApiResponse.sendError(res, [
+			{
+				title: 'Error trying to change the password in',
+				detail: error.message,
+			},
+		])
+	}
+}
+
 /*
  * Comprobar si el usuario existe
  * Comprobar si la contraseña es correcta

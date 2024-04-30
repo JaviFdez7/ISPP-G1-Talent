@@ -2,6 +2,7 @@
 import { type Request, type Response } from 'express'
 import UserService from '../services/UserService'
 import { ApiResponse } from '../../../utils/ApiResponse'
+import { verifyJWT } from '../helpers/handleJWT'
 
 // Default controller functions
 export const getAllUser: any = async (req: Request, res: Response) => {
@@ -161,11 +162,31 @@ export const updateUserPassword: any = async (req: Request, res: Response) => {
 	}
 }
 
-export const createChangePasswordRequest: any = async (req: Request, res: Response) => {
+export const updateUserForgottenPassword: any = async (req: Request, res: Response) => {
 	try {
-		const data = await UserService.createChangePasswordRequest(req.body)
+		const token = req.params.token
+		const { encryptedPassword } = req.body
+		const decodedToken=verifyJWT(token)
+		const data = await UserService.updateUserPassword(decodedToken.sub, encryptedPassword)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
+		})
+	} catch (error: any) {
+		return ApiResponse.sendError(res, [
+			{
+				title: 'Internal Server Error',
+				detail: error.message,
+			},
+		])
+	}
+}
+
+export const createChangePasswordRequest: any = async (req: Request, res: Response) => {
+	try {
+		const url=`${req.protocol}://${req.get('host')}${req.originalUrl}`
+		const data = await UserService.createChangePasswordRequest(req.body,url)
+		return ApiResponse.sendSuccess(res, data, 200, {
+			self: url,
 		})
 	} catch (error: any) {
 		return ApiResponse.sendError(res, [
