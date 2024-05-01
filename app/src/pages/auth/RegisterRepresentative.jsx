@@ -225,7 +225,7 @@ export default function RegisterRepresentative() {
 			setLoading(false)
 			if (!isValidEmail) {
 				setEmailValid(false)
-				setErrors({corporativeMail: 'Please use a real email'})
+				setErrors({ corporativeMail: 'Please use a real email' })
 				return
 			}
 		}
