@@ -185,6 +185,16 @@ export default function Login() {
 						</Link>
 					</p>
 				</div>
+				<div
+					className='flex items-center justify-center h-full'>
+					<Link
+						to='/remember-password'
+						className='text-blue-500 hover:text-blue-700'
+						style={{ marginRight: '2rem' }}>
+						¿Forgot your password?
+					</Link>
+				</div>
+
 				<div className='flex justify-center items-center' style={{ marginTop: '1rem' }}>
 					{MainButton('Log in', '/', handleSubmit)}
 				</div>
