@@ -55,10 +55,12 @@ export default function Navbar() {
 		if (isAuthenticated && userData && userData.role === 'Representative') {
 			optsTemplate = 2
 		}
-
+	
 		let res = opts[optsTemplate][key]
 		if (res === undefined) {
 			res = -1
+		} else if (key !== 'Trends' && subscription !== 'Pro plan' && res > opts[optsTemplate]['Trends']) {
+			res -= 1
 		}
 		return res
 	}
