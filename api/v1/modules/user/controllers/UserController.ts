@@ -184,7 +184,9 @@ export const updateUserForgottenPassword: any = async (req: Request, res: Respon
 export const createChangePasswordRequest: any = async (req: Request, res: Response) => {
 	try {
 		const url=req?.body?.redirectUrlBase
-		if(!url) throw new Error('redirectUrlBase is required')
+		if(!url){
+			throw new Error('redirectUrlBase is required')
+		}
 		const data = await UserService.createChangePasswordRequest(req.body,url)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: url,
