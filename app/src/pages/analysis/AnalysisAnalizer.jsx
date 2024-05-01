@@ -41,6 +41,26 @@ export default function Analyzer() {
 		})
 		setErrors({})
 	}
+	const [errorMessage, setErrorMessage] = useState(null);
+
+	async function getAnalysisByName(githubUser) {
+		const currentUserId = localStorage.getItem('userId')
+		const uri = `/analysis`
+		try {
+			const response = await axios.get(ruta + uri)
+			const existingAnalysis = response.data.data.find(item => item.githubUsername === githubUser);
+			if (existingAnalysis) {
+				return existingAnalysis._id;
+			} else {
+				// Maneja el caso en que no se encuentra el análisis
+				return null;
+			}
+		} catch (error) {
+			setErrorMessage('Unable to connect to the server. Please try again later.')
+			console.error('Error while saving  history of current analysis: ', error)
+			throw error
+		}
+	}
 
 	async function saveAnalysisHistory(currentAnalysisId) {
 		const currentUserId = localStorage.getItem('userId')
@@ -83,52 +103,45 @@ export default function Analyzer() {
 
 	async function getHistory(currentAnalysisId) {
 		const currentUserId = localStorage.getItem('userId')
+		console.log(currentAnalysisId)
 		const uri = `/user/${currentUserId}/history`
 		try {
 			const response = await axios.get(ruta + uri)
 			const data = response.data.data
 			const filteredHistory = data.filter((item) => item.analysisId === currentAnalysisId)
 			return filteredHistory[0]
+		
 		} catch (error) {
 			throw error
 		}
 	}
 
-	async function handleSubmit(e) {
-		e.preventDefault()
-
-		if (!form.githubUser) {
-			setErrors({
-				githubUser: form.githubUser ? (
-					''
-				) : (
-					<span style={{ color: 'var(--talent-highlight)', fontSize: '15px' }}>
-						Github User is required
-					</span>
-				),
-			})
-			return
-		}
-
-		setLoading(true)
-
+	async function getAnalysis() {
+		const token = localStorage.getItem('access_token')
+		console.log(token)
+		console.log(form.githubUser)
 		try {
-			const token = localStorage.getItem('access_token')
-			try {
-				const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-					},
-				})
-				if (userResponse.ok) {
-					const userData = await userResponse.json()
-					updateAnalysisHistory(userData.data._id)
-					setLoadingMessage('')
-					navigate('/analysis/' + form.githubUser)
-					return
-				}
-			} catch (error) {}
+			const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`, {
+				headers: {
+					Authorization: `${token}`,
+				},
+			})
+			if (userResponse.ok) {
+				const userData = await userResponse.json()
+				updateAnalysisHistory(userData.data._id)
+				setLoadingMessage('')
+				navigate('/analysis/' + form.githubUser)
+				return userData
+			}
+		} catch (error) {
+			console.error('An error occurred:', error)
+			return null
+		}
+	}
 
+	async function postAnalysis() {
+		const token = localStorage.getItem('access_token')
+		try {
 			const response = await fetch(`${ruta}/analysis`, {
 				method: 'POST',
 				headers: {
@@ -140,7 +153,7 @@ export default function Analyzer() {
 					apikey: form.githubToken,
 				}),
 			})
-
+	
 			setLoading(false)
 			if (response.status == 400) {
 				setErrors({
@@ -153,13 +166,48 @@ export default function Analyzer() {
 			}
 			if (!response.ok) {
 				console.error('An error occurred:', await response.text())
-				return
+				return null
 			}
-
+	
 			navigate('/analysis/' + form.githubUser)
+			return response
 		} catch (error) {
 			setLoadingMessage('Unable to connect to the server. Please try again later.')
 			handleNetworkError(error, navigate)
+			return null
+		}
+	}
+
+	async function handleSubmit(e) {
+		e.preventDefault()
+	
+		if (!form.githubUser) {
+			setErrors({
+				githubUser: form.githubUser ? (
+					''
+				) : (
+					<span style={{ color: 'var(--talent-highlight)', fontSize: '15px' }}>
+						Github User is required
+					</span>
+				),
+			})
+			return
+		}
+	
+		setLoading(true)
+		const existingAnalysis = await getAnalysisByName(form.githubUser);
+		console.log(existingAnalysis)
+		if (existingAnalysis === null || existingAnalysis === undefined) {
+			await postAnalysis();
+		} else {
+			const history = await getHistory(existingAnalysis);
+
+			if (history === null || history === undefined) {
+				await saveAnalysisHistory(existingAnalysis);
+				await getAnalysis();
+			} else {
+				await getAnalysis();
+			}
 		}
 	}
 
