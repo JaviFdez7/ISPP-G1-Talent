@@ -12,7 +12,7 @@ import { useAuthContext } from './../../context/authContext'
 
 export default function SearchForm() {
 	const talentColor = 'var(--talent-secondary)'
-	const [numForms, setNumForms] = useState(1)
+	const [numForms, setNumForms] = useState(2)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')
 	const { subscription } = useAuthContext()
