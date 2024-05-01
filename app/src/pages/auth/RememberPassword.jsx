@@ -38,7 +38,7 @@ export default function RememberPassword() {
                 console.log(url)
                 Swal.fire({
                     icon: 'success',
-                    title: 'The email has already been sent to you',
+                    title: 'You have 15 minutes to change your password. If you dont receive the email, please check your spam folder',
                     text: `Data: ${JSON.stringify(url)}`,
                     showConfirmButton: true,
                     confirmButtonColor: 'var(--talent-highlight)',
