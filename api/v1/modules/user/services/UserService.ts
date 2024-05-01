@@ -9,6 +9,7 @@ import {
 	getSubscriptionsByUserId,
 } from '../../subscriptions/services/SubscriptionsService'
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
+import { sgMail } from '../helpers/sengrid'
 
 export const getAllUser: any = async () => await User.find({})
 
@@ -99,6 +100,23 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
+export const sendEmail: any = async (to: string, subject: string, text: string,html: string) =>{
+	try{
+		const from= process.env.SENGRID_EMAIL ?? ''
+		const msg = {
+			to,
+			from,
+			subject,
+			text,
+			html,
+		  };
+		await sgMail.send(msg);
+	}catch(error:any){
+		console.error('Error creating your request:', error)
+		throw error
+	}
+}
+
 export const createChangePasswordRequest: any = async (data: any,originalUrl: string) => {
 	try {
 		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
@@ -107,7 +125,12 @@ export const createChangePasswordRequest: any = async (data: any,originalUrl: st
 		const id = user?._id.toString()
 		const token = generateJWTWithSoonerExpiration(id)
 		const result = originalUrl+"/"+token
-		return result
+		const text=`To change the forgotten password, access this link: ${result}. \n
+		 In case of error, simply ignore the message.
+		Thank you very much for using IT TALENT :3`
+		await sendEmail(user?.email,'Verify password change',
+			text,''
+		)
 	} catch (error) {
 		console.error('Error creating your request:', error)
 		throw error
