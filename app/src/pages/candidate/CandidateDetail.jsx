@@ -344,6 +344,10 @@ export default function CandidateDetail() {
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
 				<h2 className='text-white text-center'>
+					This is an Optional field 
+					
+				</h2>
+				<h2 className='text-white text-center'>
 					(Please make sure you write your real GitHub APIkey)
 				</h2>
 				<div className='mt-8'>
