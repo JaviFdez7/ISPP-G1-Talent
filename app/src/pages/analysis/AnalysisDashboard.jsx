@@ -20,7 +20,7 @@ export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
 	const textColor2 = 'var(--talent-highlight)'
 	const borderColor = 'var(--talent-secondary)'
-	const { analysisId } = useParams()
+	const { analysisId: githubUsername } = useParams()
 	const { isRepresentative } = useAuthContext()
 
 	const [error, setError] = useState(false)
@@ -59,7 +59,7 @@ export default function AnalysisDashboard() {
 	}
 
 	useEffect(() => {
-		fetchDataFromEndpoint('/analysis/github/' + analysisId)
+		fetchDataFromEndpoint('/analysis/github/' + githubUsername)
 			.then((data) => {
 				const newArray = data
 				const currentAnalysisId = data._id
@@ -69,7 +69,7 @@ export default function AnalysisDashboard() {
 			.catch((error) => {
 				console.error('Error fetching data:', error)
 			})
-	}, [analysisId])
+	}, [githubUsername])
 
 	const calculateTimePeriod = (startDate, endDate) => {
 		const start = new Date(startDate)
