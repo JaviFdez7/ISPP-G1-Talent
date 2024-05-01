@@ -363,10 +363,15 @@ definitions:
         type: object
         required:
             - usernameOrEmail
+            - redirectUrlBase
         properties:
             usernameOrEmail:
                 type: string
                 description: The username or the email of the user
+            redirectUrlBase:
+                type: string
+                format: uri
+                description: The base url to redirect the user to change the password
     RepresentativeData:
         type: object
         required:
