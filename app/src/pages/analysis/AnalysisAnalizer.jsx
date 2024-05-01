@@ -103,7 +103,7 @@ export default function Analyzer() {
 					''
 				) : (
 					<span style={{ color: 'var(--talent-highlight)', fontSize: '15px' }}>
-						{'--->'}Github User is required
+						Github User is required
 					</span>
 				),
 			})
@@ -193,7 +193,7 @@ export default function Analyzer() {
 						<div className='text-center text-white'>{loadingMessage}</div>
 					)}
 					<form onSubmit={handleSubmit}>
-						<div className='input-analysis-container'>
+						<div className='input-analysis-container '>
 							{Input({
 								name: 'Github User',
 								value: githubUser,
@@ -211,16 +211,17 @@ export default function Analyzer() {
 							)}
 						</div>
 
-						<div className='input-analysis-container'>
+						<div className='input-analysis-container '>
 							{Input({
-								name: 'Github Token',
+								name: 'Github Token (Optional)',
 								value: githubToken,
 								editable: true,
-								placeholder: 'Enter candidate GitHub token',
+								placeholder: 'Enter candidate GitHub token ',
 								onChange: (e) => onInputChange(e),
 								formName: 'githubToken',
 								col: mobile,
 							})}
+							
 							{errors.githubToken && (
 								<p className='text-red-500 text-xs italic'>{errors.githubToken}</p>
 							)}
