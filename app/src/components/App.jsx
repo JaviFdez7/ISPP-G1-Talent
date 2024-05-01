@@ -44,6 +44,7 @@ import { Elements } from '@stripe/react-stripe-js'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
+
 function App() {
 	return (
 		<div>
@@ -196,7 +197,16 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-						<Route path='/trends' element={<Trends />} />
+						<Route 
+							path='/trends'
+							element={
+								<ProtectedRoute roles={['Representative', 'Candidate']} checkProPlan={true}>
+									<Trends />
+								</ProtectedRoute>
+							}
+						 />
+
+
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
