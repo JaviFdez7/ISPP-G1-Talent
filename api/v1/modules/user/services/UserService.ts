@@ -110,7 +110,14 @@ export const sendEmail: any = async (to: string, subject: string, text: string,h
 			text,
 			html,
 		  };
-		await sgMail.send(msg);
+		await sgMail
+		.send(msg)
+		.then(() => {
+		  console.log('Email sent')
+		})
+		.catch((error) => {
+		  console.error(error)
+		})
 	}catch(error:any){
 		console.error('Error creating your request:', error)
 		throw error
@@ -126,10 +133,11 @@ export const createChangePasswordRequest: any = async (data: any,originalUrl: st
 		const token = generateJWTWithSoonerExpiration(id)
 		const result = originalUrl+"/"+token
 		const text=`To change the forgotten password, access this link: ${result}. \n
+		 \n
 		 In case of error, simply ignore the message.
 		Thank you very much for using IT TALENT :3`
 		await sendEmail(user?.email,'Verify password change',
-			text,''
+			text,`<strong> ${text} </strong>`
 		)
 	} catch (error) {
 		console.error('Error creating your request:', error)
