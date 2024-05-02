@@ -15,13 +15,13 @@ export default function CandidateDetailEdit() {
 	const [userData, setUserData] = useState({
 		phone: '',
 		fullName: '',
-		profilePicture: profile,
 	})
+	const [profilePicture, setProfilePicture] = useState()
 
 	let navigate = useNavigate()
 	const [errors, setErrors] = useState({})
 
-	const { phone, fullName, profilePicture } = userData
+	const { phone, fullName } = userData
 
 	function handleChange(e) {
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
@@ -48,11 +48,6 @@ export default function CandidateDetailEdit() {
 		fetchUserData()
 	}, [isAuthenticated, id])
 
-	const handleProfilePictureChange = (e) => {
-		const url = e.target.value;
-		setUserData(prevUserData => ({ ...prevUserData, profilePicture: url }));
-	};
-
 	async function editUser(e) {
 		e.preventDefault()
 		const token = localStorage.getItem('access_token')
@@ -63,11 +58,13 @@ export default function CandidateDetailEdit() {
 			return
 		}
 
-		if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
+		let extension = profilePicture.name.split('.')[1].trim();
+
+		if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
 			Swal.fire({
 				icon: 'error',
 				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+				text: 'The provided file is not a supported image type. Please ensure it has the jpeg, png, or jpg extension.',
 				showConfirmButton: false,
 				background: 'var(--talent-secondary)',
 				color: 'white',
@@ -87,6 +84,7 @@ export default function CandidateDetailEdit() {
 					},
 				}
 			)
+
 			const profilePictureResponse = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
 				{ profilePicture },
@@ -97,7 +95,7 @@ export default function CandidateDetailEdit() {
 					},
 				}
 			)
-			setUserData({ ...userData, profilePicture: profilePictureResponse.data })
+			setProfile(profilePictureResponse.data)
 
 			if (response.status === 404) {
 				setErrors(response.data)
@@ -177,22 +175,28 @@ export default function CandidateDetailEdit() {
 		return errors
 	}
 
-	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => {
-		const [localProfilePicture, setLocalProfilePicture] = useState(profilePicture);
-	  
-		const handleBlur = () => {
-			handleProfilePictureChange({ target: { value: localProfilePicture } });
-		  };
-	  
+	const ProfilePicture = ({ profilePicture }) => {
+	  	  
 		const handleChange = (e) => {
-		  setLocalProfilePicture(e.target.value);
+
+			if (e.target.files && e.target.files[0]) {
+
+				if (e.target.files[0].type.startsWith('image')) {
+
+					setProfilePicture(e.target.files[0]);
+			
+				} else {
+					console.error('Unsupported file type.');
+				}
+			}
+		
 		};
 	  
 		return (
 		  <div className='flex flex-col items-center space-y-4'>
 			<img
-			  src={localProfilePicture}
-			  className='rounded-full border border-gray-300 profile-img'
+				src={profilePicture ? URL.createObjectURL(profilePicture) : ''}
+				className='rounded-full border border-gray-300 profile-img'
 			  style={{
 				objectFit: 'cover',
 				objectPosition: 'center',
@@ -202,40 +206,22 @@ export default function CandidateDetailEdit() {
 			  }}
 			/>
 			<label htmlFor='profilePicture' className='btn text-white'>
-			  Change profile photo
+			Change profile photo
 			</label>
-			<input
-			  type='text'
-			  id='profilePicture'
-			  name='profilePicture'
-			  placeholder='Enter image URL'
-			  onChange={handleChange}
-			  onBlur={handleBlur}
-			  value={localProfilePicture}
-			/>
-			<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
-			  Clear
-			</button>
+			<div>
+				<input className='self-center' type='file' name='profilePicture' accept='.png,.jpg,.jpeg' onChange={handleChange}></input>
+				<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
+				Clear
+				</button>
+			</div>
 		  </div>
 		);
 	  };
-	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
-	}
 
-	function isValidURL(string) {
-		try {
-			new URL(string);
-			return true;
-		} catch (_) {
-			return false;  
-		}
+	const handleClearProfilePicture = () => {
+		setProfilePicture(null);
 	}
 	
-	function isValidImageURL(url) {
-		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
-	}
-
 	return (
 		<div
 			className='flex flex-col justify-center'
@@ -271,7 +257,6 @@ export default function CandidateDetailEdit() {
 						<div>
 							<ProfilePicture
 								profilePicture={profilePicture}
-								handleProfilePictureChange={handleProfilePictureChange}
 							/>
 						</div>
 						<div className='w-10/12 flex flex-col mb-4 self-center'>
