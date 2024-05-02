@@ -64,6 +64,7 @@ export const updateAnalysisProfile: any = async (req: Request, res: Response) =>
 		const githubUsername = candidate.githubUser
 		const userApikey = req.body.apikey
 		const token = req.headers.authorization ?? ''
+	
 		const data = await AnalysisService.createAnalysis(githubUsername, token, userApikey)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}:://${req.get('host')}${req.originalUrl}`,

@@ -51,9 +51,13 @@ export const createUser: any = async (data: any, role: string) => {
 
 export const updateUser: any = async (id: any, data: any, role: string) => {
 	try {
+		
+	
 		const Model = getModelForRole(role) as typeof User
 		if (role === 'Candidate') {
-			const analysis = await createAnalysis(data?.githubUser, data?.githubToken)
+			const analysis = await createAnalysis(data?.githubUser)
+			//Se ha quitado el token de github del usuario porque caducan y evitar problemas, se puedo incluir alomejor cuando la aplicación este completamente terminada
+			//const analysis = await createAnalysis(data?.githubUser, token,data?.githubToken)
 			data.analysisId = analysis._id
 		}
 		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
@@ -66,6 +70,8 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 
 export const updateUserProfilePicture: any = async (id: any, file: Express.Multer.File) => {
 	try {
+		console.log("profile")
+		// console.log(file)
 		const updatedUser = await User.findByIdAndUpdate(
             id,
             { profilePicture: { data: file.buffer, contentType: file.mimetype } },

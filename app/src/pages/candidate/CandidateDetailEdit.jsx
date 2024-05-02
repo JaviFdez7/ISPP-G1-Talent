@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useAuthContext } from '../../context/authContext'
 import Swal from 'sweetalert2'
 import { useParams } from 'react-router-dom'
+import FormData from 'form-data'
 
 export default function CandidateDetailEdit() {
 	const { isAuthenticated } = useAuthContext()
@@ -15,15 +16,17 @@ export default function CandidateDetailEdit() {
 	const [userData, setUserData] = useState({
 		phone: '',
 		fullName: '',
+		profilePicture: null,
+		profilePictureURL: ''
 	})
-	const [profilePicture, setProfilePicture] = useState()
 
 	let navigate = useNavigate()
 	const [errors, setErrors] = useState({})
 
-	const { phone, fullName } = userData
+	let { phone, fullName } = userData
 
 	function handleChange(e) {
+		console.log(userData)
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
 		setUserData({
 			...userData,
@@ -37,8 +40,11 @@ export default function CandidateDetailEdit() {
 			try {
 				if (isAuthenticated) {
 					const token = localStorage.getItem('access_token')
-					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
-					const user = response.data.data.find((user) => user._id === id)
+					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/`)
+					let user = response.data.data.find((user) => user._id === id)
+					console.log("PROFILE PICTURE, RUBEN ES UN CRACK", user.profilePicture)
+					const blob = new Blob([user.profilePicture], {type: 'image/jpg'})
+					user = { ...user, profilePictureURL: URL.createObjectURL(blob)}
 					setUserData(user)
 				}
 			} catch (error) {
@@ -58,7 +64,7 @@ export default function CandidateDetailEdit() {
 			return
 		}
 
-		let extension = profilePicture.name.split('.')[1].trim();
+		let extension = userData.profilePicture.name.split('.')[1].trim();
 
 		if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
 			Swal.fire({
@@ -74,9 +80,10 @@ export default function CandidateDetailEdit() {
 		}
 
 		try {
+			const user = { ...userData, profilePicture: null, profilePictureURL: '' }
 			const response = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}`,
-				userData,
+				user,
 				{
 					headers: {
 						'Content-type': 'application/json',
@@ -85,17 +92,23 @@ export default function CandidateDetailEdit() {
 				}
 			)
 
-			const profilePictureResponse = await axios.patch(
+			const fd = new FormData();
+			fd.append('profilePicture', userData.profilePicture);
+			for (var pair of fd.entries()) {
+				console.log(pair[0]+ ', ' + pair[1]); 
+			}
+				
+			const profilePictureResponse = await axios.post(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
-				{ profilePicture },
+				fd,
 				{
 					headers: {
-						'Content-type': 'application/json',
+				 
 						Authorization: token,
 					},
 				}
 			)
-			setProfile(profilePictureResponse.data)
+			// setProfilePicture(profilePictureResponse.data)
 
 			if (response.status === 404) {
 				setErrors(response.data)
@@ -120,6 +133,7 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
+			console.log(error)
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
@@ -175,16 +189,17 @@ export default function CandidateDetailEdit() {
 		return errors
 	}
 
-	const ProfilePicture = ({ profilePicture }) => {
+	const ProfilePicture = ({ }) => {
 	  	  
-		const handleChange = (e) => {
+		const handleChangePicture = (e) => {
 
 			if (e.target.files && e.target.files[0]) {
 
 				if (e.target.files[0].type.startsWith('image')) {
 
-					setProfilePicture(e.target.files[0]);
-			
+					console.log("IMAGENNNNN",e.target.files[0])
+					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL: URL.createObjectURL(e.target.files[0])} );
+					console.log("Crack 333", URL.createObjectURL(e.target.files[0]))
 				} else {
 					console.error('Unsupported file type.');
 				}
@@ -195,7 +210,7 @@ export default function CandidateDetailEdit() {
 		return (
 		  <div className='flex flex-col items-center space-y-4'>
 			<img
-				src={profilePicture ? URL.createObjectURL(profilePicture) : ''}
+				src={userData.profilePictureURL}
 				className='rounded-full border border-gray-300 profile-img'
 			  style={{
 				objectFit: 'cover',
@@ -209,7 +224,7 @@ export default function CandidateDetailEdit() {
 			Change profile photo
 			</label>
 			<div>
-				<input className='self-center' type='file' name='profilePicture' accept='.png,.jpg,.jpeg' onChange={handleChange}></input>
+				<input className='self-center' type='file' name='profilePicture' accept='.png,.jpg,.jpeg' onChange={handleChangePicture}></input>
 				<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
 				Clear
 				</button>
@@ -219,7 +234,7 @@ export default function CandidateDetailEdit() {
 	  };
 
 	const handleClearProfilePicture = () => {
-		setProfilePicture(null);
+		setUserData( { ...userData, profilePicture: null, profilePictureURL: ''} );
 	}
 	
 	return (
@@ -255,9 +270,7 @@ export default function CandidateDetailEdit() {
 						style={{ marginBottom: '5%' }}
 						onSubmit={(e) => editUser(e)}>
 						<div>
-							<ProfilePicture
-								profilePicture={profilePicture}
-							/>
+							<ProfilePicture/>
 						</div>
 						<div className='w-10/12 flex flex-col mb-4 self-center'>
 							<label htmlFor='Phone' className='block text-lg font-bold text-white'>

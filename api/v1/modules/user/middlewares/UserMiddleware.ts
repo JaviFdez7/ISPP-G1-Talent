@@ -220,8 +220,11 @@ export const checkUpdateCandidate: any = async (
 	next: NextFunction
 ) => {
 	try {
+	
 		const data = req.body
 		const token = req.headers.authorization ?? ''
+		
+		
 		const id = req.params.id.toString()
 		const user = await Candidate.findById(id).lean<IRepresentative>()
 		if (!user) {
@@ -238,6 +241,7 @@ export const checkUpdateCandidate: any = async (
 			return
 		}
 		const decodedToken = verifyJWT(token)
+	
 		if (decodedToken.sub !== id) {
 			const message = 'Unauthorized'
 			ApiResponse.sendError(
@@ -265,9 +269,11 @@ export const checkUpdateCandidate: any = async (
 					return
 				}
 			}
+		
 			next()
 		}
 	} catch (error: any) {
+		console.log(error)
 		ApiResponse.sendError(res, [
 			{
 				title: 'Error updating user',

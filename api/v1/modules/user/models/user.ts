@@ -26,7 +26,7 @@ export interface CandidateDocument {
 	_id: mongoose.Types.ObjectId
 	fullName: string
 	githubUser: string
-	profilePicture?: string
+	profilePicture?: { data: Buffer, contentType: String }
 	candidateSubscription: keyof typeof CandidateSubscription
 	CV?: string
 	residence?: string
@@ -41,7 +41,7 @@ const userSchema = new Schema(
 		username: { type: String, required: true },
 		password: { type: String, required: true },
 		email: { type: String, required: true },
-		profilePicture: String,
+		profilePicture: { data: Buffer, contentType: String },
 		phone: String,
 		paymentMethods: [String],
 		subscriptionId: { type: Schema.Types.ObjectId, ref: 'Subscription', required: true },

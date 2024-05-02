@@ -93,8 +93,11 @@ export const createRepresentative: any = async (req: Request, res: Response) => 
 
 export const updateCandidate: any = async (req: Request, res: Response) => {
 	try {
+		console.log("holala")
 		const id = req.params.id
 		const role: string = 'Candidate'
+		const token = req.headers.authorization ?? ''
+
 		const data = await UserService.updateUser(id, req.body, role)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
@@ -129,13 +132,17 @@ export const updateRepresentative: any = async (req: Request, res: Response) => 
 
 export const updateUserProfilePicture: any = async (req: Request, res: Response) => {
 	try {
+		
 		const id = req.params.id
-		const picture = req.body.profilePicture
+		const picture = req.file
+	
+	
 		const data = await UserService.updateUserProfilePicture(id, picture)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
 		})
 	} catch (error: any) {
+		console.log(error)
 		return ApiResponse.sendError(res, [
 			{
 				title: 'Internal Server Error',
