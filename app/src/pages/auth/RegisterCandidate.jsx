@@ -218,6 +218,8 @@ export default function RegisterCandidate() {
 
 	async function handleSubmit(e) {
 		e.preventDefault()
+		setErrors({})
+
 		if (!isCheckboxChecked) {
 			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
 			return
@@ -261,6 +263,7 @@ export default function RegisterCandidate() {
 			setLoading(false)
 			if (!isValidEmail) {
 				setEmailValid(false)
+				setErrors({ email: 'Please use a valid email' })
 				return
 			}
 		}
@@ -333,7 +336,7 @@ export default function RegisterCandidate() {
 
 		try {
 			const response = await axios.request(options)
-			if (response.data.status === 'valid') {
+			if (response.data.status !== 'invalid' && response.data.reason !== 'dns_error') {
 				return true
 			} else {
 				return false
@@ -421,7 +424,7 @@ export default function RegisterCandidate() {
 					boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
 					backdropFilter: 'blur(8px)',
 					borderWidth: '1px',
-					overflow: 'auto', 
+					overflow: 'auto',
 				}}>
 				<h2
 					className='text-2xl font-bold text-center mb-4 text-white'
@@ -515,7 +518,9 @@ export default function RegisterCandidate() {
 							isMandatory
 						/>
 						{loading && <p className='text-white'>Validating email...</p>}
-						{!emailValid && <p className='text-red-500'>Please use a real email.</p>}
+						{errors.corporativeMail && (
+							<p className='text-red-500'>{errors.corporativeMail}</p>
+						)}
 						<FormTextInput
 							labelFor='Phonenumber'
 							labelText='Phone number'
