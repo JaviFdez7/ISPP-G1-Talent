@@ -2,7 +2,9 @@
 import { type Request, type Response } from 'express'
 import UserService from '../services/UserService'
 import { ApiResponse } from '../../../utils/ApiResponse'
-
+import multer from 'multer';
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 // Default controller functions
 export const getAllUser: any = async (req: Request, res: Response) => {
 	try {
@@ -36,6 +38,7 @@ export const getUserById: any = async (req: Request, res: Response) => {
 		])
 	}
 }
+
 
 export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
 	try {

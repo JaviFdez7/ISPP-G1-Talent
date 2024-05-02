@@ -24,7 +24,8 @@ import {
   checkGetUserById,
   checkGetProfessionalExperienceByUserId,
   checkDeleteUser} from './middlewares/UserMiddleware';
-
+import multer from 'multer';
+const upload = multer({ storage: multer.memoryStorage() });
 const router = express.Router();
 
 // Define routes for the User module
@@ -38,7 +39,7 @@ router.post('/representative', checkCreateRepresentative, createRepresentative);
 router.post('/login', checkLoginUser, loginUser);//X
 router.patch('/candidate/:id', checkUpdateCandidate, updateCandidate);//X
 router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentative);//X
-router.patch('/candidate/:id/profile-picture', checkUpdateUserProfilePicture, updateUserProfilePicture);
+router.patch('/candidate/:id/profile-picture', checkUpdateUserProfilePicture,updateUserProfilePicture);
 router.patch('/:id/password', checkUpdatePassword, updateUserPassword);
 router.delete('/:id', checkDeleteUser, deleteUser);//X
 
