@@ -53,15 +53,14 @@ const User = model('User', userSchema)
 
 const representativeSchema = new Schema({
 	companyName: { type: String, required: true },
-	profilePicture: String,
+	profilePicture: { data: Buffer, contentType: String }, 
 	projectSocietyName: String,
 })
 
 const candidateSchema = new Schema({
 	fullName: { type: String, required: true },
 	githubUser: { type: String, required: true },
-	profilePicture: String,
-	CV: String,
+	profilePicture: { data: Buffer, contentType: String }, 
 	residence: String,
 	lifestyle: {
 		type: String,
