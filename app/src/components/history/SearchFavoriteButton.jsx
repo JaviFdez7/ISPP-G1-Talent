@@ -13,6 +13,7 @@ const SearchFavoriteButton = ({ history, toggleText = false }) => {
 
 	async function changeFavorites(userId) {
 		const uri = `/user/${userId}/team_creator/history/${history._id}/favorite`
+		console.log(history)
 		try {
 			const response = await axios.patch(apiURL + uri)
 			setErrorMessage(null)

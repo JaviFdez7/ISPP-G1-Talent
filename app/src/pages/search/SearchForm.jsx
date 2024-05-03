@@ -303,13 +303,11 @@ export default function SearchForm() {
 		if (subscription) {
 			if (subscription.toLowerCase() == 'basic plan') {
 				setNumOptions([
-					{ value: 1, label: '1' },
 					{ value: 2, label: '2' },
 					{ value: 3, label: '3' },
 				])
 			} else {
 				setNumOptions([
-					{ value: 1, label: '1' },
 					{ value: 2, label: '2' },
 					{ value: 3, label: '3' },
 					{ value: 4, label: '4' },
@@ -351,7 +349,7 @@ export default function SearchForm() {
 					marginTop: '50px',
 				}}>
 				<label htmlFor='numForms' style={{ color: 'white', marginRight: '5px' }}>
-					Select between 1 and 5 candidates to search for:
+					Select between 2 and 5 candidates to search for:
 				</label>
 				<Select
 					id='numForms'
