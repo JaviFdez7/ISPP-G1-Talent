@@ -27,11 +27,16 @@ export default function AnalysisDashboard() {
 	const [errorMessage, setErrorMessage] = useState('')
 	const [history, setHistory] = useState(null)
 	const navigate = useNavigate()
+	const [isFavorite, setIsFavorite] = useState(history?.favorite)
 
 	const [dataArray, setDataArray] = useState([])
 	const [candidate, setCandidate] = useState()
 	const [experience, setExperience] = useState([])
 	const apiURL = import.meta.env.VITE_BACKEND_URL
+
+	const handleToggleFavorite = () => {
+		setIsFavorite(!isFavorite)
+	}
 
 	async function fetchDataFromEndpoint(analysisEndPoint) {
 		try {
@@ -52,6 +57,7 @@ export default function AnalysisDashboard() {
 	async function fetchHistory(currentAnalysisId) {
 		try {
 			const historyData = await getHistory(currentAnalysisId)
+			setIsFavorite(historyData.favorite)
 			setHistory(historyData)
 		} catch (error) {
 			console.error('Error fetching history:', error)
@@ -230,7 +236,7 @@ export default function AnalysisDashboard() {
 						<h2 className='analysis-name'>{dataArray.githubUsername}</h2>
 						<div>
 							{isRepresentative && history ? (
-								<FavoriteButton history={history} toggleText />
+								<FavoriteButton history={history} isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} toggleText />
 							) : null}
 						</div>
 						<div className='w-full'>
