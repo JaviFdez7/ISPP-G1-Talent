@@ -20,7 +20,6 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 		setItemHistory(updatedHistory)
 	}
 
-
 	async function getGithubUsername(analysisId) {
 		const uri = `/analysis/${analysisId}`
 		const token = localStorage.getItem('access_token')
@@ -44,9 +43,9 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 	}, [item.analysisId])
 
 	useEffect(() => {
-		setItemHistory(item);
-	}, [item]);
-	
+		setItemHistory(item)
+	}, [item])
+
 	return (
 		<div className='p-4 mb-2 mt-2 history-list-element'>
 			<div className='flex-col relative'>
@@ -64,11 +63,17 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 				</Link>
 				<div className='flex items-center justify-end'>
 					<div className='flex mx-2'>
-						<FavoriteButton history={itemHistory} isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} />
+						<FavoriteButton
+							history={itemHistory}
+							isFavorite={isFavorite}
+							onToggleFavorite={handleToggleFavorite}
+						/>
 					</div>
 					<div className='flex mx-2'>
-
-						<DeleteHistoryButton history={itemHistory} setErrorMessage={setErrorMessage} />
+						<DeleteHistoryButton
+							history={itemHistory}
+							setErrorMessage={setErrorMessage}
+						/>
 					</div>
 				</div>
 			</div>

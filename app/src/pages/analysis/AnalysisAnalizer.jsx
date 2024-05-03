@@ -41,19 +41,21 @@ export default function Analyzer() {
 		})
 		setErrors({})
 	}
-	const [errorMessage, setErrorMessage] = useState(null);
+	const [errorMessage, setErrorMessage] = useState(null)
 
 	async function getAnalysisByName(githubUser) {
 		const currentUserId = localStorage.getItem('userId')
 		const uri = `/analysis`
 		try {
 			const response = await axios.get(ruta + uri)
-			const existingAnalysis = response.data.data.find(item => item.githubUsername === githubUser);
+			const existingAnalysis = response.data.data.find(
+				(item) => item.githubUsername === githubUser
+			)
 			if (existingAnalysis) {
-				return existingAnalysis._id;
+				return existingAnalysis._id
 			} else {
 				// Maneja el caso en que no se encuentra el análisis
-				return null;
+				return null
 			}
 		} catch (error) {
 			setErrorMessage('Unable to connect to the server. Please try again later.')
@@ -109,7 +111,6 @@ export default function Analyzer() {
 			const data = response.data.data
 			const filteredHistory = data.filter((item) => item.analysisId === currentAnalysisId)
 			return filteredHistory[0]
-		
 		} catch (error) {
 			throw error
 		}
@@ -150,7 +151,7 @@ export default function Analyzer() {
 					apikey: form.githubToken,
 				}),
 			})
-	
+
 			setLoading(false)
 			if (response.status == 400) {
 				setErrors({
@@ -165,7 +166,7 @@ export default function Analyzer() {
 				console.error('An error occurred:', await response.text())
 				return null
 			}
-	
+
 			navigate('/analysis/' + form.githubUser)
 			return response
 		} catch (error) {
@@ -177,7 +178,7 @@ export default function Analyzer() {
 
 	async function handleSubmit(e) {
 		e.preventDefault()
-	
+
 		if (!form.githubUser) {
 			setErrors({
 				githubUser: form.githubUser ? (
@@ -190,19 +191,19 @@ export default function Analyzer() {
 			})
 			return
 		}
-	
+
 		setLoading(true)
-		const existingAnalysis = await getAnalysisByName(form.githubUser);
+		const existingAnalysis = await getAnalysisByName(form.githubUser)
 		if (existingAnalysis === null || existingAnalysis === undefined) {
-			await postAnalysis();
+			await postAnalysis()
 		} else {
-			const history = await getHistory(existingAnalysis);
+			const history = await getHistory(existingAnalysis)
 
 			if (history === null || history === undefined) {
-				await saveAnalysisHistory(existingAnalysis);
-				await getAnalysis();
+				await saveAnalysisHistory(existingAnalysis)
+				await getAnalysis()
 			} else {
-				await getAnalysis();
+				await getAnalysis()
 			}
 		}
 	}
@@ -265,7 +266,7 @@ export default function Analyzer() {
 								formName: 'githubToken',
 								col: mobile,
 							})}
-							
+
 							{errors.githubToken && (
 								<p className='text-red-500 text-xs italic'>{errors.githubToken}</p>
 							)}
