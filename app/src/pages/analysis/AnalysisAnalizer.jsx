@@ -103,7 +103,6 @@ export default function Analyzer() {
 
 	async function getHistory(currentAnalysisId) {
 		const currentUserId = localStorage.getItem('userId')
-		console.log(currentAnalysisId)
 		const uri = `/user/${currentUserId}/history`
 		try {
 			const response = await axios.get(ruta + uri)
@@ -118,8 +117,6 @@ export default function Analyzer() {
 
 	async function getAnalysis() {
 		const token = localStorage.getItem('access_token')
-		console.log(token)
-		console.log(form.githubUser)
 		try {
 			const userResponse = await fetch(`${ruta}/analysis/github/${form.githubUser}`, {
 				headers: {
@@ -196,7 +193,6 @@ export default function Analyzer() {
 	
 		setLoading(true)
 		const existingAnalysis = await getAnalysisByName(form.githubUser);
-		console.log(existingAnalysis)
 		if (existingAnalysis === null || existingAnalysis === undefined) {
 			await postAnalysis();
 		} else {

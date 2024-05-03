@@ -18,7 +18,7 @@ const DeleteHistoryButton = ({ history, toggleText = false, setErrorMessage }) =
 		if (history.favorite) {
 			const favUri = `/user/${userId}/history/${history._id}/favorite`
 			try {
-				await axios.patch(
+				const favResponse = await axios.patch(
 					apiURL + favUri,
 					{},
 					{
@@ -27,6 +27,9 @@ const DeleteHistoryButton = ({ history, toggleText = false, setErrorMessage }) =
 						},
 					}
 				)
+				if (favResponse.status !== 200) {
+					throw new Error('Failed to update favorite status')
+				}
 			} catch (error) {
 				handleNetworkError(error, navigate)
 				return
