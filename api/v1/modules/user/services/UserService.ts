@@ -115,7 +115,7 @@ export const sendEmail: any = async (to: string, subject: string, text: string,h
 		.then(() => {
 		  console.log('Email sent')
 		})
-		.catch((error) => {
+		.catch((error:any) => {
 		  console.error(error)
 		})
 	}catch(error:any){
