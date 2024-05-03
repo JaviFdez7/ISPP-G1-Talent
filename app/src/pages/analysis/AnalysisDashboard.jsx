@@ -236,7 +236,12 @@ export default function AnalysisDashboard() {
 						<h2 className='analysis-name'>{dataArray.githubUsername}</h2>
 						<div>
 							{isRepresentative && history ? (
-								<FavoriteButton history={history} isFavorite={isFavorite} onToggleFavorite={handleToggleFavorite} toggleText />
+								<FavoriteButton
+									history={history}
+									isFavorite={isFavorite}
+									onToggleFavorite={handleToggleFavorite}
+									toggleText
+								/>
 							) : null}
 						</div>
 						<div className='w-full'>
@@ -354,25 +359,24 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: languages.map((item) => item.language),
 										datasets: [
-										{
-											label: '',
-											data: languages.map((item) => item.percentage),
-											backgroundColor: getListOfRandomColors(
-											languages.length
-											),
-										},
+											{
+												label: '',
+												data: languages.map((item) => item.percentage),
+												backgroundColor: getListOfRandomColors(
+													languages.length
+												),
+											},
 										],
 									}}
 									options={{
 										plugins: {
-										legend: {
-											labels: {
-											color: 'white' 
-											}
-										}
-										}
-									}}
-									></Pie>
+											legend: {
+												labels: {
+													color: 'white',
+												},
+											},
+										},
+									}}></Pie>
 							</div>
 						</div>
 					</div>
@@ -420,37 +424,36 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: tecnologies.map((item) => item.name),
 										datasets: [
-										{
-											label: 'Technologies usage',
-											data: tecnologies.map((item) => item.appearences),
-											backgroundColor: getListOfRandomColors(
-											tecnologies.length
-											),
-										},
+											{
+												label: 'Technologies usage',
+												data: tecnologies.map((item) => item.appearences),
+												backgroundColor: getListOfRandomColors(
+													tecnologies.length
+												),
+											},
 										],
 									}}
 									options={{
 										plugins: {
-										legend: {
-											labels: {
-											color: 'white' 
-											}
-										}
+											legend: {
+												labels: {
+													color: 'white',
+												},
+											},
 										},
 										scales: {
-										x: {
-											ticks: {
-											color: 'white' 
-											}
+											x: {
+												ticks: {
+													color: 'white',
+												},
+											},
+											y: {
+												ticks: {
+													color: 'white',
+												},
+											},
 										},
-										y: {
-											ticks: {
-											color: 'white' 
-											}
-										}
-										}
-									}}
-									></Bar>
+									}}></Bar>
 							</div>
 						</div>
 					</div>

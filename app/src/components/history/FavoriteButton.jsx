@@ -24,7 +24,7 @@ const FavoriteButton = ({ history, isFavorite, onToggleFavorite, toggleText = fa
 	}
 
 	const handleToggleFavorite = () => {
-		if(onToggleFavorite !== undefined) {
+		if (onToggleFavorite !== undefined) {
 			onToggleFavorite()
 		}
 		const userId = localStorage.getItem('userId')
