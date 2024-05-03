@@ -26,7 +26,7 @@ export default function CandidateDetailEdit() {
 	let { phone, fullName } = userData
 
 	function handleChange(e) {
-		console.log(userData)
+
 		const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
 		setUserData({
 			...userData,
@@ -42,7 +42,7 @@ export default function CandidateDetailEdit() {
 					const token = localStorage.getItem('access_token')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/`)
 					let user = response.data.data.find((user) => user._id === id)
-					console.log("PROFILE PICTURE, RUBEN ES UN CRACK", user.profilePicture)
+
 					const blob = new Blob([user.profilePicture], {type: 'image/jpg'})
 					user = { ...user, profilePictureURL: URL.createObjectURL(blob)}
 					setUserData(user)
@@ -94,9 +94,6 @@ export default function CandidateDetailEdit() {
 
 			const fd = new FormData();
 			fd.append('profilePicture', userData.profilePicture);
-			for (var pair of fd.entries()) {
-				console.log(pair[0]+ ', ' + pair[1]); 
-			}
 				
 			const profilePictureResponse = await axios.post(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
@@ -133,7 +130,6 @@ export default function CandidateDetailEdit() {
 				timer: 1500,
 			})
 		} catch (error) {
-			console.log(error)
 			if (
 				error.response.status === 401 ||
 				error.response.data.errors[0].detail ===
@@ -197,9 +193,7 @@ export default function CandidateDetailEdit() {
 
 				if (e.target.files[0].type.startsWith('image')) {
 
-					console.log("IMAGENNNNN",e.target.files[0])
 					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL: URL.createObjectURL(e.target.files[0])} );
-					console.log("Crack 333", URL.createObjectURL(e.target.files[0]))
 				} else {
 					console.error('Unsupported file type.');
 				}
