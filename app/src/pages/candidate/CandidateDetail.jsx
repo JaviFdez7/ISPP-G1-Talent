@@ -60,7 +60,6 @@ export default function CandidateDetail() {
 							},
 						}
 					)
-					console.log('Subscription data:', response)
 					setSubscription(response.data.data.remainingUpdates)
 					const remainingUpdates = response.data.data.remainingUpdates
 					return remainingUpdates
@@ -198,13 +197,6 @@ export default function CandidateDetail() {
 		}
 	}, [userId])
 
-	React.useEffect(() => {
-		console.log('Subscription state:', subscription)
-		if (subscription) {
-			console.log('Remaining updates:', subscription)
-		}
-	}, [subscription])
-
 	let mobile = false
 	if (window.screen.width < 500) {
 		mobile = true
@@ -304,7 +296,6 @@ export default function CandidateDetail() {
 
 			<br></br>
 			<h2 className='text-white text-center'>
-				{console.log(subscription)}
 				{subscription !== null && subscription !== undefined && `You have `}
 				{subscription !== null && subscription !== undefined && (
 					<span style={{ color: 'var(--talent-highlight)' }}>{subscription}</span>
