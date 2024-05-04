@@ -322,9 +322,9 @@ export default function RegisterRepresentative() {
 
 		if (!form.company_name) {
 			errors.company_name = getRequiredFieldMessage('company name')
-		} else if (form.company_name.length < 2 || form.company_name.length > 20) {
+		} else if (form.company_name.length < 2 || form.company_name.length > 35) {
 			errors.company_name =
-				'The company name field must have be between 2 and 20 characters long'
+				'The company name field must have be between 2 and 35 characters long'
 		}
 
 		if (!form.corporative_email) {
@@ -357,10 +357,10 @@ export default function RegisterRepresentative() {
 
 		if (
 			form.projectSocietyName &&
-			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 30)
+			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 35)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 30 characters long'
+				'The Project Society Name must be between 2 and 35 characters long'
 		}
 		return errors
 	}

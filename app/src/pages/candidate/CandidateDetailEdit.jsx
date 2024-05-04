@@ -15,7 +15,7 @@ export default function CandidateDetailEdit() {
 	const [userData, setUserData] = useState({
 		phone: '',
 		fullName: '',
-		profilePicture: profile,
+		profilePicture: null,
 	})
 
 	let navigate = useNavigate()
@@ -63,7 +63,7 @@ export default function CandidateDetailEdit() {
 			return
 		}
 
-		if(userData.profilePicture !== null) {
+		if(userData.profilePicture !== null && userData.profilePicture !== undefined) {
 			if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
 				Swal.fire({
 					icon: 'error',
