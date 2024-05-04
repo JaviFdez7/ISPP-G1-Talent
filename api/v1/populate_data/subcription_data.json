@@ -1,0 +1,182 @@
+[
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8b6",
+		"type": "CompanySubscription",
+		"subtype": "Pro plan",
+		"price": {
+			"amount": 99.95,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-04-01T00:00:00Z",
+		"expirationDate": "2024-04-01T00:00:00Z",
+		"automaticRenovation": true,
+		"remainingSearches": 100,
+		"teamLimit": 10
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8b7",
+		"type": "CompanySubscription",
+		"subtype": "Basic plan",
+		"price": {
+			"amount": 45.95,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-01-01T00:00:00Z",
+		"expirationDate": "2024-01-01T00:00:00Z",
+		"automaticRenovation": false,
+		"remainingSearches": 50,
+		"teamLimit": 5
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8b8",
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-02-01T00:00:00Z",
+		"expirationDate": "2024-02-01T00:00:00Z",
+		"automaticRenovation": true,
+		"remainingUpdates": 5,
+		"canInspectEmail": true
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8b9",
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-03-01T00:00:00Z",
+		"expirationDate": "2024-03-01T00:00:00Z",
+		"automaticRenovation": false,
+		"remainingUpdates": 3,
+		"canInspectEmail": false
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8ba",
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-03-15T00:00:00Z",
+		"expirationDate": "2024-03-15T00:00:00Z",
+		"automaticRenovation": false,
+		"remainingUpdates": 3,
+		"canInspectEmail": false
+	},
+	{
+		"_id": "630f1f8bcf30e2d9c6a7d8bb",
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2023-05-01T00:00:00Z",
+		"expirationDate": "2024-05-01T00:00:00Z",
+		"automaticRenovation": true,
+		"remainingUpdates": 5,
+		"canInspectEmail": true
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8b6",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-01",
+		"expirationDate": "2025-03-01",
+		"automaticRenovation": true,
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8b7",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-02",
+		"expirationDate": "2025-03-02",
+		"automaticRenovation": true,
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8b8",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-03",
+		"expirationDate": "2025-03-03",
+		"automaticRenovation": false,
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8b9",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-04",
+		"expirationDate": "2025-03-04",
+		"automaticRenovation": true,
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8ba",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-05",
+		"expirationDate": "2025-03-05",
+		"automaticRenovation": false,
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8bb",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-06",
+		"expirationDate": "2025-03-06",
+		"automaticRenovation": true,
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8bc",
+		"price": {
+			"amount": 0,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-07",
+		"expirationDate": "2025-03-07",
+		"automaticRenovation": false,
+		"type": "CandidateSubscription",
+		"subtype": "Basic plan"
+	},
+	{
+		"_id": "730f1f8bcf30e2d9c6a7d8bd",
+		"price": {
+			"amount": 9.99,
+			"currency": "EUR"
+		},
+		"lastPaymentDate": "2024-03-08",
+		"expirationDate": "2025-03-08",
+		"automaticRenovation": true,
+		"type": "CandidateSubscription",
+		"subtype": "Pro plan"
+	}
+]

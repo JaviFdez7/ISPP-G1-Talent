@@ -1,4 +1,4 @@
-import { generateJWT } from '../helpers/handleJWT'
+import { generateJWT, generateJWTWithSoonerExpiration } from '../helpers/handleJWT'
 import { Candidate, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { getModelForRole } from '../helpers/handleRoles'
@@ -9,6 +9,7 @@ import {
 	getSubscriptionsByUserId,
 } from '../../subscriptions/services/SubscriptionsService'
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
+import { sgMail } from '../helpers/sengrid'
 
 export const getAllUser: any = async () => await User.find({})
 
@@ -99,6 +100,51 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
+export const sendEmail: any = async (to: string, subject: string, text: string,html: string) =>{
+	try{
+		const from= process.env.SENGRID_EMAIL ?? ''
+		const msg = {
+			to,
+			from,
+			subject,
+			text,
+			html,
+		  };
+		await sgMail
+		.send(msg)
+		.then(() => {
+		  console.log('Email sent')
+		})
+		.catch((error:any) => {
+		  console.error(error)
+		})
+	}catch(error:any){
+		console.error('Error creating your request:', error)
+		throw error
+	}
+}
+
+export const createChangePasswordRequest: any = async (data: any,originalUrl: string) => {
+	try {
+		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
+		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		const user = userByEmail ?? userByUsername
+		const id = user?._id.toString()
+		const token = generateJWTWithSoonerExpiration(id)
+		const result = originalUrl+"/"+token
+		const text=`To change the forgotten password, access this link: ${result}. \n
+		 \n
+		 In case of error, simply ignore the message.
+		Thank you very much for using IT TALENT :3`
+		await sendEmail(user?.email,'Verify password change',
+			text,`<strong> ${text} </strong>`
+		)
+	} catch (error) {
+		console.error('Error creating your request:', error)
+		throw error
+	}
+}
+
 export const loginUser: any = async (data: any) => {
 	try {
 		const user = await User.findOne({ username: data.username })
@@ -120,5 +166,5 @@ export default {
 	updateUserProfilePicture,
 	updateUserPassword,
 	deleteUser,
-	loginUser,
+	loginUser,createChangePasswordRequest
 }

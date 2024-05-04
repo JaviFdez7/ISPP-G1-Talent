@@ -25,6 +25,7 @@ import { useLocation } from 'react-router-dom'
 
 export default function Navbar() {
 	const { subscription: authSubscription } = useAuthContext()
+	const { subscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState(null)
 	const [notifications, setNotifications] = useState(0)
@@ -38,7 +39,7 @@ export default function Navbar() {
 		{ Trends: 0, Subscription: 1, Information: 2, Settings: 3 },
 		{
 			Trends: 0,
-			'My analysis': 1,
+			Analysis: 1,
 			'Team Search': 2,
 			Subscription: 3,
 			Information: 4,
@@ -54,10 +55,12 @@ export default function Navbar() {
 		if (isAuthenticated && userData && userData.role === 'Representative') {
 			optsTemplate = 2
 		}
-
+	
 		let res = opts[optsTemplate][key]
 		if (res === undefined) {
 			res = -1
+		} else if (key !== 'Trends' && subscription !== 'Pro plan' && res > opts[optsTemplate]['Trends']) {
+			res -= 1
 		}
 		return res
 	}
@@ -84,7 +87,7 @@ export default function Navbar() {
 				}
 			}
 		} catch (error) {
-			console.log('Error fetching notification data:', error.response.data.message)
+			console.error('Error fetching notification data:', error.response.data.message)
 		}
 	}
 
@@ -158,7 +161,7 @@ export default function Navbar() {
 		}
 	}
 
-	const subscription = isAuthenticated
+	const subscription2 = isAuthenticated
 		? userData && userData.role == 'Representative'
 			? '/representative/subscription'
 			: '/candidate/subscription'
@@ -181,30 +184,30 @@ export default function Navbar() {
 				<div className='navbar-hoverer' id='navbar-hoverer'></div>
 				<div className='navbar-current' id='navbar-current'></div>
 				<>
-					{userData && getOptsNum('Trends') !== -1 && (
-						<Link
-							to='/trends'
-							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
-							onMouseDown={() => move_current(getOptsNum('Trends'))}
-							className='link-container'>
-							<span>
-								<FontAwesomeIcon icon={faArrowTrendUp} />
-							</span>
-							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>Trends</span>
-						</Link>
-					)}
-					{userData && getOptsNum('My analysis') !== -1 && (
+				{userData && getOptsNum('Trends') !== -1 && subscription === 'Pro plan' && (
+					<Link
+						to='/trends'
+						onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
+						onMouseDown={() => move_current(getOptsNum('Trends'))}
+						className='link-container'>
+						<span>
+							<FontAwesomeIcon icon={faArrowTrendUp} />
+						</span>
+						<p>&nbsp;&nbsp;&nbsp;</p>
+						<span>Trends</span>
+					</Link>
+				)}
+					{userData && getOptsNum('Analysis') !== -1 && (
 						<Link
 							to='/analysis/analyze'
-							onMouseEnter={() => move_hoverer(getOptsNum('My analysis'))}
-							onMouseDown={() => move_current(getOptsNum('My analysis'))}
+							onMouseEnter={() => move_hoverer(getOptsNum('Analysis'))}
+							onMouseDown={() => move_current(getOptsNum('Analysis'))}
 							className='link-container'>
 							<span>
 								<FontAwesomeIcon icon={faMagnifyingGlassChart} />
 							</span>
 							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>My analysis</span>
+							<span>Analysis</span>
 						</Link>
 					)}
 					{userData && getOptsNum('Team Search') !== -1 && (
@@ -222,7 +225,7 @@ export default function Navbar() {
 					)}
 					{userData && getOptsNum('Subscription') !== -1 && (
 						<Link
-							to={subscription}
+							to={subscription2}
 							onMouseEnter={() => move_hoverer(getOptsNum('Subscription'))}
 							onMouseDown={() => move_current(getOptsNum('Subscription'))}
 							className='link-container'>
@@ -293,6 +296,15 @@ export default function Navbar() {
 										}}>
 										{userData ? userData.companyName : ' - '}
 									</h1>
+									<h1
+										className='text-gray-500'
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
+										{userData ? subscription : ' - '}
+									</h1>
 								</div>
 							</Link>
 							<button
@@ -337,6 +349,15 @@ export default function Navbar() {
 											whiteSpace: 'nowrap',
 										}}>
 										{userData ? userData.fullName : ' - '}
+									</h1>
+									<h1
+										className='text-gray-500'
+										style={{
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+										}}>
+										{userData ? subscription : ' - '}
 									</h1>
 								</div>
 							</Link>

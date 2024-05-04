@@ -15,7 +15,7 @@ export default function CandidateDetailEdit() {
 	const [userData, setUserData] = useState({
 		phone: '',
 		fullName: '',
-		profilePicture: profile,
+		profilePicture: null,
 	})
 
 	let navigate = useNavigate()
@@ -48,6 +48,11 @@ export default function CandidateDetailEdit() {
 		fetchUserData()
 	}, [isAuthenticated, id])
 
+	const handleProfilePictureChange = (e) => {
+		const url = e.target.value;
+		setUserData(prevUserData => ({ ...prevUserData, profilePicture: url }));
+	};
+
 	async function editUser(e) {
 		e.preventDefault()
 		const token = localStorage.getItem('access_token')
@@ -56,6 +61,21 @@ export default function CandidateDetailEdit() {
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors)
 			return
+		}
+
+		if(userData.profilePicture !== null && userData.profilePicture !== undefined) {
+			if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
 		try {
@@ -137,23 +157,6 @@ export default function CandidateDetailEdit() {
 		}
 	}
 
-	const handleProfilePictureChange = (e) => {
-		const url = e.target.value
-		if (url && isValidURL(url) && isValidImageURL(url)) {
-			setUserData({ ...userData, profilePicture: url })
-		} else {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 2000,
-			})
-		}
-	}
-
 	function getRequiredFieldMessage(fieldName) {
 		return `The ${fieldName} field is required`
 	}
@@ -162,6 +165,8 @@ export default function CandidateDetailEdit() {
 		let errors = {}
 		if (!userData.fullName) {
 			errors.fullName = getRequiredFieldMessage('fullName')
+		} else if (userData.fullName.length <= 10 || userData.fullName.length >= 45) {
+			errors.fullName = 'The full name field must be between 10 and 45 characters'
 		}
 		if (
 			userData.phone &&
@@ -175,45 +180,61 @@ export default function CandidateDetailEdit() {
 		return errors
 	}
 
-	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => (
-		<div className='flex flex-col items-center space-y-4'>
+	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => {
+		const [localProfilePicture, setLocalProfilePicture] = useState(profilePicture);
+	  
+		const handleBlur = () => {
+			handleProfilePictureChange({ target: { value: localProfilePicture } });
+		  };
+	  
+		const handleChange = (e) => {
+		  setLocalProfilePicture(e.target.value);
+		};
+	  
+		return (
+		  <div className='flex flex-col items-center space-y-4'>
 			<img
-				src={profilePicture}
-				className='rounded-full border border-gray-300 profile-img'
-				style={{
-					objectFit: 'cover',
-					objectPosition: 'center',
-					width: '230px',
-					height: '230px',
-					marginLeft: '90px',
-				}}
+			  src={localProfilePicture}
+			  className='rounded-full border border-gray-300 profile-img'
+			  style={{
+				objectFit: 'cover',
+				objectPosition: 'center',
+				width: '230px',
+				height: '230px',
+				marginLeft: '90px',
+			  }}
 			/>
 			<label htmlFor='profilePicture' className='btn text-white'>
-				Change profile photo
+			  Change profile photo
 			</label>
 			<input
-				type='text'
-				id='profilePicture'
-				name='profilePicture'
-				placeholder='Enter image URL'
-				onChange={handleProfilePictureChange}
-				value={profilePicture}
+			  type='text'
+			  id='profilePicture'
+			  name='profilePicture'
+			  placeholder='Enter image URL'
+			  onChange={handleChange}
+			  onBlur={handleBlur}
+			  value={localProfilePicture}
 			/>
 			<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
-				Clear
+			  Clear
 			</button>
-		</div>
-	)
+		  </div>
+		);
+	  };
 	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
+		setUserData({ ...userData, profilePicture: null })
 	}
 
 	function isValidURL(string) {
-		var res = string.match(
-			/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-		)
-		return res !== null
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;  
+		}
 	}
+	
 	function isValidImageURL(url) {
 		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
 	}

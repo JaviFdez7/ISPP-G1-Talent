@@ -15,7 +15,7 @@ export default function RepresentativeDetailEdit() {
 		companyName: '',
 		phone: '',
 		projectSocietyName: '',
-		profilePicture: profile,
+		profilePicture: null,
 	})
 	let navigate = useNavigate()
 	const { id } = useParams()
@@ -45,6 +45,12 @@ export default function RepresentativeDetailEdit() {
 		}
 		fetchUserData()
 	}, [isAuthenticated])
+
+	const handleProfilePictureChange = (e) => {
+		const url = e.target.value;
+		setUserData(prevUserData => ({ ...prevUserData, profilePicture: url }));
+	};
+
 	async function editUser(e) {
 		e.preventDefault()
 		const token = localStorage.getItem('access_token')
@@ -53,6 +59,21 @@ export default function RepresentativeDetailEdit() {
 		if (Object.keys(validationErrors).length > 0) {
 			setErrors(validationErrors)
 			return
+		}
+
+		if(userData.profilePicture !== null && userData.profilePicture !== undefined) {
+			if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
 		try {
@@ -118,61 +139,66 @@ export default function RepresentativeDetailEdit() {
 		}
 	}
 
-	const handleProfilePictureChange = (e) => {
-		const url = e.target.value
-		if (url && isValidURL(url)) {
-			setUserData({ ...userData, profilePicture: url })
-		} else {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 1500,
-			})
-		}
+
+	
+
+	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => {
+		const [localProfilePicture, setLocalProfilePicture] = useState(profilePicture);
+	  
+		const handleBlur = () => {
+			handleProfilePictureChange({ target: { value: localProfilePicture } });
+		  };
+	  
+		const handleChange = (e) => {
+		  setLocalProfilePicture(e.target.value);
+		};
+	  
+		return (
+		  <div className='flex flex-col items-center space-y-4'>
+			<img
+			  src={localProfilePicture}
+			  className='rounded-full border border-gray-300 profile-img'
+			  style={{
+				objectFit: 'cover',
+				objectPosition: 'center',
+				width: '230px',
+				height: '230px',
+				marginLeft: '90px',
+			  }}
+			/>
+			<label htmlFor='profilePicture' className='btn text-white'>
+			  Change profile photo
+			</label>
+			<input
+			  type='text'
+			  id='profilePicture'
+			  name='profilePicture'
+			  placeholder='Enter image URL'
+			  onChange={handleChange}
+			  onBlur={handleBlur}
+			  value={localProfilePicture}
+			/>
+			<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
+			  Clear
+			</button>
+		  </div>
+		);
+	  };
+	const handleClearProfilePicture = () => {
+		setUserData({ ...userData, profilePicture: null })
 	}
 
 	function isValidURL(string) {
-		var res = string.match(
-			/(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/
-		)
-		return res !== null
+		try {
+			new URL(string);
+			return true;
+		} catch (_) {
+			return false;  
+		}
 	}
-
-	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => (
-		<div className='flex flex-col items-center space-y-4'>
-			<img
-				src={profilePicture}
-				className='rounded-full border border-gray-300 profile-img'
-				style={{
-					objectFit: 'cover',
-					objectPosition: 'center',
-					width: '230px',
-					height: '230px',
-					marginLeft: '90px',
-				}}
-			/>
-			<label htmlFor='profilePicture' className='btn text-white'>
-				Change profile photo
-			</label>
-			<input
-				type='text'
-				id='profilePicture'
-				name='profilePicture'
-				placeholder='Enter image URL'
-				onChange={handleProfilePictureChange}
-				value={profilePicture}
-			/>
-			<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
-				Clear
-			</button>
-		</div>
-	)
-	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
+	
+	function isValidImageURL(url) {
+		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
 	}
 
 	function getRequiredFieldMessage(fieldName) {
@@ -184,16 +210,16 @@ export default function RepresentativeDetailEdit() {
 
 		if (!userData.companyName) {
 			errors.companyName = getRequiredFieldMessage('company name')
-		} else if (userData.companyName.length < 2 || userData.companyName.length > 50) {
+		} else if (userData.companyName.length < 2 || userData.companyName.length > 35) {
 			errors.companyName =
-				'The company name field must have be between 2 and 50 characters long'
+				'The company name field must have be between 2 and 35 characters long'
 		}
 		if (
 			userData.projectSocietyName &&
-			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 50)
+			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 35)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 50 characters long'
+				'The Project Society Name must be between 2 and 35 characters long'
 		}
 		if (
 			userData.phone &&

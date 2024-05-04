@@ -189,6 +189,7 @@ export default function RegisterRepresentative() {
 	async function handleSubmit(e) {
 		e.preventDefault()
 		setEmailValid(true)
+		setErrors({})
 
 		if (!isCheckboxChecked) {
 			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
@@ -218,13 +219,13 @@ export default function RegisterRepresentative() {
 			}
 		})
 
-		//email validation API
 		if (enableValidation) {
 			setLoading(true)
 			const isValidEmail = await validateEmail(form.corporative_email)
 			setLoading(false)
 			if (!isValidEmail) {
 				setEmailValid(false)
+				setErrors({ corporativeMail: 'Please use a real email' })
 				return
 			}
 		}
@@ -294,7 +295,7 @@ export default function RegisterRepresentative() {
 
 		try {
 			const response = await axios.request(options)
-			if (response.data.status === 'valid') {
+			if (response.data.status !== 'invalid' && response.data.reason !== 'dns_error') {
 				return true
 			} else {
 				return false
@@ -315,15 +316,15 @@ export default function RegisterRepresentative() {
 
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
-		} else if (form.username.length <= 3) {
-			errors.username = 'The username field must be more than 3 characters'
+		} else if (form.username.length <= 5 || username.length > 20) {
+			errors.username = 'The username field must have be between 5 and 20 characters long'
 		}
 
 		if (!form.company_name) {
 			errors.company_name = getRequiredFieldMessage('company name')
-		} else if (form.company_name.length < 2 || form.company_name.length > 50) {
+		} else if (form.company_name.length < 2 || form.company_name.length > 35) {
 			errors.company_name =
-				'The company name field must have be between 2 and 50 characters long'
+				'The company name field must have be between 2 and 35 characters long'
 		}
 
 		if (!form.corporative_email) {
@@ -350,17 +351,16 @@ export default function RegisterRepresentative() {
 				form.phone_number
 			)
 		) {
-			//para añadir mas numeros de otros paises se pone 34|0034|34| y detras los numeros de telefono +1|001|1 para EEUU
 			errors.phone_number =
 				'The phone field must be a valid Spanish phone number like +34|0034|34| 666666666 or 666 666 666 or  and +1|001|1 408 666 6666 for USA'
 		}
 
 		if (
 			form.projectSocietyName &&
-			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)
+			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 35)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 50 characters long'
+				'The Project Society Name must be between 2 and 35 characters long'
 		}
 		return errors
 	}
@@ -384,11 +384,13 @@ export default function RegisterRepresentative() {
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
 					marginLeft: 'auto',
 					marginRight: 'auto',
-					marginTop: '50px',
+					marginTop: '1%',
+					marginBottom: '1%',
 					borderColor: talentColor,
 					boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
 					backdropFilter: 'blur(8px)',
 					borderWidth: '1px',
+					overflow: 'auto',
 				}}>
 				<h2
 					className='text-2xl font-bold text-center mb-4 text-white'
@@ -437,7 +439,6 @@ export default function RegisterRepresentative() {
 							isMandatory
 						/>
 						{loading && <p className='text-white'>Validating email...</p>}
-						{!emailValid && <p className='text-red-500'>Please use a real email.</p>}
 						{errors.corporativeMail && (
 							<p className='text-red-500'>{errors.corporativeMail}</p>
 						)}

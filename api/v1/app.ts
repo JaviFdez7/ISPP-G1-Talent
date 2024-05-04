@@ -13,6 +13,7 @@ import TeamCreatorRouter from './modules/team-creator'
 import PaymentRouter from './modules/payment'
 import cors from 'cors'
 import TrendRouter from './modules/trend/'
+import { populate } from './populateDB'
 
 const app = express()
 const swaggerHost = process.env.HOST ?? 'localhost:3000'
@@ -51,7 +52,18 @@ app.use(TrendRouter)
 
 // Server -------------------------------------------------------
 connectToMongoDB()
-	.then(() => {
+	.then(async () => {
+		// Asegúrate de marcar esta función como `async`
+		console.log('Connected to MongoDB.')
+
+		// Llamada a la función populate
+		await populate()
+			.then(() => {
+				console.log('Database has been populated successfully.')
+			})
+			.catch((err) => {
+				console.error('Error populating the database:', err)
+			})
 		const PORT = process.env.PORT ?? 3000
 		app.listen(PORT, () => {
 			console.log(`\nExpress server up and running on: http://localhost:${PORT} 🚀`)
@@ -63,3 +75,5 @@ connectToMongoDB()
 		console.log('Error connecting to MongoDB')
 		console.log(err)
 	})
+
+export default app

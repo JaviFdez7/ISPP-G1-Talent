@@ -56,6 +56,15 @@ export default function CandidateProfessionalExperienceCreate() {
 				setErrors(data)
 				return
 			}
+			Swal.fire({
+				icon: 'success',
+				title: 'Professional experience created successfully',
+				showConfirmButton: false,
+				background: 'var(--talent-secondary)',
+				color: 'white',
+				timer: 1500,
+			})
+
 			navigate('/candidate/detail')
 		} catch (error) {
 			handleNetworkError(error, navigate)
@@ -108,8 +117,8 @@ export default function CandidateProfessionalExperienceCreate() {
 		if (!form.endDate) errors.endDate = getRequiredFieldMessage('endDate')
 
 		if (!form.companyName) errors.companyName = getRequiredFieldMessage('companyName')
-		else if (form.companyName.length <= 3)
-			errors.companyName = 'The company Name field must have more than 3 characters'
+		else if (form.companyName.length <= 3 || form.companyName.length > 35)
+			errors.companyName = 'The company name field must have be between 2 and 35 characters long'
 
 		const validProfessionalAreas = [
 			'Web application',

@@ -9,8 +9,16 @@ import { useNavigate } from 'react-router-dom'
 const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 	const [githubUsername, setGithubUsername] = useState(null)
 	const [errorMessage, setErrorMessage] = useState(null)
+	const [itemHistory, setItemHistory] = useState(item)
+	const [isFavorite, setIsFavorite] = useState(item.favorite)
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const navigate = useNavigate()
+
+	const handleToggleFavorite = () => {
+		setIsFavorite(!isFavorite)
+		const updatedHistory = { ...itemHistory, favorite: !isFavorite }
+		setItemHistory(updatedHistory)
+	}
 
 	async function getGithubUsername(analysisId) {
 		const uri = `/analysis/${analysisId}`
@@ -34,6 +42,10 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 		})
 	}, [item.analysisId])
 
+	useEffect(() => {
+		setItemHistory(item)
+	}, [item])
+
 	return (
 		<div className='p-4 mb-2 mt-2 history-list-element'>
 			<div className='flex-col relative'>
@@ -51,10 +63,17 @@ const AnalysisHistoryItem = ({ item, formattedDate, triggerUpdate }) => {
 				</Link>
 				<div className='flex items-center justify-end'>
 					<div className='flex mx-2'>
-						<FavoriteButton history={item} />
+						<FavoriteButton
+							history={itemHistory}
+							isFavorite={isFavorite}
+							onToggleFavorite={handleToggleFavorite}
+						/>
 					</div>
 					<div className='flex mx-2'>
-						<DeleteHistoryButton history={item} setErrorMessage={setErrorMessage} />
+						<DeleteHistoryButton
+							history={itemHistory}
+							setErrorMessage={setErrorMessage}
+						/>
 					</div>
 				</div>
 			</div>

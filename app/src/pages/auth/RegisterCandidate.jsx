@@ -218,6 +218,8 @@ export default function RegisterCandidate() {
 
 	async function handleSubmit(e) {
 		e.preventDefault()
+		setErrors({})
+
 		if (!isCheckboxChecked) {
 			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
 			return
@@ -261,6 +263,7 @@ export default function RegisterCandidate() {
 			setLoading(false)
 			if (!isValidEmail) {
 				setEmailValid(false)
+				setErrors({ email: 'Please use a valid email' })
 				return
 			}
 		}
@@ -333,7 +336,7 @@ export default function RegisterCandidate() {
 
 		try {
 			const response = await axios.request(options)
-			if (response.data.status === 'valid') {
+			if (response.data.status !== 'invalid' && response.data.reason !== 'dns_error') {
 				return true
 			} else {
 				return false
@@ -353,13 +356,13 @@ export default function RegisterCandidate() {
 		let errors = {}
 		if (!form.first_name) {
 			errors.first_name = getRequiredFieldMessage('first name')
-		} else if (form.first_name.length <= 3) {
-			errors.first_name = 'The first name field must be more than 3 characters'
+		} else if (form.first_name.length <= 3 || form.first_name.length >= 20) {
+			errors.first_name = 'The first name field must be between 3 and 20 characters'
 		}
 		if (!form.surname) {
 			errors.surname = getRequiredFieldMessage('surname')
-		} else if (form.surname.length <= 3) {
-			errors.surname = 'The surname field must have more than 3 characters'
+		} else if (form.surname.length <= 3 || form.surname.length >= 20) {
+			errors.surname = 'The surname field must be between 3 and 20 characters'
 		}
 		if (!form.email) {
 			errors.email = getRequiredFieldMessage('email')
@@ -383,6 +386,8 @@ export default function RegisterCandidate() {
 		}
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
+		} else if (form.username.length <= 5 || form.username.length >= 20) {
+			errors.username = 'The username field must be between 3 and 20 characters'
 		}
 		if (
 			form.phone_number &&
@@ -415,11 +420,13 @@ export default function RegisterCandidate() {
 					backgroundColor: 'rgba(0, 0, 0, 0.5)',
 					marginLeft: 'auto',
 					marginRight: 'auto',
-					marginTop: '50px',
+					marginTop: '1%',
+					marginBottom: '1%',
 					borderColor: talentColor,
 					boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
 					backdropFilter: 'blur(8px)',
 					borderWidth: '1px',
+					overflow: 'auto',
 				}}>
 				<h2
 					className='text-2xl font-bold text-center mb-4 text-white'
@@ -513,7 +520,9 @@ export default function RegisterCandidate() {
 							isMandatory
 						/>
 						{loading && <p className='text-white'>Validating email...</p>}
-						{!emailValid && <p className='text-red-500'>Please use a real email.</p>}
+						{errors.corporativeMail && (
+							<p className='text-red-500'>{errors.corporativeMail}</p>
+						)}
 						<FormTextInput
 							labelFor='Phonenumber'
 							labelText='Phone number'
