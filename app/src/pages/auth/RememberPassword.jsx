@@ -37,11 +37,9 @@ export default function RememberPassword() {
 				}
 			)
 			if (response.status == 200) {
-				const url = response?.data?.data
 				Swal.fire({
 					icon: 'success',
 					title: 'You have 15 minutes to change your password. If you dont receive the email, please check your spam folder',
-					text: `Data: ${JSON.stringify(url)}`,
 					showConfirmButton: true,
 					confirmButtonColor: 'var(--talent-highlight)',
 					allowOutsideClick: false,
