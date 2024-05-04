@@ -386,7 +386,6 @@ export async function GetUserAnaliseInfo(
 	githubUsername: string,
 	apikey?: string
 ): Promise<AnalysisDocument> {
-	console.log('log desde github service getUserAnaliseInfo: ', process.env.GH_TOKEN)
 	const queryUserInfo = `query {
     user(login: "${githubUsername}") {
       login

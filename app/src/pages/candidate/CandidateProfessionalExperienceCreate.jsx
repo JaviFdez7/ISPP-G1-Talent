@@ -117,8 +117,8 @@ export default function CandidateProfessionalExperienceCreate() {
 		if (!form.endDate) errors.endDate = getRequiredFieldMessage('endDate')
 
 		if (!form.companyName) errors.companyName = getRequiredFieldMessage('companyName')
-		else if (form.companyName.length <= 3)
-			errors.companyName = 'The company Name field must have more than 3 characters'
+		else if (form.companyName.length <= 3 || form.companyName.length > 20)
+			errors.companyName = 'The company name field must have be between 2 and 20 characters long'
 
 		const validProfessionalAreas = [
 			'Web application',

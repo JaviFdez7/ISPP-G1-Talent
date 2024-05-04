@@ -61,17 +61,19 @@ export default function RepresentativeDetailEdit() {
 			return
 		}
 
-		if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 2000,
-			});
-			return;
+		if(userData.profilePicture !== null) {
+			if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
 		try {
@@ -183,7 +185,7 @@ export default function RepresentativeDetailEdit() {
 		);
 	  };
 	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
+		setUserData({ ...userData, profilePicture: null })
 	}
 
 	function isValidURL(string) {
@@ -208,16 +210,16 @@ export default function RepresentativeDetailEdit() {
 
 		if (!userData.companyName) {
 			errors.companyName = getRequiredFieldMessage('company name')
-		} else if (userData.companyName.length < 2 || userData.companyName.length > 50) {
+		} else if (userData.companyName.length < 2 || userData.companyName.length > 20) {
 			errors.companyName =
-				'The company name field must have be between 2 and 50 characters long'
+				'The company name field must have be between 2 and 20 characters long'
 		}
 		if (
 			userData.projectSocietyName &&
-			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 50)
+			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 20)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 50 characters long'
+				'The Project Society Name must be between 2 and 20 characters long'
 		}
 		if (
 			userData.phone &&

@@ -356,13 +356,13 @@ export default function RegisterCandidate() {
 		let errors = {}
 		if (!form.first_name) {
 			errors.first_name = getRequiredFieldMessage('first name')
-		} else if (form.first_name.length <= 3) {
-			errors.first_name = 'The first name field must be more than 3 characters'
+		} else if (form.first_name.length <= 3 || form.first_name.length >= 20) {
+			errors.first_name = 'The first name field must be between 3 and 20 characters'
 		}
 		if (!form.surname) {
 			errors.surname = getRequiredFieldMessage('surname')
-		} else if (form.surname.length <= 3) {
-			errors.surname = 'The surname field must have more than 3 characters'
+		} else if (form.surname.length <= 3 || form.surname.length >= 20) {
+			errors.surname = 'The surname field must be between 3 and 20 characters'
 		}
 		if (!form.email) {
 			errors.email = getRequiredFieldMessage('email')
@@ -386,6 +386,8 @@ export default function RegisterCandidate() {
 		}
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
+		} else if (form.username.length <= 5 || form.username.length >= 20) {
+			errors.username = 'The username field must be between 3 and 20 characters'
 		}
 		if (
 			form.phone_number &&

@@ -63,17 +63,19 @@ export default function CandidateDetailEdit() {
 			return
 		}
 
-		if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 2000,
-			});
-			return;
+		if(userData.profilePicture !== null) {
+			if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
 		try {
@@ -163,6 +165,8 @@ export default function CandidateDetailEdit() {
 		let errors = {}
 		if (!userData.fullName) {
 			errors.fullName = getRequiredFieldMessage('fullName')
+		} else if (userData.fullName.length <= 10 || userData.fullName.length >= 45) {
+			errors.fullName = 'The full name field must be between 10 and 45 characters'
 		}
 		if (
 			userData.phone &&
@@ -219,7 +223,7 @@ export default function CandidateDetailEdit() {
 		);
 	  };
 	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
+		setUserData({ ...userData, profilePicture: null })
 	}
 
 	function isValidURL(string) {

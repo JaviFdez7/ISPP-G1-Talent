@@ -46,6 +46,7 @@
 		"node-mocks-http": "^1.14.1",
 		"react-modal": "^3.16.1",
 		"react-select": "^5.8.0",
+		"sendgrid": "^5.2.3",
 		"sinon": "^17.0.1",
 		"start-backend": "^1.0.1",
 		"stripe": "^14.25.0",
