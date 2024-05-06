@@ -2,7 +2,7 @@
 
 FERNÁNDEZ CASTILLO, JAVIER - Creator
 
-### Entregable: S3
+### Entregable: PPL
 ### Grupo 01 (Mañana) - IT Talent
 
 
@@ -14,3 +14,6 @@ FERNÁNDEZ CASTILLO, JAVIER - Creator
 
 ## Sprint 3
 [Tercer Video](https://youtu.be/M8asZArWEAw)
+
+## Prepare Project Launch
+[Tercer Video](https://youtu.be/pO7UgLfbFnk?si=Xl_wfMf_SgkNiweY)
