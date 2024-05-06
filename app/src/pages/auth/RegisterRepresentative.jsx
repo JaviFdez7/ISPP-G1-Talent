@@ -72,14 +72,16 @@ const TermsAndConditions = ({ handleClose, handleAccept }) => {
     1.4 Intellectual Property
         All intellectual property rights related to IT Talent's services, including but not limited to software, design, and content, are the exclusive property of IT Talent. Users have no right to use, copy or distribute such materials without the express consent of IT Talent.
 2. Prices and Services
-    2.1 Plans for Companies
-        Basic Plan: €30/month
+	2.1 Prices
+		Information about prices is available at the following link: https://it-talent-wiki.vercel.app/docs/Marketing/Pricing. If once registered you wish to change it, you can access the offer of the different available plans in the "Subscriptions" section of the sidebar.
+    2.2.1 Services for Companies
+        Basic Plan:
             ●	Up to 25 candidate searches per month.
             ●	Individual and team search of up to 3 people.
             ●	No scrolling between candidate options.
             ●	Basic filters available.
             ●	30-day free trial.
-        Advanced Plan: €80/month
+        Advanced Plan:
             ●	Up to 150 candidate searches per month.
             ●	Search for teams of up to 5 people.
             ●	Scroll up to 10 different options for each of the results in team searches.
@@ -88,11 +90,11 @@ const TermsAndConditions = ({ handleClose, handleAccept }) => {
             ●	Shorter response times.
             ●	Priority support.
         Custom Plan: Customized pricing and features on demand.
-    2.2 Plans for Users in Job Search
-        Basic Plan: Free
+    2.2.2 Services for Users in Job Search
+        Basic Plan:
             ●	All the basic functionalities of the application.
             ●	Possibility of updating data every 30 days.
-        Advanced Plan: €10/month
+        Advanced Plan:
             ●	All the features of the previous plan.
             ●	Ability to update data three times every 30 days.
             ●	Ability to see which companies have viewed your profile.
