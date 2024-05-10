@@ -17,7 +17,9 @@ import { Pie, Bar, Radar } from 'react-chartjs-2'
 
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
-	const [candidate, setCandidate] = useState({})
+	const [candidate, setCandidate] = useState({
+		profilePictureURL: ''
+	})
 	const [subscription, setSubscription] = useState(null)
 	const [experience, setExperience] = useState([])
 	const [analysis, setAnalysis] = useState(null)
@@ -158,6 +160,7 @@ export default function CandidateDetail() {
 						)
 						experiences.push(response.data.data)
 					}
+					user.profilePictureURL = `/profileImages/${user._id}.png`;
 					setCandidate(user)
 					setExperience(experiences)
 				}
@@ -236,8 +239,8 @@ export default function CandidateDetail() {
 				<div className='flex flex-col items-center'>
 					<img
 						src={
-							candidate && candidate.profilePicture
-								? candidate.profilePicture
+							candidate && candidate.profilePictureURL
+								? candidate.profilePictureURL
 								: profile
 						}
 						className='rounded-full border border-gray-300 profile-img'

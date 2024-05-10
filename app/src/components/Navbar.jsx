@@ -27,7 +27,9 @@ export default function Navbar() {
 	const { subscription: authSubscription } = useAuthContext()
 	const { subscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
-	const [userData, setUserData] = useState(null)
+	const [userData, setUserData] = useState({
+		profilePictureURL: ''
+	})
 	const [notifications, setNotifications] = useState(0)
 	const [nonRead, setNonRead] = useState(0)
 	const [notificationsGuard, setNotificationsGuard] = useState(false)
@@ -98,6 +100,7 @@ export default function Navbar() {
 					const currentUserId = localStorage.getItem('userId')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
+					user.profilePictureURL = `/profileImages/${user._id}.png`;
 					setUserData(user)
 				}
 			} catch (error) {
@@ -257,8 +260,8 @@ export default function Navbar() {
 								<div className='profile-pic-container'>
 									<img
 										src={
-											userData && userData.profilePicture
-												? userData.profilePicture
+											userData && userData.profilePictureURL
+												? userData.profilePictureURL
 												: profile
 										}
 										className='profile-pic'
@@ -320,8 +323,8 @@ export default function Navbar() {
 								<div className='profile-pic-container'>
 									<img
 										src={
-											userData && userData.profilePicture
-												? userData.profilePicture
+											userData && userData.profilePictureURL
+												? userData.profilePictureURL
 												: profile
 										}
 										className='profile-pic'

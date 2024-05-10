@@ -12,7 +12,9 @@ import { handleNetworkError } from '../../components/TokenExpired'
 
 export default function RepresentativeDetail() {
 	const { isAuthenticated } = useAuthContext()
-	const [userData, setUserData] = useState({})
+	const [userData, setUserData] = useState({
+		profilePictureURL: ''
+	})
 	const [analysisHistoryData, setAnalysisHistoryData] = useState([
 		{
 			id: 1,
@@ -36,6 +38,8 @@ export default function RepresentativeDetail() {
 					const currentUserId = localStorage.getItem('userId')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
+					user.profilePictureURL = `/profileImages/${user._id}.png`;
+
 					setUserData(user)
 				}
 			} catch (error) {
@@ -119,7 +123,7 @@ export default function RepresentativeDetail() {
 				<div className='flex flex-col items-center'>
 					<img
 						src={
-							userData && userData.profilePicture ? userData.profilePicture : profile
+							userData && userData.profilePictureURL ? userData.profilePictureURL : profile
 						}
 						className='rounded-full border border-gray-300 profile-img'
 						style={{

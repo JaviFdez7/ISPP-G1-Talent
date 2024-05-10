@@ -17,7 +17,7 @@ export default function CandidateDetailEdit() {
 		phone: '',
 		fullName: '',
 		profilePicture: null,
-		profilePictureURL: ''
+		profilePictureURL: '',
 	})
 
 	let navigate = useNavigate()
@@ -43,8 +43,8 @@ export default function CandidateDetailEdit() {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/`)
 					let user = response.data.data.find((user) => user._id === id)
 
-					const blob = new Blob([user.profilePicture], {type: 'image/jpg'})
-					user = { ...user, profilePictureURL: URL.createObjectURL(blob)}
+					user.profilePictureURL = `/profileImages/${user._id}.png`;
+
 					setUserData(user)
 				}
 			} catch (error) {
@@ -64,23 +64,26 @@ export default function CandidateDetailEdit() {
 			return
 		}
 
-		let extension = userData.profilePicture.name.split('.')[1].trim();
+		if (userData.profilePicture && userData.profilePicture.name) {
+			let extension = userData.profilePicture.name.split('.')[1].trim();
 
-		if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided file is not a supported image type. Please ensure it has the jpeg, png, or jpg extension.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 2000,
-			});
-			return;
+			if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided file is not a supported image type. Please ensure it has the jpeg, png, or jpg extension.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
+
 		try {
-			const user = { ...userData, profilePicture: null, profilePictureURL: '' }
+			const user = { ...userData, profilePicture: null, profilePictureURL: ''}
 			const response = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}`,
 				user,
@@ -92,20 +95,23 @@ export default function CandidateDetailEdit() {
 				}
 			)
 
-			const fd = new FormData();
-			fd.append('profilePicture', userData.profilePicture);
-				
-			const profilePictureResponse = await axios.post(
-				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
-				fd,
-				{
-					headers: {
-				 
-						Authorization: token,
-					},
-				}
-			)
-			// setProfilePicture(profilePictureResponse.data)
+			if (userData.profilePicture && userData.profilePicture.name) {
+
+				const fd = new FormData();
+				fd.append('profilePicture', userData.profilePicture);
+					
+				const profilePictureResponse = await axios.post(
+					`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
+					fd,
+					{
+						headers: {
+					
+							Authorization: token,
+						},
+					}
+				)
+				// setProfilePicture(profilePictureResponse.data)
+			}
 
 			if (response.status === 404) {
 				setErrors(response.data)
@@ -193,7 +199,7 @@ export default function CandidateDetailEdit() {
 
 				if (e.target.files[0].type.startsWith('image')) {
 
-					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL: URL.createObjectURL(e.target.files[0])} );
+					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL : URL.createObjectURL(e.target.files[0])} );
 				} else {
 					console.error('Unsupported file type.');
 				}
@@ -205,6 +211,7 @@ export default function CandidateDetailEdit() {
 		  <div className='flex flex-col items-center space-y-4'>
 			<img
 				src={userData.profilePictureURL}
+				alt={userData.name}
 				className='rounded-full border border-gray-300 profile-img'
 			  style={{
 				objectFit: 'cover',

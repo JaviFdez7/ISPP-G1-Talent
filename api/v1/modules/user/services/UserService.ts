@@ -11,7 +11,8 @@ import {
 } from '../../subscriptions/services/SubscriptionsService'
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
 
-
+const fs = require('fs').promises;
+const path = require('path')
 
 export const getAllUser: any = async () => await User.find({})
 
@@ -60,7 +61,12 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 			//const analysis = await createAnalysis(data?.githubUser, token,data?.githubToken)
 			data.analysisId = analysis._id
 		}
-		const updatedUser = await Model.findByIdAndUpdate(id, data, { new: true })
+		console.log(data)
+		const { profilePicture, ...restOfData } = data;
+
+		console.log("Información Del Update")
+		console.log(data)
+		const updatedUser = await Model.findByIdAndUpdate(id, restOfData, { new: true })
 		return updatedUser
 	} catch (error) {
 		console.error('Error updating user:', error)
@@ -70,14 +76,13 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 
 export const updateUserProfilePicture: any = async (id: any, file: Express.Multer.File) => {
 	try {
-		console.log("profile")
-		// console.log(file)
-		const updatedUser = await User.findByIdAndUpdate(
-            id,
-            { profilePicture: { data: file.buffer, contentType: file.mimetype } },
-            { new: true }
-        );
-		return updatedUser
+		// console.log("profile")
+		console.log("Current Working Directory:", process.cwd());
+		console.log(file)
+		const filePath = path.join('../../app/public/profileImages', `${id}.png`);
+		await fs.writeFile(filePath, file.buffer);
+		const updatedUser = await User.findByIdAndUpdate(id, { profilePicture: filePath }, { new: true });
+		return updatedUser;
 	} catch (error) {
 		console.error('Error updating user profile picture:', error)
 		throw error

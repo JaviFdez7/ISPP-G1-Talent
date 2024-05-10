@@ -15,7 +15,8 @@ export default function RepresentativeDetailEdit() {
 		companyName: '',
 		phone: '',
 		projectSocietyName: '',
-		profilePicture: profile,
+		profilePicture: null,
+		profilePictureURL: '',
 	})
 	let navigate = useNavigate()
 	const { id } = useParams()
@@ -37,6 +38,8 @@ export default function RepresentativeDetailEdit() {
 				if (isAuthenticated) {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === id)
+					user.profilePictureURL = `/profileImages/${user._id}.png`;
+
 					setUserData(user)
 				}
 			} catch (error) {
@@ -45,11 +48,6 @@ export default function RepresentativeDetailEdit() {
 		}
 		fetchUserData()
 	}, [isAuthenticated])
-
-	const handleProfilePictureChange = (e) => {
-		const url = e.target.value;
-		setUserData(prevUserData => ({ ...prevUserData, profilePicture: url }));
-	};
 
 	async function editUser(e) {
 		e.preventDefault()
@@ -61,20 +59,25 @@ export default function RepresentativeDetailEdit() {
 			return
 		}
 
-		if (!isValidURL(userData.profilePicture) || !isValidImageURL(userData.profilePicture)) {
-			Swal.fire({
-				icon: 'error',
-				title: 'Invalid URL',
-				text: 'The provided URL is not valid. Please ensure it starts with http:// or https:// and is a valid image URL.',
-				showConfirmButton: false,
-				background: 'var(--talent-secondary)',
-				color: 'white',
-				timer: 2000,
-			});
-			return;
+		if (userData.profilePicture && userData.profilePicture.name) {
+			let extension = userData.profilePicture.name.split('.')[1].trim();
+
+			if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid URL',
+					text: 'The provided file is not a supported image type. Please ensure it has the jpeg, png, or jpg extension.',
+					showConfirmButton: false,
+					background: 'var(--talent-secondary)',
+					color: 'white',
+					timer: 2000,
+				});
+				return;
+			}
 		}
 
 		try {
+			const user = { ...userData, profilePicture: null, profilePictureURL: ''}
 			const response = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/representative/${id}`,
 				userData,
@@ -86,17 +89,23 @@ export default function RepresentativeDetailEdit() {
 				}
 			)
 
-			const profilePictureResponse = await axios.patch(
-				`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
-				{ profilePicture },
-				{
-					headers: {
-						'Content-type': 'application/json',
-						Authorization: token,
-					},
-				}
-			)
-			setUserData({ ...userData, profilePicture: profilePictureResponse.data })
+			if (userData.profilePicture && userData.profilePicture.name) {
+
+				const fd = new FormData();
+				fd.append('profilePicture', userData.profilePicture);
+					
+				const profilePictureResponse = await axios.post(
+					`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
+					fd,
+					{
+						headers: {
+					
+							Authorization: token,
+						},
+					}
+				)
+				// setProfilePicture(profilePictureResponse.data)
+			}
 
 			if (response.status === 404) {
 				setErrors(response.data)
@@ -140,22 +149,28 @@ export default function RepresentativeDetailEdit() {
 
 	
 
-	const ProfilePicture = ({ profilePicture, handleProfilePictureChange }) => {
-		const [localProfilePicture, setLocalProfilePicture] = useState(profilePicture);
-	  
-		const handleBlur = () => {
-			handleProfilePictureChange({ target: { value: localProfilePicture } });
-		  };
-	  
-		const handleChange = (e) => {
-		  setLocalProfilePicture(e.target.value);
+	const ProfilePicture = ({ }) => {
+	  	  
+		const handleChangePicture = (e) => {
+
+			if (e.target.files && e.target.files[0]) {
+
+				if (e.target.files[0].type.startsWith('image')) {
+
+					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL : URL.createObjectURL(e.target.files[0])} );
+				} else {
+					console.error('Unsupported file type.');
+				}
+			}
+		
 		};
 	  
 		return (
 		  <div className='flex flex-col items-center space-y-4'>
 			<img
-			  src={localProfilePicture}
-			  className='rounded-full border border-gray-300 profile-img'
+				src={userData.profilePictureURL}
+				alt={userData.name}
+				className='rounded-full border border-gray-300 profile-img'
 			  style={{
 				objectFit: 'cover',
 				objectPosition: 'center',
@@ -165,38 +180,20 @@ export default function RepresentativeDetailEdit() {
 			  }}
 			/>
 			<label htmlFor='profilePicture' className='btn text-white'>
-			  Change profile photo
+			Change profile photo
 			</label>
-			<input
-			  type='text'
-			  id='profilePicture'
-			  name='profilePicture'
-			  placeholder='Enter image URL'
-			  onChange={handleChange}
-			  onBlur={handleBlur}
-			  value={localProfilePicture}
-			/>
-			<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
-			  Clear
-			</button>
+			<div>
+				<input className='self-center' type='file' name='profilePicture' accept='.png,.jpg,.jpeg' onChange={handleChangePicture}></input>
+				<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
+				Clear
+				</button>
+			</div>
 		  </div>
 		);
 	  };
-	const handleClearProfilePicture = () => {
-		setUserData({ ...userData, profilePicture: '' })
-	}
 
-	function isValidURL(string) {
-		try {
-			new URL(string);
-			return true;
-		} catch (_) {
-			return false;  
-		}
-	}
-	
-	function isValidImageURL(url) {
-		return url.match(/\.(jpeg|jpg|gif|png)$/) != null
+	const handleClearProfilePicture = () => {
+		setUserData( { ...userData, profilePicture: null, profilePictureURL: ''} );
 	}
 
 	function getRequiredFieldMessage(fieldName) {
@@ -264,10 +261,7 @@ export default function RepresentativeDetailEdit() {
 						style={{ marginBottom: '5%' }}
 						onSubmit={(e) => editUser(e)}>
 						<div>
-							<ProfilePicture
-								profilePicture={profilePicture}
-								handleProfilePictureChange={handleProfilePictureChange}
-							/>
+							<ProfilePicture/>
 						</div>
 						<div className='w-10/12 flex flex-col mb-4 self-center'>
 							<label
