@@ -79,6 +79,7 @@ export const createAnalysis: any = async (
 		}
 		const analysis = await AnalysisModel.findOne({ githubUsername })
 		const userInfo: AnalysisDocument = await GetUserAnaliseInfo(githubUsername, userApikey)
+
 		if (!analysis) {
 			const userAnalysis = new AnalysisModel({
 				githubUsername: userInfo.githubUsername,

@@ -54,6 +54,11 @@ export default function CandidateDetailEdit() {
 		fetchUserData()
 	}, [isAuthenticated, id])
 
+	const handleProfilePictureChange = (e) => {
+		const url = e.target.value;
+		setUserData(prevUserData => ({ ...prevUserData, profilePicture: url }));
+	};
+
 	async function editUser(e) {
 		e.preventDefault()
 		const token = localStorage.getItem('access_token')
@@ -80,7 +85,6 @@ export default function CandidateDetailEdit() {
 				return;
 			}
 		}
-
 
 		try {
 			const user = { ...userData, profilePicture: null, profilePictureURL: ''}
@@ -169,7 +173,6 @@ export default function CandidateDetailEdit() {
 		}
 	}
 
-
 	function getRequiredFieldMessage(fieldName) {
 		return `The ${fieldName} field is required`
 	}
@@ -178,6 +181,8 @@ export default function CandidateDetailEdit() {
 		let errors = {}
 		if (!userData.fullName) {
 			errors.fullName = getRequiredFieldMessage('fullName')
+		} else if (userData.fullName.length <= 10 || userData.fullName.length >= 45) {
+			errors.fullName = 'The full name field must be between 10 and 45 characters'
 		}
 		if (
 			userData.phone &&

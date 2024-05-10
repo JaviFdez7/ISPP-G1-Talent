@@ -1,0 +1,28 @@
+name: Update Docs on PR
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Update Submodule
+        run: git submodule status && git submodule update --recursive --remote
+
+      - name: Git config
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+      - name: Push updated docs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs: Update reference of docs"

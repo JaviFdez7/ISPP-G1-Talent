@@ -72,14 +72,16 @@ const TermsAndConditions = ({ handleClose, handleAccept }) => {
     1.4 Intellectual Property
         All intellectual property rights related to IT Talent's services, including but not limited to software, design, and content, are the exclusive property of IT Talent. Users have no right to use, copy or distribute such materials without the express consent of IT Talent.
 2. Prices and Services
-    2.1 Plans for Companies
-        Basic Plan: €30/month
+	2.1 Prices
+		Information about prices is available at the following link: https://it-talent-wiki.vercel.app/docs/Marketing/Pricing. If once registered you wish to change it, you can access the offer of the different available plans in the "Subscriptions" section of the sidebar.
+    2.2.1 Services for Companies
+        Basic Plan:
             ●	Up to 25 candidate searches per month.
             ●	Individual and team search of up to 3 people.
             ●	No scrolling between candidate options.
             ●	Basic filters available.
             ●	30-day free trial.
-        Advanced Plan: €80/month
+        Advanced Plan:
             ●	Up to 150 candidate searches per month.
             ●	Search for teams of up to 5 people.
             ●	Scroll up to 10 different options for each of the results in team searches.
@@ -88,11 +90,11 @@ const TermsAndConditions = ({ handleClose, handleAccept }) => {
             ●	Shorter response times.
             ●	Priority support.
         Custom Plan: Customized pricing and features on demand.
-    2.2 Plans for Users in Job Search
-        Basic Plan: Free
+    2.2.2 Services for Users in Job Search
+        Basic Plan:
             ●	All the basic functionalities of the application.
             ●	Possibility of updating data every 30 days.
-        Advanced Plan: €10/month
+        Advanced Plan:
             ●	All the features of the previous plan.
             ●	Ability to update data three times every 30 days.
             ●	Ability to see which companies have viewed your profile.
@@ -189,6 +191,7 @@ export default function RegisterRepresentative() {
 	async function handleSubmit(e) {
 		e.preventDefault()
 		setEmailValid(true)
+		setErrors({})
 
 		if (!isCheckboxChecked) {
 			setErrors({ termsCheckbox: 'You must read and accept the terms and conditions' })
@@ -224,6 +227,7 @@ export default function RegisterRepresentative() {
 			setLoading(false)
 			if (!isValidEmail) {
 				setEmailValid(false)
+				setErrors({ corporativeMail: 'Please use a real email' })
 				return
 			}
 		}
@@ -293,7 +297,7 @@ export default function RegisterRepresentative() {
 
 		try {
 			const response = await axios.request(options)
-			if (response.data.status === 'valid') {
+			if (response.data.status !== 'invalid' && response.data.reason !== 'dns_error') {
 				return true
 			} else {
 				return false
@@ -314,15 +318,15 @@ export default function RegisterRepresentative() {
 
 		if (!form.username) {
 			errors.username = getRequiredFieldMessage('username')
-		} else if (form.username.length <= 3) {
-			errors.username = 'The username field must be more than 3 characters'
+		} else if (form.username.length <= 5 || username.length > 20) {
+			errors.username = 'The username field must have be between 5 and 20 characters long'
 		}
 
 		if (!form.company_name) {
 			errors.company_name = getRequiredFieldMessage('company name')
-		} else if (form.company_name.length < 2 || form.company_name.length > 50) {
+		} else if (form.company_name.length < 2 || form.company_name.length > 35) {
 			errors.company_name =
-				'The company name field must have be between 2 and 50 characters long'
+				'The company name field must have be between 2 and 35 characters long'
 		}
 
 		if (!form.corporative_email) {
@@ -355,10 +359,10 @@ export default function RegisterRepresentative() {
 
 		if (
 			form.projectSocietyName &&
-			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 50)
+			(form.projectSocietyName.length < 2 || form.projectSocietyName.length > 35)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 50 characters long'
+				'The Project Society Name must be between 2 and 35 characters long'
 		}
 		return errors
 	}
@@ -437,7 +441,6 @@ export default function RegisterRepresentative() {
 							isMandatory
 						/>
 						{loading && <p className='text-white'>Validating email...</p>}
-						{!emailValid && <p className='text-red-500'>Please use a real email.</p>}
 						{errors.corporativeMail && (
 							<p className='text-red-500'>{errors.corporativeMail}</p>
 						)}

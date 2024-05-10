@@ -5,7 +5,6 @@ import Home from '../pages/Home'
 import Support from '../pages/Support'
 import Trends from '../pages/Trends.jsx'
 
-import CandidateAnalysisDetail from '../pages/candidate/CandidateAnalysisDetail.jsx'
 import CandidateDetail from '../pages/candidate/CandidateDetail.jsx'
 import CandidateDetailEdit from '../pages/candidate/CandidateDetailEdit.jsx'
 import CandidateNotificationDetail from '../pages/candidate/CandidateNotificationDetail.jsx'
@@ -36,12 +35,15 @@ import AnalysisAnalizer from '../pages/analysis/AnalysisAnalizer.jsx'
 import AnalysisList from '../pages/analysis/AnalysisList.jsx'
 
 import ChangePassword from '../pages/ChangePassword.jsx'
+import ChangeNewPassword from '../pages/ChangeNewPassword.jsx'
+import RememberPassword from '../pages/auth/RememberPassword.jsx'
 
 import PaymentScreen from '../pages/payment/PaymentScreen.jsx'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
+
 
 function App() {
 	return (
@@ -100,6 +102,25 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+
+						<Route
+							path='/remember-password'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<RememberPassword />
+								</ProtectedRoute>
+							}
+						/>
+
+						<Route
+							path='/user/forgot-password/:token'
+							element={
+								<ProtectedRoute allowUnauthenticated={true}>
+									<ChangeNewPassword />
+								</ProtectedRoute>
+							}
+						/>
+
 						{/*RUTAS PRIVADAS */}
 						{/*Analysis*/}
 						<Route
@@ -176,7 +197,16 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
-						<Route path='/trends' element={<Trends />} />
+						<Route 
+							path='/trends'
+							element={
+								<ProtectedRoute roles={['Representative', 'Candidate']} checkProPlan={true}>
+									<Trends />
+								</ProtectedRoute>
+							}
+						 />
+
+
 						{/*RUTAS CANDIDATO */}
 						<Route
 							path='/candidate/detail'
@@ -191,14 +221,6 @@ function App() {
 							element={
 								<ProtectedRoute roles={['Candidate']}>
 									<CandidateDetailEdit />
-								</ProtectedRoute>
-							}
-						/>
-						<Route
-							path='/candidate/analysis/detail'
-							element={
-								<ProtectedRoute roles={['Candidate']}>
-									<CandidateAnalysisDetail />
 								</ProtectedRoute>
 							}
 						/>

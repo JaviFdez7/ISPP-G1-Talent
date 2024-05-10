@@ -20,18 +20,23 @@ export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
 	const textColor2 = 'var(--talent-highlight)'
 	const borderColor = 'var(--talent-secondary)'
-	const { analysisId } = useParams()
+	const { analysisId: githubUsername } = useParams()
 	const { isRepresentative } = useAuthContext()
 
 	const [error, setError] = useState(false)
 	const [errorMessage, setErrorMessage] = useState('')
 	const [history, setHistory] = useState(null)
 	const navigate = useNavigate()
+	const [isFavorite, setIsFavorite] = useState(history?.favorite)
 
 	const [dataArray, setDataArray] = useState([])
 	const [candidate, setCandidate] = useState()
 	const [experience, setExperience] = useState([])
 	const apiURL = import.meta.env.VITE_BACKEND_URL
+
+	const handleToggleFavorite = () => {
+		setIsFavorite(!isFavorite)
+	}
 
 	async function fetchDataFromEndpoint(analysisEndPoint) {
 		try {
@@ -52,6 +57,7 @@ export default function AnalysisDashboard() {
 	async function fetchHistory(currentAnalysisId) {
 		try {
 			const historyData = await getHistory(currentAnalysisId)
+			setIsFavorite(historyData.favorite)
 			setHistory(historyData)
 		} catch (error) {
 			console.error('Error fetching history:', error)
@@ -59,7 +65,7 @@ export default function AnalysisDashboard() {
 	}
 
 	useEffect(() => {
-		fetchDataFromEndpoint('/analysis/github/' + analysisId)
+		fetchDataFromEndpoint('/analysis/github/' + githubUsername)
 			.then((data) => {
 				const newArray = data
 				const currentAnalysisId = data._id
@@ -69,7 +75,7 @@ export default function AnalysisDashboard() {
 			.catch((error) => {
 				console.error('Error fetching data:', error)
 			})
-	}, [analysisId])
+	}, [githubUsername])
 
 	const calculateTimePeriod = (startDate, endDate) => {
 		const start = new Date(startDate)
@@ -230,7 +236,12 @@ export default function AnalysisDashboard() {
 						<h2 className='analysis-name'>{dataArray.githubUsername}</h2>
 						<div>
 							{isRepresentative && history ? (
-								<FavoriteButton history={history} toggleText />
+								<FavoriteButton
+									history={history}
+									isFavorite={isFavorite}
+									onToggleFavorite={handleToggleFavorite}
+									toggleText
+								/>
 							) : null}
 						</div>
 						<div className='w-full'>
@@ -359,14 +370,13 @@ export default function AnalysisDashboard() {
 									}}
 									options={{
 										plugins: {
-										legend: {
-											labels: {
-											color: 'white' 
-											}
-										}
-										}
-									}}
-									></Pie>
+											legend: {
+												labels: {
+													color: 'white',
+												},
+											},
+										},
+									}}></Pie>
 							</div>
 						</div>
 					</div>
@@ -414,37 +424,36 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: tecnologies.map((item) => item.name),
 										datasets: [
-										{
-											label: 'Technologies usage',
-											data: tecnologies.map((item) => item.appearences),
-											backgroundColor: getListOfRandomColors(
-											tecnologies.length
-											),
-										},
+											{
+												label: 'Technologies usage',
+												data: tecnologies.map((item) => item.appearences),
+												backgroundColor: getListOfRandomColors(
+													tecnologies.length
+												),
+											},
 										],
 									}}
 									options={{
 										plugins: {
-										legend: {
-											labels: {
-											color: 'white' 
-											}
-										}
+											legend: {
+												labels: {
+													color: 'white',
+												},
+											},
 										},
 										scales: {
-										x: {
-											ticks: {
-											color: 'white' 
-											}
+											x: {
+												ticks: {
+													color: 'white',
+												},
+											},
+											y: {
+												ticks: {
+													color: 'white',
+												},
+											},
 										},
-										y: {
-											ticks: {
-											color: 'white' 
-											}
-										}
-										}
-									}}
-									></Bar>
+									}}></Bar>
 							</div>
 						</div>
 					</div>

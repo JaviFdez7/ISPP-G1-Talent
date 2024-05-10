@@ -3,8 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faS, faStar } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 
-const FavoriteButton = ({ history, toggleText = false }) => {
-	const [isFavorite, setIsFavorite] = useState(history.favorite)
+const FavoriteButton = ({ history, isFavorite, onToggleFavorite, toggleText = false }) => {
 	const [errorMessage, setErrorMessage] = useState(null)
 	const favOn = 'var(--talent-highlight)'
 	const favOff = 'gray'
@@ -25,7 +24,9 @@ const FavoriteButton = ({ history, toggleText = false }) => {
 	}
 
 	const handleToggleFavorite = () => {
-		setIsFavorite(!isFavorite)
+		if (onToggleFavorite !== undefined) {
+			onToggleFavorite()
+		}
 		const userId = localStorage.getItem('userId')
 		changeFavorites(userId)
 	}

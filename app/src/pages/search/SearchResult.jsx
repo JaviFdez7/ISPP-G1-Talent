@@ -10,7 +10,6 @@ import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import SecondaryButton from '../../components/secondaryButton.jsx'
 import Input from '../../components/Input.jsx'
-import FavoriteButton from '../../components/history/FavoriteButton.jsx'
 import { Chart as ChartJS } from 'chart.js/auto'
 import { Pie, Bar, Radar } from 'react-chartjs-2'
 import DataTable from '../../components/DataTable.jsx'
@@ -251,15 +250,6 @@ export default function SearchResult() {
 																	<h6 className='text-center text-3xl mt-2'>
 																		{candidate.github_username}
 																	</h6>
-																	<FavoriteButton
-																		history={
-																			historyData[
-																				candidate
-																					.github_username
-																			]
-																		}
-																		toggleText
-																	/>
 																</div>
 															)}
 

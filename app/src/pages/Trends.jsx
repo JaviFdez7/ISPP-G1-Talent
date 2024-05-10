@@ -14,6 +14,7 @@ export default function Trends() {
 
 	const { isAuthenticated } = useAuthContext()
 	const [trends, setTrends] = useState({})
+	const yearsOfExperienceMeanEntero = Math.floor(trends.yearsOfExperienceMean);
 
 	React.useEffect(() => {
 		const fetchUserData = async () => {
@@ -481,7 +482,7 @@ export default function Trends() {
 							}}>
 							<div className='flex flex-col'>
 								<p className='analysis-subtitle'>Average Years Of Experience</p>
-								<p className='analysis-name'>{trends.yearsOfExperienceMean}</p>
+								<p className='analysis-name'>{yearsOfExperienceMeanEntero}</p>
 							</div>
 						</div>
 					)}

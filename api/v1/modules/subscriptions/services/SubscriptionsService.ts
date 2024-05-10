@@ -87,13 +87,13 @@ export const updateSubscriptions: any = async (userId: any, subtype: any) => {
 			subscription.set({ subtype })
 			if (subtype === CompanySubscriptionTypes.BASIC) {
 				subscription.set({
-					price: { amount: 29.99, currency: 'EUR' },
+					price: { amount: 49.95, currency: 'EUR' },
 					remainingSearches: 25,
 					teamLimit: 3,
 				})
 			} else if (subtype === CompanySubscriptionTypes.PRO) {
 				subscription.set({
-					price: { amount: 79.99, currency: 'EUR' },
+					price: { amount: 99.95, currency: 'EUR' },
 					remainingSearches: 150,
 					teamLimit: 5,
 				})

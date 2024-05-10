@@ -152,8 +152,6 @@ export const checkValidTokenAndValidGithubUser: any = async (
 			userId: verifyJWT(token).sub as Condition<ObjectId>,
 			analysisId: analysis._id,
 		})
-		console.log(analysis._id)
-		console.log(verifyJWT(token).sub)
 		if (!history) {
 			const message = 'Not Found'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 404)

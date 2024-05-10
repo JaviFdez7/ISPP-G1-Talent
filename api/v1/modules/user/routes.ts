@@ -11,7 +11,8 @@ import {
   updateUserProfilePicture,
   updateUserPassword,
   deleteUser,
-  loginUser
+  loginUser,createChangePasswordRequest,
+  updateUserForgottenPassword
 } from './controllers/UserController';
 import {
   checkCreateCandidate,
@@ -23,10 +24,14 @@ import {
   checkLoginUser,
   checkGetUserById,
   checkGetProfessionalExperienceByUserId,
-  checkDeleteUser} from './middlewares/UserMiddleware';
+  checkDeleteUser,checkRealUser,
+  checkCorrectToken,
+  checkRepeatedPassword} from './middlewares/UserMiddleware';
+
 import multer from 'multer';
 const storage = multer.memoryStorage();  // Using memory storage
 const upload = multer({ storage: storage });
+
 const router = express.Router();
 
 // Define routes for the User module
@@ -43,5 +48,7 @@ router.patch('/representative/:id', checkUpdateRepresentative, updateRepresentat
 router.post('/candidate/:id/profile-picture',upload.single('profilePicture'), checkUpdateUserProfilePicture,updateUserProfilePicture);
 router.patch('/:id/password', checkUpdatePassword, updateUserPassword);
 router.delete('/:id', checkDeleteUser, deleteUser);//X
+router.post('/forgot-password',checkRealUser,createChangePasswordRequest)
+router.post('/forgot-password/:token',checkCorrectToken,checkRepeatedPassword,updateUserForgottenPassword);
 
 export default router;

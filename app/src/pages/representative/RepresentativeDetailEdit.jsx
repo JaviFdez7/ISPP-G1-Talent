@@ -205,16 +205,16 @@ export default function RepresentativeDetailEdit() {
 
 		if (!userData.companyName) {
 			errors.companyName = getRequiredFieldMessage('company name')
-		} else if (userData.companyName.length < 2 || userData.companyName.length > 50) {
+		} else if (userData.companyName.length < 2 || userData.companyName.length > 35) {
 			errors.companyName =
-				'The company name field must have be between 2 and 50 characters long'
+				'The company name field must have be between 2 and 35 characters long'
 		}
 		if (
 			userData.projectSocietyName &&
-			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 50)
+			(userData.projectSocietyName.length < 2 || userData.projectSocietyName.length > 35)
 		) {
 			errors.projectSocietyName =
-				'The Project Society Name must be between 2 and 50 characters long'
+				'The Project Society Name must be between 2 and 35 characters long'
 		}
 		if (
 			userData.phone &&

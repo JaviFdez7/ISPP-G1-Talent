@@ -2,7 +2,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b1",
 		"username": "representative1",
-		"password": "pass1234",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "rep1@example.com",
 		"phone": "123-456-7890",
 		"paymentMethods": ["Credit Card"],
@@ -15,7 +15,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b2",
 		"username": "representative2",
-		"password": "securepass",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "rep2@techcorp.com",
 		"phone": "321-654-0987",
 		"paymentMethods": ["Credit Card"],
@@ -28,7 +28,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b3",
 		"username": "candidate1",
-		"password": "password123",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "candidate1@example.com",
 		"phone": "987-654-3210",
 		"paymentMethods": ["PayPal", "Credit Card"],
@@ -46,7 +46,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b4",
 		"username": "candidate2",
-		"password": "mypassword",
+		"password": "myp$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmruassword",
 		"email": "candidate2@devmail.com",
 		"phone": "456-123-7890",
 		"paymentMethods": ["Bank Transfer"],
@@ -64,7 +64,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b5",
 		"username": "candidate3",
-		"password": "pass4567",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "candidate3@codemail.com",
 		"phone": "123-789-4560",
 		"paymentMethods": ["Cryptocurrency", "Credit Card"],
@@ -82,7 +82,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b6",
 		"username": "candidate4",
-		"password": "topsecret",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "candidate4@securemail.com",
 		"phone": "654-321-0987",
 		"paymentMethods": ["Bank Transfer"],
@@ -100,7 +100,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b7",
 		"username": "candidate5",
-		"password": "passwordSecure1",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "aristoteles-nunez@example.com",
 		"phone": "555-0100",
 		"paymentMethods": ["Credit Card"],
@@ -118,7 +118,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b8",
 		"username": "candidate6",
-		"password": "passwordSecure2",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "manuel-fidalgo@example.com",
 		"phone": "555-0200",
 		"paymentMethods": ["Bank Transfer"],
@@ -136,7 +136,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8b9",
 		"username": "candidate7",
-		"password": "passwordSecure3",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "Libertual@example.com",
 		"phone": "555-0300",
 		"paymentMethods": ["PayPal"],
@@ -154,7 +154,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8ba",
 		"username": "candidate8",
-		"password": "passwordSecure4",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "PabloRdrRbl@example.com",
 		"phone": "555-0400",
 		"paymentMethods": ["Credit Card"],
@@ -172,7 +172,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8bb",
 		"username": "candidate9",
-		"password": "passwordSecure5",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "dmananes@example.com",
 		"phone": "555-0500",
 		"paymentMethods": ["Bank Transfer"],
@@ -190,7 +190,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8bc",
 		"username": "candidate10",
-		"password": "passwordSecure6",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "roobre@example.com",
 		"phone": "555-0600",
 		"paymentMethods": ["Credit Card"],
@@ -208,7 +208,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8bd",
 		"username": "candidate11",
-		"password": "passwordSecure7",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "jesus-cruz@example.com",
 		"phone": "555-0700",
 		"paymentMethods": ["PayPal"],
@@ -226,7 +226,7 @@
 	{
 		"_id": "630f1f8bcf30e2d9c6a7d8be",
 		"username": "candidate12",
-		"password": "passwordSecure8",
+		"password": "$2a$10$N4/qbmcsVhQQkYWN4tlTReDQUNx3sgolFtxa2ZQr5zNa8Y3hkXmru",
 		"email": "egara@example.com",
 		"phone": "555-0800",
 		"paymentMethods": ["Credit Card"],

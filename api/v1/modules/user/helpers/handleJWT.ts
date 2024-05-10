@@ -7,6 +7,11 @@ const generateJWT = (id: string | undefined): string => {
   return jwt;
 }
 
+const generateJWTWithSoonerExpiration = (id: string | undefined): string => {
+  const jwt = sign({ sub: id }, JWT_TOKEN, { expiresIn: '15m' })
+  return jwt;
+}
+
 const verifyJWT = (token: string): string | JwtPayload => verify(token, JWT_TOKEN)
-console.log(generateJWT("630f1f8bcf30e2d9c6a7d8b2"))
-export { generateJWT, verifyJWT };
+
+export { generateJWT, verifyJWT,generateJWTWithSoonerExpiration };

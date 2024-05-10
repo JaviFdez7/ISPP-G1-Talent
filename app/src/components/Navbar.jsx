@@ -57,10 +57,12 @@ export default function Navbar() {
 		if (isAuthenticated && userData && userData.role === 'Representative') {
 			optsTemplate = 2
 		}
-
+	
 		let res = opts[optsTemplate][key]
 		if (res === undefined) {
 			res = -1
+		} else if (key !== 'Trends' && subscription !== 'Pro plan' && res > opts[optsTemplate]['Trends']) {
+			res -= 1
 		}
 		return res
 	}
@@ -87,7 +89,7 @@ export default function Navbar() {
 				}
 			}
 		} catch (error) {
-			console.log('Error fetching notification data:', error.response.data.message)
+			console.error('Error fetching notification data:', error.response.data.message)
 		}
 	}
 
@@ -185,19 +187,19 @@ export default function Navbar() {
 				<div className='navbar-hoverer' id='navbar-hoverer'></div>
 				<div className='navbar-current' id='navbar-current'></div>
 				<>
-					{userData && getOptsNum('Trends') !== -1 && (
-						<Link
-							to='/trends'
-							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
-							onMouseDown={() => move_current(getOptsNum('Trends'))}
-							className='link-container'>
-							<span>
-								<FontAwesomeIcon icon={faArrowTrendUp} />
-							</span>
-							<p>&nbsp;&nbsp;&nbsp;</p>
-							<span>Trends</span>
-						</Link>
-					)}
+				{userData && getOptsNum('Trends') !== -1 && subscription === 'Pro plan' && (
+					<Link
+						to='/trends'
+						onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
+						onMouseDown={() => move_current(getOptsNum('Trends'))}
+						className='link-container'>
+						<span>
+							<FontAwesomeIcon icon={faArrowTrendUp} />
+						</span>
+						<p>&nbsp;&nbsp;&nbsp;</p>
+						<span>Trends</span>
+					</Link>
+				)}
 					{userData && getOptsNum('Analysis') !== -1 && (
 						<Link
 							to='/analysis/analyze'
