@@ -61,13 +61,11 @@ export const createAnalysis: any = async (
 	token?: string,
 	userApikey?: string
 ) => {
-	
 	token = token ?? ''
 	if (!githubUsername) {
 		throw new Error('A valid GitHub username was not provided.')
 	}
 	try {
-		
 		if (token.length > 0) {
 			const actualSubscription = await getSubscriptionsByUserId(verifyJWT(token).sub)
 			if (actualSubscription instanceof CompanySubscription) {

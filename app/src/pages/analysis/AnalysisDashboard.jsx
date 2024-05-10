@@ -359,13 +359,13 @@ export default function AnalysisDashboard() {
 									data={{
 										labels: languages.map((item) => item.language),
 										datasets: [
-										{
-											label: '',
-											data: languages.map((item) => item.percentage),
-											backgroundColor: getListOfRandomColors(
-											languages.length
-											),
-										},
+											{
+												label: '',
+												data: languages.map((item) => item.percentage),
+												backgroundColor: getListOfRandomColors(
+													languages.length
+												),
+											},
 										],
 									}}
 									options={{

@@ -14,7 +14,7 @@ export default function Trends() {
 
 	const { isAuthenticated } = useAuthContext()
 	const [trends, setTrends] = useState({})
-	const yearsOfExperienceMeanEntero = Math.floor(trends.yearsOfExperienceMean);
+	const yearsOfExperienceMeanEntero = Math.floor(trends.yearsOfExperienceMean)
 
 	React.useEffect(() => {
 		const fetchUserData = async () => {

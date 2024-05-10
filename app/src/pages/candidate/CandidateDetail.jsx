@@ -18,7 +18,7 @@ import { Pie, Bar, Radar } from 'react-chartjs-2'
 export default function CandidateDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({
-		profilePictureURL: ''
+		profilePictureURL: '',
 	})
 	const [subscription, setSubscription] = useState(null)
 	const [experience, setExperience] = useState([])
@@ -159,7 +159,7 @@ export default function CandidateDetail() {
 						)
 						experiences.push(response.data.data)
 					}
-					user.profilePictureURL = `/profileImages/${user._id}.png`;
+					user.profilePictureURL = `/profileImages/${user._id}.png`
 					setCandidate(user)
 					setExperience(experiences)
 				}
@@ -337,10 +337,7 @@ export default function CandidateDetail() {
 				{errors && errors.errors && errors.errors[0] && errors.errors[0].detail && (
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
-				<h2 className='text-white text-center'>
-					This is an Optional field 
-					
-				</h2>
+				<h2 className='text-white text-center'>This is an Optional field</h2>
 				<h2 className='text-white text-center'>
 					(Please make sure you write your real GitHub APIkey)
 				</h2>

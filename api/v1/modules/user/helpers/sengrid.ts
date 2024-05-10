@@ -1,6 +1,6 @@
-import sgMail from '@sendgrid/mail';
+import sgMail from '@sendgrid/mail'
 
-const apiKey: string = process.env.SENDGRID_API_KEY || '';
-sgMail.setApiKey(apiKey);
+const apiKey: string = process.env.SENDGRID_API_KEY || ''
+sgMail.setApiKey(apiKey)
 
-export {sgMail}
+export { sgMail }

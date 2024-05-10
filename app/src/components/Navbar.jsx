@@ -28,7 +28,7 @@ export default function Navbar() {
 	const { subscription } = useAuthContext()
 	const [expanded, setExpanded] = useState(false)
 	const [userData, setUserData] = useState({
-		profilePictureURL: ''
+		profilePictureURL: '',
 	})
 	const [notifications, setNotifications] = useState(0)
 	const [nonRead, setNonRead] = useState(0)
@@ -57,11 +57,15 @@ export default function Navbar() {
 		if (isAuthenticated && userData && userData.role === 'Representative') {
 			optsTemplate = 2
 		}
-	
+
 		let res = opts[optsTemplate][key]
 		if (res === undefined) {
 			res = -1
-		} else if (key !== 'Trends' && subscription !== 'Pro plan' && res > opts[optsTemplate]['Trends']) {
+		} else if (
+			key !== 'Trends' &&
+			subscription !== 'Pro plan' &&
+			res > opts[optsTemplate]['Trends']
+		) {
 			res -= 1
 		}
 		return res
@@ -102,7 +106,7 @@ export default function Navbar() {
 					const currentUserId = localStorage.getItem('userId')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
-					user.profilePictureURL = `/profileImages/${user._id}.png`;
+					user.profilePictureURL = `/profileImages/${user._id}.png`
 					setUserData(user)
 				}
 			} catch (error) {
@@ -187,19 +191,19 @@ export default function Navbar() {
 				<div className='navbar-hoverer' id='navbar-hoverer'></div>
 				<div className='navbar-current' id='navbar-current'></div>
 				<>
-				{userData && getOptsNum('Trends') !== -1 && subscription === 'Pro plan' && (
-					<Link
-						to='/trends'
-						onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
-						onMouseDown={() => move_current(getOptsNum('Trends'))}
-						className='link-container'>
-						<span>
-							<FontAwesomeIcon icon={faArrowTrendUp} />
-						</span>
-						<p>&nbsp;&nbsp;&nbsp;</p>
-						<span>Trends</span>
-					</Link>
-				)}
+					{userData && getOptsNum('Trends') !== -1 && subscription === 'Pro plan' && (
+						<Link
+							to='/trends'
+							onMouseEnter={() => move_hoverer(getOptsNum('Trends'))}
+							onMouseDown={() => move_current(getOptsNum('Trends'))}
+							className='link-container'>
+							<span>
+								<FontAwesomeIcon icon={faArrowTrendUp} />
+							</span>
+							<p>&nbsp;&nbsp;&nbsp;</p>
+							<span>Trends</span>
+						</Link>
+					)}
 					{userData && getOptsNum('Analysis') !== -1 && (
 						<Link
 							to='/analysis/analyze'

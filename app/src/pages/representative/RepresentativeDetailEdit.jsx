@@ -38,7 +38,7 @@ export default function RepresentativeDetailEdit() {
 				if (isAuthenticated) {
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === id)
-					user.profilePictureURL = `/profileImages/${user._id}.png`;
+					user.profilePictureURL = `/profileImages/${user._id}.png`
 
 					setUserData(user)
 				}
@@ -60,7 +60,7 @@ export default function RepresentativeDetailEdit() {
 		}
 
 		if (userData.profilePicture && userData.profilePicture.name) {
-			let extension = userData.profilePicture.name.split('.')[1].trim();
+			let extension = userData.profilePicture.name.split('.')[1].trim()
 
 			if (['jpg', 'png', 'jpeg'].includes(extension) === false) {
 				Swal.fire({
@@ -71,13 +71,13 @@ export default function RepresentativeDetailEdit() {
 					background: 'var(--talent-secondary)',
 					color: 'white',
 					timer: 2000,
-				});
-				return;
+				})
+				return
 			}
 		}
 
 		try {
-			const user = { ...userData, profilePicture: null, profilePictureURL: ''}
+			const user = { ...userData, profilePicture: null, profilePictureURL: '' }
 			const response = await axios.patch(
 				`${import.meta.env.VITE_BACKEND_URL}/user/representative/${id}`,
 				userData,
@@ -90,16 +90,14 @@ export default function RepresentativeDetailEdit() {
 			)
 
 			if (userData.profilePicture && userData.profilePicture.name) {
+				const fd = new FormData()
+				fd.append('profilePicture', userData.profilePicture)
 
-				const fd = new FormData();
-				fd.append('profilePicture', userData.profilePicture);
-					
 				const profilePictureResponse = await axios.post(
 					`${import.meta.env.VITE_BACKEND_URL}/user/candidate/${id}/profile-picture`,
 					fd,
 					{
 						headers: {
-					
 							Authorization: token,
 						},
 					}
@@ -146,54 +144,55 @@ export default function RepresentativeDetailEdit() {
 		}
 	}
 
-
-	
-
-	const ProfilePicture = ({ }) => {
-	  	  
+	const ProfilePicture = ({}) => {
 		const handleChangePicture = (e) => {
-
 			if (e.target.files && e.target.files[0]) {
-
 				if (e.target.files[0].type.startsWith('image')) {
-
-					setUserData( { ...userData, profilePicture: e.target.files[0], profilePictureURL : URL.createObjectURL(e.target.files[0])} );
+					setUserData({
+						...userData,
+						profilePicture: e.target.files[0],
+						profilePictureURL: URL.createObjectURL(e.target.files[0]),
+					})
 				} else {
-					console.error('Unsupported file type.');
+					console.error('Unsupported file type.')
 				}
 			}
-		
-		};
-	  
+		}
+
 		return (
-		  <div className='flex flex-col items-center space-y-4'>
-			<img
-				src={userData.profilePictureURL}
-				alt={userData.name}
-				className='rounded-full border border-gray-300 profile-img'
-			  style={{
-				objectFit: 'cover',
-				objectPosition: 'center',
-				width: '230px',
-				height: '230px',
-				marginLeft: '90px',
-			  }}
-			/>
-			<label htmlFor='profilePicture' className='btn text-white'>
-			Change profile photo
-			</label>
-			<div>
-				<input className='self-center' type='file' name='profilePicture' accept='.png,.jpg,.jpeg' onChange={handleChangePicture}></input>
-				<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
-				Clear
-				</button>
+			<div className='flex flex-col items-center space-y-4'>
+				<img
+					src={userData.profilePictureURL}
+					alt={userData.name}
+					className='rounded-full border border-gray-300 profile-img'
+					style={{
+						objectFit: 'cover',
+						objectPosition: 'center',
+						width: '230px',
+						height: '230px',
+						marginLeft: '90px',
+					}}
+				/>
+				<label htmlFor='profilePicture' className='btn text-white'>
+					Change profile photo
+				</label>
+				<div>
+					<input
+						className='self-center'
+						type='file'
+						name='profilePicture'
+						accept='.png,.jpg,.jpeg'
+						onChange={handleChangePicture}></input>
+					<button onClick={handleClearProfilePicture} style={{ color: 'white' }}>
+						Clear
+					</button>
+				</div>
 			</div>
-		  </div>
-		);
-	  };
+		)
+	}
 
 	const handleClearProfilePicture = () => {
-		setUserData( { ...userData, profilePicture: null, profilePictureURL: ''} );
+		setUserData({ ...userData, profilePicture: null, profilePictureURL: '' })
 	}
 
 	function getRequiredFieldMessage(fieldName) {
@@ -261,7 +260,7 @@ export default function RepresentativeDetailEdit() {
 						style={{ marginBottom: '5%' }}
 						onSubmit={(e) => editUser(e)}>
 						<div>
-							<ProfilePicture/>
+							<ProfilePicture />
 						</div>
 						<div className='w-10/12 flex flex-col mb-4 self-center'>
 							<label

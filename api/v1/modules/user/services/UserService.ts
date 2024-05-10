@@ -2,7 +2,7 @@ import { generateJWT, generateJWTWithSoonerExpiration } from '../helpers/handleJ
 import { Candidate, User } from '../models/user'
 import { ProfessionalExperience } from '../../professional-experience/models/professional-experience'
 import { getModelForRole } from '../helpers/handleRoles'
-import multer from 'multer';
+import multer from 'multer'
 import { createAnalysis } from '../../analysis/services/AnalysisService'
 import {
 	createRepresentativeSubscriptions,
@@ -12,7 +12,7 @@ import {
 import { CandidateSubscription } from '../../subscriptions/models/subscription'
 import { sgMail } from '../helpers/sengrid'
 
-const fs = require('fs').promises;
+const fs = require('fs').promises
 const path = require('path')
 
 export const getAllUser: any = async () => await User.find({})
@@ -53,8 +53,6 @@ export const createUser: any = async (data: any, role: string) => {
 
 export const updateUser: any = async (id: any, data: any, role: string) => {
 	try {
-		
-	
 		const Model = getModelForRole(role) as typeof User
 		if (role === 'Candidate') {
 			const analysis = await createAnalysis(data?.githubUser)
@@ -63,9 +61,9 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 			data.analysisId = analysis._id
 		}
 		console.log(data)
-		const { profilePicture, ...restOfData } = data;
+		const { profilePicture, ...restOfData } = data
 
-		console.log("Información Del Update")
+		console.log('Información Del Update')
 		console.log(data)
 		const updatedUser = await Model.findByIdAndUpdate(id, restOfData, { new: true })
 		return updatedUser
@@ -78,12 +76,16 @@ export const updateUser: any = async (id: any, data: any, role: string) => {
 export const updateUserProfilePicture: any = async (id: any, file: Express.Multer.File) => {
 	try {
 		// console.log("profile")
-		console.log("Current Working Directory:", process.cwd());
+		console.log('Current Working Directory:', process.cwd())
 		console.log(file)
-		const filePath = path.join('../../app/public/profileImages', `${id}.png`);
-		await fs.writeFile(filePath, file.buffer);
-		const updatedUser = await User.findByIdAndUpdate(id, { profilePicture: filePath }, { new: true });
-		return updatedUser;
+		const filePath = path.join('../../app/public/profileImages', `${id}.png`)
+		await fs.writeFile(filePath, file.buffer)
+		const updatedUser = await User.findByIdAndUpdate(
+			id,
+			{ profilePicture: filePath },
+			{ new: true }
+		)
+		return updatedUser
 	} catch (error) {
 		console.error('Error updating user profile picture:', error)
 		throw error
@@ -115,45 +117,43 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
-export const sendEmail: any = async (to: string, subject: string, text: string,html: string) =>{
-	try{
-		const from= process.env.SENGRID_EMAIL ?? ''
+export const sendEmail: any = async (to: string, subject: string, text: string, html: string) => {
+	try {
+		const from = process.env.SENGRID_EMAIL ?? ''
 		const msg = {
 			to,
 			from,
 			subject,
 			text,
 			html,
-		  };
+		}
 		await sgMail
-		.send(msg)
-		.then(() => {
-		  console.log('Email sent')
-		})
-		.catch((error:any) => {
-		  console.error(error)
-		})
-	}catch(error:any){
+			.send(msg)
+			.then(() => {
+				console.log('Email sent')
+			})
+			.catch((error: any) => {
+				console.error(error)
+			})
+	} catch (error: any) {
 		console.error('Error creating your request:', error)
 		throw error
 	}
 }
 
-export const createChangePasswordRequest: any = async (data: any,originalUrl: string) => {
+export const createChangePasswordRequest: any = async (data: any, originalUrl: string) => {
 	try {
 		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
-		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		const userByUsername = await User.findOne({ username: data.usernameOrEmail })
 		const user = userByEmail ?? userByUsername
 		const id = user?._id.toString()
 		const token = generateJWTWithSoonerExpiration(id)
-		const result = originalUrl+"/"+token
-		const text=`To change the forgotten password, access this link: ${result}. \n
+		const result = originalUrl + '/' + token
+		const text = `To change the forgotten password, access this link: ${result}. \n
 		 \n
 		 In case of error, simply ignore the message.
 		Thank you very much for using IT TALENT :3`
-		await sendEmail(user?.email,'Verify password change',
-			text,`<strong> ${text} </strong>`
-		)
+		await sendEmail(user?.email, 'Verify password change', text, `<strong> ${text} </strong>`)
 	} catch (error) {
 		console.error('Error creating your request:', error)
 		throw error
@@ -181,5 +181,6 @@ export default {
 	updateUserProfilePicture,
 	updateUserPassword,
 	deleteUser,
-	loginUser,createChangePasswordRequest
+	loginUser,
+	createChangePasswordRequest,
 }

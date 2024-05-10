@@ -37,7 +37,7 @@ export default function ChangeNewPassword() {
 		try {
 			const response = await axios.post(
 				`${import.meta.env.VITE_BACKEND_URL}/user/forgot-password/${token}`,
-				
+
 				form,
 				{
 					headers: {

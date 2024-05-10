@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 export default function ProtectedRoute({
-	children,	
+	children,
 	roles,
 	allowUnauthenticated = false,
 	checkSubscription = true,
@@ -15,7 +15,7 @@ export default function ProtectedRoute({
 	const navigate = useNavigate()
 	const { subscription } = useAuthContext()
 	const location = useLocation()
-	const [user, setUser] = useState(null)	
+	const [user, setUser] = useState(null)
 
 	useEffect(() => {
 		const fetchUserData = async () => {
@@ -24,7 +24,7 @@ export default function ProtectedRoute({
 					const currentUserId = localStorage.getItem('userId')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
-					setUser(user)	
+					setUser(user)
 					if (!roles.includes(user.role)) {
 						navigate('/')
 					}

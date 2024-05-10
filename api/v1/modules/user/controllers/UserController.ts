@@ -2,9 +2,9 @@
 import { type Request, type Response } from 'express'
 import UserService from '../services/UserService'
 import { ApiResponse } from '../../../utils/ApiResponse'
-import multer from 'multer';
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+import multer from 'multer'
+const storage = multer.memoryStorage()
+const upload = multer({ storage: storage })
 import { verifyJWT } from '../helpers/handleJWT'
 
 // Default controller functions
@@ -40,7 +40,6 @@ export const getUserById: any = async (req: Request, res: Response) => {
 		])
 	}
 }
-
 
 export const getProfessionalExperiencesByUserId: any = async (req: Request, res: Response) => {
 	try {
@@ -95,7 +94,7 @@ export const createRepresentative: any = async (req: Request, res: Response) => 
 
 export const updateCandidate: any = async (req: Request, res: Response) => {
 	try {
-		console.log("holala")
+		console.log('holala')
 		const id = req.params.id
 		const role: string = 'Candidate'
 		const token = req.headers.authorization ?? ''
@@ -113,7 +112,6 @@ export const updateCandidate: any = async (req: Request, res: Response) => {
 		])
 	}
 }
-
 
 export const updateRepresentative: any = async (req: Request, res: Response) => {
 	try {
@@ -135,11 +133,9 @@ export const updateRepresentative: any = async (req: Request, res: Response) => 
 
 export const updateUserProfilePicture: any = async (req: Request, res: Response) => {
 	try {
-		
 		const id = req.params.id
 		const picture = req.file
-	
-	
+
 		const data = await UserService.updateUserProfilePicture(id, picture)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
@@ -177,7 +173,7 @@ export const updateUserForgottenPassword: any = async (req: Request, res: Respon
 	try {
 		const token = req.params.token
 		const { encryptedPassword } = req.body
-		const decodedToken=verifyJWT(token)
+		const decodedToken = verifyJWT(token)
 		const data = await UserService.updateUserPassword(decodedToken.sub, encryptedPassword)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: `${req.protocol}://${req.get('host')}${req.originalUrl}`,
@@ -194,11 +190,11 @@ export const updateUserForgottenPassword: any = async (req: Request, res: Respon
 
 export const createChangePasswordRequest: any = async (req: Request, res: Response) => {
 	try {
-		const url=req?.body?.redirectUrlBase
-		if(!url){
+		const url = req?.body?.redirectUrlBase
+		if (!url) {
 			throw new Error('redirectUrlBase is required')
 		}
-		const data = await UserService.createChangePasswordRequest(req.body,url)
+		const data = await UserService.createChangePasswordRequest(req.body, url)
 		return ApiResponse.sendSuccess(res, data, 200, {
 			self: url,
 		})
