@@ -736,9 +736,9 @@ export default function AnalysisDashboard() {
 														plugins: {
 															legend: {
 															  labels: {
-																color: graphsTextColor, // Cambia este valor al color que desees
+																color: graphsTextColor, 
 																font: {
-																  size: 15, // Cambia este valor al tamaño de letra que desees
+																  size: 15, 
 																},
 															  },
 															},
@@ -779,9 +779,9 @@ export default function AnalysisDashboard() {
 													plugins: {
 													  legend: {
 														labels: {
-														  color: graphsTextColor, // Cambia este valor al color que desees
+														  color: graphsTextColor,
 														  font: {
-															size: 13, // Cambia este valor al tamaño de letra que desees
+															size: 13, 
 														  },
 														},
 													  },
