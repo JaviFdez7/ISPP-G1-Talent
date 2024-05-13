@@ -108,8 +108,6 @@ export default function CandidateProfessionalExperienceCreate() {
 			const currentDate = new Date()
 			if (startDate > endDate) errors.startDate = 'Start Date cannot be after the EndDate'
 
-			if (endDate > currentDate) errors.endDate = 'End Date cannot be after the current date'
-
 			const year1970 = new Date('1970-01-01')
 			if (startDate < year1970 || endDate < year1970)
 				errors.startDate = 'Start Date cannot be before 1970 or after the current date'
