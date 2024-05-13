@@ -1,9 +1,13 @@
 import React, { createContext, useCallback, useMemo, useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext()
 
+
+
 export function AuthContextProvider({ children }) {
+	const navigate = useNavigate();
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const [isAuthenticated, setIsAuthenticated] = useState(
 		Boolean(localStorage.getItem('access_token'))
@@ -48,6 +52,8 @@ export function AuthContextProvider({ children }) {
 		}
 	}, [isAuthenticated, fetchSubscription])
 
+	
+
 	const login = useCallback(
 		function (token, userType, userId) {
 			const role = {
@@ -73,6 +79,42 @@ export function AuthContextProvider({ children }) {
 		setRole({ isCandidate: false, isRepresentative: false })
 		setSubscription(null) // Establece subscription a null
 	}, [])
+
+	const verifyTokenUser = useCallback(async () => {
+		try {
+			const token = localStorage.getItem('access_token')
+			const userId = localStorage.getItem('userId')
+			const config = {
+				headers: { Authorization: `${token}` },
+			}
+			await axios.get(apiURL + '/user/' + userId, config)
+		} catch (error) {
+			console.error(error) 
+			logout() 
+			navigate('/login'); 
+			
+			
+		}
+	}, [apiURL, logout])
+	
+	useEffect(() => {
+		// Función que se ejecuta cuando cambia el localStorage
+		const handleStorageChange = () => {
+		  if (isAuthenticated) {
+			verifyTokenUser()
+		  }
+		}
+	  
+		// Agrega el event listener cuando se monta el componente
+		window.addEventListener('storage', handleStorageChange)
+	  
+		// Elimina el event listener cuando se desmonta el componente
+		return () => {
+		  window.removeEventListener('storage', handleStorageChange)
+		}
+	  }, [isAuthenticated, verifyTokenUser])
+
+
 
 	const value = useMemo(
 		() => ({
