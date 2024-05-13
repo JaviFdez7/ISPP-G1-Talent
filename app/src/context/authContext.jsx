@@ -41,7 +41,8 @@ export function AuthContextProvider({ children }) {
 			const response = await axios.get(apiURL + '/subscriptions/' + userId, config)
 			setSubscription(response.data.data.subtype)
 		} catch (error) {
-			console.error(error) 
+			console.error(error)
+			logout() 
 			throw error 
 		}
 	}, [apiURL])
@@ -95,7 +96,7 @@ export function AuthContextProvider({ children }) {
 			
 			
 		}
-	}, [apiURL, logout])
+	}, [apiURL, logout, navigate])
 	
 	useEffect(() => {
 		const handleStorageChange = () => {

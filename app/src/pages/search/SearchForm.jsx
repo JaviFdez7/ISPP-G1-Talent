@@ -266,17 +266,17 @@ export default function SearchForm() {
 		form.forEach((item, index) => {
 			if (!item.languages.length) {
 				isValid = false
-				errors[`languages${index}`] = 'Languages is required'
+				errors[`languages${index}`] = 'Languages are required'
 			}
 		
 			if (!item.technologies.length) {
 				isValid = false
-				errors[`technologies${index}`] = 'Technologies is required'
+				errors[`technologies${index}`] = 'Technologies are required'
 			}
 		
 			if (item.yearsOfExperience === null || item.yearsOfExperience === undefined) {
 				isValid = false
-				errors[`yearsOfExperience${index}`] = 'Years of Experience is required'
+				errors[`yearsOfExperience${index}`] = 'Years of Experience are required'
 			}
 		
 			if (!item.field) {
@@ -378,7 +378,7 @@ export default function SearchForm() {
 					marginTop: '50px',
 				}}>
 				<label htmlFor='numForms' style={{ color: 'white', marginRight: '5px' }}>
-					Select between 2 and 5 candidates to search for:
+					Select candidates to search for:
 				</label>
 				<Select
 					id='numForms'
