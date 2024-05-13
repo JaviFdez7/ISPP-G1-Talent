@@ -137,7 +137,8 @@ export default function CandidateProfessionalExperienceEdit() {
 
 		if (!form.companyName) errors.companyName = getRequiredFieldMessage('companyName')
 		else if (form.companyName.length <= 3 || form.companyName.length > 35) {
-			errors.companyName = 'The company name field must have be between 2 and 35 characters long'
+			errors.companyName =
+				'The company name field must have be between 2 and 35 characters long'
 		}
 
 		const validProfessionalAreas = [
