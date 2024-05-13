@@ -1,13 +1,11 @@
 import React, { createContext, useCallback, useMemo, useState, useContext, useEffect } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
 export const AuthContext = createContext()
 
-
-
 export function AuthContextProvider({ children }) {
-	const navigate = useNavigate();
+	const navigate = useNavigate()
 	const apiURL = import.meta.env.VITE_BACKEND_URL
 	const [isAuthenticated, setIsAuthenticated] = useState(
 		Boolean(localStorage.getItem('access_token'))
@@ -42,8 +40,8 @@ export function AuthContextProvider({ children }) {
 			setSubscription(response.data.data.subtype)
 		} catch (error) {
 			console.error(error)
-			logout() 
-			throw error 
+			logout()
+			throw error
 		}
 	}, [apiURL])
 
@@ -52,8 +50,6 @@ export function AuthContextProvider({ children }) {
 			fetchSubscription()
 		}
 	}, [isAuthenticated, fetchSubscription])
-
-	
 
 	const login = useCallback(
 		function (token, userType, userId) {
@@ -78,7 +74,7 @@ export function AuthContextProvider({ children }) {
 		localStorage.removeItem('userId')
 		setIsAuthenticated(false)
 		setRole({ isCandidate: false, isRepresentative: false })
-		setSubscription(null) 
+		setSubscription(null)
 	}, [])
 
 	const verifyTokenUser = useCallback(async () => {
@@ -90,27 +86,23 @@ export function AuthContextProvider({ children }) {
 			}
 			await axios.get(apiURL + '/user/' + userId, config)
 		} catch (error) {
-			console.error(error) 
-			logout() 
-			navigate('/login'); 
-			
-			
+			console.error(error)
+			logout()
+			navigate('/login')
 		}
 	}, [apiURL, logout, navigate])
-	
+
 	useEffect(() => {
 		const handleStorageChange = () => {
-		  if (isAuthenticated) {
-			verifyTokenUser()
-		  }
+			if (isAuthenticated) {
+				verifyTokenUser()
+			}
 		}
 		window.addEventListener('storage', handleStorageChange)
 		return () => {
-		  window.removeEventListener('storage', handleStorageChange)
+			window.removeEventListener('storage', handleStorageChange)
 		}
-	  }, [isAuthenticated, verifyTokenUser])
-
-
+	}, [isAuthenticated, verifyTokenUser])
 
 	const value = useMemo(
 		() => ({

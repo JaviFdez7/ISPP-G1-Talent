@@ -12,7 +12,7 @@ import { useAuthContext } from './../../context/authContext'
 
 export default function SearchForm() {
 	const talentColor = 'var(--talent-secondary)'
-	const errorColor = 'var(--talent-highlight)'	
+	const errorColor = 'var(--talent-highlight)'
 	const [numForms, setNumForms] = useState(2)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')
@@ -268,23 +268,23 @@ export default function SearchForm() {
 				isValid = false
 				errors[`languages${index}`] = 'Languages are required'
 			}
-		
+
 			if (!item.technologies.length) {
 				isValid = false
 				errors[`technologies${index}`] = 'Technologies are required'
 			}
-		
+
 			if (item.yearsOfExperience === null || item.yearsOfExperience === undefined) {
 				isValid = false
 				errors[`yearsOfExperience${index}`] = 'Years of Experience are required'
 			}
-		
+
 			if (!item.field) {
 				isValid = false
 				errors[`field${index}`] = 'Field is required'
 			}
 		})
-		
+
 		if (!isValid) {
 			setFormErrors(errors)
 			return
@@ -464,10 +464,11 @@ export default function SearchForm() {
 									className='basic-multi-select'
 									classNamePrefix='select'
 								/>
-									{formErrors[`languages${index}`] && (
-									<div className="error-message" 	style={{ color: errorColor }}>
-										{formErrors[`languages${index}`]}</div>
-									)}
+								{formErrors[`languages${index}`] && (
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`languages${index}`]}
+									</div>
+								)}
 							</div>
 
 							<div
@@ -495,9 +496,10 @@ export default function SearchForm() {
 									isMulti
 								/>
 								{formErrors[`technologies${index}`] && (
-									<div className="error-message" 	style={{ color: errorColor }}>
-										{formErrors[`technologies${index}`]}</div>
-									)}
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`technologies${index}`]}
+									</div>
+								)}
 							</div>
 
 							<div
@@ -535,8 +537,9 @@ export default function SearchForm() {
 									menuPosition={'fixed'}
 								/>
 								{formErrors[`field${index}`] && (
-									<div className="error-message" 	style={{ color: errorColor }}>
-										{formErrors[`field${index}`]}</div>
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`field${index}`]}
+									</div>
 								)}
 							</div>
 
@@ -555,10 +558,10 @@ export default function SearchForm() {
 									errors={errors}
 								/>
 								{formErrors[`yearsOfExperience${index}`] && (
-									<div className="error-message" 
-									style={{ color: errorColor }}>
-										{formErrors[`yearsOfExperience${index}`]}</div>
-									)}
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`yearsOfExperience${index}`]}
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
