@@ -41,8 +41,8 @@ export function AuthContextProvider({ children }) {
 			const response = await axios.get(apiURL + '/subscriptions/' + userId, config)
 			setSubscription(response.data.data.subtype)
 		} catch (error) {
-			console.error(error) // Muestra el error
-			throw error // Lanza el error
+			console.error(error) 
+			throw error 
 		}
 	}, [apiURL])
 
@@ -77,7 +77,7 @@ export function AuthContextProvider({ children }) {
 		localStorage.removeItem('userId')
 		setIsAuthenticated(false)
 		setRole({ isCandidate: false, isRepresentative: false })
-		setSubscription(null) // Establece subscription a null
+		setSubscription(null) 
 	}, [])
 
 	const verifyTokenUser = useCallback(async () => {
@@ -98,17 +98,12 @@ export function AuthContextProvider({ children }) {
 	}, [apiURL, logout])
 	
 	useEffect(() => {
-		// Función que se ejecuta cuando cambia el localStorage
 		const handleStorageChange = () => {
 		  if (isAuthenticated) {
 			verifyTokenUser()
 		  }
 		}
-	  
-		// Agrega el event listener cuando se monta el componente
 		window.addEventListener('storage', handleStorageChange)
-	  
-		// Elimina el event listener cuando se desmonta el componente
 		return () => {
 		  window.removeEventListener('storage', handleStorageChange)
 		}
