@@ -16,6 +16,7 @@ import Modal from 'react-modal'
 import { Pie, Bar, Radar } from 'react-chartjs-2'
 
 export default function CandidateDetail() {
+	
 	const { isAuthenticated } = useAuthContext()
 	const [candidate, setCandidate] = useState({})
 	const [subscription, setSubscription] = useState(null)
@@ -467,6 +468,9 @@ export default function CandidateDetail() {
 												legend: {
 													labels: {
 														color: 'white',
+														font: {
+															size: 13, 
+														  },
 													},
 												},
 											},
@@ -538,6 +542,9 @@ export default function CandidateDetail() {
 												legend: {
 													labels: {
 														color: 'white',
+														font: {
+															size: 13, 
+														  },
 													},
 												},
 											},
@@ -545,6 +552,9 @@ export default function CandidateDetail() {
 												x: {
 													ticks: {
 														color: 'white',
+														font: {
+															size: 13, 
+														  },
 													},
 												},
 												y: {
@@ -616,8 +626,13 @@ export default function CandidateDetail() {
 											<tbody className='datatable-body'>
 												{analysis && analysis.topRepositories
 													? analysis.topRepositories
-															.sort((a, b) => b.stars - a.stars)
-															.map((item, index) => (
+														.sort((a, b) => {
+															if (b.stars !== a.stars) {
+															return b.stars - a.stars;
+															}
+															return b.forks - a.forks;
+														})
+														.map((item, index) => (
 																<>
 																	<tr
 																		key={index}
