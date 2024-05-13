@@ -336,7 +336,7 @@ export default function CandidateDetail() {
 					<p className='text-red-500'>{errors.errors[0].detail}</p>
 				)}
 				<h2 className='text-white text-center'>
-					This is an Optional field 
+					This is an Optional field to analyze your Private Repositories
 					
 				</h2>
 				<h2 className='text-white text-center'>

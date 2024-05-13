@@ -261,7 +261,7 @@ export default function Analyzer() {
 								name: 'Github Token (Optional)',
 								value: githubToken,
 								editable: true,
-								placeholder: 'Enter candidate GitHub token ',
+								placeholder: 'Enter candidate GitHub token to analyze his private repos',
 								onChange: (e) => onInputChange(e),
 								formName: 'githubToken',
 								col: mobile,
