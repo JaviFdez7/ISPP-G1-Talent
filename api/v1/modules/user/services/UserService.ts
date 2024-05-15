@@ -100,46 +100,44 @@ export const deleteUser: any = async (id: any, role: string) => {
 	}
 }
 
-export const sendEmail: any = async (to: string, subject: string, text: string,html: string) =>{
-	try{
-		const from= process.env.SENGRID_EMAIL ?? ''
+export const sendEmail: any = async (to: string, subject: string, text: string, html: string) => {
+	try {
+		const from = process.env.SENGRID_EMAIL ?? ''
 		const msg = {
 			to,
 			from,
 			subject,
 			text,
 			html,
-		  };
+		}
 		await sgMail
-		.send(msg)
-		.then(() => {
-		  console.log('Email sent')
-		})
-		.catch((error:any) => {
-		  console.error(error)
-		})
-	}catch(error:any){
+			.send(msg)
+			.then(() => {
+				console.log('Email sent')
+			})
+			.catch((error: any) => {
+				console.error(error)
+			})
+	} catch (error: any) {
 		console.error('Error creating your request:', error)
 		throw error
 	}
 }
 
-export const createChangePasswordRequest: any = async (data: any,originalUrl: string) => {
+export const createChangePasswordRequest: any = async (data: any, originalUrl: string) => {
 	try {
 		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
-		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		const userByUsername = await User.findOne({ username: data.usernameOrEmail })
 		const user = userByEmail ?? userByUsername
 		const id = user?._id.toString()
 		const token = generateJWTWithSoonerExpiration(id)
-		const result = originalUrl+"/"+token
-		const text=`The user with the username: ${user?.username} and email: ${user?.email} has requested to change the password.
+		const result = originalUrl + '/' + token
+		const text = `The user with the username: ${user?.username} and email: ${user?.email} has requested to change the password.
 		To change the forgotten password, access this link: ${result}. \n
 		 \n
 		 In case of error, simply ignore the message.
 		Thank you very much for using IT TALENT :3`
-		await sendEmail(user?.email,'Verify password change',
-			text,`<strong> ${text} </strong>`
-		)
+		await sendEmail(user?.email, 'Verify password change', text, `<strong> ${text} </strong>`)
 	} catch (error) {
 		console.error('Error creating your request:', error)
 		throw error
@@ -148,11 +146,10 @@ export const createChangePasswordRequest: any = async (data: any,originalUrl: st
 
 export const loginUser: any = async (data: any) => {
 	try {
-		
 		const userByEmail = await User.findOne({ email: data.username })
-		const userByUsername=await User.findOne({ username: data.username })
+		const userByUsername = await User.findOne({ username: data.username })
 		const user = userByEmail ?? userByUsername
-		
+
 		const id = user?._id.toString()
 		const token = generateJWT(id)
 		const result = { token, user }
@@ -172,5 +169,5 @@ export default {
 	updateUserPassword,
 	deleteUser,
 	loginUser,
-	createChangePasswordRequest
+	createChangePasswordRequest,
 }
