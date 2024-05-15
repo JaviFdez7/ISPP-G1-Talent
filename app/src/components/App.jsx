@@ -48,8 +48,8 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
 function App() {
 	return (
 		<div>
-			<AuthContextProvider>
-				<Router>
+			<Router>
+				<AuthContextProvider>
 					<Navbar />
 					<Routes>
 						{/*RUTAS PUBLICAS */}
@@ -317,8 +317,9 @@ function App() {
 							}
 						/>
 					</Routes>
+					</AuthContextProvider>
 				</Router>
-			</AuthContextProvider>
+		
 		</div>
 	)
 }

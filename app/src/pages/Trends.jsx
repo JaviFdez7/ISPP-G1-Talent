@@ -11,6 +11,7 @@ import { Pie, Bar, Radar } from 'react-chartjs-2'
 
 export default function Trends() {
 	const borderColor = 'var(--talent-secondary)'
+	const graphsTextColor = 'white'
 
 	const { isAuthenticated } = useAuthContext()
 	const [trends, setTrends] = useState({})
@@ -80,6 +81,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostSolicitatedTechnologies && (
 							<Pie
+							options={{
+								plugins: {
+								  legend: {
+									labels: {
+									  color: graphsTextColor, 
+									  font: {
+										size: 13,
+									  },
+									},
+								  },
+								},
+							  }}
 								data={{
 									labels: trends.mostSolicitatedTechnologies.map(
 										(item) => item[0]
@@ -198,6 +211,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostSolicitatedLanguages && (
 							<Pie
+								options={{
+									plugins: {
+									legend: {
+										labels: {
+										color: graphsTextColor, 
+										font: {
+											size: 13, 
+										},
+										},
+									},
+									},
+								}}
 								data={{
 									labels: trends.mostSolicitatedLanguages.map((item) => item[0]),
 									datasets: [
@@ -230,6 +255,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostSolicitatedFields && (
 							<Pie
+								options={{
+									plugins: {
+									legend: {
+										labels: {
+										color: graphsTextColor, 
+										font: {
+											size: 13, 
+										},
+										},
+									},
+									},
+								}}
 								data={{
 									labels: trends.mostSolicitatedFields.map((item) => item[0]),
 									datasets: [
@@ -312,6 +349,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostUsedLanguages && (
 							<Pie
+								options={{
+									plugins: {
+									legend: {
+										labels: {
+										color: graphsTextColor, 
+										font: {
+											size: 13, 
+										},
+										},
+									},
+									},
+								}}
 								data={{
 									labels: trends.mostUsedLanguages.map((item) => item[0]),
 									datasets: [
@@ -378,6 +427,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostUsedTechnologies && (
 							<Pie
+								options={{
+									plugins: {
+									legend: {
+										labels: {
+										color: graphsTextColor, 
+										font: {
+											size: 13, 
+										},
+										},
+									},
+									},
+								}}
 								data={{
 									labels: trends.mostUsedTechnologies.map((item) => item[0]),
 									datasets: [
@@ -460,6 +521,18 @@ export default function Trends() {
 						</h6>
 						{trends.mostOcupatedFields && (
 							<Pie
+								options={{
+									plugins: {
+									legend: {
+										labels: {
+										color: graphsTextColor, 
+										font: {
+											size: 13, 
+										},
+										},
+									},
+									},
+								}}
 								data={{
 									labels: trends.mostOcupatedFields.map((item) => item[0]),
 									datasets: [
@@ -523,7 +596,35 @@ export default function Trends() {
 											),
 										},
 									],
-								}}></Bar>
+								}}
+								options={{
+									plugins: {
+										legend: {
+											labels: {
+												color: graphsTextColor,
+												font: {
+													size: 13, 
+												  },
+											},
+										},
+									},
+									scales: {
+										x: {
+											ticks: {
+												color: graphsTextColor,
+												font: {
+													size: 13, 
+												  },
+											},
+										},
+										y: {
+											ticks: {
+												color: graphsTextColor,
+												
+											},
+										},
+									},
+								}}	></Bar>
 						)}
 					</div>
 					<div
@@ -549,6 +650,34 @@ export default function Trends() {
 											),
 										},
 									],
+								}}
+								options={{
+									plugins: {
+										legend: {
+											labels: {
+												color: graphsTextColor,
+												font: {
+													size: 13, 
+												  },
+											},
+										},
+									},
+									scales: {
+										x: {
+											ticks: {
+												color: graphsTextColor,
+												font: {
+													size: 13, 
+												  },
+											},
+										},
+										y: {
+											ticks: {
+												color: graphsTextColor,
+												
+											},
+										},
+									},
 								}}></Bar>
 						)}
 					</div>

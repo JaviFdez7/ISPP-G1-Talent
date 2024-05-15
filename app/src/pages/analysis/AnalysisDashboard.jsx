@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 export default function AnalysisDashboard() {
 	const textColor = ' var(--talent-white-text)'
 	const textColor2 = 'var(--talent-highlight)'
+	const graphsTextColor = 'white'
 	const borderColor = 'var(--talent-secondary)'
 	const { analysisId: githubUsername } = useParams()
 	const { isRepresentative } = useAuthContext()
@@ -372,7 +373,10 @@ export default function AnalysisDashboard() {
 										plugins: {
 											legend: {
 												labels: {
-													color: 'white',
+													color: graphsTextColor,
+													font: {
+														size: 13, 
+													  },
 												},
 											},
 										},
@@ -437,19 +441,26 @@ export default function AnalysisDashboard() {
 										plugins: {
 											legend: {
 												labels: {
-													color: 'white',
+													color: graphsTextColor,
+													font: {
+														size: 13, 
+													  },
 												},
 											},
 										},
 										scales: {
 											x: {
 												ticks: {
-													color: 'white',
+													color: graphsTextColor,
+													font: {
+														size: 13, 
+													  },
 												},
 											},
 											y: {
 												ticks: {
-													color: 'white',
+													color: graphsTextColor,
+													
 												},
 											},
 										},
@@ -521,8 +532,13 @@ export default function AnalysisDashboard() {
 											<tbody className='datatable-body'>
 												{dataArray.topRepositories
 													? dataArray.topRepositories
-															.sort((a, b) => b.stars - a.stars)
-															.map((item, index) => (
+														.sort((a, b) => {
+															if (b.stars !== a.stars) {
+															return b.stars - a.stars;
+															}
+															return b.forks - a.forks;
+														})
+														.map((item, index) => (
 																<>
 																	<tr
 																		key={index}
@@ -688,13 +704,23 @@ export default function AnalysisDashboard() {
 													options={{
 														scales: {
 															r: {
+																
 																max: 100,
 																min: 0,
+																pointLabels: {
+																	color: graphsTextColor,
+																	font: {
+																		size: 15, 
+																	  },
+																  },
 																ticks: {
 																	stepSize: 20,
 																	textStrokeColor:
 																		'rgb(54, 162, 235)',
-																	color: 'rgba(240, 240, 240, 0.5)',
+																	color: graphsTextColor,
+																	font: {
+																		size: 15, 
+																	  },
 																	backdropColor:
 																		'rgb(47, 56, 62)',
 																},
@@ -707,6 +733,16 @@ export default function AnalysisDashboard() {
 																},
 															},
 														},
+														plugins: {
+															legend: {
+															  labels: {
+																color: graphsTextColor, 
+																font: {
+																  size: 15, 
+																},
+															  },
+															},
+														  },
 													}}
 													data={{
 														labels: areas.map((item) => item.name),
@@ -739,6 +775,18 @@ export default function AnalysisDashboard() {
 													Companies worked for
 												</h6>
 												<Pie
+												options={{
+													plugins: {
+													  legend: {
+														labels: {
+														  color: graphsTextColor,
+														  font: {
+															size: 13, 
+														  },
+														},
+													  },
+													},
+												  }}
 													data={{
 														labels: companies.map((item) => item.name),
 														datasets: [

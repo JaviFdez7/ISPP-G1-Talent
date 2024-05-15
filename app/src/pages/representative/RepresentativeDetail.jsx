@@ -13,6 +13,7 @@ import { handleNetworkError } from '../../components/TokenExpired'
 export default function RepresentativeDetail() {
 	const { isAuthenticated } = useAuthContext()
 	const [userData, setUserData] = useState({})
+	const [remainingSearches, setRemainingSearches] = useState(0)
 	const [analysisHistoryData, setAnalysisHistoryData] = useState([
 		{
 			id: 1,
@@ -34,9 +35,20 @@ export default function RepresentativeDetail() {
 			try {
 				if (isAuthenticated) {
 					const currentUserId = localStorage.getItem('userId')
+					const token = localStorage.getItem('access_token')
 					const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`)
 					const user = response.data.data.find((user) => user._id === currentUserId)
 					setUserData(user)
+
+					const subsciptionUser = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${user._id}`,
+					{
+						headers: {
+							'Content-type': 'application/json',
+							Authorization: token,
+						},
+					}
+					)
+					setRemainingSearches(subsciptionUser.data.data.remainingSearches)
 				}
 			} catch (error) {
 				console.error('Error fetching user data:', error.response.data.errors[0].detail)
@@ -173,6 +185,15 @@ export default function RepresentativeDetail() {
 			<h3 className='profile-title'>Latest Actions</h3>
 			<hr className='w-5/12 self-center'></hr>
 			<br></br>
+			<h2 className='text-white text-center' style={{ fontSize: '1.25em' }}>
+				{remainingSearches !== null && remainingSearches !== undefined && `You have `}
+				{remainingSearches !== null && remainingSearches !== undefined && (
+					<span style={{ color: 'var(--talent-highlight)' }}>{remainingSearches}</span>
+				)}
+				{remainingSearches !== null &&
+					remainingSearches !== undefined &&
+					` remaining ${remainingSearches === 1 ? 'search' : 'searches'}`}
+			</h2>
 			<br></br>
 			<br></br>
 			<div className='flex flex-col justify-center w-8/12 self-center'>
@@ -182,11 +203,7 @@ export default function RepresentativeDetail() {
 					type='analysis'
 				/>
 				<br></br>
-				<br></br>
 			</div>
-			<br></br>
-			<br></br>
-			<br></br>
 			<div className='flex flex-col justify-center w-8/12 self-center'>
 				<LatestHistorySearch
 					header='Latest Search'

@@ -12,6 +12,7 @@ import { useAuthContext } from './../../context/authContext'
 
 export default function SearchForm() {
 	const talentColor = 'var(--talent-secondary)'
+	const errorColor = 'var(--talent-highlight)'
 	const [numForms, setNumForms] = useState(2)
 	const [numError, setNumError] = useState('')
 	const userId = localStorage.getItem('userId')
@@ -257,9 +258,37 @@ export default function SearchForm() {
 			return newForm
 		})
 	}
-
+	const [formErrors, setFormErrors] = useState({})
 	async function handleSubmit(e) {
 		e.preventDefault()
+		let isValid = true
+		let errors = {}
+		form.forEach((item, index) => {
+			if (!item.languages.length) {
+				isValid = false
+				errors[`languages${index}`] = 'Languages are required'
+			}
+
+			if (!item.technologies.length) {
+				isValid = false
+				errors[`technologies${index}`] = 'Technologies are required'
+			}
+
+			if (item.yearsOfExperience === null || item.yearsOfExperience === undefined) {
+				isValid = false
+				errors[`yearsOfExperience${index}`] = 'Years of Experience are required'
+			}
+
+			if (!item.field) {
+				isValid = false
+				errors[`field${index}`] = 'Field is required'
+			}
+		})
+
+		if (!isValid) {
+			setFormErrors(errors)
+			return
+		}
 		try {
 			const representativeId = localStorage.getItem('userId')
 			const token = localStorage.getItem('access_token')
@@ -303,11 +332,13 @@ export default function SearchForm() {
 		if (subscription) {
 			if (subscription.toLowerCase() == 'basic plan') {
 				setNumOptions([
+					{ value: 1, label: '1' },
 					{ value: 2, label: '2' },
 					{ value: 3, label: '3' },
 				])
 			} else {
 				setNumOptions([
+					{ value: 1, label: '1' },
 					{ value: 2, label: '2' },
 					{ value: 3, label: '3' },
 					{ value: 4, label: '4' },
@@ -349,7 +380,7 @@ export default function SearchForm() {
 					marginTop: '50px',
 				}}>
 				<label htmlFor='numForms' style={{ color: 'white', marginRight: '5px' }}>
-					Select between 2 and 5 candidates to search for:
+					Select candidates to search for:
 				</label>
 				<Select
 					id='numForms'
@@ -435,6 +466,11 @@ export default function SearchForm() {
 									className='basic-multi-select'
 									classNamePrefix='select'
 								/>
+								{formErrors[`languages${index}`] && (
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`languages${index}`]}
+									</div>
+								)}
 							</div>
 
 							<div
@@ -461,6 +497,11 @@ export default function SearchForm() {
 									options={options}
 									isMulti
 								/>
+								{formErrors[`technologies${index}`] && (
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`technologies${index}`]}
+									</div>
+								)}
 							</div>
 
 							<div
@@ -497,6 +538,11 @@ export default function SearchForm() {
 									menuPortalTarget={document.body}
 									menuPosition={'fixed'}
 								/>
+								{formErrors[`field${index}`] && (
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`field${index}`]}
+									</div>
+								)}
 							</div>
 
 							<div
@@ -513,6 +559,11 @@ export default function SearchForm() {
 									onChange={(e) => onInputChange(e, index)}
 									errors={errors}
 								/>
+								{formErrors[`yearsOfExperience${index}`] && (
+									<div className='error-message' style={{ color: errorColor }}>
+										{formErrors[`yearsOfExperience${index}`]}
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
