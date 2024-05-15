@@ -132,7 +132,8 @@ export const createChangePasswordRequest: any = async (data: any,originalUrl: st
 		const id = user?._id.toString()
 		const token = generateJWTWithSoonerExpiration(id)
 		const result = originalUrl+"/"+token
-		const text=`To change the forgotten password, access this link: ${result}. \n
+		const text=`The user with the username: ${user?.username} and email: ${user?.email} has requested to change the password.
+		To change the forgotten password, access this link: ${result}. \n
 		 \n
 		 In case of error, simply ignore the message.
 		Thank you very much for using IT TALENT :3`
@@ -147,7 +148,11 @@ export const createChangePasswordRequest: any = async (data: any,originalUrl: st
 
 export const loginUser: any = async (data: any) => {
 	try {
-		const user = await User.findOne({ username: data.username })
+		
+		const userByEmail = await User.findOne({ email: data.username })
+		const userByUsername=await User.findOne({ username: data.username })
+		const user = userByEmail ?? userByUsername
+		
 		const id = user?._id.toString()
 		const token = generateJWT(id)
 		const result = { token, user }
@@ -166,5 +171,6 @@ export default {
 	updateUserProfilePicture,
 	updateUserPassword,
 	deleteUser,
-	loginUser,createChangePasswordRequest
+	loginUser,
+	createChangePasswordRequest
 }

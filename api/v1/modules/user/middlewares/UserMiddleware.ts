@@ -273,7 +273,10 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
 			return
 		}
 		// Comprobar si el usuario existe
-		const user = await User.findOne({ username: data.username })
+		const userByEmail = await User.findOne({ email: data.username })
+		const userByUsername=await User.findOne({ username: data.username })
+		const user = userByEmail ?? userByUsername
+	
 		if (!user) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
