@@ -185,11 +185,11 @@ export const checkRealUser: any = async (req: Request, res: Response, next: Next
 		const data = req.body
 		// Comprobar si el usuario existe
 		const userByEmail = await User.findOne({ email: data.usernameOrEmail })
-		const userByUsername=await User.findOne({ username: data.usernameOrEmail })
+		const userByUsername = await User.findOne({ username: data.usernameOrEmail })
 		if (!userByEmail && !userByUsername) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
-		}else {
+		} else {
 			next()
 		}
 	} catch (error: any) {
@@ -211,19 +211,18 @@ export const checkCorrectToken: any = async (req: Request, res: Response, next: 
 			return
 		}
 		const decodedToken = verifyJWT(token)
-		if(!decodedToken.sub){
+		if (!decodedToken.sub) {
 			const message = 'Incorrect token'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 401)
 			return
 		}
-		const user= await User.findById(decodedToken.sub)
-		if(!user){
+		const user = await User.findById(decodedToken.sub)
+		if (!user) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
-		}else {
+		} else {
 			next()
 		}
-
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -234,21 +233,24 @@ export const checkCorrectToken: any = async (req: Request, res: Response, next: 
 	}
 }
 
-export const checkRepeatedPassword: any = async (req: Request, res: Response, next: NextFunction) => {
+export const checkRepeatedPassword: any = async (
+	req: Request,
+	res: Response,
+	next: NextFunction
+) => {
 	try {
-		const {newPassword,repeatedPassword} = req.body
-		const compare=newPassword === repeatedPassword
-		if(newPassword.lenght ===0 || repeatedPassword.lenght===0){
+		const { newPassword, repeatedPassword } = req.body
+		const compare = newPassword === repeatedPassword
+		if (newPassword.lenght === 0 || repeatedPassword.lenght === 0) {
 			const message = 'There are empty fields'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
-		}else if(!(compare)){
+		} else if (!compare) {
 			const message = 'The passwords dont match'
 			ApiResponse.sendError(res, [{ title: 'Bad Request', detail: message }], 400)
-		}else {
-			req.body.encryptedPassword=await encrypt(newPassword)
+		} else {
+			req.body.encryptedPassword = await encrypt(newPassword)
 			next()
 		}
-
 	} catch (error: any) {
 		ApiResponse.sendError(res, [
 			{
@@ -273,7 +275,10 @@ export const checkLoginUser: any = async (req: Request, res: Response, next: Nex
 			return
 		}
 		// Comprobar si el usuario existe
-		const user = await User.findOne({ username: data.username })
+		const userByEmail = await User.findOne({ email: data.username })
+		const userByUsername = await User.findOne({ username: data.username })
+		const user = userByEmail ?? userByUsername
+
 		if (!user) {
 			const message = 'User not found'
 			ApiResponse.sendError(res, [{ title: 'Not Found', detail: message }], 404)
