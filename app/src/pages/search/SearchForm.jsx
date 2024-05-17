@@ -9,6 +9,7 @@ const apiURL = import.meta.env.VITE_BACKEND_URL
 import axios from 'axios'
 import Select from 'react-select'
 import { useAuthContext } from './../../context/authContext'
+import Swal from "sweetalert2";
 
 export default function SearchForm() {
 	const talentColor = 'var(--talent-secondary)'
@@ -259,6 +260,23 @@ export default function SearchForm() {
 		})
 	}
 	const [formErrors, setFormErrors] = useState({})
+
+	const noSearchesPopUp = () => {
+		Swal.fire({
+			title: "You are out of searches",
+			showDenyButton: false,
+			confirmButtonText: "Ok",
+			denyButtonText: ``,
+			confirmButtonColor: "var(--talent-highlight)",
+			background: "var(--talent-secondary)",
+			color: "white",
+		  }).then((result) => {
+			if (result.isConfirmed) {
+			  navigate("/");
+			}
+		});
+	};
+
 	async function handleSubmit(e) {
 		e.preventDefault()
 		let isValid = true
@@ -295,7 +313,20 @@ export default function SearchForm() {
 			const config = {
 				headers: { Authorization: `${token}` },
 			}
+
 			const subscription = localStorage.getItem('subscriptionType')
+			const subsciptionUser = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/subscriptions/${userId}`,
+				{
+					headers: {
+						'Content-type': 'application/json',
+						Authorization: token,
+					},
+				}
+			)
+			if (subsciptionUser.data.data.remainingSearches <= 0) {
+				noSearchesPopUp()
+				return
+			}
 
 			const formArray = Object.values(form)
 			const response = await axios.post(apiURL + '/team-creator', formArray, config)
