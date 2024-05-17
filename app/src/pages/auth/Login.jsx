@@ -106,13 +106,15 @@ export default function Login() {
 							}}>
 							<label
 								htmlFor='Username'
-								className='block text-lg font-bold text-white self-center'
+								className='block text-lg font-bold text-white self-center text-center'
 								style={{
 									marginBottom: '1rem',
 									marginRight: '2rem',
 									marginLeft: '4rem',
 								}}>
 								Username
+								<br></br>
+								or email
 							</label>
 							<div
 								className='flex-grow'
