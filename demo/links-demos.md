@@ -2,7 +2,7 @@
 
 FERNÁNDEZ CASTILLO, JAVIER - Creator
 
-### Entregable: PPL
+### Entregable: WPL
 ### Grupo 01 (Mañana) - IT Talent
 
 
