@@ -20,7 +20,7 @@
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/RukisRo"><img src="https://i.imgur.com/qdxJbGz.jpg" height="130px;" width="100px;" alt="López Moyano, Rocío"/><br /><sub><b>López Moyano, Rocío</b></sub></a><br /><hr>Community Manager</td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/motero2k"><img src="https://i.imgur.com/IvDye35.jpg" width="150px;"height="150px;" alt="Wenqing Xue"/><br /><sub><b>Otero Barbasán, Manuel</b></sub></a><br /><hr> Backend Manager</td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/Francisco-David"><img src="https://i.imgur.com/a48hbMH.jpg" width="100px;" alt="Divjot Singh"/><br /><sub><b>Vilaplana de Trías, Francisco David</b></sub></a><br /><hr>Documentation</td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/carzarrei"><img src="https://i.imgur.com/v4L2t84.jpg" width="150px;" height="130px;" alt="Ben Briggs"/><br /><sub><b>Zarzuela Reina, Carlos</b></sub></a><br /><hr> Backend Developer</td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/Zarzu054"><img src="https://i.imgur.com/v4L2t84.jpg" width="150px;" height="130px;" alt="Ben Briggs"/><br /><sub><b>Zarzuela Reina, Carlos</b></sub></a><br /><hr> Backend Developer</td>
     </tr>
   </tbody>
 </table>
